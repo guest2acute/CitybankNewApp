@@ -1,0 +1,6 @@
+module Pods_CityTouchApp_CityTouchAppTests {
+  umbrella header "Pods-CityTouchApp-CityTouchAppTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
