@@ -29,8 +29,8 @@ export default class Config {
     static apiVersion = "1.0";
     static ACCESS_TOKEN = {};
 
-    static CP_AUTH_TYPE="CP";
-    static TP_AUTH_TYPE="TP";
+    static CP_AUTH_TYPE = "CP";
+    static TP_AUTH_TYPE = "TP";
 
     static commonReq = {};
 
@@ -43,15 +43,12 @@ export default class Config {
     static isFirstTime = "isFirstTime";
     static ActivityCd = "ACTIVITY_CD";
 
-   /*--- end --*/
+    /*--- end --*/
 
-    static getDeviceWidth() {
-        return Math.round(Dimensions.get("window").width);
-    }
 
-    static getDeviceHeight() {
-        return Math.round(Dimensions.get("window").height);
-    }
+
+    static Label = "label";
+    static Text = "text";
 
 
 }

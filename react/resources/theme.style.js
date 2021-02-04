@@ -1,12 +1,8 @@
 export default {
-    THEME_COLOR: '#e20001',
+    THEME_COLOR: '#d61630',
     BTN_TXT_COLOR:'#FFFFFF',
     WHITE: '#ffffff',
     BLACK: '#000000',
-
-
-
-
     PRIMARY_COLOR: '#C92123',
     RED_COLOR: '#C92123',
     RED_COLOR_DARK: '#C92123',
@@ -69,8 +65,9 @@ export default {
     DARK_BLACK_TEXT_COLOR: '#262626',
     PLACEHOLDER_COLOR: '#818181',
 
-    BG_COLOR: '#F6F6F6',
+    BG_COLOR: '#FFFFFF',
     HIGHLIGHT_COLOR:'#0000EE',
     DISABLE_TEXT : '#E2E2E2',
+    BORDER:"#E2E2E2"
 
 };

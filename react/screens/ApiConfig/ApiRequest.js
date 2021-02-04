@@ -6,11 +6,10 @@ import Utility from "../../utilize/Utility";
 import Actions from "./Actions";
 
 export default class ApiRequest {
-
   /*  static refreshToken= () => {
         return new Promise(res => setTimeout(res, 4000));
     }
-*/
+  */
 
     static loginRequest = async (user_id, password) => {
         let uniqueId = await DeviceInfo.getUniqueId();

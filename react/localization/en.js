@@ -1,16 +1,37 @@
-import {Text} from "react-native";
-import React from "react";
-
 export default {
-    language_english: "English",
+    language_english: "EN",
     language_bangla: "বাংলা",
     login: "Login",
     save: "Save",
     next: "Next",
-    user_ID: "Enter User ID",
+    user_ID: "Enter Your User ID",
+    new_signup:"New in CityTouch?",
+    sign_up_now:"Sign up now!",
+    fgt_uid_pwd_pin: "Forgot User ID or Password or PIN ?",
+    right_reserved: "All rights reserved. Copyright @2021 The City Bank Limited V 1.0",
+    faqs: "FAQs",
+    atm_branch: "ATM & Branch",
+    info: "Info",
+    privacy: "Privacy",
+    contact: "Contact",
+
+
+
+
+
+
+    /*error message*/
+    require_user_id:"User ID is Required",
+    require_length_user_id:"Length should be minimum 8",
+    require_pwd:"Password is Required",
+
+
+
+
+
     conf_user_ID: "Confirm User ID",
-    login_pin:"Login Pin",
-    passwordTxt: "Enter Password",
+    login_pin: "Login Pin",
+    passwordTxt: "Enter Your Password",
     new_pass_txt: "Enter new password",
     new_trans_pin_txt: "Enter new transaction pin",
     conf_new_trans_pin_txt: "Confirm new transaction pin",
@@ -65,7 +86,7 @@ export default {
     pwd: "Password",
     submit_txt: "Submit",
     otp_sent_txt: "Get OTP",
-    view_balance:"View Balance",
+    view_balance: "View Balance",
     new_pwd_txt: "New Password",
     new_pin_txt: "New Pin",
     confirm_pwd_txt: "Confirm Password",
@@ -102,8 +123,8 @@ export default {
     change_login_pin: "Change Login PIN",
     change_transaction_pin: "Change Transaction PIN",
     slogan: "Dear customer, Welcome to CityTouch Mobile Banking. For help Call: ",
-    new_login_pin:"New Login PIN",
-    conf_new_login_pin:"Confirm New Login PIN",
+    new_login_pin: "New Login PIN",
+    conf_new_login_pin: "Confirm New Login PIN",
 
     fd_accounts: "FD accounts",
     new_fd_accounts: "New FD",
@@ -140,10 +161,10 @@ export default {
     title_fgt_pwd: "Forgot Password",
     title_fgt_pin: "Forgot PIN",
     title_fgt_tpin: "Forgot Transaction PIN",
-    ok_txt:"OK",
-    new_pin:"Enter new PIN",
-    conf_new_pin:"Confirm new PIN",
+    ok_txt: "OK",
+    new_pin: "Enter new PIN",
+    conf_new_pin: "Confirm new PIN",
 
-    error_already_login:"you have already set a primary device. If you want to login on other device, you have to complete new app login process. Do you want to continue?"
+    error_already_login: "you have already set a primary device. If you want to login on other device, you have to complete new app login process. Do you want to continue?"
 
 };

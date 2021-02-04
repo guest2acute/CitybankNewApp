@@ -21,23 +21,7 @@ import LoginScreen from "./react/screens/LoginScreen";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
-
-const Navigator = () => {
-    return (
-        <Drawer.Navigator
-            drawerContentOptions={{
-                activeTintColor: themeStyle.THEME_COLOR,
-                itemStyle: {marginVertical: 5},
-            }}
-            drawerContent={(props) => <CustomSidebarMenu {...props} />}>
-            <Drawer.Screen
-                name="Home"
-                options={{drawerLabel: "Home"}}
-                component={DashBoardScreen}/>
-        </Drawer.Navigator>);
-};
 
 function Root() {
     return (

@@ -6,6 +6,7 @@ import NetInfo from "@react-native-community/netinfo";
 import base64 from 'react-native-base64';
 import DeviceInfo from "react-native-device-info";
 import User from "./User";
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 export default class Utility {
     static alert(msg) {
@@ -50,25 +51,18 @@ export default class Utility {
         });
       } */
 
-    static async makePostApiCall(body) {
-        fetch(Config.base_url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log('responseJson', responseJson);
-                if (responseJson != null) {
-                    return responseJson;
-                }
-            })
-            .catch((error) => {
-                return "";
-            });
+    static userInput(text) {
+        if (text.indexOf(" ") !== -1)
+            text = text.replace(/\s/g, '');
+        return text;
+    }
 
+    static setWidth(val) {
+        return wp((val / Utility.getDeviceWidth()) * 100);
+    }
+
+    static setHeight(val) {
+        return hp((val / Utility.getDeviceHeight()) * 100);
     }
 
     static async parseResponse(response) {
@@ -104,6 +98,14 @@ export default class Utility {
             deviceId = userId + "-" + Utility.getCurrentTimeStamp();
         }
         return deviceId;
+    }
+
+    static getDeviceWidth() {
+        return Math.round(Dimensions.get("window").width);
+    }
+
+    static getDeviceHeight() {
+        return Math.round(Dimensions.get("window").height);
     }
 
 }
