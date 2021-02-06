@@ -277,14 +277,14 @@ class LoginScreen extends Component {
                                 }}>{language.fgt_uid_pwd_pin}</Text>
                             </TouchableOpacity>
                         </View>
-                        {/* <Image style={{
+                        <Image style={{
                             alignSelf: "center",
                             marginTop: Utility.setHeight(20),
                             height: Utility.setHeight(80),
                             width: Utility.setWidth(80),
                             marginBottom: Utility.setHeight(20)
                         }} resizeMode={"contain"}
-                               source={require("../resources/images/qr_login.jpg")}/>*/}
+                               source={require("../resources/images/qr_login.jpg")}/>
 
                     </View>
                 </ScrollView>
