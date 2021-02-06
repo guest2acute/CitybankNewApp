@@ -40,6 +40,7 @@ export default {
     enter_card_no: "Enter Card Number here",
     otp: "OTP",
     otp_txt: "One Time Password",
+    otp_sent:"Sent OTP",
     otp_description: "Please enter the OTP sent to your registered mobile/email ",
     otp_fgt_pwd: "to process forgot password",
     otp_fgt_pin: "to process forgot PIN",

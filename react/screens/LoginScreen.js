@@ -40,6 +40,9 @@ class LoginScreen extends Component {
      */
 
     async onSubmit(language) {
+        this.props.navigation.navigate("BottomNavigator");
+        return;
+
         if (this.state.userid === "") {
             this.setState({errorTextUid: language.require_user_id});
         } else if (this.state.userid.length < 8) {

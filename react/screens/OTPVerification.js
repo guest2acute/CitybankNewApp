@@ -63,7 +63,7 @@ class OTPVerification extends Component {
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.otp_txt}</Text>
+                    <Text style={CommonStyle.title}>{language.otp_sent}</Text>
                 </View>
 
                 <View style={{
@@ -102,7 +102,7 @@ class OTPVerification extends Component {
                             borderWidth={1}
                             buttonColor={themeStyle.GRAY_COLOR}
                             labelColor={themeStyle.BLACK}
-                            labelStyle={[CommonStyle.midTextStyle, {marginEnd: 15, marginStart: -5}]}
+                            labelStyle={[CommonStyle.textStyle, {marginEnd: 15, marginStart: -5}]}
                             style={{marginTop: 8}}
                             animation={true}
                             onPress={(value) => {
