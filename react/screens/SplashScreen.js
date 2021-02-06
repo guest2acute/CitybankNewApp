@@ -37,7 +37,7 @@ class SplashScreen extends Component {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
-                StatusBar.setBackgroundColor(themeStyle.OFF_WHITE_COLOR);
+                StatusBar.setBackgroundColor(themeStyle.WHITE);
                 StatusBar.setBarStyle("dark-content");
             });
         }

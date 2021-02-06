@@ -21,6 +21,11 @@ export default class Config {
     static appName = "CityTouch";
     static onBoardURl = "https://uatonboardportal.thecitybank.com/self-onboarding?mn=decrypted&tn=123456789&ln=en";
     static termConditionURl = "https://www.citytouch.com.bd/signup/terms-and-condition#!";
+    static faqURl = "";
+    static atmBranchURl = "";
+    static infoURl = "";
+    static contactURl = "";
+    static privacyURl = "";
     /**
      * App Version
      */

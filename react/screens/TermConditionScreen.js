@@ -22,15 +22,14 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import dimen from "../resources/Dimens";
 import fontStyle from "../resources/FontStyle";
 import FontSize from "../resources/ManageFontSize";
+import Utility from "../utilize/Utility";
+import CommonStyle from "../resources/CommonStyle";
 
-let title = "", load_url = "";
 
-class WebScreen extends Component {
+class TermConditionScreen extends Component {
 
   constructor(props) {
     super(props);
-    title = props.route.params.title;
-    load_url = props.route.params.load_url;
   }
 
 
@@ -46,6 +45,7 @@ class WebScreen extends Component {
 
 
   render() {
+    let language = this.props.language;
     return (
       <View style={styles.viewStyles}>
         <SafeAreaView />
@@ -69,18 +69,53 @@ class WebScreen extends Component {
             color: theme.WHITE,
             fontFamily: fontStyle.RobotoMedium,
             fontSize: FontSize.getSize(16),
-          }}>{title}</Text>
+          }}>{language.termsCondition}</Text>
         </View>
 
         <WebView
           source={{
-            uri: load_url
+            uri: Config.termConditionURl
           }}
           scalesPageToFit={true}
           /*onLoadEnd={this._onLoadEnd}*/
         />
+        <View style={{
+          flexDirection: "row",
+          marginStart: Utility.setWidth(10),
+          marginRight: Utility.setWidth(10),
+          marginTop: Utility.setHeight(20)
+        }}>
+          <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+            <View style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              height: Utility.setHeight(46),
+              borderRadius: Utility.setHeight(23),
+              borderWidth: 1,
+              borderColor: themeStyle.THEME_COLOR
+            }}>
+              <Text
+                  style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.decline}</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={{width: Utility.setWidth(20)}}/>
 
+          <TouchableOpacity style={{flex: 1}}
+                            onPress={() =>  this.props.navigation.navigate("OTPVerification")}>
+            <View style={{
+              alignItems: "center",
+              justifyContent: "center",
+              height: Utility.setHeight(46),
+              borderRadius: Utility.setHeight(23),
+              backgroundColor: themeStyle.THEME_COLOR
+            }}>
+              <Text
+                  style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.accept}</Text>
+            </View>
+          </TouchableOpacity>
 
+        </View>
 
       </View>
 
@@ -105,5 +140,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(WebScreen);
+export default connect(mapStateToProps)(TermConditionScreen);
 

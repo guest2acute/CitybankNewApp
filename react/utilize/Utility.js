@@ -57,6 +57,25 @@ export default class Utility {
         return text;
     }
 
+
+    static input(text,filter) {
+        let value = "";
+        for (let k = 0; k < text.length; k++) {
+            if (filter.indexOf(text[k]) !== -1) {
+                value = value + text[k];
+            }
+        }
+        return value;
+    }
+
+    static userDecimalInput(text) {
+        let numbers = '0123456789.';
+        if (text.indexOf(" ") !== -1)
+            text = text.replace(/\s/g, '');
+        return text;
+    }
+
+
     static setWidth(val) {
         return wp((val / Utility.getDeviceWidth()) * 100);
     }

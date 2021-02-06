@@ -5,7 +5,7 @@ import {
     Text,
     StatusBar,
     TextInput,
-    Platform, TouchableOpacity, Image, ScrollView
+    Platform, TouchableOpacity, Image, ScrollView, Alert
 } from "react-native";
 import themeStyle from "../resources/theme.style";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
@@ -18,6 +18,7 @@ import {actions} from "../redux/actions";
 import fontStyle from "../resources/FontStyle";
 import Utility from "../utilize/Utility";
 import CommonStyle from "../resources/CommonStyle";
+import Config from "../config/Config";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -28,7 +29,9 @@ class LoginScreen extends Component {
             isProgress: false,
             passwordVisible: false,
             errorTextUid: "",
-            errorTextPwd: ""
+            errorTextPwd: "",
+            focusUid: false,
+            focusPwd: false,
         };
     }
 
@@ -44,20 +47,37 @@ class LoginScreen extends Component {
         } else if (this.state.passwordTxt === "") {
             this.setState({errorTextPwd: language.require_pwd});
         } else {
+            //this.deviceChange();
             /*this.setState({isProgress: true}, () => {
                 this.loginRequest(this.state.userid, this.state.passwordTxt);
             })*/
         }
     }
 
+    deviceChange() {
+        Alert.alert(
+            Config.appName,
+            this.props.language.deviceChangeTxt,
+            [
+                {
+                    text: "No"
+                },
+                {
+                    text: "Yes", onPress: () =>
+                        this.props.navigation.navigate("TermConditionScreen")
+                },
+            ]
+        );
+    }
+
     changeLanguage(langCode) {
         console.log("langCode", langCode);
-        this.props.dispatch({
+        /*this.props.dispatch({
             type: actions.account.CHANGE_LANG,
             payload: {
                 langId: langCode,
             },
-        });
+        });*/
     }
 
     userInput(text) {
@@ -78,11 +98,7 @@ class LoginScreen extends Component {
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
-                    <Text style={{
-                        fontFamily: fontStyle.RobotoBold,
-                        fontSize: FontSize.getSize(14),
-                        flex: 1, color: themeStyle.WHITE
-                    }}>{language.login}</Text>
+                    <Text style={CommonStyle.title}>{language.login}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
                             onPress={() => this.changeLanguage("en")}
@@ -142,22 +158,27 @@ class LoginScreen extends Component {
                                 onChangeText={text => this.userInput(text)}
                                 value={this.state.userid}
                                 multiline={false}
+                                onFocus={() => this.setState({focusUid: true})}
+                                onBlur={() => this.setState({focusUid: false})}
                                 numberOfLines={1}
                                 contextMenuHidden={true}
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                 autoCorrect={false}
                                 maxLength={12}/>
-                            <View style={{borderBottomWidth: 1, borderBottomColor: themeStyle.THEME_COLOR}}/>
+                            <View style={{
+                                borderBottomWidth: 1,
+                                borderBottomColor: this.state.focusUid ? themeStyle.THEME_COLOR : themeStyle.BLACK
+                            }}/>
                             {this.state.errorTextUid !== "" ?
-                                <Text style={{marginLeft:5,color: themeStyle.THEME_COLOR,fontSize: FontSize.getSize(11),
-                                    fontFamily: fontStyle.RobotoRegular,}}>{this.state.errorTextUid}</Text> : null}
+                                <Text style={{
+                                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                                    fontFamily: fontStyle.RobotoRegular,
+                                }}>{this.state.errorTextUid}</Text> : null}
 
                             <View style={{
                                 height: hp(dimen.dim_h50),
                                 marginTop: hp(dimen.dim_h20),
                                 flexDirection: "row",
-                                borderBottomColor: themeStyle.THEME_COLOR,
-                                borderBottomWidth: 1,
                                 alignItems: "center",
                             }}>
                                 <TextInput
@@ -173,6 +194,8 @@ class LoginScreen extends Component {
                                     onChangeText={text => this.passwordChange(text)}
                                     value={this.state.passwordTxt}
                                     multiline={false}
+                                    onFocus={() => this.setState({focusPwd: true})}
+                                    onBlur={() => this.setState({focusPwd: false})}
                                     numberOfLines={1}
                                     contextMenuHidden={true}
                                     secureTextEntry={!this.state.passwordVisible}
@@ -187,9 +210,15 @@ class LoginScreen extends Component {
                                     this.setState({passwordVisible: !this.state.passwordVisible});
                                 }}/>
                             </View>
+                            <View style={{
+                                borderBottomWidth: 1,
+                                borderBottomColor: this.state.focusPwd ? themeStyle.THEME_COLOR : themeStyle.BLACK
+                            }}/>
                             {this.state.errorTextPwd !== "" ?
-                                <Text style={{marginLeft:5,color: themeStyle.THEME_COLOR,fontSize: FontSize.getSize(11),
-                                    fontFamily: fontStyle.RobotoRegular,}}>{this.state.errorTextPwd}</Text> : null}
+                                <Text style={{
+                                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                                    fontFamily: fontStyle.RobotoRegular,
+                                }}>{this.state.errorTextPwd}</Text> : null}
 
                             <View style={{
                                 marginTop: hp(dimen.dim_h40),
@@ -220,53 +249,91 @@ class LoginScreen extends Component {
                                 </TouchableOpacity>
                             </View>
 
-                            <Text style={{
-                                marginTop: Utility.setHeight(15),
-                                alignSelf: "center",
-                                fontFamily: fontStyle.RobotoMedium,
-                                fontSize: FontSize.getSize(13),
-                                color: "#7E4645",
-                                textAlign: "center"
-                            }}>{language.new_signup}
-                                <Text style={{
-                                    fontSize: FontSize.getSize(13),
-                                    color: "#7E4645",
-                                    fontFamily: fontStyle.RobotoMedium,
-                                    textDecorationLine: "underline"
-                                }}>{language.sign_up_now}
-                                </Text>
-                            </Text>
-                            <Text style={{
-                                marginTop: 10, alignSelf: "center", fontFamily: fontStyle.RobotoMedium,
-                                fontSize: FontSize.getSize(13), color: "#7E4645", textAlign: "center"
-                            }}>{language.fgt_uid_pwd_pin}</Text>
 
+                            <View style={{
+                                marginTop: Utility.setHeight(15),
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}>
+                                <Text style={[CommonStyle.midTextStyle, {
+                                    color: "#7E4645",
+                                    textAlign: "center",
+                                    marginRight: 3,
+                                }]}>{language.new_signup}</Text>
+                                <TouchableOpacity>
+                                    <Text style={[CommonStyle.midTextStyle, {
+                                        color: "#7E4645",
+                                        textDecorationLine: "underline"
+                                    }]}>{language.sign_up_now}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate("CredentialDetails")}>
+                                <Text style={{
+                                    marginTop: 10, alignSelf: "center", fontFamily: fontStyle.RobotoMedium,
+                                    fontSize: FontSize.getSize(13), color: "#7E4645", textAlign: "center"
+                                }}>{language.fgt_uid_pwd_pin}</Text>
+                            </TouchableOpacity>
                         </View>
-                        <Image style={{
+                        {/* <Image style={{
                             alignSelf: "center",
                             marginTop: Utility.setHeight(20),
                             height: Utility.setHeight(80),
                             width: Utility.setWidth(80),
                             marginBottom: Utility.setHeight(20)
                         }} resizeMode={"contain"}
-                               source={require("../resources/images/qr_login.jpg")}/>
+                               source={require("../resources/images/qr_login.jpg")}/>*/}
 
                     </View>
                 </ScrollView>
                 <View style={{alignItems: "center", justifyContent: "center"}}>
                     <View
                         style={{flexDirection: "row", alignItems: "center", justifyContent: "center", marginBottom: 5}}>
-                        <Text style={styles.optionText}>{language.faqs}</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("WebScreen",
+                            {
+                                load_url: Config.faqURl,
+                                title: language.faqs
+                            })}>
+                            <Text style={styles.optionText}>{language.faqs}</Text>
+                        </TouchableOpacity>
                         <Text style={styles.dashStyle}>|</Text>
-                        <Text style={styles.optionText}>{language.atm_branch}</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("WebScreen",
+                            {
+                                load_url: Config.atmBranchURl,
+                                title: language.atm_branch
+                            })}>
+                            <Text style={styles.optionText}>{language.atm_branch}</Text>
+                        </TouchableOpacity>
+
                         <Text style={styles.dashStyle}>|</Text>
-                        <Text style={styles.optionText}>{language.info}</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("WebScreen",
+                            {
+                                load_url: Config.infoURl,
+                                title: language.info
+                            })}>
+                            <Text style={styles.optionText}>{language.info}</Text>
+                        </TouchableOpacity>
+
                     </View>
 
                     <View style={{flexDirection: "row"}}>
-                        <Text style={styles.optionText}>{language.privacy}</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("WebScreen",
+                            {
+                                load_url: Config.privacyURl,
+                                title: language.privacy
+                            })}>
+                            <Text style={styles.optionText}>{language.privacy}</Text>
+                        </TouchableOpacity>
                         <Text style={styles.dashStyle}>|</Text>
-                        <Text style={styles.optionText}>{language.contact}</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("WebScreen",
+                            {
+                                load_url: Config.contactURl,
+                                title: language.contact
+                            })}>
+                            <Text style={styles.optionText}>{language.contact}</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <Text style={styles.rightReserved}>{language.right_reserved}

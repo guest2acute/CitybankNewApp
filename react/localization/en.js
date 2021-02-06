@@ -3,10 +3,14 @@ export default {
     language_bangla: "বাংলা",
     login: "Login",
     save: "Save",
+    submit: "Submit",
+    accept: "Accept",
+    decline: "Decline",
+    continue_txt: "Continue",
     next: "Next",
     user_ID: "Enter Your User ID",
-    new_signup:"New in CityTouch?",
-    sign_up_now:"Sign up now!",
+    new_signup: "New in CityTouch?",
+    sign_up_now: "Sign up now!",
     fgt_uid_pwd_pin: "Forgot User ID or Password or PIN ?",
     right_reserved: "All rights reserved. Copyright @2021 The City Bank Limited V 1.0",
     faqs: "FAQs",
@@ -14,19 +18,74 @@ export default {
     info: "Info",
     privacy: "Privacy",
     contact: "Contact",
+    credentialDetails: "Credential Details",
+    selectionType: "Selection Type *",
+    selectType: "Select Type",
+    selectActType: "Select Account Type",
+    type_act: "Type of Account *",
+    actNo: "Account Number",
+    actNo_here: "Enter account number here",
+    selectCard: "Select Card",
+    transactionPin: "Transaction PIN",
+    enterCardPin: "Card Pin",
+    enterExpiry: "Expiry Date",
+    enterPinHere: "Enter PIN here",
+    otpType: "OTP Type:",
+    back_txt: "Back",
+    mark_field_mandatory: "Marked fields are mandatory",
+    noRecord: "No Records Found",
+    ok: "OK",
+    expiryDate: "Enter Expiry Date here",
+    credit_card_no: "Card Number",
+    enter_card_no: "Enter Card Number here",
+    otp: "OTP",
+    otp_txt: "One Time Password",
+    otp_description: "Please enter the OTP sent to your registered mobile/email ",
+    otp_fgt_pwd: "to process forgot password",
+    otp_fgt_pin: "to process forgot PIN",
+    otp_fgt_uid: "to process forgot User ID",
+    otp_activate: "to activate Citytouch Digital Banking Service",
+    otp_input_placeholder: "Enter 4 Digit One Time Password(OTP)",
+    dnReceiveOTP: "Did not receive your OTP? ",
+    sendAgain: "Send Again",
+    termsCondition: "Terms and Conditions",
+    emailAddress: "Email Address",
+    mobileNo: "Mobile Number",
+    sms: "SMS",
+    email: "EMAIL",
+    otpViaMob: "You will receive an One Time Password (OTP) via SMS to Mobile Number: ",
+    otpViaEmail: "You will receive an One Time Password (OTP) via Email to Email Address: ",
 
-
-
-
+    /*success messages*/
+    success_fgt_uid: "User id has been sent via SMS/Email",
+    success_msg: "Successfully done",
 
 
     /*error message*/
-    require_user_id:"User ID is Required",
-    require_length_user_id:"Length should be minimum 8",
-    require_pwd:"Password is Required",
+    require_user_id: "User ID is Required",
+    require_length_user_id: "Length should be minimum 8",
+    require_pwd: "Password is Required",
+    cityTouchUserId: "CityTouch User ID",
+    enterUserId: "Enter User ID here",
+    deviceChangeTxt: "You will be logged out from all other devices. From now on this will be your primary device. Do you want to continue.",
 
 
+    /*arrays*/
+    optionTypeArr: [
+        {key: "0", label: "Forgot User ID", value: 0},
+        {key: "1", label: "Forgot Password", value: 1},
+        {key: "2", label: "Forgot PIN", value: 2},
+    ],
 
+    accountTypeArr: [
+        {key: "0", label: "Account Number", value: 0},
+        {key: "1", label: "Credit Card Number", value: 1}
+    ],
+
+    otp_props: [
+        {label: "SMS", value: 0},
+        {label: "Email", value: 1},
+    ],
 
 
     conf_user_ID: "Confirm User ID",
@@ -42,7 +101,6 @@ export default {
     fgt_pwd: "Forgot Password?",
     fgt_pin: "Forgot PIN?",
     alias: "Enter Alias",
-    transactionPin: "Set Transaction PIN",
     conf_trans_pin: "Confirm Transaction PIN",
     loginPin: "Set Login PIN",
     et_pin: "Enter PIN",
