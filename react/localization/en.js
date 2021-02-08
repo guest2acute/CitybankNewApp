@@ -40,7 +40,7 @@ export default {
     enter_card_no: "Enter Card Number here",
     otp: "OTP",
     otp_txt: "One Time Password",
-    otp_sent:"Sent OTP",
+    otp_sent: "Sent OTP",
     otp_description: "Please enter the OTP sent to your registered mobile/email ",
     otp_fgt_pwd: "to process forgot password",
     otp_fgt_pin: "to process forgot PIN",
@@ -57,6 +57,18 @@ export default {
     otpViaMob: "You will receive an One Time Password (OTP) via SMS to Mobile Number: ",
     otpViaEmail: "You will receive an One Time Password (OTP) via Email to Email Address: ",
 
+    account: "Accounts",
+    city_pay: "CityPay",
+    more: "More",
+    payments: "Payments",
+    transfer: "Transfer",
+    goodEvening: "Good Evening, MD. GOLAM MOSTAFA",
+    avail_balance: "Available Balance",
+    view_balance: "View Balance",
+
+    yes_txt: "Yes",
+    no_txt: "No",
+
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
     success_msg: "Successfully done",
@@ -69,7 +81,10 @@ export default {
     cityTouchUserId: "CityTouch User ID",
     enterUserId: "Enter User ID here",
     deviceChangeTxt: "You will be logged out from all other devices. From now on this will be your primary device. Do you want to continue.",
+    invalidCredential: "Invalid UserId or Password",
 
+    /*confirmation message*/
+    logout_confirm: "Are you sure want to Logout?",
 
     /*arrays*/
     optionTypeArr: [
@@ -145,7 +160,7 @@ export default {
     pwd: "Password",
     submit_txt: "Submit",
     otp_sent_txt: "Get OTP",
-    view_balance: "View Balance",
+
     new_pwd_txt: "New Password",
     new_pin_txt: "New Pin",
     confirm_pwd_txt: "Confirm Password",

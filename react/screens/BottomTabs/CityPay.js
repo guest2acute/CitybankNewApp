@@ -14,6 +14,7 @@ class CityPay extends Component {
     }
 
     render() {
+        let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
@@ -25,7 +26,7 @@ class CityPay extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>CityPay</Text>
+                    <Text style={CommonStyle.title}>{language.city_pay}</Text>
                 </View>
             </View>)
     }
@@ -38,6 +39,10 @@ class CityPay extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
+        // bottom tab management
+        this.props.navigation.setOptions({
+            tabBarLabel: this.props.language.city_pay
+        });
     }
 }
 

@@ -7,6 +7,7 @@ import base64 from 'react-native-base64';
 import DeviceInfo from "react-native-device-info";
 import User from "./User";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import {CommonActions} from "@react-navigation/native";
 
 export default class Utility {
     static alert(msg) {
@@ -30,6 +31,22 @@ export default class Utility {
             [
                 {text: positive_txt, onPress: () => navigation.goBack(null)},
                 {text: negative_txt, onPress: () => navigation.goBack(null)},
+            ]
+        );
+    }
+
+    static logout(navigation,language){
+        Alert.alert(
+            Config.appName,
+            language.logout_confirm,
+            [
+                {text: language.no_txt},
+                {text: language.yes_txt, onPress: () => navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{name: "LoginScreen"}],
+                        })
+                    )},
             ]
         );
     }

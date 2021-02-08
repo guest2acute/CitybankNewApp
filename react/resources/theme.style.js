@@ -1,6 +1,8 @@
 export default {
+    DIMCOLOR: "#b7b7b7",
     SELECTION_BG: "#F5DBDC",
-    SELECT_LABEL:"#9A8687",
+    TITLE_BG: "#FCE2E3",
+    SELECT_LABEL: "#9A8687",
     THEME_COLOR: '#d61630',
     BTN_TXT_COLOR: '#FFFFFF',
     WHITE: '#ffffff',

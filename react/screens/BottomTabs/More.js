@@ -14,6 +14,7 @@ class More extends Component {
     }
 
     render() {
+        let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
@@ -25,7 +26,7 @@ class More extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>More</Text>
+                    <Text style={CommonStyle.title}>{language.more}</Text>
                 </View>
             </View>)
     }
@@ -38,6 +39,11 @@ class More extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
+
+        // bottom tab management
+        this.props.navigation.setOptions({
+            tabBarLabel: this.props.language.more
+        });
     }
 }
 

@@ -8,7 +8,7 @@
 
 import React from "react";
 import {createStackNavigator, CardStyleInterpolators} from "@react-navigation/stack";
-import {NavigationContainer} from "@react-navigation/native";
+import {CommonActions, NavigationContainer} from "@react-navigation/native";
 
 import SplashScreen from "./react/screens/SplashScreen";
 import {Provider} from "react-redux";
@@ -36,44 +36,55 @@ const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const tabBarListeners = ({navigation, route}) => ({
+    tabPress: () => navigation.dispatch(
+        CommonActions.reset({
+            index: 0,
+            routes: [{name: route.name}],
+        })
+    )
+});
+
+
 const BottomNavigator = () => {
     return (
         <Tab.Navigator initialRouteName={"Accounts"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }} tabBarOptions={{
             activeTintColor: themeStyle.THEME_COLOR,
-            inactiveTintColor:themeStyle.BLACK_43,
+            inactiveTintColor: themeStyle.BLACK_43,
             labelStyle: {fontFamily: fontStyle.RobotoMedium}
         }}>
-            <Tab.Screen name="Accounts" component={Accounts} options={{
-                tabBarLabel: 'Accounts',
+            <Tab.Screen name="Accounts" component={Accounts} listeners={tabBarListeners} options={{
+                tabBarLabel: "",
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}
                            source={require("./react/resources/images/ic_account.png")}/>
+
                 ),
             }}/>
-            <Tab.Screen name="Transfer" component={Transfer} options={{
+            <Tab.Screen name="Transfer" component={Transfer} listeners={tabBarListeners} options={{
                 tabBarLabel: 'Transfer',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}
                            source={require("./react/resources/images/ic_transfer.png")}/>
                 ),
             }}/>
-            <Tab.Screen name="Payments" component={Payments} options={{
+            <Tab.Screen name="Payments" component={Payments} listeners={tabBarListeners} options={{
                 tabBarLabel: 'Payments',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}
                            source={require("./react/resources/images/ic_payment.png")}/>
                 ),
             }}/>
-            <Tab.Screen name="CityPay" component={CityPay} options={{
+            <Tab.Screen name="CityPay" component={CityPay} listeners={tabBarListeners} options={{
                 tabBarLabel: 'CityPay',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{width: size, height: size}}
                            source={color === themeStyle.THEME_COLOR ? require("./react/resources/images/ic_qr_selected.png") : require("./react/resources/images/ic_qr_code.png")}/>
                 ),
             }}/>
-            <Tab.Screen name="More" component={More} options={{
+            <Tab.Screen name="More" component={More} listeners={tabBarListeners} options={{
                 tabBarLabel: 'More',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}

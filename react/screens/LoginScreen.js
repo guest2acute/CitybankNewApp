@@ -40,21 +40,23 @@ class LoginScreen extends Component {
      */
 
     async onSubmit(language) {
-        this.props.navigation.navigate("BottomNavigator");
-        return;
-
-        if (this.state.userid === "") {
+       /* if (this.state.userid === "") {
             this.setState({errorTextUid: language.require_user_id});
         } else if (this.state.userid.length < 8) {
             this.setState({errorTextUid: language.require_length_user_id});
         } else if (this.state.passwordTxt === "") {
             this.setState({errorTextPwd: language.require_pwd});
-        } else {
-            //this.deviceChange();
-            /*this.setState({isProgress: true}, () => {
-                this.loginRequest(this.state.userid, this.state.passwordTxt);
-            })*/
         }
+        else if (this.state.userid.toLowerCase() === "cbtest12345" && this.state.passwordTxt === "123456Aa") {
+            this.props.navigation.navigate("BottomNavigator");
+        } else if (this.state.userid.toLowerCase() === "cb12345678" && this.state.passwordTxt === "123456Aa") {
+            this.deviceChange();
+        } else {
+            Utility.alert(language.invalidCredential);
+        }*/
+
+        this.props.navigation.navigate("BottomNavigator");
+
     }
 
     deviceChange() {
@@ -75,12 +77,12 @@ class LoginScreen extends Component {
 
     changeLanguage(langCode) {
         console.log("langCode", langCode);
-        /*this.props.dispatch({
+        this.props.dispatch({
             type: actions.account.CHANGE_LANG,
             payload: {
                 langId: langCode,
             },
-        });*/
+        });
     }
 
     userInput(text) {
