@@ -6,15 +6,15 @@ import {connect} from "react-redux";
 import Utility from "../../utilize/Utility";
 import fontStyle from "../../resources/FontStyle";
 import FontSize from "../../resources/ManageFontSize";
-import {createNavigationContainer} from "react-navigation";
 
+
+let price = "100000";
 
 class Accounts extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isProgress: false,
-
             sectionList: [],
             dataList: [
                 {
@@ -78,6 +78,31 @@ class Accounts extends Component {
             ]
 
         }
+    }
+
+    updateBalance(account, balance) {
+        let sectionList = this.state.sectionList;
+        let objectPos = -1;
+        let object;
+        let sectionPos = -1;
+
+        console.log("sectionList.length", sectionList.length);
+        for (let k = 0; k < sectionList.length; k++) {
+            let dataItem = sectionList[k].data;
+            console.log("dataItem", dataItem);
+            objectPos = dataItem.indexOf(account);
+            if (objectPos !== -1) {
+                sectionPos = k;
+                object = dataItem[objectPos];
+                break;
+            }
+        }
+        let itemArr = sectionList[sectionPos].data;
+        itemArr[objectPos] = {...itemArr[objectPos], balance: balance};
+        sectionList[sectionPos].data = itemArr;
+
+        console.log("sectionList", sectionList[0].data);
+        this.setState({sectionList: sectionList});
     }
 
     render() {
@@ -146,10 +171,11 @@ class Accounts extends Component {
                             flex: 1,
                             color: themeStyle.DIMCOLOR
                         }]}>{account.ACCOUNTORCARDNO}</Text>
-                        <Text style={[CommonStyle.textStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            textDecorationLine: "underline"
-                        }]}>{this.props.language.view_balance}</Text>
+                        <TouchableOpacity onPress={() => this.updateBalance(account, "10000")}>
+                            <Text style={[CommonStyle.textStyle, {
+                                color: themeStyle.THEME_COLOR
+                            }]}>{account.balance ? account.balance : this.props.language.view_balance}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
