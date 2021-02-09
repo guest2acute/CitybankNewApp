@@ -3,6 +3,7 @@ import themeStyle from "./theme.style";
 import {StyleSheet} from "react-native";
 import fontStyle from "./FontStyle";
 import FontSize from "./ManageFontSize";
+import {heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 export default StyleSheet.create({
     toolbar: {
@@ -47,6 +48,16 @@ export default StyleSheet.create({
         fontFamily: fontStyle.RobotoRegular,
         fontSize: FontSize.getSize(13),
         color:themeStyle.BLACK
-    }
+    },
 
+    checkboxContainer: {
+        flexDirection: "row",
+        paddingLeft:10,
+        paddingRight:10,
+        marginTop:10,marginBottom:10
+    },
+    checkbox: {
+        height: 5,
+        marginTop:9
+    },
 });

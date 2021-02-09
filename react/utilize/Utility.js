@@ -24,6 +24,9 @@ export default class Utility {
         );
     }
 
+
+
+
     static alertConfirm(positive_txt, negative_txt, msg, navigation) {
         Alert.alert(
             Config.appName,

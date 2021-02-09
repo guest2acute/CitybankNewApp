@@ -40,20 +40,20 @@ class LoginScreen extends Component {
      */
 
     async onSubmit(language) {
-       /* if (this.state.userid === "") {
-            this.setState({errorTextUid: language.require_user_id});
-        } else if (this.state.userid.length < 8) {
-            this.setState({errorTextUid: language.require_length_user_id});
-        } else if (this.state.passwordTxt === "") {
-            this.setState({errorTextPwd: language.require_pwd});
-        }
-        else if (this.state.userid.toLowerCase() === "cbtest12345" && this.state.passwordTxt === "123456Aa") {
-            this.props.navigation.navigate("BottomNavigator");
-        } else if (this.state.userid.toLowerCase() === "cb12345678" && this.state.passwordTxt === "123456Aa") {
-            this.deviceChange();
-        } else {
-            Utility.alert(language.invalidCredential);
-        }*/
+        /* if (this.state.userid === "") {
+             this.setState({errorTextUid: language.require_user_id});
+         } else if (this.state.userid.length < 8) {
+             this.setState({errorTextUid: language.require_length_user_id});
+         } else if (this.state.passwordTxt === "") {
+             this.setState({errorTextPwd: language.require_pwd});
+         }
+         else if (this.state.userid.toLowerCase() === "cbtest12345" && this.state.passwordTxt === "123456Aa") {
+             this.props.navigation.navigate("BottomNavigator");
+         } else if (this.state.userid.toLowerCase() === "cb12345678" && this.state.passwordTxt === "123456Aa") {
+             this.deviceChange();
+         } else {
+             Utility.alert(language.invalidCredential);
+         }*/
 
         this.props.navigation.navigate("BottomNavigator");
 
@@ -69,7 +69,10 @@ class LoginScreen extends Component {
                 },
                 {
                     text: "Yes", onPress: () =>
-                        this.props.navigation.navigate("TermConditionScreen")
+                        this.props.navigation.navigate("TermConditionScreen",
+                            {
+                                showButton: true
+                            })
                 },
             ]
         );
@@ -266,7 +269,7 @@ class LoginScreen extends Component {
                                     textAlign: "center",
                                     marginRight: 3,
                                 }]}>{language.new_signup}</Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate("RegistrationAccount")}>
                                     <Text style={[CommonStyle.midTextStyle, {
                                         color: "#7E4645",
                                         textDecorationLine: "underline"

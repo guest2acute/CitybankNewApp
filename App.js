@@ -30,6 +30,8 @@ import {Image} from "react-native";
 import themeStyle from "./react/resources/theme.style";
 import CommonStyle from "./react/resources/CommonStyle";
 import fontStyle from "./react/resources/FontStyle";
+import RegistrationAccount from "./react/screens/RegistrationAccount";
+import RegistrationCard from "./react/screens/RegistrationCard";
 
 
 const store = configureStore(window.__State__);
@@ -108,6 +110,8 @@ function Root() {
             <Stack.Screen name="TermConditionScreen" component={TermConditionScreen} options={{headerShown: false}}/>
             <Stack.Screen name="WebScreen" component={WebScreen} options={{headerShown: false}}/>
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown: false}}/>
+            <Stack.Screen name="RegistrationAccount" component={RegistrationAccount} options={{headerShown: false}}/>
+            <Stack.Screen name="RegistrationCard" component={RegistrationCard} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

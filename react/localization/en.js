@@ -24,11 +24,15 @@ export default {
     selectActType: "Select Account Type",
     type_act: "Type of Account *",
     actNo: "Account Number",
+    actName: "Account Name",
     actNo_here: "Enter account number here",
     selectCard: "Select Card",
     transactionPin: "Transaction PIN",
-    enterCardPin: "Card Pin",
+    loginPin:"Login PIN",
+    setLoginPIn:"Set Login PIN",
+    enterCardPin: "Card PIN",
     enterExpiry: "Expiry Date",
+    enterCardExpiry:"Select Card Expiry Date",
     enterPinHere: "Enter PIN here",
     otpType: "OTP Type:",
     back_txt: "Back",
@@ -37,6 +41,7 @@ export default {
     ok: "OK",
     expiryDate: "Enter Expiry Date here",
     credit_card_no: "Card Number",
+    cardName:"Card Name",
     enter_card_no: "Enter Card Number here",
     otp: "OTP",
     otp_txt: "One Time Password",
@@ -56,7 +61,13 @@ export default {
     email: "EMAIL",
     otpViaMob: "You will receive an One Time Password (OTP) via SMS to Mobile Number: ",
     otpViaEmail: "You will receive an One Time Password (OTP) via Email to Email Address: ",
-
+    register_title: "Citytouch Online Registration",
+    signupWithAccount: "SIGN UP WITH ACCOUNT",
+    signupWithCard: "SIGN UP WITH CREDIT/PREPAID CARD",
+    welcome_signup: "Welcome to CityTouch Online Registration process. Please enter your ",
+    accountNo:"account Number",
+    debitCard:"debit card details",
+    provideDetails:"Welcome to CityTouch Online Registration process. Please provide below details.",
     account: "Accounts",
     city_pay: "CityPay",
     more: "More",
@@ -65,9 +76,21 @@ export default {
     goodEvening: "Good Evening, MD. GOLAM MOSTAFA",
     avail_balance: "Available Balance",
     view_balance: "View Balance",
-
+    fatherName:"Father Name",
+    motherName:"Mother Name",
+    et_father_name: "Enter Father Name",
+    et_mother_name: "Enter Mother Name",
+    et_dob: "Date Of Birth",
+    select_dob:"Enter Date of Birth",
     yes_txt: "Yes",
     no_txt: "No",
+    user_id: "User ID",
+    user_id_enter: "Enter User ID here",
+    conf_mobile: "Confirm Mobile Number",
+    conf_email: "Confirm Email Address",
+    setPwdTxt: "Set Password",
+    etPasswordTxt: "Enter Password here",
+    enterTransactionPin:"Enter transaction PIN",
 
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
@@ -79,12 +102,18 @@ export default {
     require_length_user_id: "Length should be minimum 8",
     require_pwd: "Password is Required",
     cityTouchUserId: "CityTouch User ID",
+    requireUserId: "CityTouch User ID is Required",
     enterUserId: "Enter User ID here",
     deviceChangeTxt: "You will be logged out from all other devices. From now on this will be your primary device. Do you want to continue.",
     invalidCredential: "Invalid UserId or Password",
+    require_mobile: "Mobile Number is Required",
+    require_email: "Email Address is Required",
+    email_not_valid: "Email Address is not Valid",
+
 
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",
+
 
     /*arrays*/
     optionTypeArr: [
@@ -101,12 +130,18 @@ export default {
     otp_props: [
         {label: "SMS", value: 0},
         {label: "Email", value: 1},
+        {label: "Both", value: 2},
+    ],
+
+    userIdOption: [
+        {label: "User ID", value: 0},
+        {label: "Preferred User ID", value: 1}
     ],
 
 
     conf_user_ID: "Confirm User ID",
     login_pin: "Login Pin",
-    passwordTxt: "Enter Your Password",
+
     new_pass_txt: "Enter new password",
     new_trans_pin_txt: "Enter new transaction pin",
     conf_new_trans_pin_txt: "Confirm new transaction pin",
@@ -118,7 +153,7 @@ export default {
     fgt_pin: "Forgot PIN?",
     alias: "Enter Alias",
     conf_trans_pin: "Confirm Transaction PIN",
-    loginPin: "Set Login PIN",
+
     et_pin: "Enter PIN",
     et_card_pin: "Enter card PIN",
     conf_loginPin: "Confirm Login PIN",
@@ -130,10 +165,9 @@ export default {
     creditcard_name: "Enter Credit Card Name",
     prepaidcard_name: "Enter Prepaid Card Name",
     mobile: "Mobile Number",
-    conf_mobile: "Confirm Mobile Number",
-    conf_email: "Confirm Email Address",
-    user_id_enter: "Enter User ID",
-    user_id: "User ID",
+
+
+
     preferred_user_id: "Preferred User ID",
     read_term: "I have read and agree to the ",
     term_condition: "terms and conditions",
@@ -148,9 +182,7 @@ export default {
     mmyy_txt: "Card expiry MM / YY",
     mmyy: "MM / YY",
     enter_pin: "Enter Card PIN",
-    et_father_name: "Enter Name of Father",
-    et_mother_name: "Enter Name of Mother",
-    et_dob: "Date Of Birth",
+
     et_last_trans: "Enter Last Transaction Date",
     et_last_trans_amount: "Enter Last Transaction Amount",
     et_set_user_id: "Set User ID",

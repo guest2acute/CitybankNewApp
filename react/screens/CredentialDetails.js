@@ -11,8 +11,6 @@ import {
     TextInput, FlatList
 } from "react-native";
 import themeStyle from "../resources/theme.style";
-import fontStyle from "../resources/FontStyle";
-import FontSize from "../resources/ManageFontSize";
 import CommonStyle from "../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../resources/busy-indicator";
@@ -45,7 +43,8 @@ class CredentialDetails extends Component {
             expiryDate: "",
             creditCardNo: "",
             transactionPin: "",
-            cityTouchUserId: ""
+            cityTouchUserId: "",
+            otp_type:0
         }
     }
 
@@ -81,13 +80,13 @@ class CredentialDetails extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                <Text style={[CommonStyle.textStyle]}>
                     {language.actNo}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right'}]}
+                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={language.actNo_here}
                     onChangeText={text => this.setState({accountNo: Utility.input(text, "0123456789")})}
                     value={this.state.accountNo}
@@ -105,13 +104,13 @@ class CredentialDetails extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                <Text style={[CommonStyle.textStyle]}>
                     {language.transactionPin}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right'}]}
+                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={language.enterPinHere}
                     onChangeText={text => this.setState({transactionPin: Utility.input(text, "0123456789")})}
                     value={this.state.transactionPin}
@@ -157,13 +156,13 @@ class CredentialDetails extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                <Text style={[CommonStyle.textStyle]}>
                     {language.credit_card_no}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right'}]}
+                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={language.enter_card_no}
                     onChangeText={text => this.setState({creditCardNo: Utility.input(text, "0123456789")})}
                     value={this.state.creditCardNo}
@@ -181,13 +180,13 @@ class CredentialDetails extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                <Text style={[CommonStyle.textStyle]}>
                     {language.enterExpiry}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right'}]}
+                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={language.expiryDate}
                     onChangeText={text => this.setState({expiryDate: Utility.input(text, "0123456789/")})}
                     value={this.state.expiryDate}
@@ -205,13 +204,13 @@ class CredentialDetails extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                <Text style={[CommonStyle.textStyle]}>
                     {language.enterCardPin}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right'}]}
+                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={language.enterPinHere}
                     onChangeText={text => this.setState({cardPin: Utility.input(text, "0123456789")})}
                     value={this.state.cardPin}
@@ -225,7 +224,7 @@ class CredentialDetails extends Component {
                     maxLength={4}/>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            {/* <View style={{
+            <View style={{
                             flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                             marginEnd: 10
                         }}>
@@ -244,12 +243,15 @@ class CredentialDetails extends Component {
                                 borderWidth={1}
                                 buttonColor={themeStyle.GRAY_COLOR}
                                 labelColor={themeStyle.BLACK}
-                                labelStyle={CommonStyle.textStyle}
-                                style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(75)}}
+                                labelStyle={[CommonStyle.textStyle,{marginRight:10}]}
+                                style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
                                 animation={true}
+                                onPress={(value) => {
+                                    this.setState({otp_type: value});
+                                }}
                             />
                         </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/> */}
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
     }
 
@@ -339,13 +341,13 @@ class CredentialDetails extends Component {
                                 alignItems: "center",
                                 marginEnd: 10,
                             }}>
-                                <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                                <Text style={[CommonStyle.textStyle]}>
                                     {language.cityTouchUserId}
                                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                                 </Text>
                                 <TextInput
                                     selectionColor={themeStyle.THEME_COLOR}
-                                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right'}]}
+                                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                                     placeholder={language.enterUserId}
                                     onChangeText={text => this.setState({cityTouchUserId: Utility.userInput(text)})}
                                     value={this.state.cityTouchUserId}
@@ -425,7 +427,7 @@ class CredentialDetails extends Component {
                     </View>
                 </ScrollView>
                 <Modal
-                    animationType="slide"
+                    animationType="none"
                     transparent={true}
                     visible={this.state.modalVisible}
                     onRequestClose={() => {
