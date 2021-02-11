@@ -73,7 +73,7 @@ class AccountDetails extends Component {
                             left: Utility.setWidth(10),
                             top: Utility.setHeight(10),
                         }]}
-                        onPress={() => Utility.logout(this.props.navigation, language)}>
+                        onPress={() => this.props.navigation.goBack()}>
                         <Image resizeMode={"contain"} style={
                             CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?

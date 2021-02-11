@@ -113,6 +113,31 @@ export default {
     recent_trans:"Recent Transactions",
     descriptionTitle:"Description",
     depositChk:"Deposit",
+
+
+    login_configure_profile:"Login Configure Profile",
+    config_information:"Please configure below information.",
+    alias:"Alias",
+    et_alias: "Enter Alias",
+    set_transaction_pin:"Set Transaction Pin",
+    Transaction_Pin:"Transaction Pin",
+    Confirm_Pin:"Confirm Transaction Pin",
+
+    Language_M: [
+        {label: "English", value: 0},
+        {label: "বাংলা", value: 1},
+    ],
+    Language_P:"Language Preference",
+    Login_W:"Login With",
+    Login_M: [
+        {label: "Password", value: 0},
+        {label: "Pin", value: 1},
+        {label: "Biometric", value: 2},
+    ],
+
+
+
+
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
     success_msg: "Successfully done",
@@ -173,7 +198,7 @@ export default {
     fgt_uid: "Forgot User ID?",
     fgt_pwd: "Forgot Password?",
     fgt_pin: "Forgot PIN?",
-    alias: "Enter Alias",
+
     conf_trans_pin: "Confirm Transaction PIN",
 
     et_pin: "Enter PIN",
