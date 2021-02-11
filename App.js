@@ -33,6 +33,7 @@ import fontStyle from "./react/resources/FontStyle";
 import RegistrationAccount from "./react/screens/RegistrationAccount";
 import RegistrationCard from "./react/screens/RegistrationCard";
 import RegisterOtpScreen from "./react/screens/RegisterOtpScreen";
+import AccountDetails from "./react/screens/BottomTabs/AccountDetails";
 
 
 const store = configureStore(window.__State__);
@@ -48,7 +49,6 @@ const tabBarListeners = ({navigation, route}) => ({
     )
 });
 
-
 const BottomNavigator = () => {
     return (
         <Tab.Navigator initialRouteName={"Accounts"} mode={"modal"} screenOptions={{
@@ -58,14 +58,14 @@ const BottomNavigator = () => {
             inactiveTintColor: themeStyle.BLACK_43,
             labelStyle: {fontFamily: fontStyle.RobotoMedium}
         }}>
-            <Tab.Screen name="Accounts" component={Accounts} listeners={tabBarListeners} options={{
-                tabBarLabel: "",
+            <Tab.Screen name="AccountTab" component={AccountTab} listeners={tabBarListeners} options={{
+                tabBarLabel: "Accounts",
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}
                            source={require("./react/resources/images/ic_account.png")}/>
-
                 ),
             }}/>
+
             <Tab.Screen name="Transfer" component={Transfer} listeners={tabBarListeners} options={{
                 tabBarLabel: 'Transfer',
                 tabBarIcon: ({color, size}) => (
@@ -96,6 +96,16 @@ const BottomNavigator = () => {
             }}/>
         </Tab.Navigator>
     );
+}
+
+function AccountTab() {
+    return (
+        <Stack.Navigator initialRouteName={"Accounts"} mode={"modal"} screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}>
+            <Stack.Screen name="Accounts" component={Accounts} options={{headerShown: false}}/>
+            <Stack.Screen name="AccountDetails" component={AccountDetails} options={{headerShown: false}}/>
+        </Stack.Navigator>);
 }
 
 function Root() {

@@ -162,6 +162,7 @@ class Accounts extends Component {
     renderData(account) {
         return (
             <View>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate("AccountDetails")}>
                 <View style={{
                     backgroundColor: themeStyle.WHITE, marginLeft: 10, marginRight: 10, marginTop: 13, marginBottom: 13
                 }}>
@@ -178,6 +179,7 @@ class Accounts extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                </TouchableOpacity>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View>
         )

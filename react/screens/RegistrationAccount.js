@@ -56,7 +56,7 @@ class RegistrationAccount extends Component {
             motherName: "",
             transPin: "",
             errorTransPin: "",
-            stateVal: 2,
+            stateVal: 0,
             options: [
                 {title: props.language.signupWithAccount, selected: true},
                 {title: props.language.signupWithCard, selected: false},

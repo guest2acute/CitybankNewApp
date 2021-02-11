@@ -1,3 +1,6 @@
+import {Text} from "react-native";
+import React from "react";
+
 export default {
     language_english: "EN",
     language_bangla: "বাংলা",
@@ -96,7 +99,20 @@ export default {
     enterTransactionPin: "Enter transaction PIN",
     last_trans_date: "Last Transaction Date",
     last_trans_amount: "Last Transaction Amount",
-
+    personalise_profile: "Personalise Profile",
+    change_contact: "Change Contact Details",
+    change_login_password: "Change Login Password",
+    change_login_pin: "Change Login PIN",
+    change_transaction_pin: "Change Transaction PIN",
+    upload_documents: "Upload Supporting And Document",
+    withdrawChk:"Withdrawn",
+    dateTitle:"Date",
+    typeTitle:"Type",
+    current_balance:"Current Balance",
+    amountTitle:"Amount",
+    recent_trans:"Recent Transactions",
+    descriptionTitle:"Description",
+    depositChk:"Deposit",
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
     success_msg: "Successfully done",
