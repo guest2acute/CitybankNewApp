@@ -32,6 +32,7 @@ import CommonStyle from "./react/resources/CommonStyle";
 import fontStyle from "./react/resources/FontStyle";
 import RegistrationAccount from "./react/screens/RegistrationAccount";
 import RegistrationCard from "./react/screens/RegistrationCard";
+import RegisterOtpScreen from "./react/screens/RegisterOtpScreen";
 
 
 const store = configureStore(window.__State__);
@@ -112,6 +113,7 @@ function Root() {
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationAccount" component={RegistrationAccount} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationCard" component={RegistrationCard} options={{headerShown: false}}/>
+            <Stack.Screen name="RegisterOtpScreen" component={RegisterOtpScreen} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

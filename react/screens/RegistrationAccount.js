@@ -21,7 +21,7 @@ import RadioForm from "react-native-simple-radio-button";
 import CheckBox from "@react-native-community/checkbox";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Config from "../config/Config";
-import {CommonActions} from "@react-navigation/native";
+import {CommonActions, StackActions} from "@react-navigation/native";
 
 
 class RegistrationAccount extends Component {
@@ -47,13 +47,16 @@ class RegistrationAccount extends Component {
             errorFather: "",
             errorMother: "",
             errorDob: "",
+            errorTransDate: "",
+            errorTransAmt: "",
+            transDate: "",
             dob: "",
             password: "",
             fatherName: "",
             motherName: "",
             transPin: "",
             errorTransPin: "",
-            stateVal: 0,
+            stateVal: 2,
             options: [
                 {title: props.language.signupWithAccount, selected: true},
                 {title: props.language.signupWithCard, selected: false},
@@ -242,7 +245,9 @@ class RegistrationAccount extends Component {
         console.log("item", value.item);
         return (
             <TouchableOpacity disabled={value.index === 0} style={{height: Utility.setHeight(40)}}
-                              onPress={() => this.props.navigation.navigate("RegistrationCard")}>
+                              onPress={() => this.props.navigation.dispatch(
+                                  StackActions.replace('RegistrationCard')
+                              )}>
                 <View style={{
                     alignItems: "center",
                     justifyContent: "center",
@@ -722,7 +727,7 @@ class RegistrationAccount extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.select_dob}
+                        placeholder={"MM/YY"}
                         onChangeText={text => this.setState({dob: Utility.input(text, "0123456789/")})}
                         value={this.state.dob}
                         multiline={false}
@@ -742,6 +747,88 @@ class RegistrationAccount extends Component {
                         alignSelf: "flex-end",
                         marginBottom: 10,
                     }}>{this.state.errorDob}</Text> : null}
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            <View>
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.last_trans_date}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={"dd/MM/YYYY"}
+                        onChangeText={text => this.setState({transDate: Utility.input(text, "0123456789/")})}
+                        value={this.state.transDate}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={10}/>
+                </View>
+                {this.state.errorTransDate !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorTransDate}</Text> : null}
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            <View>
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.last_trans_amount}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        onChangeText={text => this.setState({transAmt: Utility.input(text, "0123456789.")})}
+                        value={this.state.transAmt}
+                        multiline={false}
+                        numberOfLines={1}
+                        keyboardType={"number-pad"}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={10}/>
+                </View>
+                {this.state.errorTransAmt !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorTransAmt}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             {this.otpView(language)}
@@ -892,54 +979,56 @@ class RegistrationAccount extends Component {
                     keyExtractor={(item, index) => index + ""}
                     style={{width: Utility.getDeviceWidth(), flexGrow: 0, height: Utility.setHeight(40), marginTop: 10}}
                 />
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{marginLeft: 10, marginRight: 10}}>
-                        {this.state.stateVal === 3 ? null : <Text style={[CommonStyle.textStyle, {
-                            marginTop: 15,
-                            marginLeft: 10,
-                            marginRight: 10
-                        }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
-                        {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.debitCardUI(language) : this.state.stateVal === 2 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
-                        <View style={{
-                            flexDirection: "row",
-                            marginStart: Utility.setWidth(10),
-                            marginRight: Utility.setWidth(10),
-                            marginTop: Utility.setHeight(20),
+                <View style={{flex: 1}}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={{marginLeft: 10, marginRight: 10}}>
+                            {this.state.stateVal === 3 ? null : <Text style={[CommonStyle.textStyle, {
+                                marginTop: 15,
+                                marginLeft: 10,
+                                marginRight: 10
+                            }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
+                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.debitCardUI(language) : this.state.stateVal === 2 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: Utility.setWidth(10),
+                                marginRight: Utility.setWidth(10),
+                                marginTop: Utility.setHeight(20),
 
-                        }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
-                                <View style={{
-                                    flex: 1,
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: Utility.setHeight(46),
-                                    borderRadius: Utility.setHeight(23),
-                                    borderWidth: 1,
-                                    borderColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <View style={{width: Utility.setWidth(20)}}/>
+                            }}>
+                                <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
+                                    <View style={{
+                                        flex: 1,
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        height: Utility.setHeight(46),
+                                        borderRadius: Utility.setHeight(23),
+                                        borderWidth: 1,
+                                        borderColor: themeStyle.THEME_COLOR
+                                    }}>
+                                        <Text
+                                            style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={{width: Utility.setWidth(20)}}/>
 
-                            <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.submit(language, this.props.navigation)}>
-                                <View style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: Utility.setHeight(46),
-                                    borderRadius: Utility.setHeight(23),
-                                    backgroundColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 4 ? language.submit_txt : language.next}</Text>
-                                </View>
-                            </TouchableOpacity>
+                                <TouchableOpacity style={{flex: 1}}
+                                                  onPress={() => this.submit(language, this.props.navigation)}>
+                                    <View style={{
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        height: Utility.setHeight(46),
+                                        borderRadius: Utility.setHeight(23),
+                                        backgroundColor: themeStyle.THEME_COLOR
+                                    }}>
+                                        <Text
+                                            style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 4 ? language.submit_txt : language.next}</Text>
+                                    </View>
+                                </TouchableOpacity>
 
+                            </View>
                         </View>
-                    </View>
-                </ScrollView>
+                    </ScrollView>
+                </View>
             </View>);
     }
 }
