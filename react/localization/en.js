@@ -113,12 +113,13 @@ export default {
     recent_trans:"Recent Transactions",
     descriptionTitle:"Description",
     depositChk:"Deposit",
-
+    conf_loginPin: "Confirm Login PIN",
+    customerName:"Customer Name",
 
     login_configure_profile:"Login Configure Profile",
     config_information:"Please configure below information.",
     alias:"Alias",
-    et_alias: "Enter Alias",
+    et_alias: "Enter Alias here",
     set_transaction_pin:"Set Transaction Pin",
     Transaction_Pin:"Transaction Pin",
     Confirm_Pin:"Confirm Transaction Pin",
@@ -141,6 +142,7 @@ export default {
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
     success_msg: "Successfully done",
+    success_saved:"Successfully Saved",
     success_register: "Successfully Registered",
 
 
@@ -203,7 +205,7 @@ export default {
 
     et_pin: "Enter PIN",
     et_card_pin: "Enter card PIN",
-    conf_loginPin: "Confirm Login PIN",
+
     acc_no: "Enter Account Number",
     card_no: "Enter Card Number",
     acc_name: "Account Name",

@@ -347,7 +347,6 @@ class LoginScreen extends Component {
                     <Text style={styles.rightReserved}>{language.right_reserved}
                     </Text>
                 </View>
-
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         );

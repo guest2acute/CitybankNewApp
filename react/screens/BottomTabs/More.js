@@ -24,21 +24,33 @@ class More extends Component {
         let language = props.language;
         this.state = {
             data: [
-                {title: language.personalise_profile, icon: require("../../resources/images/ic_profile.png")},
-                {title: language.change_contact, icon: require("../../resources/images/contact_icon.png")},
                 {
+                    id: "profile",
+                    title: language.personalise_profile,
+                    icon: require("../../resources/images/ic_profile.png")
+                },
+                {
+                    id: "changePassword",
+                    title: language.change_contact,
+                    icon: require("../../resources/images/contact_icon.png")
+                },
+                {
+                    id: "changePassword",
                     title: language.change_login_password,
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
                 {
+                    id: "changeLogin",
                     title: language.change_login_pin,
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
                 {
+                    id: "changeTransPin",
                     title: language.change_transaction_pin,
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
                 {
+                    id: "UploadDoc",
                     title: language.upload_documents,
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
@@ -64,35 +76,45 @@ class More extends Component {
         });
     }
 
+    moveScreen(item) {
+        switch (item.id) {
+            case "profile":
+                this.props.navigation.navigate("Profile");
+                break;
+        }
+    }
+
     _renderItem = ({item, index}) => {
         return (
-            <View style={{
-                flexDirection: "row",
-                marginTop: 17,
-                marginBottom: 17,
-                paddingLeft: 10,
-                paddingRight: 10,
-                alignItems: "center"
-            }}>
-                <Image style={{
-                    height: Utility.setHeight(20),
-                    width: Utility.setWidth(20),
-                    marginLeft: Utility.setWidth(10),
-                    marginRight: Utility.setWidth(10),
-                }} resizeMode={"contain"}
-                       source={item.icon}/>
-                <Text style={[CommonStyle.labelStyle, {
-                    color: themeStyle.THEME_COLOR,
-                    fontSize: FontSize.getSize(12),
-                    flex: 1,
-                }]}>{item.title}</Text>
-                <Image style={{
-                    height: Utility.setHeight(12),
-                    width: Utility.setWidth(30),
-                    tintColor: "#b5bfc1"
-                }} resizeMode={"contain"}
-                       source={require("../../resources/images/arrow_right_ios.png")}/>
-            </View>
+            <TouchableOpacity onPress={() => this.moveScreen(item)}>
+                <View style={{
+                    flexDirection: "row",
+                    marginTop: 17,
+                    marginBottom: 17,
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    alignItems: "center"
+                }}>
+                    <Image style={{
+                        height: Utility.setHeight(20),
+                        width: Utility.setWidth(20),
+                        marginLeft: Utility.setWidth(10),
+                        marginRight: Utility.setWidth(10),
+                    }} resizeMode={"contain"}
+                           source={item.icon}/>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(12),
+                        flex: 1,
+                    }]}>{item.title}</Text>
+                    <Image style={{
+                        height: Utility.setHeight(12),
+                        width: Utility.setWidth(30),
+                        tintColor: "#b5bfc1"
+                    }} resizeMode={"contain"}
+                           source={require("../../resources/images/arrow_right_ios.png")}/>
+                </View>
+            </TouchableOpacity>
         )
     }
 

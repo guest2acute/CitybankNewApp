@@ -8,6 +8,7 @@ import Config from "../config/Config";
 import themeStyle from "../resources/theme.style";
 import {LoginScreen} from "./LoginScreen";
 import Utility from "../utilize/Utility";
+import {StackActions} from "@react-navigation/native";
 
 
 /**
@@ -27,7 +28,9 @@ class SplashScreen extends Component {
     async redirectScreen() {
         new Promise((resolve) =>
             setTimeout(
-                () => {this.props.navigation.replace("LoginScreen")},
+                () => {this.props.navigation.dispatch(
+                    StackActions.replace('LoginScreen')
+                )},
                 3000
             ));
 

@@ -10,28 +10,34 @@ import {
     Image,
     TextInput, FlatList, Platform, StatusBar
 } from "react-native";
-import themeStyle from "../resources/theme.style";
-import fontStyle from "../resources/FontStyle";
-import FontSize from "../resources/ManageFontSize";
-import CommonStyle from "../resources/CommonStyle";
+import themeStyle from "../../resources/theme.style";
+import fontStyle from "../../resources/FontStyle";
+import FontSize from "../../resources/ManageFontSize";
+import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
-import {BusyIndicator} from "../resources/busy-indicator";
-import Utility from "../utilize/Utility";
+import {BusyIndicator} from "../../resources/busy-indicator";
+import Utility from "../../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
 
-class LoginConfigureProfile extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             transactionPin: "",
             confirmTransactionPin: "",
             alias: "",
+            customerName: "",
+            errorCName: "",
+            mobileNo: "",
+            emailTxt: "",
             loginPin: "",
             errorLoginPIN: "",
             conf_loginPin: "",
             errorConfLoginPIN: "",
             errorTransPIN: "",
-            errorConfTransPIN: ""
+            errorConfTransPIN: "",
+            errorMobileNo: "",
+            errorEmail: "",
         }
     }
 
@@ -84,8 +90,7 @@ class LoginConfigureProfile extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.set_transaction_pin}
-                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                        {language.customerName}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -95,19 +100,17 @@ class LoginConfigureProfile extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({transactionPin: Utility.input(text, "0123456789")})}
-                        value={this.state.transactionPin}
+                        placeholder={language.customerName}
+                        onChangeText={text => this.setState({customerName: Utility.userInput(text)})}
+                        value={this.state.customerName}
                         multiline={false}
                         numberOfLines={1}
-                        keyboardType={"number-pad"}
                         contextMenuHidden={true}
                         secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={4}/>
+                        autoCorrect={false}/>
                 </View>
-                {this.state.errorTransPIN !== "" ?
+                {this.state.errorCName !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -116,7 +119,7 @@ class LoginConfigureProfile extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorTransPIN}</Text> : null}
+                    }}>{this.state.errorCName}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -125,8 +128,7 @@ class LoginConfigureProfile extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.Confirm_Pin}
-                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                        {language.mobileNo}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -136,9 +138,9 @@ class LoginConfigureProfile extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({confirmTransactionPin: Utility.input(text, "0123456789")})}
-                        value={this.state.confirmTransactionPin}
+                        placeholder={language.mobileNo}
+                        onChangeText={text => this.setState({mobileNo: Utility.input(text, "0123456789")})}
+                        value={this.state.mobileNo}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
@@ -146,9 +148,9 @@ class LoginConfigureProfile extends Component {
                         secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        maxLength={4}/>
+                        maxLength={13}/>
                 </View>
-                {this.state.errorConfTransPIN !== "" ?
+                {this.state.errorMobileNo !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -157,7 +159,7 @@ class LoginConfigureProfile extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorConfTransPIN}</Text> : null}
+                    }}>{this.state.errorMobileNo}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -169,7 +171,7 @@ class LoginConfigureProfile extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.setLoginPIn}
+                        {language.email_txt}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -179,18 +181,16 @@ class LoginConfigureProfile extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({loginPin: Utility.input(text, "0123456789")})}
-                        value={this.state.loginPin}
+                        placeholder={language.email_txt}
+                        onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
+                        value={this.state.emailTxt}
                         multiline={false}
                         numberOfLines={1}
-                        keyboardType={"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={6}/>
+                        autoCorrect={false}/>
                 </View>
-                {this.state.errorLoginPIN !== "" ?
+                {this.state.errorEmail !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -199,51 +199,10 @@ class LoginConfigureProfile extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorLoginPIN}</Text> : null}
+                    }}>{this.state.errorEmail}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.conf_loginPin}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({conf_loginPin: Utility.input(text, "0123456789")})}
-                        value={this.state.conf_loginPin}
-                        multiline={false}
-                        numberOfLines={1}
-                        keyboardType={"number-pad"}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={6}/>
-                </View>
-                {this.state.errorConfLoginPIN !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfLoginPIN}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
             <View style={{
                 flexDirection: "row", alignItems: "center", marginTop: 15
             }}>
@@ -299,7 +258,7 @@ class LoginConfigureProfile extends Component {
     }
 
     async onSubmit(language, navigation) {
-        navigation.navigate("BottomNavigator");
+        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
     render() {
@@ -313,9 +272,9 @@ class LoginConfigureProfile extends Component {
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
+                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.login_configure_profile}</Text>
+                    <Text style={CommonStyle.title}>{language.personalise_profile}</Text>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
@@ -336,7 +295,7 @@ class LoginConfigureProfile extends Component {
                             marginTop: Utility.setHeight(20)
                         }}>
                             <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.submit(language, this.props.navigation)}>
+                                              onPress={() => this.onSubmit(language, this.props.navigation)}>
                                 <View style={{
                                     flex: 1,
                                     alignSelf: "center",
@@ -419,4 +378,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(LoginConfigureProfile);
+export default connect(mapStateToProps)(Profile);
