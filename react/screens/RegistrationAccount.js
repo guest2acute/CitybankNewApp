@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {
+    Alert, BackHandler,
     FlatList,
     Image,
     Platform,
@@ -19,6 +20,8 @@ import FontSize from "../resources/ManageFontSize";
 import RadioForm from "react-native-simple-radio-button";
 import CheckBox from "@react-native-community/checkbox";
 import Icon from "react-native-vector-icons/FontAwesome";
+import Config from "../config/Config";
+import {CommonActions} from "@react-navigation/native";
 
 
 class RegistrationAccount extends Component {
@@ -36,6 +39,7 @@ class RegistrationAccount extends Component {
             userId: "",
             userId_type: 0,
             otp_type: 0,
+            otpVal: "",
             isTerm: false,
             debitPin: "",
             errorPin: "",
@@ -44,18 +48,19 @@ class RegistrationAccount extends Component {
             errorMother: "",
             errorDob: "",
             dob: "",
-            password:"",
+            password: "",
             fatherName: "",
             motherName: "",
             transPin: "",
             errorTransPin: "",
-            stateVal: 4,
+            stateVal: 0,
             options: [
                 {title: props.language.signupWithAccount, selected: true},
                 {title: props.language.signupWithCard, selected: false},
             ]
         }
     }
+
 
     componentDidMount() {
         if (Platform.OS === "android") {
@@ -64,11 +69,35 @@ class RegistrationAccount extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            this.backHandler = BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
+        }
+
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backHandler);
         }
     }
 
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        const {stateVal} = this.state;
+        if (stateVal === 0)
+            this.props.navigation.goBack(null);
+        else
+            this.setState({stateVal: stateVal !== 3 ? stateVal - 1 : stateVal - 2});
+    }
+
     passwordSet(language) {
-        return(<View style={{
+        return (<View style={{
             borderColor: themeStyle.BORDER,
             width: Utility.getDeviceWidth() - 20,
             borderRadius: 5,
@@ -237,15 +266,68 @@ class RegistrationAccount extends Component {
         )
     }
 
+    otpEnter(language) {
+        return (<View>
+            <Text style={[CommonStyle.textStyle, {
+                marginStart: Utility.setWidth(10),
+                marginEnd: Utility.setWidth(10),
+                marginTop: Utility.setHeight(10),
+                marginBottom: Utility.setHeight(20),
+            }]}> {language.otp_description + language.otp_signup}</Text>
+            <View style={{
+                borderColor: themeStyle.BORDER,
+                width: Utility.getDeviceWidth() - 30,
+                marginStart: Utility.setWidth(10),
+                marginEnd: Utility.setWidth(10),
+                borderRadius: 5,
+                overflow: "hidden",
+                borderWidth: 2,
+            }}>
+                <View style={{
+                    marginStart: 10, marginEnd: 10, marginTop: 10
+                }}>
+                    <Text style={[CommonStyle.labelStyle]}>
+                        {language.otp}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle]}
+                        placeholder={language.otp_input_placeholder}
+                        onChangeText={text => this.setState({otpVal: Utility.input(text, "0123456789")})}
+                        value={this.state.otpVal}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        secureTextEntry={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={4}/>
+                </View>
+            </View>
+            <View style={{
+                marginTop: Utility.setHeight(15),
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center"
+            }}>
+                <Text style={[CommonStyle.textStyle, {
+                    textAlign: "center"
+                }]}>{language.dnReceiveOTP}</Text>
+                <TouchableOpacity>
+                    <Text style={[CommonStyle.midTextStyle, {
+                        textDecorationLine: "underline"
+                    }]}>{language.sendAgain}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </View>)
+
+    }
+
     otpView(language) {
-        return (<View style={{
-            borderColor: themeStyle.BORDER,
-            width: Utility.getDeviceWidth() - 20,
-            borderRadius: 5,
-            marginTop: 10,
-            overflow: "hidden",
-            borderWidth: 2
-        }}>
+        return (<View>
             <View>
                 <View style={{
                     flexDirection: "row",
@@ -662,7 +744,7 @@ class RegistrationAccount extends Component {
                     }}>{this.state.errorDob}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
+            {this.otpView(language)}
 
         </View>)
     }
@@ -759,12 +841,30 @@ class RegistrationAccount extends Component {
                     }}>{this.state.errorPin}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            {this.otpView(language)}
         </View>)
     }
 
     submit(language, navigation) {
         const {stateVal} = this.state;
-        this.setState({stateVal: stateVal + 1});
+        if (stateVal === 4) {
+            Alert.alert(
+                Config.appName,
+                language.success_register,
+                [
+                    {
+                        text: language.ok, onPress: () => navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [{name: "LoginScreen"}],
+                            })
+                        )
+                    },
+                ]
+            );
+        } else
+            this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
+
     }
 
     render() {
@@ -775,7 +875,7 @@ class RegistrationAccount extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
@@ -793,20 +893,21 @@ class RegistrationAccount extends Component {
                     style={{width: Utility.getDeviceWidth(), flexGrow: 0, height: Utility.setHeight(40), marginTop: 10}}
                 />
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{flex: 1, marginLeft: 10, marginRight: 10,}}>
-                        <Text style={[CommonStyle.textStyle, {
+                    <View style={{marginLeft: 10, marginRight: 10}}>
+                        {this.state.stateVal === 3 ? null : <Text style={[CommonStyle.textStyle, {
                             marginTop: 15,
                             marginLeft: 10,
                             marginRight: 10
-                        }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>
-                        {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.debitCardUI(language) : this.state.stateVal === 2 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpView(language) : this.passwordSet(language)}
+                        }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
+                        {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.debitCardUI(language) : this.state.stateVal === 2 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
                             marginRight: Utility.setWidth(10),
-                            marginTop: Utility.setHeight(20)
+                            marginTop: Utility.setHeight(20),
+
                         }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
                                 <View style={{
                                     flex: 1,
                                     alignItems: "center",
@@ -832,7 +933,7 @@ class RegistrationAccount extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 4 ? language.submit_txt : language.next}</Text>
                                 </View>
                             </TouchableOpacity>
 

@@ -39,6 +39,7 @@ export default {
     mark_field_mandatory: "Marked fields are mandatory",
     noRecord: "No Records Found",
     ok: "OK",
+    passwordTxt: "Enter Your Password",
     expiryDate: "Enter Expiry Date here",
     credit_card_no: "Card Number",
     cardName:"Card Name",
@@ -51,6 +52,7 @@ export default {
     otp_fgt_pin: "to process forgot PIN",
     otp_fgt_uid: "to process forgot User ID",
     otp_activate: "to activate Citytouch Digital Banking Service",
+    otp_signup: "to process registration in Citytouch Digital Banking Service",
     otp_input_placeholder: "Enter 4 Digit One Time Password(OTP)",
     dnReceiveOTP: "Did not receive your OTP? ",
     sendAgain: "Send Again",
@@ -95,6 +97,7 @@ export default {
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
     success_msg: "Successfully done",
+    success_register: "Successfully Registered",
 
 
     /*error message*/

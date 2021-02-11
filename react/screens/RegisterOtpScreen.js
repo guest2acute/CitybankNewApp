@@ -12,6 +12,7 @@ import CommonStyle from "../resources/CommonStyle";
 import {CommonActions} from "@react-navigation/native";
 import fontStyle from "../resources/FontStyle";
 import FontSize from "../resources/ManageFontSize";
+import OTPScreen from "./OTPScreen";
 
 
 /**
@@ -20,7 +21,7 @@ import FontSize from "../resources/ManageFontSize";
 
 let description, value;
 
-class OTPScreen extends Component {
+class RegisterOtpScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -83,8 +84,8 @@ class OTPScreen extends Component {
                     <Text style={CommonStyle.title}>{language.otp_txt}</Text>
                 </View>
                 <Text style={[CommonStyle.textStyle, {
-                    marginStart: Utility.setWidth(15),
-                    marginEnd: Utility.setWidth(15),
+                    marginStart: Utility.setHeight(15),
+                    marginEnd: Utility.setHeight(15),
                     marginTop: Utility.setHeight(15),
                     marginBottom: Utility.setHeight(5),
                     textAlign: "center"
@@ -179,5 +180,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(OTPScreen);
+export default connect(mapStateToProps)(RegisterOtpScreen);
 
