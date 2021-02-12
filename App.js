@@ -32,9 +32,10 @@ import CommonStyle from "./react/resources/CommonStyle";
 import fontStyle from "./react/resources/FontStyle";
 import RegistrationAccount from "./react/screens/RegistrationAccount";
 import RegistrationCard from "./react/screens/RegistrationCard";
-import RegisterOtpScreen from "./react/screens/RegisterOtpScreen";
 import AccountDetails from "./react/screens/BottomTabs/AccountDetails";
 import LoginConfigureProfile from "./react/screens/LoginConfigureProfile";
+import Profile from "./react/screens/BottomTabs/Profile";
+import ChangeTransPin from "./react/screens/ChangeTransPin";
 
 
 const store = configureStore(window.__State__);
@@ -88,7 +89,7 @@ const BottomNavigator = () => {
                            source={color === themeStyle.THEME_COLOR ? require("./react/resources/images/ic_qr_selected.png") : require("./react/resources/images/ic_qr_code.png")}/>
                 ),
             }}/>
-            <Tab.Screen name="More" component={More} listeners={tabBarListeners} options={{
+            <Tab.Screen name="MoreTab" component={MoreTab} listeners={tabBarListeners} options={{
                 tabBarLabel: 'More',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}
@@ -109,6 +110,19 @@ function AccountTab() {
         </Stack.Navigator>);
 }
 
+function MoreTab() {
+    return (
+        <Stack.Navigator initialRouteName={"More"} mode={"modal"} screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}>
+            <Stack.Screen name="More" component={More} options={{headerShown: false}}/>
+            <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
+            <Stack.Screen name="ChangeTransPin" component={ChangeTransPin} options={{headerShown: false}}/>
+        </Stack.Navigator>);
+}
+
+
+
 function Root() {
     return (
         <Stack.Navigator initialRouteName={"SplashScreen"} mode={"modal"} screenOptions={{
@@ -124,7 +138,6 @@ function Root() {
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationAccount" component={RegistrationAccount} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationCard" component={RegistrationCard} options={{headerShown: false}}/>
-            <Stack.Screen name="RegisterOtpScreen" component={RegisterOtpScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginConfigureProfile" component={LoginConfigureProfile} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }

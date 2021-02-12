@@ -21,6 +21,7 @@ export default {
     info: "Info",
     privacy: "Privacy",
     contact: "Contact",
+    select_actNo:"Select Account Number",
     credentialDetails: "Credential Details",
     selectionType: "Selection Type *",
     selectType: "Select Type",
@@ -123,6 +124,11 @@ export default {
     set_transaction_pin:"Set Transaction Pin",
     Transaction_Pin:"Transaction Pin",
     Confirm_Pin:"Confirm Transaction Pin",
+    new_pin_txt: "New Pin",
+    et_new_pin_txt: "Enter New Pin",
+    confirm_pin_txt: "Confirm New Pin",
+    et_confirm_pin_txt: "Enter Confirm New Pin",
+
 
     Language_M: [
         {label: "English", value: 0},
@@ -241,9 +247,9 @@ export default {
     otp_sent_txt: "Get OTP",
 
     new_pwd_txt: "New Password",
-    new_pin_txt: "New Pin",
+
     confirm_pwd_txt: "Confirm Password",
-    confirm_pin_txt: "Confirm New Pin",
+
     prepaid_card: "Using Prepaid Card",
     credit_card: "Using Credit Card",
     using_act_no: "Using Account Number",

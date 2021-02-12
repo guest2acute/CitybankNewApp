@@ -617,6 +617,7 @@ class RegistrationAccount extends Component {
             </View>);
     }
 
+
     userPersonal(language) {
         return (<View style={{
             borderColor: themeStyle.BORDER,
@@ -646,14 +647,13 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_father_name}
-                        onChangeText={text => this.setState({fatherName: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({fatherName: Utility.userInput(text)})}
                         value={this.state.fatherName}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={5}/>
+                        autoCorrect={false}/>
                 </View>
                 {this.state.errorFather !== "" ?
                     <Text style={{
@@ -687,14 +687,13 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_mother_name}
-                        onChangeText={text => this.setState({motherName: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({motherName: Utility.userInput(text)})}
                         value={this.state.motherName}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={5}/>
+                        autoCorrect={false}/>
                 </View>
                 {this.state.errorMother !== "" ?
                     <Text style={{

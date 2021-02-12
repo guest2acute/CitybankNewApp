@@ -30,7 +30,7 @@ class More extends Component {
                     icon: require("../../resources/images/ic_profile.png")
                 },
                 {
-                    id: "changePassword",
+                    id: "changeContact",
                     title: language.change_contact,
                     icon: require("../../resources/images/contact_icon.png")
                 },
@@ -40,7 +40,7 @@ class More extends Component {
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
                 {
-                    id: "changeLogin",
+                    id: "changeLoginPIN",
                     title: language.change_login_pin,
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
@@ -80,6 +80,9 @@ class More extends Component {
         switch (item.id) {
             case "profile":
                 this.props.navigation.navigate("Profile");
+                break;
+            case "changeTransPin":
+                this.props.navigation.navigate("ChangeTransPin");
                 break;
         }
     }

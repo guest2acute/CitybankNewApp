@@ -313,9 +313,6 @@ class Profile extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>
-                            *{language.mark_field_mandatory}
-                        </Text>
                     </View>
                 </ScrollView>
                 <BusyIndicator visible={this.state.isProgress}/>
@@ -331,6 +328,10 @@ class Profile extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
+
+        this.props.navigation.setOptions({
+            tabBarLabel: this.props.language.more
+        });
     }
 }
 
