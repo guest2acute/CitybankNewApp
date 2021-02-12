@@ -28,11 +28,12 @@ let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}
 }];
 
 
-class ChangePassword extends Component {
+class ChangeContactDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isProgress: false,
+            select_contact_type: {label: props.language.select_contact_type, value: -1},
             select_actNo: props.language.select_actNo,
             selectType: props.language.selectType,
             selectTypeVal: -1,
@@ -51,7 +52,10 @@ class ChangePassword extends Component {
             newPwd: "",
             errorNewPwd: "",
             conf_new_pwd: "",
-            errorConfNewPwd: ""
+            errorConfCredential: "",
+            errorCredential: "",
+            newCredential:"",
+            confNewCredential:""
         }
     }
 
@@ -213,6 +217,8 @@ class ChangePassword extends Component {
         const {modelSelection} = this.state;
         if (modelSelection === "accountListType") {
             this.setState({select_actNo: item.label, modalVisible: false})
+        } else if (modelSelection === "contactType") {
+            this.setState({select_contact_type: item, modalVisible: false, stateVal: 0})
         } else if (modelSelection === "accountType") {
             this.setState({selectActCard: item, modalVisible: false, stateVal: 0})
         } else if (modelSelection === "cardType") {
@@ -270,7 +276,7 @@ class ChangePassword extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.pwd_txt}
+                        {this.state.select_contact_type.value === 0 ? language.new_mobile_no : language.new_email}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -280,16 +286,17 @@ class ChangePassword extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.new_pass_txt}
-                        onChangeText={text => this.setState({newPwd: Utility.userInput(text)})}
-                        value={this.state.newPwd}
+                        placeholder={language.enterHere}
+                        onChangeText={text => this.setState({newCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
+                        value={this.state.newCredential}
                         multiline={false}
                         numberOfLines={1}
+                        keyboardType={this.state.select_contact_type.value === 0 ? "number-pad" : "email-address"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorNewPwd !== "" ?
+                {this.state.errorCredential !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -298,7 +305,7 @@ class ChangePassword extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorNewPwd}</Text> : null}
+                    }}>{this.state.errorCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -311,7 +318,7 @@ class ChangePassword extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.confirm_pwd_txt}
+                        {this.state.select_contact_type.value === 0 ? language.conf_new_mobile_no : language.conf_new_email}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -321,16 +328,17 @@ class ChangePassword extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.confirm_pwd_txt}
-                        onChangeText={text => this.setState({conf_new_pwd: Utility.userInput(text)})}
-                        value={this.state.conf_new_pwd}
+                        placeholder={language.enterHere}
+                        onChangeText={text => this.setState({confNewCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
+                        value={this.state.confNewCredential}
                         multiline={false}
                         numberOfLines={1}
+                        keyboardType={this.state.select_contact_type.value === 0 ? "number-pad" : "email-address"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorConfNewPwd !== "" ?
+                {this.state.errorConfCredential !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -339,7 +347,7 @@ class ChangePassword extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorConfNewPwd}</Text> : null}
+                    }}>{this.state.errorConfCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
@@ -421,21 +429,44 @@ class ChangePassword extends Component {
                 marginTop: 6,
                 marginBottom: 4
             }]}>
-                {language.type_act}
+                {language.type_contact}
             </Text>
 
             <TouchableOpacity
-                onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
+                onPress={() => this.openModal("contactType", language.select_contact_type, language.contactList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
-                        {this.state.selectActCard.label}
+                        {this.state.select_contact_type.label}
                     </Text>
                     <Image resizeMode={"contain"} style={styles.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
-        </View>)
 
+
+            {this.state.select_contact_type.value !== -1 ? <View>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.type_act}
+                </Text>
+
+                <TouchableOpacity
+                    onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
+                            {this.state.selectActCard.label}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+            </View> : null}
+        </View>)
     }
 
 
@@ -451,15 +482,15 @@ class ChangePassword extends Component {
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.change_login_password}</Text>
+                    <Text style={CommonStyle.title}>{language.change_contact}</Text>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
 
                         {this.state.stateVal === 0 ? this.mainLayout(language) : null}
-                        {this.processStage(language)}
+                        {this.state.select_contact_type.value !== -1 ? this.processStage(language) : null}
 
-                        <View style={{
+                        {this.state.select_contact_type.value !== -1 ? <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
                             marginRight: Utility.setWidth(10),
@@ -480,7 +511,7 @@ class ChangePassword extends Component {
                                         style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal !== 2 ? language.next : language.submit}</Text>
                                 </View>
                             </TouchableOpacity>
-                        </View>
+                        </View> : null}
                     </View>
                 </ScrollView>
                 <Modal
@@ -506,7 +537,7 @@ class ChangePassword extends Component {
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => item.key}
+                                      data={this.state.modalData} keyExtractor={(item, index) => index + ""}
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -575,4 +606,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(ChangePassword);
+export default connect(mapStateToProps)(ChangeContactDetails);

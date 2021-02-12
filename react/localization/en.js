@@ -21,6 +21,7 @@ export default {
     info: "Info",
     privacy: "Privacy",
     contact: "Contact",
+    select_contact_type:"Select Contact Type",
     select_actNo:"Select Account Number",
     credentialDetails: "Credential Details",
     selectionType: "Selection Type *",
@@ -57,6 +58,8 @@ export default {
     otp_fgt_uid: "to process forgot User ID",
     otp_activate: "to activate Citytouch Digital Banking Service",
     otp_signup: "to process registration in Citytouch Digital Banking Service",
+    otp_pwd: "to change password in Citytouch Digital Banking Service",
+
     otp_input_placeholder: "Enter 4 Digit One Time Password(OTP)",
     dnReceiveOTP: "Did not receive your OTP? ",
     sendAgain: "Send Again",
@@ -124,11 +127,12 @@ export default {
     set_transaction_pin:"Set Transaction Pin",
     Transaction_Pin:"Transaction Pin",
     Confirm_Pin:"Confirm Transaction Pin",
-    new_pin_txt: "New Pin",
+    new_pin_txt: "New PIN",
     et_new_pin_txt: "Enter New Pin",
     confirm_pin_txt: "Confirm New Pin",
     et_confirm_pin_txt: "Enter Confirm New Pin",
-
+    open_account: "Open Account",
+    type_contact: "Contact Type *",
 
     Language_M: [
         {label: "English", value: 0},
@@ -142,7 +146,10 @@ export default {
         {label: "Biometric", value: 2},
     ],
 
-
+    contactList: [
+        {label: "Change Mobile Number", value: 0},
+        {label: "Change Email Address", value: 1},
+    ],
 
 
     /*success messages*/
@@ -193,10 +200,10 @@ export default {
         {label: "Preferred User ID", value: 1}
     ],
 
-
     conf_user_ID: "Confirm User ID",
     login_pin: "Login Pin",
 
+    pwd_txt:"New Password",
     new_pass_txt: "Enter new password",
     new_trans_pin_txt: "Enter new transaction pin",
     conf_new_trans_pin_txt: "Confirm new transaction pin",
@@ -216,7 +223,7 @@ export default {
     card_no: "Enter Card Number",
     acc_name: "Account Name",
     donot_have_act: "Don't have bank account yet?",
-    open_account: "Open Account",
+
     creditcard_name: "Enter Credit Card Name",
     prepaidcard_name: "Enter Prepaid Card Name",
     mobile: "Mobile Number",
@@ -279,7 +286,6 @@ export default {
 
     personalize_profile: "Personalise Profile",
     change_pwd: "Change Password",
-    change_login_pin: "Change Login PIN",
     change_transaction_pin: "Change Transaction PIN",
     slogan: "Dear customer, Welcome to CityTouch Mobile Banking. For help Call: ",
     new_login_pin: "New Login PIN",
@@ -311,10 +317,13 @@ export default {
 
     current_mobile_no: "Current Mobile Number",
     new_mobile_no: "New Mobile Number",
+    conf_new_mobile_no: "Confirm New Mobile Number",
     mobile_no: "Mobile Number",
 
     current_email: "Current Email Address",
     new_email: "New Email Address",
+    conf_new_email: "Confirm New Email",
+
     email: "Email Address",
     title_fgt_uid: "Forgot User ID",
     title_fgt_pwd: "Forgot Password",
@@ -323,7 +332,7 @@ export default {
     ok_txt: "OK",
     new_pin: "Enter new PIN",
     conf_new_pin: "Confirm new PIN",
-
+    enterHere:"Enter Here",
     error_already_login: "you have already set a primary device. If you want to login on other device, you have to complete new app login process. Do you want to continue?"
 
 };

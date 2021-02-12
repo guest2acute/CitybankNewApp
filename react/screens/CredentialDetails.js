@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList
+    TextInput, FlatList, Platform, StatusBar
 } from "react-native";
 import themeStyle from "../resources/theme.style";
 import CommonStyle from "../resources/CommonStyle";
@@ -73,7 +73,15 @@ class CredentialDetails extends Component {
             Utility.alert(language.noRecord);
         }
     }
-
+    componentDidMount() {
+        if (Platform.OS === "android") {
+            this.focusListener = this.props.navigation.addListener("focus", () => {
+                StatusBar.setTranslucent(false);
+                StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
+                StatusBar.setBarStyle("light-content");
+            });
+        }
+    }
     accountNoOption(language) {
         return (<View>
             <View style={{
@@ -224,7 +232,7 @@ class CredentialDetails extends Component {
                     maxLength={4}/>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View style={{
+            {this.state.selectTypeVal === 0?<View><View style={{
                             flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                             marginEnd: 10
                         }}>
@@ -251,7 +259,7 @@ class CredentialDetails extends Component {
                                 }}
                             />
                         </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/></View>:null}
         </View>)
     }
 

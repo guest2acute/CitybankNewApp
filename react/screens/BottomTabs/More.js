@@ -84,6 +84,15 @@ class More extends Component {
             case "changeTransPin":
                 this.props.navigation.navigate("ChangeTransPin");
                 break;
+            case "changePassword":
+                this.props.navigation.navigate("ChangePassword");
+                break;
+            case "changeLoginPIN":
+                this.props.navigation.navigate("ChangeLoginPIN");
+                break;
+            case "changeContact":
+                this.props.navigation.navigate("ChangeContactDetails");
+                break;
         }
     }
 

@@ -28,7 +28,7 @@ let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}
 }];
 
 
-class ChangePassword extends Component {
+class ChangeLoginPIN extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,10 +48,10 @@ class ChangePassword extends Component {
             creditCardNo: "",
             transactionPin: "",
             stateVal: 0,
-            newPwd: "",
-            errorNewPwd: "",
-            conf_new_pwd: "",
-            errorConfNewPwd: ""
+            newPin: "",
+            errorNewPin: "",
+            conf_new_pin: "",
+            errorConfNewPin: ""
         }
     }
 
@@ -270,7 +270,7 @@ class ChangePassword extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.pwd_txt}
+                        {language.new_pin_txt}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -280,16 +280,18 @@ class ChangePassword extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.new_pass_txt}
-                        onChangeText={text => this.setState({newPwd: Utility.userInput(text)})}
-                        value={this.state.newPwd}
+                        placeholder={language.et_new_pin_txt}
+                        onChangeText={text => this.setState({newPin: Utility.input(text, "0123456789/")})}
+                        value={this.state.newPin}
                         multiline={false}
                         numberOfLines={1}
+                        keyboardType={"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}/>
+                        autoCorrect={false}
+                        maxLength={6}/>
                 </View>
-                {this.state.errorNewPwd !== "" ?
+                {this.state.errorNewPin !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -298,7 +300,7 @@ class ChangePassword extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorNewPwd}</Text> : null}
+                    }}>{this.state.errorNewPin}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -311,7 +313,7 @@ class ChangePassword extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.confirm_pwd_txt}
+                        {language.confirm_pin_txt}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -321,16 +323,18 @@ class ChangePassword extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.confirm_pwd_txt}
-                        onChangeText={text => this.setState({conf_new_pwd: Utility.userInput(text)})}
-                        value={this.state.conf_new_pwd}
+                        placeholder={language.et_confirm_pin_txt}
+                        onChangeText={text => this.setState({conf_new_pin: Utility.input(text, "0123456789/")})}
+                        value={this.state.conf_new_pin}
                         multiline={false}
                         numberOfLines={1}
+                        keyboardType={"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}/>
+                        autoCorrect={false}
+                        maxLength={6}/>
                 </View>
-                {this.state.errorConfNewPwd !== "" ?
+                {this.state.errorConfNewPin !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -339,7 +343,7 @@ class ChangePassword extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorConfNewPwd}</Text> : null}
+                    }}>{this.state.errorConfNewPin}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
@@ -451,7 +455,7 @@ class ChangePassword extends Component {
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.change_login_password}</Text>
+                    <Text style={CommonStyle.title}>{language.change_login_pin}</Text>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
@@ -575,4 +579,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(ChangePassword);
+export default connect(mapStateToProps)(ChangeLoginPIN);

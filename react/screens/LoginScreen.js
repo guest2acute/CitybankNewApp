@@ -5,6 +5,7 @@ import {
     Text,
     StatusBar,
     TextInput,
+    Linking,
     Platform, TouchableOpacity, Image, ScrollView, Alert
 } from "react-native";
 import themeStyle from "../resources/theme.style";
@@ -283,6 +284,14 @@ class LoginScreen extends Component {
                                     marginTop: 10, alignSelf: "center", fontFamily: fontStyle.RobotoMedium,
                                     fontSize: FontSize.getSize(13), color: "#7E4645", textAlign: "center"
                                 }}>{language.fgt_uid_pwd_pin}</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => Linking.openURL(Config.onBoardURl)}>
+                                <Text style={{
+                                    marginTop: 10, alignSelf: "center", fontFamily: fontStyle.RobotoMedium,
+                                    fontSize: FontSize.getSize(13), color: "#7E4645", textAlign: "center",
+                                    textDecorationLine:"underline"
+                                }}>{language.open_account}</Text>
                             </TouchableOpacity>
                         </View>
                         <Image style={{
