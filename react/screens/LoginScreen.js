@@ -6,7 +6,7 @@ import {
     StatusBar,
     TextInput,
     Linking,
-    Platform, TouchableOpacity, Image, ScrollView, Alert
+    Platform, TouchableOpacity, Image, ScrollView, Alert, BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
@@ -20,6 +20,8 @@ import fontStyle from "../resources/FontStyle";
 import Utility from "../utilize/Utility";
 import CommonStyle from "../resources/CommonStyle";
 import Config from "../config/Config";
+import StorageClass from "../utilize/StorageClass";
+import {CommonActions} from "@react-navigation/native";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -79,8 +81,9 @@ class LoginScreen extends Component {
         );
     }
 
-    changeLanguage(langCode) {
+    async changeLanguage(langCode) {
         console.log("langCode", langCode);
+        await StorageClass.store(Config.Language, langCode);
         this.props.dispatch({
             type: actions.account.CHANGE_LANG,
             payload: {
@@ -290,7 +293,7 @@ class LoginScreen extends Component {
                                 <Text style={{
                                     marginTop: 10, alignSelf: "center", fontFamily: fontStyle.RobotoMedium,
                                     fontSize: FontSize.getSize(13), color: "#7E4645", textAlign: "center",
-                                    textDecorationLine:"underline"
+                                    textDecorationLine: "underline"
                                 }}>{language.open_account}</Text>
                             </TouchableOpacity>
                         </View>
@@ -361,7 +364,7 @@ class LoginScreen extends Component {
         );
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -369,8 +372,27 @@ class LoginScreen extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
+        let language = await StorageClass.retrieve(Config.Language);
+        if (language !== null)
+            await this.changeLanguage(language);
+        this.backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            this.backAction
+        );
     }
 
+    backAction = () => {
+        let language = this.props.language;
+        Alert.alert(
+            Config.appName,
+            language.exitConfirm,
+            [
+                {text: language.no_txt},
+                {text: language.yes_txt, onPress: () => BackHandler.exitApp()},
+            ]
+        );
+        return true;
+    }
 }
 
 const

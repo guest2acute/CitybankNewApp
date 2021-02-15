@@ -197,6 +197,7 @@ export default {
 
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",
+    exitConfirm: "Are you sure want to exit from App?",
 
 
     /*arrays*/

@@ -47,6 +47,8 @@ export default class Config {
     static DeviceId = "deviceId";
     static isFirstTime = "isFirstTime";
     static ActivityCd = "ACTIVITY_CD";
+    static Language="LANGUAGE";
+
 
     /*--- end --*/
 

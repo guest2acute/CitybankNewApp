@@ -5,7 +5,6 @@ import moment from "moment";
 import NetInfo from "@react-native-community/netinfo";
 import base64 from 'react-native-base64';
 import DeviceInfo from "react-native-device-info";
-import User from "./User";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {CommonActions} from "@react-navigation/native";
 
