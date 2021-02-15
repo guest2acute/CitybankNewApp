@@ -223,6 +223,28 @@ export default {
         {label: "Preferred User ID", value: 1}
     ],
 
+    transfer_props: [
+        {title: "City Bank Account",icon: require("../resources/images/ic_city_bank_account.png")},
+        {title: "Other Bank Account",icon: require("../resources/images/contact_icon.png")},
+        {title: "Cash By Code",icon: require("../resources/images/case_by_code.png")},
+        {title: "Email Transfer",icon: require("../resources/images/email_transfer.png")},
+        {title:"Transfer To Bkash",icon: require("../resources/images/transfer_to_bkash.png")},
+        {title:"Beneficiary Management",icon: require("../resources/images/beneficiary_management.png")},
+        {title:"Favorite Transfers",icon: require("../resources/images/ic_facourite_transfer.png")},
+        {title:"Transfer History",icon: require("../resources/images/ic_transfer_istory.png")}
+    ],
+    payments_props: [
+        {title: "Mobile Recharge",icon: require("../resources/images/ic_mobile_recharge.png")},
+        {title: "City Credit Card",icon: require("../resources/images/ic_city_credit_card.png")},
+        {title: "Value Added Services",icon: require("../resources/images/ic_value_added_services.png")},
+        {title: "Visa Instant Payment",icon: require("../resources/images/ic_visa_instant_payments.png")},
+        {title:"Beneficiary Management",icon: require("../resources/images/beneficiary_management.png")},
+        {title:"Favorite Payments",icon: require("../resources/images/ic_facourite_transfer.png")},
+        {title:"Payment History",icon: require("../resources/images/ic_transfer_istory.png")},
+        {}
+    ],
+
+
     conf_user_ID: "Confirm User ID",
     login_pin: "Login Pin",
 

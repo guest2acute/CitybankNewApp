@@ -9,6 +9,7 @@ import themeStyle from "../resources/theme.style";
 import {LoginScreen} from "./LoginScreen";
 import Utility from "../utilize/Utility";
 import {StackActions} from "@react-navigation/native";
+import StorageClass from "../utilize/StorageClass";
 
 
 /**
@@ -28,12 +29,26 @@ class SplashScreen extends Component {
     async redirectScreen() {
         new Promise((resolve) =>
             setTimeout(
-                () => {this.props.navigation.dispatch(
-                    StackActions.replace('LoginScreen')
-                )},
+                () => {
+                    this.props.navigation.dispatch(
+                        StackActions.replace('LoginScreen')
+                    )
+                },
                 1000
             ));
 
+    }
+
+    async changeLanguage() {
+        let language = await StorageClass.retrieve(Config.Language);
+        if (language !== null) {
+            this.props.dispatch({
+                type: actions.account.CHANGE_LANG,
+                payload: {
+                    langId: language,
+                },
+            });
+        }
     }
 
     async componentDidMount() {
@@ -44,6 +59,7 @@ class SplashScreen extends Component {
                 StatusBar.setBarStyle("dark-content");
             });
         }
+        await this.changeLanguage();
         await this.redirectScreen();
     }
 

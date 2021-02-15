@@ -18,6 +18,9 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
+import StorageClass from "../../utilize/StorageClass";
+import Config from "../../config/Config";
+import {actions} from "../../redux/actions";
 
 class Profile extends Component {
     constructor(props) {
@@ -54,6 +57,16 @@ class Profile extends Component {
             />
         );
     };
+    async changeLanguage(langCode) {
+        console.log("langCode", langCode);
+        await StorageClass.store(Config.Language, langCode);
+        this.props.dispatch({
+            type: actions.account.CHANGE_LANG,
+            payload: {
+                langId: langCode,
+            },
+        });
+    }
 
     accountNoOption(language) {
         return (<View>
@@ -203,7 +216,7 @@ class Profile extends Component {
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            <View style={{
+            {/*<View style={{
                 flexDirection: "row", alignItems: "center", marginTop: 15
             }}>
                 <Text style={[CommonStyle.textStyle, {marginRight: 15, marginStart: 10}]}>
@@ -227,7 +240,7 @@ class Profile extends Component {
                         this.setState({otp_type: value});
                     }}
                 />
-            </View>
+            </View>*/}
 
             <View style={{
                 flexDirection: "row", alignItems: "center", marginTop: 15
@@ -275,7 +288,34 @@ class Profile extends Component {
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.personalise_profile}</Text>
+
+                    <View style={CommonStyle.headerLabel}>
+                        <TouchableOpacity
+                            onPress={() => this.changeLanguage("en")}
+                            style={{
+                                height: "100%",
+                                justifyContent: "center",
+                                backgroundColor: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
+                            }}>
+                            <Text style={[styles.langText, {
+                                color: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
+                            }]}>{language.language_english}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => this.changeLanguage("bangla")}
+                            style={{
+                                height: "100%",
+                                justifyContent: "center",
+                                backgroundColor: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
+                            }}>
+                            <Text style={[styles.langText, {
+                                color: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
+                            }]}>{language.language_bangla}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
                         <Text style={[CommonStyle.labelStyle, {
@@ -369,7 +409,13 @@ const styles = {
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5
-    }
+    },
+    langText: {
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(12),
+        textAlign: 'center',
+        width: Utility.setWidth(45),
+    },
 }
 
 const mapStateToProps = (state) => {

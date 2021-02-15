@@ -72,14 +72,14 @@ const BottomNavigator = () => {
                 ),
             }}/>
 
-            <Tab.Screen name="Transfer" component={Transfer} listeners={tabBarListeners} options={{
+            <Tab.Screen name="TransferTab" component={TransferTab} listeners={tabBarListeners} options={{
                 tabBarLabel: 'Transfer',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}
                            source={require("./react/resources/images/ic_transfer.png")}/>
                 ),
             }}/>
-            <Tab.Screen name="Payments" component={Payments} listeners={tabBarListeners} options={{
+            <Tab.Screen name="PaymentTab" component={PaymentTab} listeners={tabBarListeners} options={{
                 tabBarLabel: 'Payments',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{tintColor: color, width: size, height: size}}
@@ -102,6 +102,25 @@ const BottomNavigator = () => {
             }}/>
         </Tab.Navigator>
     );
+}
+
+function TransferTab() {
+    return (
+        <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}>
+            <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
+        </Stack.Navigator>);
+}
+
+
+function PaymentTab() {
+    return (
+        <Stack.Navigator initialRouteName={"Payments"} mode={"modal"} screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}>
+            <Stack.Screen name="Payments" component={Payments} options={{headerShown: false}}/>
+        </Stack.Navigator>);
 }
 
 function AccountTab() {

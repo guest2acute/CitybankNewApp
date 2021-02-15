@@ -21,7 +21,7 @@ import Utility from "../utilize/Utility";
 import CommonStyle from "../resources/CommonStyle";
 import Config from "../config/Config";
 import StorageClass from "../utilize/StorageClass";
-import {CommonActions} from "@react-navigation/native";
+import {CommonActions, StackActions} from "@react-navigation/native";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -57,8 +57,9 @@ class LoginScreen extends Component {
          } else {
              Utility.alert(language.invalidCredential);
          }*/
-
-        this.props.navigation.navigate("BottomNavigator");
+        this.props.navigation.dispatch(
+            StackActions.replace('BottomNavigator')
+        )
 
     }
 
@@ -372,9 +373,6 @@ class LoginScreen extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
-        let language = await StorageClass.retrieve(Config.Language);
-        if (language !== null)
-            await this.changeLanguage(language);
         this.backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
             this.backAction
@@ -382,7 +380,9 @@ class LoginScreen extends Component {
     }
 
     backAction = () => {
-        let language = this.props.language;
+        this.props.navigation.goBack(null);
+
+        /*let language = this.props.language;
         Alert.alert(
             Config.appName,
             language.exitConfirm,
@@ -390,8 +390,9 @@ class LoginScreen extends Component {
                 {text: language.no_txt},
                 {text: language.yes_txt, onPress: () => BackHandler.exitApp()},
             ]
-        );
-        return true;
+        );*/
+
+        return false;
     }
 }
 

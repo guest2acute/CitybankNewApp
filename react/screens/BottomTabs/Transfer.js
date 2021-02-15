@@ -1,11 +1,13 @@
 import React, {Component} from "react";
-import {Image, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View} from "react-native";
+import {Image, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View,FlatList} from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LoginScreen from "../LoginScreen";
 import TermConditionScreen from "../TermConditionScreen";
 import {connect} from "react-redux";
+import Utility from "../../utilize/Utility";
+import FontSize from "../../resources/ManageFontSize";
 
 
 class Transfer extends Component {
@@ -13,22 +15,67 @@ class Transfer extends Component {
         super(props);
     }
 
+    _renderItem = ({item, index}) =>{
+        return(
+            <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: (Utility.getDeviceHeight()-Utility.setHeight(110))/4,
+                width:Utility.getDeviceWidth()/2,
+                borderLeftWidth:1,
+                borderBottomWidth:1,
+                borderColor:themeStyle.THEME_COLOR
+            }}>
+                <Image style={{
+                    height: Utility.setHeight(30),
+                    width: Utility.setWidth(30),
+                    marginBottom:15
+                }} resizeMode={"contain"}
+                       source={item.icon}/>
+                <Text style={[CommonStyle.labelStyle, {
+                    textAlign:"center",
+                    color: themeStyle.THEME_COLOR,
+                    fontSize: FontSize.getSize(12),
+                }]}>{item.title}</Text>
+            </View>
+        )
+    }
+
+
     render() {
         let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
-                <View style={CommonStyle.toolbar}>
-                    <TouchableOpacity
-                        style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
-                        <Image style={CommonStyle.toolbar_back_btn}
-                               source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                <View style={[CommonStyle.toolbar, {flexDirection: "row"}]}>
+                    <Image resizeMode={"contain"}
+                           style={{width: Utility.setWidth(90), flexGrow: 0, height: Utility.setHeight(50)}}
+                           source={require("../../resources/images/citytouch_header.png")}/>
+                    <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
+                                      style={{
+                                          width: Utility.setWidth(35),
+                                          height: Utility.setHeight(35),
+                                          position: "absolute",
+                                          right: Utility.setWidth(10),
+                                      }}
+                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                        <Image resizeMode={"contain"} style={{
+                            width: Utility.setWidth(30),
+                            height: Utility.setHeight(30),
+                        }}
+                               source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.transfer}</Text>
                 </View>
-            </View>)
+                <View>
+                       <FlatList
+                           data={language.transfer_props}
+                           renderItem={this._renderItem}
+                           numColumns={2}
+                           keyExtractor={(item,index)=>index+""}
+                       />
+                </View>
+            </View>
+        )
     }
 
     componentDidMount() {
