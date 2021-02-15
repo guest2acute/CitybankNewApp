@@ -1,4 +1,4 @@
-import {Alert, Dimensions, Platform, ToastAndroid} from "react-native";
+import {Alert, BackHandler, Dimensions, Platform, ToastAndroid} from "react-native";
 import Config from "../config/Config";
 import axios from "axios";
 import moment from "moment";
@@ -7,6 +7,8 @@ import base64 from 'react-native-base64';
 import DeviceInfo from "react-native-device-info";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {CommonActions} from "@react-navigation/native";
+import StorageClass from "./StorageClass";
+import {actions} from "../redux/actions";
 
 export default class Utility {
     static alert(msg) {
@@ -24,8 +26,6 @@ export default class Utility {
     }
 
 
-
-
     static alertConfirm(positive_txt, negative_txt, msg, navigation) {
         Alert.alert(
             Config.appName,
@@ -37,18 +37,34 @@ export default class Utility {
         );
     }
 
-    static logout(navigation,language){
+    static logout(navigation, language) {
         Alert.alert(
             Config.appName,
             language.logout_confirm,
             [
                 {text: language.no_txt},
-                {text: language.yes_txt, onPress: () => navigation.dispatch(
-                        CommonActions.reset({
-                            index: 0,
-                            routes: [{name: "LoginScreen"}],
-                        })
-                    )},
+                {
+                    text: language.yes_txt, onPress: async() => {
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [{name: "PinLogin"}],
+                            })
+                        )
+                    }
+                },
+            ]
+        );
+    }
+
+
+    static exitApp(language) {
+        Alert.alert(
+            Config.appName,
+            language.exitConfirm,
+            [
+                {text: language.no_txt},
+                {text: language.yes_txt, onPress: () => BackHandler.exitApp()},
             ]
         );
     }
@@ -77,7 +93,7 @@ export default class Utility {
     }
 
 
-    static input(text,filter) {
+    static input(text, filter) {
         let value = "";
         for (let k = 0; k < text.length; k++) {
             if (filter.indexOf(text[k]) !== -1) {

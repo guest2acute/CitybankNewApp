@@ -40,6 +40,7 @@ import ChangePassword from "./react/screens/ChangePassword";
 import ChangeLoginPIN from "./react/screens/ChangeLoginPIN";
 import ChangeContactDetails from "./react/screens/ChangeContactDetails";
 import UploadSupportDoc from "./react/screens/UploadSupportDoc";
+import PinLogin from "./react/screens/PinLogin";
 
 
 const store = configureStore(window.__State__);
@@ -166,6 +167,7 @@ function Root() {
             <Stack.Screen name="RegistrationAccount" component={RegistrationAccount} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationCard" component={RegistrationCard} options={{headerShown: false}}/>
             <Stack.Screen name="LoginConfigureProfile" component={LoginConfigureProfile} options={{headerShown: false}}/>
+            <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

@@ -21,6 +21,8 @@ import RadioForm from "react-native-simple-radio-button";
 import StorageClass from "../../utilize/StorageClass";
 import Config from "../../config/Config";
 import {actions} from "../../redux/actions";
+import {StackActions} from "@react-navigation/native";
+import FingerprintScanner from "react-native-fingerprint-scanner";
 
 class Profile extends Component {
     constructor(props) {
@@ -41,7 +43,21 @@ class Profile extends Component {
             errorConfTransPIN: "",
             errorMobileNo: "",
             errorEmail: "",
+            loginPrefVal: props.route.params.loginPref,
+            biometryType: null,
+            prefOption: true
         }
+        this.checkFingerTouch();
+    }
+    checkFingerTouch() {
+        FingerprintScanner.isSensorAvailable()
+            .then((biometryType) => {
+                this.setState({prefOption: true});
+            })
+            .catch((error) => {
+                this.setState({prefOption: false});
+                console.log("isSensorAvailable error => ", error)
+            });
     }
 
     renderSeparator = () => {
@@ -57,16 +73,6 @@ class Profile extends Component {
             />
         );
     };
-    async changeLanguage(langCode) {
-        console.log("langCode", langCode);
-        await StorageClass.store(Config.Language, langCode);
-        this.props.dispatch({
-            type: actions.account.CHANGE_LANG,
-            payload: {
-                langId: langCode,
-            },
-        });
-    }
 
     accountNoOption(language) {
         return (<View>
@@ -216,31 +222,6 @@ class Profile extends Component {
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            {/*<View style={{
-                flexDirection: "row", alignItems: "center", marginTop: 15
-            }}>
-                <Text style={[CommonStyle.textStyle, {marginRight: 15, marginStart: 10}]}>
-                    {language.Language_P}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                </Text>
-                <RadioForm
-                    radio_props={language.Language_M}
-                    initial={0}
-                    buttonSize={8}
-                    selectedButtonColor={themeStyle.THEME_COLOR}
-                    formHorizontal={true}
-                    labelHorizontal={true}
-                    borderWidth={1}
-                    buttonColor={themeStyle.GRAY_COLOR}
-                    labelColor={themeStyle.BLACK}
-                    labelStyle={[CommonStyle.textStyle, {marginEnd: 15, marginStart: -5, marginTop: -1}]}
-                    style={{marginTop: 8}}
-                    animation={true}
-                    onPress={(value) => {
-                        this.setState({otp_type: value});
-                    }}
-                />
-            </View>*/}
 
             <View style={{
                 flexDirection: "row", alignItems: "center", marginTop: 15
@@ -250,8 +231,8 @@ class Profile extends Component {
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
                 <RadioForm
-                    radio_props={language.Login_M}
-                    initial={0}
+                    radio_props={this.state.prefOption ? language.Login_M : language.LoginWithoutBio}
+                    initial={parseInt(this.state.loginPrefVal)}
                     buttonSize={8}
                     selectedButtonColor={themeStyle.THEME_COLOR}
                     formHorizontal={true}
@@ -263,7 +244,7 @@ class Profile extends Component {
                     style={{marginTop: 8}}
                     animation={true}
                     onPress={(value) => {
-                        this.setState({otp_type: value});
+                        this.setState({loginPrefVal: value.toString()});
                     }}
                 />
             </View>
@@ -271,7 +252,19 @@ class Profile extends Component {
     }
 
     async onSubmit(language, navigation) {
+        await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+    }
+
+    async changeLanguage(props, langCode) {
+        console.log("langCode", langCode);
+        await StorageClass.store(Config.Language, langCode);
+        props.dispatch({
+            type: actions.account.CHANGE_LANG,
+            payload: {
+                langId: langCode,
+            },
+        });
     }
 
     render() {
@@ -291,25 +284,25 @@ class Profile extends Component {
 
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("en")}
+                            onPress={() => this.changeLanguage(this.props, "en")}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
                                 backgroundColor: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
                             }}>
-                            <Text style={[styles.langText, {
+                            <Text style={[CommonStyle.langText, {
                                 color: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
                             }]}>{language.language_english}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("bangla")}
+                            onPress={() => this.changeLanguage(this.props, "bangla")}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
                                 backgroundColor: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
                             }}>
-                            <Text style={[styles.langText, {
+                            <Text style={[CommonStyle.langText, {
                                 color: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
                             }]}>{language.language_bangla}</Text>
                         </TouchableOpacity>
@@ -360,6 +353,7 @@ class Profile extends Component {
         )
     }
 
+
     componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
@@ -372,6 +366,8 @@ class Profile extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+
+
     }
 }
 
@@ -410,12 +406,7 @@ const styles = {
         shadowRadius: 3.84,
         elevation: 5
     },
-    langText: {
-        fontFamily: fontStyle.RobotoRegular,
-        fontSize: FontSize.getSize(12),
-        textAlign: 'center',
-        width: Utility.setWidth(45),
-    },
+
 }
 
 const mapStateToProps = (state) => {

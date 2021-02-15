@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar
+    TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
 import fontStyle from "../resources/FontStyle";
@@ -18,10 +18,18 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../resources/busy-indicator";
 import Utility from "../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
+import StorageClass from "../utilize/StorageClass";
+import Config from "../config/Config";
+import {StackActions} from "@react-navigation/native";
+import {actions} from "../redux/actions";
+import FingerprintScanner from "react-native-fingerprint-scanner";
+
+let userID = "";
 
 class LoginConfigureProfile extends Component {
     constructor(props) {
         super(props);
+        userID = props.route.params.userID;
         this.state = {
             transactionPin: "",
             confirmTransactionPin: "",
@@ -31,8 +39,12 @@ class LoginConfigureProfile extends Component {
             conf_loginPin: "",
             errorConfLoginPIN: "",
             errorTransPIN: "",
-            errorConfTransPIN: ""
+            errorConfTransPIN: "",
+            otp_type: "0",
+            biometryType: null,
+            prefOption: true
         }
+        this.checkFingerTouch();
     }
 
     renderSeparator = () => {
@@ -244,31 +256,6 @@ class LoginConfigureProfile extends Component {
                     }}>{this.state.errorConfLoginPIN}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View style={{
-                flexDirection: "row", alignItems: "center", marginTop: 15
-            }}>
-                <Text style={[CommonStyle.textStyle, {marginRight: 15, marginStart: 10}]}>
-                    {language.Language_P}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                </Text>
-                <RadioForm
-                    radio_props={language.Language_M}
-                    initial={0}
-                    buttonSize={8}
-                    selectedButtonColor={themeStyle.THEME_COLOR}
-                    formHorizontal={true}
-                    labelHorizontal={true}
-                    borderWidth={1}
-                    buttonColor={themeStyle.GRAY_COLOR}
-                    labelColor={themeStyle.BLACK}
-                    labelStyle={[CommonStyle.textStyle, {marginEnd: 15, marginStart: -5, marginTop: -1}]}
-                    style={{marginTop: 8}}
-                    animation={true}
-                    onPress={(value) => {
-                        this.setState({otp_type: value});
-                    }}
-                />
-            </View>
 
             <View style={{
                 flexDirection: "row", alignItems: "center", marginTop: 15
@@ -278,7 +265,7 @@ class LoginConfigureProfile extends Component {
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
                 <RadioForm
-                    radio_props={language.Login_M}
+                    radio_props={this.state.prefOption ? language.Login_M : language.LoginWithoutBio}
                     initial={0}
                     buttonSize={8}
                     selectedButtonColor={themeStyle.THEME_COLOR}
@@ -291,7 +278,7 @@ class LoginConfigureProfile extends Component {
                     style={{marginTop: 8}}
                     animation={true}
                     onPress={(value) => {
-                        this.setState({otp_type: value});
+                        this.setState({otp_type: value.toString()});
                     }}
                 />
             </View>
@@ -299,7 +286,35 @@ class LoginConfigureProfile extends Component {
     }
 
     async onSubmit(language, navigation) {
-        navigation.navigate("BottomNavigator");
+        await StorageClass.store(Config.isFirstTime, userID);
+        await StorageClass.store(Config.LoginPref, this.state.otp_type);
+
+        navigation.dispatch(
+            StackActions.replace("BottomNavigator", {userID: userID})
+        )
+    }
+
+    checkFingerTouch() {
+        FingerprintScanner.isSensorAvailable()
+            .then((biometryType) => {
+                this.setState({prefOption: true});
+            })
+            .catch((error) => {
+                this.setState({prefOption: false});
+                console.log("isSensorAvailable error => ", error)
+            });
+    }
+
+
+    async changeLanguage(props, langCode) {
+        console.log("langCode", langCode);
+        await StorageClass.store(Config.Language, langCode);
+        props.dispatch({
+            type: actions.account.CHANGE_LANG,
+            payload: {
+                langId: langCode,
+            },
+        });
     }
 
     render() {
@@ -308,14 +323,32 @@ class LoginConfigureProfile extends Component {
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
-                    <TouchableOpacity
-                        style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
-                        <Image style={CommonStyle.toolbar_back_btn}
-                               source={Platform.OS === "android" ?
-                                   require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
-                    </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.login_configure_profile}</Text>
+                    <View style={CommonStyle.headerLabel}>
+                        <TouchableOpacity
+                            onPress={() => this.changeLanguage(this.props, "en")}
+                            style={{
+                                height: "100%",
+                                justifyContent: "center",
+                                backgroundColor: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
+                            }}>
+                            <Text style={[CommonStyle.langText, {
+                                color: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
+                            }]}>{language.language_english}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => this.changeLanguage(this.props, "bangla")}
+                            style={{
+                                height: "100%",
+                                justifyContent: "center",
+                                backgroundColor: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
+                            }}>
+                            <Text style={[CommonStyle.langText, {
+                                color: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
+                            }]}>{language.language_bangla}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
@@ -336,7 +369,7 @@ class LoginConfigureProfile extends Component {
                             marginTop: Utility.setHeight(20)
                         }}>
                             <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.submit(language, this.props.navigation)}>
+                                              onPress={() => this.onSubmit(language, this.props.navigation)}>
                                 <View style={{
                                     flex: 1,
                                     alignSelf: "center",
@@ -364,15 +397,32 @@ class LoginConfigureProfile extends Component {
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            this.backHandler = BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
     }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener(
+                "hardwareBackPress", this.backHandler)
+        }
+    }
+
+    backAction = () => {
+        Utility.exitApp(this.props.language);
+        return true;
+    }
+
 }
 
 const styles = {

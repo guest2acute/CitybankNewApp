@@ -60,4 +60,10 @@ export default StyleSheet.create({
         height: 5,
         marginTop:9
     },
+    langText: {
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(12),
+        textAlign: 'center',
+        width: Utility.setWidth(45),
+    },
 });

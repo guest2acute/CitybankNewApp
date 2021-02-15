@@ -10,6 +10,7 @@ import Utility from "../../utilize/Utility";
 import CommonStyle from "../../resources/CommonStyle";
 import fontStyle from "../../resources/FontStyle";
 import FontSize from "../../resources/ManageFontSize";
+import StorageClass from "../../utilize/StorageClass";
 
 
 /**
@@ -79,7 +80,7 @@ class More extends Component {
     moveScreen(item) {
         switch (item.id) {
             case "profile":
-                this.props.navigation.navigate("Profile");
+                this.redirectProfile();
                 break;
             case "changeTransPin":
                 this.props.navigation.navigate("ChangeTransPin");
@@ -97,6 +98,15 @@ class More extends Component {
                 this.props.navigation.navigate("UploadSupportDoc");
                 break;
         }
+    }
+
+    async redirectProfile() {
+        let loginPref = await StorageClass.retrieve(Config.LoginPref);
+        console.log("profile", loginPref);
+        if (loginPref === null || loginPref === "") {
+            loginPref = "0";
+        }
+        this.props.navigation.navigate("Profile", {loginPref: loginPref});
     }
 
     _renderItem = ({item, index}) => {

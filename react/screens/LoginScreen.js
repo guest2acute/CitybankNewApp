@@ -27,7 +27,7 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userid: "",
+            userID: "",
             passwordTxt: "",
             isProgress: false,
             passwordVisible: false,
@@ -43,24 +43,31 @@ class LoginScreen extends Component {
      */
 
     async onSubmit(language) {
-        /* if (this.state.userid === "") {
+        /* if (this.state.userID === "") {
              this.setState({errorTextUid: language.require_user_id});
-         } else if (this.state.userid.length < 8) {
+         } else if (this.state.userID.length < 8) {
              this.setState({errorTextUid: language.require_length_user_id});
          } else if (this.state.passwordTxt === "") {
              this.setState({errorTextPwd: language.require_pwd});
          }
-         else if (this.state.userid.toLowerCase() === "cbtest12345" && this.state.passwordTxt === "123456Aa") {
+         else if (this.state.userID.toLowerCase() === "cbtest12345" && this.state.passwordTxt === "123456Aa") {
              this.props.navigation.navigate("BottomNavigator");
-         } else if (this.state.userid.toLowerCase() === "cb12345678" && this.state.passwordTxt === "123456Aa") {
+         } else if (this.state.userID.toLowerCase() === "cb12345678" && this.state.passwordTxt === "123456Aa") {
              this.deviceChange();
          } else {
              Utility.alert(language.invalidCredential);
          }*/
-        this.props.navigation.dispatch(
-            StackActions.replace('BottomNavigator')
-        )
-
+        let isFirstTime = await StorageClass.retrieve(Config.isFirstTime);
+        console.log("userIdVal === this.state.userID", isFirstTime + "=== " + this.state.userID);
+        if (isFirstTime === this.state.userID) {
+            this.props.navigation.dispatch(
+                StackActions.replace("BottomNavigator", {userID: this.state.userID})
+            )
+        } else {
+            this.props.navigation.dispatch(
+                StackActions.replace("LoginConfigureProfile", {userID: this.state.userID})
+            )
+        }
     }
 
     deviceChange() {
@@ -82,27 +89,29 @@ class LoginScreen extends Component {
         );
     }
 
-    async changeLanguage(langCode) {
-        console.log("langCode", langCode);
-        await StorageClass.store(Config.Language, langCode);
-        this.props.dispatch({
-            type: actions.account.CHANGE_LANG,
-            payload: {
-                langId: langCode,
-            },
-        });
-    }
+
 
     userInput(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
-        this.setState({userid: text, errorTextUid: ""})
+        this.setState({userID: text, errorTextUid: ""})
     }
 
     passwordChange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
         this.setState({passwordTxt: text, errorTextPwd: ""})
+    }
+
+    async changeLanguage(props,langCode) {
+        console.log("langCode", langCode);
+        await StorageClass.store(Config.Language, langCode);
+        props.dispatch({
+            type: actions.account.CHANGE_LANG,
+            payload: {
+                langId: langCode,
+            },
+        });
     }
 
     render() {
@@ -114,25 +123,25 @@ class LoginScreen extends Component {
                     <Text style={CommonStyle.title}>{language.login}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("en")}
+                            onPress={() => this.changeLanguage(this.props,"en")}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
                                 backgroundColor: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
                             }}>
-                            <Text style={[styles.langText, {
+                            <Text style={[CommonStyle.langText, {
                                 color: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
                             }]}>{language.language_english}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("bangla")}
+                            onPress={() => this.changeLanguage(this.props,"bangla")}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
                                 backgroundColor: this.props.langId === "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE,
                             }}>
-                            <Text style={[styles.langText, {
+                            <Text style={[CommonStyle.langText, {
                                 color: this.props.langId !== "en" ? themeStyle.THEME_COLOR : themeStyle.WHITE
                             }]}>{language.language_bangla}</Text>
                         </TouchableOpacity>
@@ -169,7 +178,7 @@ class LoginScreen extends Component {
                                 }}
                                 placeholder={language.user_ID}
                                 onChangeText={text => this.userInput(text)}
-                                value={this.state.userid}
+                                value={this.state.userID}
                                 multiline={false}
                                 onFocus={() => this.setState({focusUid: true})}
                                 onBlur={() => this.setState({focusUid: false})}
@@ -372,38 +381,29 @@ class LoginScreen extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            this.backHandler = BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
-        this.backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            this.backAction
-        );
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener(
+                "hardwareBackPress", this.backHandler)
+        }
     }
 
     backAction = () => {
-        this.props.navigation.goBack(null);
-
-        /*let language = this.props.language;
-        Alert.alert(
-            Config.appName,
-            language.exitConfirm,
-            [
-                {text: language.no_txt},
-                {text: language.yes_txt, onPress: () => BackHandler.exitApp()},
-            ]
-        );*/
-
-        return false;
+        Utility.exitApp(this.props.language);
+        return true;
     }
 }
 
 const
     styles = {
-        langText: {
-            fontFamily: fontStyle.RobotoRegular,
-            fontSize: FontSize.getSize(12),
-            textAlign: 'center',
-            width: Utility.setWidth(45),
-        },
+
         optionText: {
             fontFamily: fontStyle.RobotoMedium, fontSize: FontSize.getSize(12), color: themeStyle.THEME_COLOR
         },

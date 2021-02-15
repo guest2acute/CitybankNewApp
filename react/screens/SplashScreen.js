@@ -27,11 +27,17 @@ class SplashScreen extends Component {
      * redirect to landing screen
      */
     async redirectScreen() {
+        let loginPref = await StorageClass.retrieve(Config.LoginPref);
+        let screenName = "LoginScreen";
+        if (loginPref !== null && parseInt(loginPref) > -1) {
+            screenName = "PinLogin";
+        }
+
         new Promise((resolve) =>
             setTimeout(
-                () => {
+                async () => {
                     this.props.navigation.dispatch(
-                        StackActions.replace('LoginScreen')
+                        StackActions.replace(screenName, {loginPref: loginPref})
                     )
                 },
                 1000
