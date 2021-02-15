@@ -21,8 +21,8 @@ export default {
     info: "Info",
     privacy: "Privacy",
     contact: "Contact",
-    select_contact_type:"Select Contact Type",
-    select_actNo:"Select Account Number",
+    select_contact_type: "Select Contact Type",
+    select_actNo: "Select Account Number",
     credentialDetails: "Credential Details",
     selectionType: "Selection Type *",
     selectType: "Select Type",
@@ -108,25 +108,26 @@ export default {
     change_login_password: "Change Login Password",
     change_login_pin: "Change Login PIN",
     change_transaction_pin: "Change Transaction PIN",
-    upload_documents: "Upload Supporting And Document",
-    withdrawChk:"Withdrawn",
-    dateTitle:"Date",
-    typeTitle:"Type",
-    current_balance:"Current Balance",
-    amountTitle:"Amount",
-    recent_trans:"Recent Transactions",
-    descriptionTitle:"Description",
-    depositChk:"Deposit",
+    upload_documents: "Upload Supporting Document",
+    upload_docs: "Upload Document",
+    withdrawChk: "Withdrawn",
+    dateTitle: "Date",
+    typeTitle: "Type",
+    current_balance: "Current Balance",
+    amountTitle: "Amount",
+    recent_trans: "Recent Transactions",
+    descriptionTitle: "Description",
+    depositChk: "Deposit",
     conf_loginPin: "Confirm Login PIN",
-    customerName:"Customer Name",
-
-    login_configure_profile:"Login Configure Profile",
-    config_information:"Please configure below information.",
-    alias:"Alias",
+    customerName: "Customer Name",
+    changeFor: "Change",
+    login_configure_profile: "Login Configure Profile",
+    config_information: "Please configure below information.",
+    alias: "Alias",
     et_alias: "Enter Alias here",
-    set_transaction_pin:"Set Transaction Pin",
-    Transaction_Pin:"Transaction Pin",
-    Confirm_Pin:"Confirm Transaction Pin",
+    set_transaction_pin: "Set Transaction Pin",
+    Transaction_Pin: "Transaction Pin",
+    Confirm_Pin: "Confirm Transaction Pin",
     new_pin_txt: "New PIN",
     et_new_pin_txt: "Enter New Pin",
     confirm_pin_txt: "Confirm New Pin",
@@ -138,8 +139,8 @@ export default {
         {label: "English", value: 0},
         {label: "বাংলা", value: 1},
     ],
-    Language_P:"Language Preference",
-    Login_W:"Login With",
+    Language_P: "Language Preference",
+    Login_W: "Login With",
     Login_M: [
         {label: "Password", value: 0},
         {label: "Pin", value: 1},
@@ -151,11 +152,30 @@ export default {
         {label: "Change Email Address", value: 1},
     ],
 
+    DocumentRequiredForArr: [
+        {label: "Change Mobile Number", value: 0},
+        {label: "Change Email Address", value: 1},
+    ],
+
+
+    supportDocument: "Supporting Document",
+    selectDocument: "Select the supporting document",
+    documentNo: "Document Number",
+    documentTypeArr: [
+        {label: "NID", value: 1},
+        {label: "Rental Deed", value: 2},
+        {label: "Utility Bill Copy", value: 3},
+        {label: "Property Purchase Document", value: 4},
+        {label: "Business Card", value: 5},
+        {label: "Passport", value: 6},
+        {label: "Driving Licence", value: 7},
+    ],
+
 
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
     success_msg: "Successfully done",
-    success_saved:"Successfully Saved",
+    success_saved: "Successfully Saved",
     success_register: "Successfully Registered",
 
 
@@ -171,6 +191,8 @@ export default {
     require_mobile: "Mobile Number is Required",
     require_email: "Email Address is Required",
     email_not_valid: "Email Address is not Valid",
+    maxOneMB: "Maximum 1 MB size of file allowed",
+    max200KB: "Maximum 200 KB size of image allowed",
 
 
     /*confirmation message*/
@@ -203,7 +225,7 @@ export default {
     conf_user_ID: "Confirm User ID",
     login_pin: "Login Pin",
 
-    pwd_txt:"New Password",
+    pwd_txt: "New Password",
     new_pass_txt: "Enter new password",
     new_trans_pin_txt: "Enter new transaction pin",
     conf_new_trans_pin_txt: "Confirm new transaction pin",
@@ -256,7 +278,7 @@ export default {
     new_pwd_txt: "New Password",
 
     confirm_pwd_txt: "Confirm Password",
-
+    select_request: "Select Request",
     prepaid_card: "Using Prepaid Card",
     credit_card: "Using Credit Card",
     using_act_no: "Using Account Number",
@@ -332,7 +354,7 @@ export default {
     ok_txt: "OK",
     new_pin: "Enter new PIN",
     conf_new_pin: "Confirm new PIN",
-    enterHere:"Enter Here",
+    enterHere: "Enter Here",
     error_already_login: "you have already set a primary device. If you want to login on other device, you have to complete new app login process. Do you want to continue?"
 
 };

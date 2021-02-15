@@ -407,7 +407,6 @@ class ChangeTransPin extends Component {
 
     async onSubmit(language, navigation) {
         const {stage} = this.state;
-
         if (stage === 2)
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         else

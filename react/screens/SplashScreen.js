@@ -31,7 +31,7 @@ class SplashScreen extends Component {
                 () => {this.props.navigation.dispatch(
                     StackActions.replace('LoginScreen')
                 )},
-                3000
+                1000
             ));
 
     }

@@ -93,6 +93,9 @@ class More extends Component {
             case "changeContact":
                 this.props.navigation.navigate("ChangeContactDetails");
                 break;
+            case "UploadDoc":
+                this.props.navigation.navigate("UploadSupportDoc");
+                break;
         }
     }
 
