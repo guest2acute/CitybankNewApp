@@ -14,31 +14,25 @@ import {
 } from 'react-native';
 //import basic react native components
 import NestedListView, {NestedRow} from 'react-native-nested-listview'
-import CommonStyle from "../../resources/CommonStyle";
-import themeStyle from "../../resources/theme.style";
-import Utility from "../../utilize/Utility";
+import CommonStyle from "../resources/CommonStyle";
+import themeStyle from "../resources/theme.style";
+import Utility from "../utilize/Utility";
 import {connect} from "react-redux";
-import fontStyle from "../../resources/FontStyle";
-import FontSize from "../../resources/ManageFontSize";
+import fontStyle from "../resources/FontStyle";
+import FontSize from "../resources/ManageFontSize";
 
 const data = [{
     title: 'CityTouch Conventional Banking',
-    opened: true,
     items: [{
         title: 'Current/Savings Accounts',
-        opened: true,
-        items: [{
-            PRODUCTNAME: 'GENERAL SAVINGS-STAFF A/C', ACCOUNTORCARDNO: '2252742574001',
-        }]
+        items: [{PRODUCTNAME: 'GENERAL SAVINGS-STAFF A/C', ACCOUNTORCARDNO: '2252742574001'}]
     },
     ]
 },
     {
         title: 'CityTouch Islamic Banking',
-        opened:false,
         items: [{
             title: 'Credit Card Accounts',
-            opened:false,
             items: [{PRODUCTNAME: 'Gold Staff Dual Primary', ACCOUNTORCARDNO: '376948010808307'},
                 {PRODUCTNAME: 'Agora Co-Brand Gold Staff Primary', ACCOUNTORCARDNO: '376948010808307'},
                 {PRODUCTNAME: 'Biman Co-Brand Gold Staff Primary', ACCOUNTORCARDNO: '376948010808307'},
@@ -47,7 +41,7 @@ const data = [{
     }
 ]
 
-class Accounts extends Component {
+class ExpandList extends Component {
     constructor() {
         super();
         if (Platform.OS === 'android') {
@@ -78,7 +72,7 @@ class Accounts extends Component {
                 backgroundColor: themeStyle.THEME_COLOR,
                 height: Utility.setHeight(35),
                 alignItems: "center",
-                marginTop: 10,
+                marginTop:10,
                 paddingStart: 10,
                 paddingEnd: 10,
                 flexDirection: "row"
@@ -142,7 +136,7 @@ class Accounts extends Component {
                 <SafeAreaView/>
                 <View style={[styles.toolbar, {marginBottom: 10}]}>
                     <Image resizeMode={"contain"} style={{width: Utility.setWidth(90), height: Utility.setHeight(50)}}
-                           source={require("../../resources/images/citytouch_header.png")}/>
+                           source={require("../resources/images/citytouch_header.png")}/>
                     <TouchableOpacity
                         style={{
                             width: Utility.setWidth(35),
@@ -156,7 +150,7 @@ class Accounts extends Component {
                             width: Utility.setWidth(35),
                             height: Utility.setHeight(35),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                     <Text style={styles.title}>{language.goodEvening}</Text>
                 </View>
@@ -214,4 +208,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Accounts);
+export default connect(mapStateToProps)(ExpandList);
