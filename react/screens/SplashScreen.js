@@ -91,7 +91,7 @@ class SplashScreen extends Component {
         let tokenReq = JSON.stringify({
             ACTION: "GET_AUTH_CRED",
         });
-        let result = await ApiRequest.apiRequest.callApi(tokenReq);
+        let result = await ApiRequest.apiRequest.callApi(tokenReq,{});
         console.log("result", result);
         Config.AUTH = result;
     }

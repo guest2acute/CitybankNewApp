@@ -81,8 +81,8 @@ class LoginConfigureProfile extends Component {
             LANGUAGE: this.state.language_value === "en" ? "E" : "B",
             ...Config.commonReq
         };
-        console.log("requets", userRequest);
-        let result = await ApiRequest.apiRequest.callApi(userRequest);
+        console.log("request", userRequest);
+        let result = await ApiRequest.apiRequest.callApi(userRequest,{});
         console.log("result", result);
         result = result[0];
         this.setState({isProgress: false});

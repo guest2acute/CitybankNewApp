@@ -159,7 +159,7 @@ class LoginScreen extends Component {
             ...Config.commonReq
         };
         console.log("requets", loginReq);
-        let result = await ApiRequest.apiRequest.callApi(loginReq);
+        let result = await ApiRequest.apiRequest.callApi(loginReq,{});
         console.log("result", result);
         result = result[0];
         this.setState({isProgress: false});
