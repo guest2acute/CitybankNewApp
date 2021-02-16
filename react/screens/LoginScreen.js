@@ -22,13 +22,15 @@ import CommonStyle from "../resources/CommonStyle";
 import Config from "../config/Config";
 import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
+import * as DeviceInfo from "react-native-device-info";
+import ApiRequest from "../config/ApiRequest";
 
 class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: "",
-            passwordTxt: "",
+            userID: "zebatest2",
+            passwordTxt: "Acute@123",
             isProgress: false,
             passwordVisible: false,
             errorTextUid: "",
@@ -43,31 +45,63 @@ class LoginScreen extends Component {
      */
 
     async onSubmit(language) {
-        /* if (this.state.userID === "") {
-             this.setState({errorTextUid: language.require_user_id});
-         } else if (this.state.userID.length < 8) {
-             this.setState({errorTextUid: language.require_length_user_id});
-         } else if (this.state.passwordTxt === "") {
-             this.setState({errorTextPwd: language.require_pwd});
-         }
-         else if (this.state.userID.toLowerCase() === "cbtest12345" && this.state.passwordTxt === "123456Aa") {
-             this.props.navigation.navigate("BottomNavigator");
-         } else if (this.state.userID.toLowerCase() === "cb12345678" && this.state.passwordTxt === "123456Aa") {
-             this.deviceChange();
-         } else {
-             Utility.alert(language.invalidCredential);
-         }*/
+        const {userID, passwordTxt} = this.state;
+
+        if (userID === "") {
+            this.setState({errorTextUid: language.require_user_id});
+        } else if (userID.length < 8) {
+            this.setState({errorTextUid: language.require_length_user_id});
+        } else if (passwordTxt === "") {
+            this.setState({errorTextPwd: language.require_pwd});
+        } else {
+            await this.loginRequest(userID, passwordTxt);
+        }
+
+    }
+
+    async processLoginResponse(result) {
+        let response = result.RESPONSE[0];
+        console.log("response",response);
+        let userDetails = {
+            UserName: this.state.userID,
+            ACTIVITY_CD: result.ACTIVITY_CD,
+            CUSTOMER_DTL_LIST: response.CUSTOMER_DTL_LIST,
+            CUSTOMER_ID: response.CUSTOMER_ID,
+            USER_ID: response.USER_ID,
+            CUSTOMER_NM: response.CUSTOMER_NM,
+            LAST_LOGIN_DT: response.LAST_LOGIN_DT,
+            MOBILE_NO: response.MOBILE_NO,
+            PERSON_NICK_NAME: response.PERSON_NICK_NAME,
+            LOGIN_PASS_EXP_DAY: response.LOGIN_PASS_EXP_DAY,
+            TXN_PASS_EXP_DAY: response.TXN_PASS_EXP_DAY,
+            LANGUAGE_FLAG: response.LANGUAGE_FLAG,
+            LOGIN_PASS_EXP_ALERT: response.LOGIN_PASS_EXP_ALERT,
+            LOGIN_PASS_EXP_ALERT_MSG: response.LOGIN_PASS_EXP_ALERT_MSG,
+            TXN_PASS_EXP_ALERT: response.TXN_PASS_EXP_ALERT,
+            TXN_PASS_EXP_ALERT_MSG: response.TXN_PASS_EXP_ALERT_MSG,
+            USER_PROFILE_IMG: response.USER_PROFILE_IMG,
+        };
+        console.log("userDetails",userDetails);
+
+        this.props.dispatch({
+            type: actions.account.SET_USER_DETAILS,
+            payload: {
+                userDetails: userDetails,
+            },
+        });
+        await StorageClass.store(Config.ActivityCd, result.ACTIVITY_CD);
         let isFirstTime = await StorageClass.retrieve(Config.isFirstTime);
-        console.log("userIdVal === this.state.userID", isFirstTime + "=== " + this.state.userID);
-        if (isFirstTime === this.state.userID) {
+        console.log("userIdVal ===userID", isFirstTime + "=== " + response.USER_ID);
+        if (isFirstTime === response.USER_ID) {
             this.props.navigation.dispatch(
-                StackActions.replace("BottomNavigator", {userID: this.state.userID})
+                StackActions.replace("BottomNavigator", {userID: response.USER_ID})
             )
         } else {
             this.props.navigation.dispatch(
-                StackActions.replace("LoginConfigureProfile", {userID: this.state.userID})
+                StackActions.replace("LoginConfigureProfile", {userID: response.USER_ID})
             )
         }
+
     }
 
     deviceChange() {
@@ -89,8 +123,6 @@ class LoginScreen extends Component {
         );
     }
 
-
-
     userInput(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
@@ -103,7 +135,7 @@ class LoginScreen extends Component {
         this.setState({passwordTxt: text, errorTextPwd: ""})
     }
 
-    async changeLanguage(props,langCode) {
+    async changeLanguage(props, langCode) {
         console.log("langCode", langCode);
         await StorageClass.store(Config.Language, langCode);
         props.dispatch({
@@ -114,6 +146,33 @@ class LoginScreen extends Component {
         });
     }
 
+
+    async loginRequest(userName, passwordVal) {
+        this.setState({isProgress: true});
+        let loginReq = {
+            DEVICE_ID: await Utility.getDeviceID(),
+            LOGIN_TYPE: "P",
+            USER_ID: userName,
+            DUAL_AUTHENTIC: "N",
+            ACTION: "LOGINREQ",
+            PASSWORD: passwordVal,
+            ...Config.commonReq
+        };
+        console.log("requets", loginReq);
+        let result = await ApiRequest.apiRequest.callApi(loginReq);
+        console.log("result", result);
+        result = result[0];
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            await this.processLoginResponse(result);
+        } else if (result.STATUS === "71") {
+            this.deviceChange();
+        } else {
+            Utility.alert(result.MESSAGE);
+        }
+    }
+
+
     render() {
         let language = this.props.language;
         return (
@@ -123,7 +182,7 @@ class LoginScreen extends Component {
                     <Text style={CommonStyle.title}>{language.login}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props,"en")}
+                            onPress={() => this.changeLanguage(this.props, "en")}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -135,7 +194,7 @@ class LoginScreen extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props,"bangla")}
+                            onPress={() => this.changeLanguage(this.props, "bangla")}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -186,6 +245,10 @@ class LoginScreen extends Component {
                                 contextMenuHidden={true}
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                 autoCorrect={false}
+                                returnKeyType={"next"}
+                                onSubmitEditing={(event) => {
+                                    this.pwdRef.focus();
+                                }}
                                 maxLength={12}/>
                             <View style={{
                                 borderBottomWidth: 1,
@@ -211,7 +274,7 @@ class LoginScreen extends Component {
                                         fontFamily: fontStyle.RobotoRegular,
                                         paddingBottom: -10
                                     }}
-
+                                    ref={(ref) => this.pwdRef = ref}
                                     placeholder={language.passwordTxt}
                                     onChangeText={text => this.passwordChange(text)}
                                     value={this.state.passwordTxt}

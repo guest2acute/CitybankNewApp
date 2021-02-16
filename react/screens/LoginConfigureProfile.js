@@ -23,6 +23,7 @@ import Config from "../config/Config";
 import {StackActions} from "@react-navigation/native";
 import {actions} from "../redux/actions";
 import FingerprintScanner from "react-native-fingerprint-scanner";
+import ApiRequest from "../config/ApiRequest";
 
 let userID = "";
 
@@ -30,7 +31,9 @@ class LoginConfigureProfile extends Component {
     constructor(props) {
         super(props);
         userID = props.route.params.userID;
+        console.log("userID", userID);
         this.state = {
+            isProgress: false,
             transactionPin: "",
             confirmTransactionPin: "",
             alias: "",
@@ -40,7 +43,7 @@ class LoginConfigureProfile extends Component {
             errorConfLoginPIN: "",
             errorTransPIN: "",
             errorConfTransPIN: "",
-            otp_type: "0",
+            loginPrefVal: "0",
             biometryType: null,
             prefOption: true
         }
@@ -60,6 +63,39 @@ class LoginConfigureProfile extends Component {
             />
         );
     };
+
+    async updateUserRequest() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let userRequest = {
+            ALIAS: this.state.alias,
+            TRANSACTION_PIN: this.state.transactionPin,
+            CUSTOMER_ID: userDetails.CUSTOMER_ID.toString(),
+            USER_ID: userDetails.USER_ID,
+            AUTH_FLAG: "CP",
+            REQ_FLAG: "R",
+            PROFILE_IMG: this.state.imageData,
+            ACTION: "PROFILESETREQ",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            LOGIN_PIN: this.state.loginPin,
+            LANGUAGE: this.state.language_value === "en" ? "E" : "B",
+            ...Config.commonReq
+        };
+        console.log("requets", userRequest);
+        let result = await ApiRequest.apiRequest.callApi(userRequest);
+        console.log("result", result);
+        result = result[0];
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            await StorageClass.store(Config.isFirstTime, userID);
+            await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
+            navigation.dispatch(
+                StackActions.replace("BottomNavigator", {userID: userID})
+            );
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
 
     accountNoOption(language) {
         return (<View>
@@ -86,9 +122,12 @@ class LoginConfigureProfile extends Component {
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
+                    returnKeyType={"next"}
+                    onSubmitEditing={(event) => {
+                        this.transPinRef.focus();
+                    }}
                 />
             </View>
-
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -100,6 +139,7 @@ class LoginConfigureProfile extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
                     <TextInput
+                        ref={(ref) => this.transPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -108,7 +148,10 @@ class LoginConfigureProfile extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({transactionPin: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorTransPIN: "",
+                            transactionPin: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.transactionPin}
                         multiline={false}
                         numberOfLines={1}
@@ -117,6 +160,10 @@ class LoginConfigureProfile extends Component {
                         secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.cTransPinRef.focus();
+                        }}
                         maxLength={4}/>
                 </View>
                 {this.state.errorTransPIN !== "" ?
@@ -141,6 +188,7 @@ class LoginConfigureProfile extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
                     <TextInput
+                        ref={(ref) => this.cTransPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -149,7 +197,10 @@ class LoginConfigureProfile extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({confirmTransactionPin: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorConfTransPIN: "",
+                            confirmTransactionPin: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.confirmTransactionPin}
                         multiline={false}
                         numberOfLines={1}
@@ -158,6 +209,10 @@ class LoginConfigureProfile extends Component {
                         secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.loginPinRef.focus();
+                        }}
                         maxLength={4}/>
                 </View>
                 {this.state.errorConfTransPIN !== "" ?
@@ -184,6 +239,7 @@ class LoginConfigureProfile extends Component {
                         {language.setLoginPIn}
                     </Text>
                     <TextInput
+                        ref={(ref) => this.loginPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -192,7 +248,10 @@ class LoginConfigureProfile extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({loginPin: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorLoginPIN: "",
+                            loginPin: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.loginPin}
                         multiline={false}
                         numberOfLines={1}
@@ -200,6 +259,10 @@ class LoginConfigureProfile extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.cLoginPinRef.focus();
+                        }}
                         maxLength={6}/>
                 </View>
                 {this.state.errorLoginPIN !== "" ?
@@ -226,6 +289,7 @@ class LoginConfigureProfile extends Component {
                         {language.conf_loginPin}
                     </Text>
                     <TextInput
+                        ref={(ref) => this.cLoginPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -234,7 +298,10 @@ class LoginConfigureProfile extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({conf_loginPin: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorConfLoginPIN: "",
+                            conf_loginPin: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.conf_loginPin}
                         multiline={false}
                         numberOfLines={1}
@@ -278,7 +345,7 @@ class LoginConfigureProfile extends Component {
                     style={{marginTop: 8}}
                     animation={true}
                     onPress={(value) => {
-                        this.setState({otp_type: value.toString()});
+                        this.setState({loginPrefVal: value.toString()});
                     }}
                 />
             </View>
@@ -286,13 +353,27 @@ class LoginConfigureProfile extends Component {
     }
 
     async onSubmit(language, navigation) {
-        await StorageClass.store(Config.isFirstTime, userID);
-        await StorageClass.store(Config.LoginPref, this.state.otp_type);
+        const {transactionPin, confirmTransactionPin, loginPin, conf_loginPin, loginPrefVal} = this.state;
+        console.log("loginPrefVal", loginPrefVal);
+        console.log("loginPin", loginPin.length);
 
-        navigation.dispatch(
-            StackActions.replace("BottomNavigator", {userID: userID})
-        )
+        if (transactionPin.length !== 4) {
+            this.setState({errorTransPIN: language.digits4TransPin});
+        } else if (transactionPin !== confirmTransactionPin) {
+            this.setState({errorConfTransPIN: language.errConfirmTransPin});
+        } else if ((loginPrefVal === "1" || loginPin !== "") && loginPin.length !== 6) {
+            this.setState({errorLoginPIN: language.digits6LoginPin});
+        } else if (this.state.loginPin !== conf_loginPin) {
+            this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
+        } else {
+            await StorageClass.store(Config.isFirstTime, userID);
+            await StorageClass.store(Config.LoginPref, loginPrefVal);
+            navigation.dispatch(
+                StackActions.replace("BottomNavigator", {userID: userID})
+            );
+        }
     }
+
 
     checkFingerTouch() {
         FingerprintScanner.isSensorAvailable()
@@ -464,6 +545,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

@@ -20,6 +20,7 @@
     "axios": "^0.21.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
+    "react-native-axios": "^0.17.1",
     "react-native-base64": "^0.2.1",
     "react-native-device-info": "^8.0.1",
     "react-native-document-picker": "^4.2.0",

@@ -10,6 +10,8 @@ import {LoginScreen} from "./LoginScreen";
 import Utility from "../utilize/Utility";
 import {StackActions} from "@react-navigation/native";
 import StorageClass from "../utilize/StorageClass";
+import ApiRequest from "../config/ApiRequest";
+import * as DeviceInfo from "react-native-device-info";
 
 
 /**
@@ -57,6 +59,43 @@ class SplashScreen extends Component {
         }
     }
 
+    async callToken(deviceId) {
+        if (deviceId === undefined || deviceId === null || deviceId === "") {
+            let uniqueId = await DeviceInfo.getUniqueId();
+            if (uniqueId === undefined || uniqueId === null || uniqueId === "") {
+                uniqueId = Utility.getCurrentTimeStamp();
+            }
+            deviceId = uniqueId;
+            await StorageClass.store(Config.DeviceId, uniqueId);
+        }
+
+        Config.commonReq = {
+            BROWSER: Platform.OS + " native",
+            LATITUDE: "0.0",
+            LONGITUDE: '0.0',
+            DEVICE: Platform.OS.toUpperCase(),
+            IMEI: deviceId,
+            DEVICE_IP: await DeviceInfo.getIpAddress(),
+            DEVICE_IPV6: await DeviceInfo.getIpAddress(),
+            DEVICE_MAC: await DeviceInfo.getMacAddress(),
+            DEVICE_NM: await DeviceInfo.getDeviceName(),
+            CHANNEL: "M",
+            REQ_FLAG: "R",
+            DEVICE_USER_NM: await DeviceInfo.getCarrier(),
+            VERSION: Config.apiVersion,
+        }
+        console.log("Config.commonReq ", Config.commonReq);
+    }
+
+    async getAuth() {
+        let tokenReq = JSON.stringify({
+            ACTION: "GET_AUTH_CRED",
+        });
+        let result = await ApiRequest.apiRequest.callApi(tokenReq);
+        console.log("result", result);
+        Config.AUTH = result;
+    }
+
     async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
@@ -65,10 +104,16 @@ class SplashScreen extends Component {
                 StatusBar.setBarStyle("dark-content");
             });
         }
-        await this.changeLanguage();
-        await this.redirectScreen();
+        await this.initSetup();
     }
 
+    async initSetup() {
+        let deviceId = await StorageClass.retrieve(Config.DeviceId);
+        await this.callToken(deviceId);
+        await this.changeLanguage();
+        await this.getAuth();
+        await this.redirectScreen();
+    }
 
     render() {
         return (

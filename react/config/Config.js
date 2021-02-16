@@ -32,7 +32,7 @@ export default class Config {
     static iosAppVersion = "Version 1.0";
     static androidAppVersion = "Version 1.0";
     static apiVersion = "1.0";
-    static ACCESS_TOKEN = {};
+    static AUTH = null;
 
     static CP_AUTH_TYPE = "CP";
     static TP_AUTH_TYPE = "TP";
@@ -56,6 +56,8 @@ export default class Config {
 
     static Label = "label";
     static Text = "text";
+
+
 
 
 }

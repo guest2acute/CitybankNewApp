@@ -190,6 +190,7 @@ export default {
     /*error message*/
     require_user_id: "User ID is Required",
     require_length_user_id: "Length should be minimum 8",
+    min_user_id: "User ID should be combination of digits and letters",
     require_pwd: "Password is Required",
     cityTouchUserId: "CityTouch User ID",
     requireUserId: "CityTouch User ID is Required",
@@ -201,7 +202,10 @@ export default {
     email_not_valid: "Email Address is not Valid",
     maxOneMB: "Maximum 1 MB size of file allowed",
     max200KB: "Maximum 200 KB size of image allowed",
-
+    digits4TransPin: "Please set 4 digits transaction pin",
+    digits6LoginPin: "Please set 6 digits login pin",
+    errConfirmTransPin: "Confirm transaction pin should be same as transaction pin",
+    errConfirmLoginPin: "Confirm login pin should be same as login pin",
 
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",

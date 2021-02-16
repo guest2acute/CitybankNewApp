@@ -44,11 +44,30 @@ export default class Utility {
             [
                 {text: language.no_txt},
                 {
-                    text: language.yes_txt, onPress: async() => {
+                    text: language.yes_txt, onPress: async () => {
                         navigation.dispatch(
                             CommonActions.reset({
                                 index: 0,
                                 routes: [{name: "PinLogin"}],
+                            })
+                        )
+                    }
+                },
+            ]
+        );
+    }
+
+    static sessionTimeout(message, language) {
+        Alert.alert(
+            Config.appName,
+            message,
+            [
+                {
+                    text: language.ok, onPress: async () => {
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [{name: "LoginScreen"}],
                             })
                         )
                     }
@@ -77,6 +96,23 @@ export default class Utility {
         console.log(text);
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         return reg.test(text);
+    }
+
+    static validateUserId(text) {
+        let reg = /^(?=.*[A-Za-z])(?=.*\d)$/;
+        return reg.test(text);
+    }
+
+
+    static errorManage(status, message, props) {
+        if (status === "99" || status === "1") {
+            Utility.alert(message);
+        } else if (status === "9") {
+            Utility.sessionTimeout(message, props.language);
+        } else if (status === "999") {
+            Utility.alertWithBack(props.language.ok, message);
+        }
+
     }
 
     /*  static async makePostApiCall(url,postRequest) {
@@ -143,7 +179,7 @@ export default class Utility {
     }
 
     static async getDeviceID() {
-        let userId = await User.retrieve(Config.UserId);
+        let userId = await StorageClass.retrieve(Config.UserId);
         if (userId === undefined) {
             userId = "";
         }
