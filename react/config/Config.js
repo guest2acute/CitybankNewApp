@@ -43,6 +43,7 @@ export default class Config {
     /*local preference */
 
     static UserId = "userid";
+    static UserName = "userName";
     static LoginPref = "login_preference";
     static DeviceId = "deviceId";
     static isFirstTime = "isFirstTime";

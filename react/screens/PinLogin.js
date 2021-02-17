@@ -8,7 +8,7 @@ import {
     StatusBar,
     TouchableOpacity,
     Image,
-    Platform
+    Platform, AsyncStorage
 } from 'react-native';
 
 import {actions} from "../redux/actions";
@@ -26,14 +26,14 @@ import StorageClass from "../utilize/StorageClass";
 import {StackActions} from "@react-navigation/native";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import dimen from "../resources/Dimens";
+import ApiRequest from "../config/ApiRequest";
+import {BusyIndicator} from "../resources/busy-indicator";
 
-let loginPref;
 
 class PinLogin extends Component {
     constructor(props) {
         super(props);
-        loginPref = props.route.params.loginPref;
-        console.log("loginPref", loginPref);
+
         this.state = {
             one: '',
             two: '',
@@ -53,6 +53,8 @@ class PinLogin extends Component {
             hasFinger: false,
             biometryType: null,
             isProgress: false,
+            loginPref: "",
+            errorPIN: ""
         };
     }
 
@@ -64,6 +66,8 @@ class PinLogin extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
+        let loginPref = await StorageClass.retrieve(Config.LoginPref);
+        this.setState({loginPref: loginPref});
         if (loginPref === "2")
             this.checkFingerTouch();
     }
@@ -76,34 +80,33 @@ class PinLogin extends Component {
     }
 
     handleChangeTextOne = (text) => {
-        this.setState({one: text}, () => {
-            if (this.state.one) this.refs.two.focus();
+        this.setState({errorPIN: "", one: text}, () => {
+            if (this.state.one) this.two.focus();
         });
     }
     handleChangeTextTwo = (text) => {
-        this.setState({two: text}, () => {
-            if (this.state.two) this.refs.three.focus();
+        this.setState({errorPIN: "", two: text}, () => {
+            if (this.state.two) this.three.focus();
         });
     }
     handleChangeTextThree = (text) => {
-        this.setState({three: text}, () => {
-            if (this.state.three) this.refs.four.focus();
+        this.setState({errorPIN: "", three: text}, () => {
+            if (this.state.three) this.four.focus();
         });
     }
     handleChangeTextFour = (text) => {
-        this.setState({four: text}, () => {
-            if (this.state.four) this.refs.five.focus();
+        this.setState({errorPIN: "", four: text}, () => {
+            if (this.state.four) this.five.focus();
         });
 
     }
     handleChangeTextFive = (text) => {
-        this.setState({five: text}, () => {
+        this.setState({errorPIN: "", five: text}, () => {
             if (this.state.five) this.refs.six.focus();
         });
-        // this.setState({ five: text })
     }
     handleChangeTextSix = (text) => {
-        this.setState({six: text});
+        this.setState({errorPIN: "", six: text});
     }
 
     redirection(navigation, screenName) {
@@ -123,20 +126,100 @@ class PinLogin extends Component {
         });
     }
 
+    async onSubmit(language) {
+        console.log("in", "in");
+        let password = "";
+        if (this.state.loginPref === "0") {
+            if (this.state.passwordTxt.length === 0) {
+                this.setState({errorTextPwd: language.require_pwd});
+                return;
+            } else {
+                password = this.state.passwordTxt;
+            }
+        } else if (this.state.loginPref === "1") {
+            password = this.state.one + this.state.two + this.state.three + this.state.four + this.state.five + this.state.six;
+            if (password.length !== 6) {
+                this.setState({errorPIN: language.errValidPin});
+                return;
+            }
+        }
+        await this.loginRequest(password);
+    }
+
+    async loginRequest(password) {
+        let userName = await StorageClass.retrieve(Config.UserName);
+        this.setState({isProgress: true});
+        let loginReq = {
+            DEVICE_ID: await Utility.getDeviceID(),
+            LOGIN_TYPE: this.state.loginPref === "0" ? "P" : this.state.loginPref === "1" ? "L" : "B",
+            USER_ID: userName,
+            DUAL_AUTHENTIC: "N",
+            ACTION: "LOGINREQ",
+            PASSWORD: password,
+            ...Config.commonReq
+        };
+        console.log("request", loginReq);
+        let result = await ApiRequest.apiRequest.callApi(loginReq, {});
+
+        result = result[0];
+
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            await this.processLoginResponse(result, userName);
+        } else {
+            Utility.alert(result.MESSAGE);
+        }
+    }
+
+    async processLoginResponse(result, userName) {
+        let response = result.RESPONSE[0];
+
+        let userDetails = {
+            UserName: userName,
+            ACTIVITY_CD: result.ACTIVITY_CD,
+            CUSTOMER_DTL_LIST: response.CUSTOMER_DTL_LIST,
+            CUSTOMER_ID: response.CUSTOMER_ID,
+            USER_ID: response.USER_ID,
+            CUSTOMER_NM: response.CUSTOMER_NM,
+            LAST_LOGIN_DT: response.LAST_LOGIN_DT,
+            MOBILE_NO: response.MOBILE_NO,
+            PERSON_NICK_NAME: response.PERSON_NICK_NAME,
+            LOGIN_PASS_EXP_DAY: response.LOGIN_PASS_EXP_DAY,
+            TXN_PASS_EXP_DAY: response.TXN_PASS_EXP_DAY,
+            LANGUAGE_FLAG: response.LANGUAGE_FLAG,
+            LOGIN_PASS_EXP_ALERT: response.LOGIN_PASS_EXP_ALERT,
+            LOGIN_PASS_EXP_ALERT_MSG: response.LOGIN_PASS_EXP_ALERT_MSG,
+            TXN_PASS_EXP_ALERT: response.TXN_PASS_EXP_ALERT,
+            TXN_PASS_EXP_ALERT_MSG: response.TXN_PASS_EXP_ALERT_MSG,
+            USER_PROFILE_IMG: response.USER_PROFILE_IMG,
+        };
+        console.log("userDetails", userDetails);
+
+        this.props.dispatch({
+            type: actions.account.SET_USER_DETAILS,
+            payload: {
+                userDetails: userDetails,
+            },
+        });
+        this.props.navigation.dispatch(
+            StackActions.replace("BottomNavigator", {userID: response.USER_ID})
+        )
+    }
+
     backspace = (id) => {
         if (id === 'two') {
             if (this.state.two) {
                 this.setState({two: ''});
             } else if (this.state.one) {
                 this.setState({one: ''});
-                this.refs.one.focus();
+                this.one.focus();
             }
         } else if (id === 'three') {
             if (this.state.three) {
                 this.setState({three: ''});
             } else if (this.state.two) {
                 this.setState({two: ''});
-                this.refs.two.focus();
+                this.two.focus();
             }
         } else if (id === 'four') {
             if (this.state.four) {
@@ -145,7 +228,7 @@ class PinLogin extends Component {
                 this.setState({three: ''});
             } else if (this.state.two) {
                 this.setState({two: ''});
-                this.refs.two.focus();
+                this.two.focus();
             }
         } else if (id === 'five') {
             if (this.state.five) {
@@ -156,7 +239,7 @@ class PinLogin extends Component {
                 this.setState({three: ''});
             } else if (this.state.two) {
                 this.setState({two: ''});
-                this.refs.two.focus();
+                this.two.focus();
             }
         }
         if (id === 'six') {
@@ -170,7 +253,7 @@ class PinLogin extends Component {
                 this.setState({three: ''});
             } else if (this.state.two) {
                 this.setState({two: ''});
-                this.refs.two.focus();
+                this.two.focus();
             }
         }
     }
@@ -188,7 +271,7 @@ class PinLogin extends Component {
                     fontSize: FontSize.getSize(16), fontFamily: fontStyle.RobotoBold
                     , alignSelf: "center", color: themeStyle.BLACK_43
                     , marginBottom: 10,
-                }}>Login using Fingerprint
+                }}>{language.loginFinger}
                 </Text>
                 <Text style={{
                     fontSize: FontSize.getSize(13),
@@ -196,7 +279,7 @@ class PinLogin extends Component {
                     alignSelf: "center",
                     marginBottom: 20,
                     color: "#000000",
-                }}>Place your finger on fingerprint scanner to login
+                }}>{language.placeFinger}
                 </Text>
             </View>
         </View>)
@@ -211,6 +294,7 @@ class PinLogin extends Component {
             <Text style={[CommonStyle.midTextStyle, {
                 color: themeStyle.THEME_COLOR,
             }]}>{language.pwd}
+                <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
             </Text>
             <View style={{
                 height: Utility.setHeight(40),
@@ -342,7 +426,7 @@ class PinLogin extends Component {
                 </Text>
             </View>
 
-            <View style={{flex: 1}}>
+            <View>
                 <View style={{
                     marginHorizontal: 20,
                     alignItems: "center",
@@ -351,7 +435,7 @@ class PinLogin extends Component {
                     marginTop: Utility.setHeight(40)
                 }}>
                     <TextInput
-                        ref='one'
+                        ref={(ref) => this.one = ref}
                         style={[{...oneStyle}, {
                             fontFamily: fontStyle.RobotoMedium,
                             fontSize: FontSize.getSize(20),
@@ -380,7 +464,7 @@ class PinLogin extends Component {
                         value={this.state.one}
                     />
                     <TextInput
-                        ref='two'
+                        ref={(ref) => this.two = ref}
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('two') : null
                         )}
@@ -411,7 +495,7 @@ class PinLogin extends Component {
                     />
 
                     <TextInput
-                        ref='three'
+                        ref={(ref) => this.three = ref}
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('three') : null
                         )}
@@ -441,7 +525,7 @@ class PinLogin extends Component {
                         value={this.state.three}
                     />
                     <TextInput
-                        ref='four'
+                        ref={(ref) => this.four = ref}
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('four') : null
                         )}
@@ -471,7 +555,7 @@ class PinLogin extends Component {
                         value={this.state.four}
                     />
                     <TextInput
-                        ref='five'
+                        ref={(ref) => this.five = ref}
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('five') : null
                         )}
@@ -501,7 +585,7 @@ class PinLogin extends Component {
                         value={this.state.five}
                     />
                     <TextInput
-                        ref='six'
+                        ref={(ref) => this.six = ref}
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('six') : null
                         )}
@@ -532,7 +616,19 @@ class PinLogin extends Component {
                     />
 
                 </View>
+
             </View>
+            {this.state.errorPIN !== "" ?
+                <Text style={{
+                    marginLeft: 25,
+                    marginRight: 25,
+                    color: themeStyle.THEME_COLOR,
+                    fontSize: FontSize.getSize(11),
+                    fontFamily: fontStyle.RobotoRegular,
+                    marginBottom: 10,
+                    marginTop: 10
+                }}>{this.state.errorPIN}</Text> : null}
+
             {this.loginButtonView(language, true)}
         </View>)
     }
@@ -540,7 +636,7 @@ class PinLogin extends Component {
     loginButtonView(language, isPin) {
         return (<View>
             <View style={{
-                marginTop: isPin ? 80 : 20,
+                marginTop: isPin ? Utility.setHeight(50) : Utility.setHeight(20),
                 backgroundColor: themeStyle.THEME_COLOR,
                 height: Utility.setHeight(44),
                 borderRadius: Utility.setHeight(42),
@@ -558,7 +654,7 @@ class PinLogin extends Component {
                 <TouchableOpacity
                     style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}
                     disabled={this.state.isProgress}
-                    onPress={() => this.redirection(this.props.navigation, "BottomNavigator")}>
+                    onPress={() => this.onSubmit(this.props.language)}>
                     <Text style={{
                         color: "#fff",
                         fontSize: FontSize.getSize(14),
@@ -568,7 +664,7 @@ class PinLogin extends Component {
                 </TouchableOpacity>
             </View>
 
-            {loginPref === "1" ? <View style={{
+            {this.state.loginPref === "1" ? <View style={{
                 marginTop: 10,
                 marginHorizontal: 10,
                 backgroundColor: themeStyle.THEME_COLOR,
@@ -632,10 +728,8 @@ class PinLogin extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-
-                {loginPref === "0" ? this.passwordView(language) : loginPref === "1" ? this.pinView(language) : this.fingerView(language)}
-
-
+                {this.state.loginPref === "0" ? this.passwordView(language) : this.state.loginPref === "1" ? this.pinView(language) : this.state.loginPref === "2" ? this.fingerView(language) : null}
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>
         );
     }

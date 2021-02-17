@@ -61,7 +61,7 @@ class LoginScreen extends Component {
 
     async processLoginResponse(result) {
         let response = result.RESPONSE[0];
-        console.log("response",response);
+        console.log("responseVal",response);
         let userDetails = {
             UserName: this.state.userID,
             ACTIVITY_CD: result.ACTIVITY_CD,
@@ -88,8 +88,8 @@ class LoginScreen extends Component {
             payload: {
                 userDetails: userDetails,
             },
-        });
-        await StorageClass.store(Config.ActivityCd, result.ACTIVITY_CD);
+        })
+        await StorageClass.store(Config.UserName, this.state.userID);
         let isFirstTime = await StorageClass.retrieve(Config.isFirstTime);
         console.log("userIdVal ===userID", isFirstTime + "=== " + response.USER_ID);
         if (isFirstTime === response.USER_ID) {

@@ -178,6 +178,8 @@ export default {
         {label: "Passport", value: 6},
         {label: "Driving Licence", value: 7},
     ],
+    loginFinger:"Login using Fingerprint",
+    placeFinger:"Place your finger on fingerprint scanner to login",
 
 
     /*success messages*/
@@ -206,6 +208,7 @@ export default {
     digits6LoginPin: "Please set 6 digits login pin",
     errConfirmTransPin: "Confirm transaction pin should be same as transaction pin",
     errConfirmLoginPin: "Confirm login pin should be same as login pin",
+    errValidPin:"Please enter valid PIN",
 
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",

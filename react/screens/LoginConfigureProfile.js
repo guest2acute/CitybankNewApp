@@ -64,7 +64,7 @@ class LoginConfigureProfile extends Component {
         );
     };
 
-    async updateUserRequest() {
+    async updateUserRequest(navigation) {
         let userDetails = this.props.userDetails;
         this.setState({isProgress: true});
         let userRequest = {
@@ -74,11 +74,11 @@ class LoginConfigureProfile extends Component {
             USER_ID: userDetails.USER_ID,
             AUTH_FLAG: "CP",
             REQ_FLAG: "R",
-            PROFILE_IMG: this.state.imageData,
+            PROFILE_IMG: userDetails.USER_ID,
             ACTION: "PROFILESETREQ",
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             LOGIN_PIN: this.state.loginPin,
-            LANGUAGE: this.state.language_value === "en" ? "E" : "B",
+            LANGUAGE: this.props.langId === "en" ? "E" : "B",
             ...Config.commonReq
         };
         console.log("request", userRequest);
@@ -210,6 +210,7 @@ class LoginConfigureProfile extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
+                        secureTextEntry={true}
                         onSubmitEditing={(event) => {
                             this.loginPinRef.focus();
                         }}
@@ -259,6 +260,7 @@ class LoginConfigureProfile extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        secureTextEntry={true}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
                             this.cLoginPinRef.focus();
@@ -366,11 +368,7 @@ class LoginConfigureProfile extends Component {
         } else if (this.state.loginPin !== conf_loginPin) {
             this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
         } else {
-            await StorageClass.store(Config.isFirstTime, userID);
-            await StorageClass.store(Config.LoginPref, loginPrefVal);
-            navigation.dispatch(
-                StackActions.replace("BottomNavigator", {userID: userID})
-            );
+           await this.updateUserRequest(navigation);
         }
     }
 
