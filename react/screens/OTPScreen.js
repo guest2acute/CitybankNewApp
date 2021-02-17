@@ -12,13 +12,14 @@ import CommonStyle from "../resources/CommonStyle";
 import {CommonActions} from "@react-navigation/native";
 import fontStyle from "../resources/FontStyle";
 import FontSize from "../resources/ManageFontSize";
+import ApiRequest from "../config/ApiRequest";
 
 
 /**
  * splash page
  */
 
-let description, value;
+let description, value, response;
 
 class OTPScreen extends Component {
 
@@ -29,6 +30,7 @@ class OTPScreen extends Component {
         }
         description = props.route.params.description;
         value = props.route.params.value;
+        response = props.route.params.response;
     }
 
 
@@ -40,29 +42,41 @@ class OTPScreen extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
+    }
+
+    async submit(language, navigation) {
+        if (this.state.otpVal.length !== 4) {
+            Utility.alert(language.errOTP);
+        } else {
+            await this.processOTP(language, navigation);
+        }
 
     }
 
-    submit(language, navigation) {
-        if (this.state.otpVal.length !== 4) {
-            Utility.alert("Please enter 4 digit OTP");
-        } else {
-            let that = this;
-            Alert.alert(
-                Config.appName,
-                language.success_msg,
-                [
-                    {
-                        text: language.ok, onPress: () => navigation.dispatch(
-                            CommonActions.reset({
-                                index: 0,
-                                routes: [{name: "LoginScreen"}],
-                            })
-                        )
-                    },
-                ]
-            );
+    async processOTP(language, navigation) {
+        this.setState({isProgress: true});
+        let otpReq = {
+            OTP_NO: this.state.otpVal,
+            CUSTOMER_ID: response.CUSTOMER_ID.toString(),
+            USER_ID: response.USER_ID,
+            RESET_TYPE: "F",
+            REQUEST_CD: response.REQUEST_CD,
+            ACTION: "RESETPWDVERIFY",
+            REQ_TYPE: "O",
+            ACTIVITY_CD: response.ACTIVITY_CD,
+            DEVICE_ID: Utility.getDeviceID(),
+            ...Config.commonReq
+        }
 
+        console.log("request", otpReq);
+        let result = await ApiRequest.apiRequest.callApi(otpReq, {});
+        result = result[0];
+        this.setState({isProgress: false});
+        if (result.STATUS === "0" || result.STATUS === "999") {
+            this.props.route.params.onGoBack('success');
+            Utility.alertWithBack(language.ok, result.MESSAGE, navigation);
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
         }
 
     }

@@ -124,6 +124,7 @@ export default {
     login_configure_profile: "Login Configure Profile",
     config_information: "Please configure below information.",
     alias: "Alias",
+
     et_alias: "Enter Alias here",
     set_transaction_pin: "Set Transaction Pin",
     Transaction_Pin: "Transaction Pin",
@@ -178,8 +179,8 @@ export default {
         {label: "Passport", value: 6},
         {label: "Driving Licence", value: 7},
     ],
-    loginFinger:"Login using Fingerprint",
-    placeFinger:"Place your finger on fingerprint scanner to login",
+    loginFinger: "Login using Fingerprint",
+    placeFinger: "Place your finger on fingerprint scanner to login",
 
 
     /*success messages*/
@@ -199,6 +200,7 @@ export default {
     enterUserId: "Enter User ID here",
     deviceChangeTxt: "You will be logged out from all other devices. From now on this will be your primary device. Do you want to continue.",
     invalidCredential: "Invalid UserId or Password",
+    invalidUid: "Invalid cityTouch user id",
     require_mobile: "Mobile Number is Required",
     require_email: "Email Address is Required",
     email_not_valid: "Email Address is not Valid",
@@ -208,7 +210,14 @@ export default {
     digits6LoginPin: "Please set 6 digits login pin",
     errConfirmTransPin: "Confirm transaction pin should be same as transaction pin",
     errConfirmLoginPin: "Confirm login pin should be same as login pin",
-    errValidPin:"Please enter valid PIN",
+    errValidPin: "Please enter valid PIN",
+    errValidType: "Please select type",
+    errActNo: "Please enter 13 digits account number",
+    errTransPin: "Please enter 4 digits PIN",
+    errCardNo: "Please enter card number",
+    errExpiryDate: "Please select expiry date",
+    errCardPin: "Please enter 4 digits card PIN",
+    errOTP: "Please enter 4 digit OTP",
 
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",

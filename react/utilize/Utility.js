@@ -110,7 +110,7 @@ export default class Utility {
         } else if (status === "9") {
             Utility.sessionTimeout(message, props.language);
         } else if (status === "999") {
-            Utility.alertWithBack(props.language.ok, message);
+            Utility.alertWithBack(props.language.ok, message,props.navigation);
         }
 
     }
@@ -155,6 +155,8 @@ export default class Utility {
         return hp((val / Utility.getDeviceHeight()) * 100);
     }
 
+
+
     static async parseResponse(response) {
         console.log("response", response);
     }
@@ -167,6 +169,10 @@ export default class Utility {
 
     static getCurrentTimeStamp() {
         return moment(new Date()).format('DD-MM-YYYY-HH-ss');
+    }
+
+    static dateInFormat(dateVal,formatType){
+        return moment(dateVal).format(formatType);
     }
 
     static isConnected() {

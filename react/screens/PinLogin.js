@@ -102,7 +102,7 @@ class PinLogin extends Component {
     }
     handleChangeTextFive = (text) => {
         this.setState({errorPIN: "", five: text}, () => {
-            if (this.state.five) this.refs.six.focus();
+            if (this.state.five) this.six.focus();
         });
     }
     handleChangeTextSix = (text) => {

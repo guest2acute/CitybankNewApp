@@ -32,7 +32,7 @@ export default StyleSheet.create({
     toolbar_back_btn: {
         width: 15, height: 17, tintColor: themeStyle.WHITE
     },
-    toolbar_back_btn_touch:{
+    toolbar_back_btn_touch: {
         width: 20, height: 25, alignItems: "center", justifyContent: "center", marginRight: 8
     },
 
@@ -47,18 +47,18 @@ export default StyleSheet.create({
     textStyle: {
         fontFamily: fontStyle.RobotoRegular,
         fontSize: FontSize.getSize(13),
-        color:themeStyle.BLACK
+        color: themeStyle.BLACK
     },
 
     checkboxContainer: {
         flexDirection: "row",
-        paddingLeft:10,
-        paddingRight:10,
-        marginTop:10,marginBottom:10
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 10, marginBottom: 10
     },
     checkbox: {
         height: 5,
-        marginTop:9
+        marginTop: 9
     },
     langText: {
         fontFamily: fontStyle.RobotoRegular,
@@ -66,4 +66,10 @@ export default StyleSheet.create({
         textAlign: 'center',
         width: Utility.setWidth(45),
     },
+    errorStyle: {
+        textAlign: "right",
+        marginBottom: 5,
+        marginRight: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+        fontFamily: fontStyle.RobotoRegular,
+    }
 });
