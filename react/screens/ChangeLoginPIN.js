@@ -281,7 +281,7 @@ class ChangeLoginPIN extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_new_pin_txt}
-                        onChangeText={text => this.setState({newPin: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({newPin: Utility.input(text, "0123456789")})}
                         value={this.state.newPin}
                         multiline={false}
                         numberOfLines={1}

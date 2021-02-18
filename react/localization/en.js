@@ -131,8 +131,13 @@ export default {
     Confirm_Pin: "Confirm Transaction Pin",
     new_pin_txt: "New PIN",
     et_new_pin_txt: "Enter New Pin",
+    errorNewPIN: "Please enter 6 digits new pin",
+    errorNewConfPIN: "Confirm new pin should same as new pin",
+    errorNewPwd: "Please enter new password",
+    errorNewConfPwd: "Confirm new password should same as new password",
     confirm_pin_txt: "Confirm New Pin",
     et_confirm_pin_txt: "Enter Confirm New Pin",
+    et_confirm_pwd_txt: "Enter Confirm New Password",
     open_account: "Open Account",
     type_contact: "Contact Type *",
     LoginWith: "Login With User ID?",
@@ -218,7 +223,8 @@ export default {
     errExpiryDate: "Please select expiry date",
     errCardPin: "Please enter 4 digits card PIN",
     errOTP: "Please enter 4 digit OTP",
-
+    errAccountMatch: "Account Number does not match with given CityTouch User ID",
+    errCardMatch: "Card Number does not match with given CityTouch User ID",
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",
     exitConfirm: "Are you sure want to exit from App?",

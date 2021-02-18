@@ -23,6 +23,7 @@ import Config from "../../config/Config";
 import {actions} from "../../redux/actions";
 import {StackActions} from "@react-navigation/native";
 import FingerprintScanner from "react-native-fingerprint-scanner";
+import ApiRequest from "../../config/ApiRequest";
 
 class Profile extends Component {
     constructor(props) {
@@ -49,6 +50,7 @@ class Profile extends Component {
         }
         this.checkFingerTouch();
     }
+
     checkFingerTouch() {
         FingerprintScanner.isSensorAvailable()
             .then((biometryType) => {
@@ -119,13 +121,13 @@ class Profile extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
+                        editable={false}
                         placeholder={language.customerName}
                         onChangeText={text => this.setState({customerName: Utility.userInput(text)})}
                         value={this.state.customerName}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
-                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
@@ -157,6 +159,7 @@ class Profile extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
+                        editable={false}
                         placeholder={language.mobileNo}
                         onChangeText={text => this.setState({mobileNo: Utility.input(text, "0123456789")})}
                         value={this.state.mobileNo}
@@ -164,7 +167,6 @@ class Profile extends Component {
                         numberOfLines={1}
                         contextMenuHidden={true}
                         keyboardType={"number-pad"}
-                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={13}/>
@@ -200,6 +202,7 @@ class Profile extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
+                        editable={false}
                         placeholder={language.email_txt}
                         onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
                         value={this.state.emailTxt}
@@ -251,10 +254,76 @@ class Profile extends Component {
         </View>)
     }
 
+    /* async onSubmit(language, navigation) {
+         await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
+         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+     }*/
+
+
     async onSubmit(language, navigation) {
-        await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
-        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+        await this.updateUserRequest(navigation);
     }
+
+    async updateUserRequest(navigation) {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let userRequest = {
+            PERSON_NICKNAME: this.state.alias,
+            CUSTOMER_ID: userDetails.CUSTOMER_ID.toString(),
+            USER_ID: userDetails.USER_ID,
+            UPD_FLAG: "N",
+            REQ_FLAG: "R",
+            PROFILE_IMG: userDetails.USER_ID,
+            ACTION: "USERPROFILEUPDATE",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            LANGUAGE: this.props.langId === "en" ? "E" : "B",
+            ...Config.commonReq
+        };
+        console.log("request", userRequest);
+        let result = await ApiRequest.apiRequest.callApi(userRequest, {});
+        console.log("result", result);
+        result = result[0];
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
+            Utility.alert(result.MESSAGE);
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
+    async getUserDetails() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let getUserRequest = {
+            CUSTOMER_ID: userDetails.CUSTOMER_ID.toString(),
+            USER_ID: userDetails.USER_ID,
+            MOBILE_NO: "",
+            REQUEST_CD: userDetails.REQUEST_CD,
+            REQ_FLAG: "R",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            ACTION: "GETUSERPROFILEDTL",
+            ...Config.commonReq
+        };
+        console.log("request", getUserRequest);
+        let result = await ApiRequest.apiRequest.callApi(getUserRequest, {});
+
+        result = result[0];
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            console.log("result", result.RESPONSE[0]);
+            this.setState({
+                alias: response.PERSON_NICKNAME,
+                customerName: response.PERSON_NAME,
+                mobileNo: response.MOBILE_NO,
+                emailTxt: response.EMAIL_ID,
+            });
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
 
     async changeLanguage(props, langCode) {
         console.log("langCode", langCode);
@@ -354,7 +423,7 @@ class Profile extends Component {
     }
 
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -362,12 +431,10 @@ class Profile extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
-
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-
-
+        await this.getUserDetails();
     }
 }
 
@@ -411,6 +478,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

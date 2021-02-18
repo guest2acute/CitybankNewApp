@@ -64,7 +64,7 @@ class OTPScreen extends Component {
             ACTION: "RESETPWDVERIFY",
             REQ_TYPE: "O",
             ACTIVITY_CD: response.ACTIVITY_CD,
-            DEVICE_ID: Utility.getDeviceID(),
+            DEVICE_ID: await Utility.getDeviceID(),
             ...Config.commonReq
         }
 
