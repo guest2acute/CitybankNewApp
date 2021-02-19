@@ -92,7 +92,7 @@ export default {
     et_mother_name: "Enter Mother Name",
     et_dob: "Date Of Birth",
     select_dob: "Enter Date of Birth",
-    etTransPin:"Please ",
+    etTransPin: "Please ",
     yes_txt: "Yes",
     no_txt: "No",
     user_id: "User ID",
@@ -112,6 +112,7 @@ export default {
     change_login_pin: "Change Login PIN",
     change_transaction_pin: "Change Transaction PIN",
     upload_documents: "Upload Supporting Document",
+    err_upload_documents: "Please upload  supporting document",
     upload_docs: "Upload Document",
     withdrawChk: "Withdrawn",
     dateTitle: "Date",
@@ -146,6 +147,8 @@ export default {
     LoginWith: "Login With User ID?",
     PINLogin: "PIN Login",
     PinNumber: "Enter Your PIN Number",
+    errSelRequest: "Please select request",
+
     Language_M: [
         {label: "English", value: 0},
         {label: "বাংলা", value: 1},
@@ -178,6 +181,7 @@ export default {
     supportDocument: "Supporting Document",
     selectDocument: "Select the supporting document",
     documentNo: "Document Number",
+    errDocumentNo: "Please enter document number",
     documentTypeArr: [
         {label: "NID", value: 1},
         {label: "Rental Deed", value: 2},
@@ -231,7 +235,7 @@ export default {
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",
     exitConfirm: "Are you sure want to exit from App?",
-    select_date:"Select Date",
+    select_date: "Select Date",
 
     /*arrays*/
     optionTypeArr: [
@@ -332,7 +336,8 @@ export default {
     otp_sent_txt: "Get OTP",
 
     new_pwd_txt: "New Password",
-
+    act_card_no: "Account Number/Card Number",
+    sel_act_card_no: "Select Account Number/Card Number",
     confirm_pwd_txt: "Confirm Password",
     select_request: "Select Request",
     prepaid_card: "Using Prepaid Card",

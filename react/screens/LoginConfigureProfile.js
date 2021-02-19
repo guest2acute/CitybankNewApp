@@ -311,6 +311,7 @@ class LoginConfigureProfile extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        secureTextEntry={true}
                         maxLength={6}/>
                 </View>
                 {this.state.errorConfLoginPIN !== "" ?

@@ -93,6 +93,7 @@ class LoginScreen extends Component {
         await StorageClass.store(Config.UserName, this.state.userID);
         let isFirstTime = await StorageClass.retrieve(Config.isFirstTime);
         console.log("userIdVal ===userID", isFirstTime + "=== " + response.USER_ID);
+
         if (isFirstTime === response.USER_ID) {
             this.props.navigation.dispatch(
                 StackActions.replace("BottomNavigator", {userID: response.USER_ID})

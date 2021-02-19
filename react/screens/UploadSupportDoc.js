@@ -20,12 +20,17 @@ import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import DocumentPicker from "react-native-document-picker";
 import RNFetchBlob from "rn-fetch-blob";
+import ApiRequest from "../config/ApiRequest";
+import Config from "../config/Config";
 
 class UploadSupportDoc extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isProgress: false,
+            AccountCardNo: props.language.sel_act_card_no,
+            accountCardNoList: [],
+            accountCardVal: null,
             DocumentRequiredFor: props.language.changeFor,
             selectTypeVal: -1,
             modelSelection: "",
@@ -38,11 +43,11 @@ class UploadSupportDoc extends Component {
             errorDocumentNo: "",
             select_file: "",
             file_name: "",
-            errorDocumentAttach: ""
+            errorDocumentAttach: "",
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -53,6 +58,7 @@ class UploadSupportDoc extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+        await this.getAccounts()
     }
 
     openModal(option, title, data, language) {
@@ -67,10 +73,11 @@ class UploadSupportDoc extends Component {
         }
     }
 
-
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        if (modelSelection === "documentFor") {
+        if (modelSelection === "accountCardNo") {
+            this.setState({AccountCardNo: item.label, accountCardVal: item.actDetails, modalVisible: false})
+        } else if (modelSelection === "documentFor") {
             this.setState({DocumentRequiredFor: item.label, selectTypeVal: item.value, modalVisible: false})
         } else if (modelSelection === "documentType") {
             this.setState({documentType: item.label, docTypeVal: item.value, modalVisible: false})
@@ -78,11 +85,43 @@ class UploadSupportDoc extends Component {
     }
 
     async onSubmit(language, navigation) {
-        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation);
+        if (this.state.documentNo === "") {
+            this.setState({errorDocumentNo: language.errDocumentNo})
+            return;
+        } else if (this.state.select_file === "") {
+            this.setState({errorDocumentAttach: language.err_upload_documents})
+            return;
+        }
+        await this.uploadData();
     }
 
     mainView(language) {
         return (<View>
+            <Text style={[CommonStyle.labelStyle, {
+                color: themeStyle.THEME_COLOR,
+                marginStart: 10,
+                marginEnd: 10,
+                marginTop: 6,
+                marginBottom: 4
+            }]}>
+                {language.act_card_no + "*"}
+            </Text>
+            <TouchableOpacity
+                onPress={() => this.openModal("accountCardNo", language.sel_act_card_no, this.state.accountCardNoList, language)}>
+
+                <View style={styles.selectionBg}>
+                    <Text style={[CommonStyle.midTextStyle, {
+                        color: this.state.AccountCardNo === language.sel_act_card_no ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                        flex: 1
+                    }]}>
+                        {this.state.AccountCardNo}
+                    </Text>
+                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                           source={require("../resources/images/ic_arrow_down.png")}/>
+                </View>
+            </TouchableOpacity>
+
+
             <Text style={[CommonStyle.labelStyle, {
                 color: themeStyle.THEME_COLOR,
                 marginStart: 10,
@@ -152,7 +191,10 @@ class UploadSupportDoc extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.documentNo}
-                        onChangeText={text => this.setState({documentNo: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorDocumentNo: "",
+                            documentNo: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.documentNo}
                         multiline={false}
                         numberOfLines={1}
@@ -185,13 +227,12 @@ class UploadSupportDoc extends Component {
                         {language.upload_docs}
                         <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
-                    <TouchableOpacity style={{ flex: 1}} onPress={() => this.uploadPdf()}>
+                    <TouchableOpacity style={{flex: 1}} onPress={() => this.uploadDoc()}>
                         <TextInput
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
                                 alignItems: "flex-end",
                                 textAlign: 'right',
-
                                 marginLeft: 10
                             }]}
                             editable={false}
@@ -219,8 +260,8 @@ class UploadSupportDoc extends Component {
         </View>)
     }
 
-    async uploadPdf() {
-        this.setState({select_file: "", file_name: "",errorDocumentAttach:""});
+    async uploadDoc() {
+        this.setState({select_file: "", file_name: "", errorDocumentAttach: ""});
         const res = await DocumentPicker.pick({
             type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
             content: true
@@ -228,14 +269,78 @@ class UploadSupportDoc extends Component {
         console.log("result", res);
         let response = await RNFetchBlob.fs.readFile(res.uri, "base64");
         if (res.type === "application/pdf" && res.size > 1000000) {
-            this.setState({errorDocumentAttach:this.props.language.maxOneMB})
+            this.setState({errorDocumentAttach: this.props.language.maxOneMB})
             return;
         } else if (res.type.indexOf("image/") !== -1 && res.size > 200000) {
-            this.setState({errorDocumentAttach:this.props.language.max200KB})
+            this.setState({errorDocumentAttach: this.props.language.max200KB})
             return;
         }
-
         this.setState({select_file: response, file_name: res.name});
+    }
+
+    async uploadData() {
+        let accountCardVal = this.state.accountCardVal;
+        console.log("accountCardVal", accountCardVal);
+        this.setState({isProgress: true});
+        let uploadReq = {
+            ACTION: "UPLOADSUPDOCFILE",
+            CBNUMBER: accountCardVal.CUSTOMER_ID,
+            ACCOUNTNUMBER: accountCardVal.ACCOUNT_NO,
+            FILE_NAME: this.state.file_name,
+            FILE_DATA: this.state.select_file,
+            USER_NAME: this.props.userDetails.USER_ID,
+            DOC_ID: this.state.docTypeVal.toString(),
+            DOC_NO: this.state.documentNo,
+            DOC_NM: this.state.documentType,
+            CHANGE_REQ_TYPE: this.state.selectTypeVal.toString(),
+            CHANNEL: "M",
+            DEVICE_IP: Utility.getDeviceID(),
+            ...Config.commonReq
+        }
+        console.log("uploadReq", uploadReq);
+        let result = await ApiRequest.apiRequest.callApi(uploadReq, {});
+        result = result[0];
+        console.log("Result", result);
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            this.setState({
+                documentNo: "",
+                select_file: "",
+                file_name: "",
+                errorDocumentAttach: "",
+            })
+            Utility.alert(result.MESSAGE);
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+
+    }
+
+
+    async getAccounts() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let result = await ApiRequest.apiRequest.getAccountDetails(userDetails, {});
+        console.log("result", result);
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            console.log("response", response);
+            let act_type_arr = [];
+            response.ACCOUNT_DTL && response.ACCOUNT_DTL.map((account) => {
+                act_type_arr.push({
+                    label: account.ACCOUNT_NO, value: parseInt(account.ACCOUNT_NO), actDetails: account
+                });
+            });
+            response.CARD_DTL && response.CARD_DTL.map((account) => {
+                act_type_arr.push({
+                    label: account.ACCOUNT_NO, value: parseInt(account.ACCOUNT_NO), actDetails: account
+                });
+            });
+            this.setState({accountCardNoList: act_type_arr, isProgress: false});
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
     }
 
     render() {
@@ -256,31 +361,32 @@ class UploadSupportDoc extends Component {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
                         {this.mainView(language)}
-                        {this.state.selectTypeVal === -1 || this.state.docTypeVal === -1? null : <View style={{
-                            flexDirection: "row",
-                            marginStart: Utility.setWidth(10),
-                            marginRight: Utility.setWidth(10),
-                            marginTop: Utility.setHeight(20)
-                        }}>
-                            <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.onSubmit(language, this.props.navigation)}>
-                                <View style={{
-                                    flex: 1,
-                                    alignSelf: "center",
-                                    justifyContent: "center",
-                                    height: Utility.setHeight(46),
-                                    width: Utility.getDeviceWidth() / 3,
-                                    borderRadius: Utility.setHeight(23),
-                                    backgroundColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {
-                                            color: themeStyle.WHITE,
-                                            textAlign: "center"
-                                        }]}>{language.submit}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>}
+                        {this.state.accountCardVal === null || this.state.selectTypeVal === -1 || this.state.docTypeVal === -1 ? null :
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: Utility.setWidth(10),
+                                marginRight: Utility.setWidth(10),
+                                marginTop: Utility.setHeight(20)
+                            }}>
+                                <TouchableOpacity style={{flex: 1}}
+                                                  onPress={() => this.onSubmit(language, this.props.navigation)}>
+                                    <View style={{
+                                        flex: 1,
+                                        alignSelf: "center",
+                                        justifyContent: "center",
+                                        height: Utility.setHeight(46),
+                                        width: Utility.getDeviceWidth() / 3,
+                                        borderRadius: Utility.setHeight(23),
+                                        backgroundColor: themeStyle.THEME_COLOR
+                                    }}>
+                                        <Text
+                                            style={[CommonStyle.midTextStyle, {
+                                                color: themeStyle.WHITE,
+                                                textAlign: "center"
+                                            }]}>{language.submit}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>}
                     </View>
                 </ScrollView>
                 <Modal
@@ -321,7 +427,7 @@ class UploadSupportDoc extends Component {
                                       }
                                       ItemSeparatorComponent={this.renderSeparator}
                                       keyExtractor={(item, index) => index + ""}
-                                      />
+                            />
                         </View>
                     </View>
                 </Modal>
@@ -373,6 +479,7 @@ const
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };
