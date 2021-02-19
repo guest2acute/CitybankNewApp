@@ -10,7 +10,8 @@ import {
     StatusBar,
     Text, TextInput,
     TouchableOpacity,
-    View
+    View,
+    BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
 import CommonStyle from "../resources/CommonStyle";
@@ -18,18 +19,16 @@ import Utility from "../utilize/Utility";
 import {BusyIndicator} from "../resources/busy-indicator";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
+import ApiRequest from "../config/ApiRequest";
+import moment from "moment";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import Config from "../config/Config";
 
-let actNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
-    key: "1",
-    label: "4567890123456123",
-    value: 4567890123456123
-}];
 
 class ChangeTransPin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            actNo: "",
             stage: 0,
             select_actNo: props.language.select_actNo,
             selectTypeVal: -1,
@@ -37,29 +36,70 @@ class ChangeTransPin extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            fatherName: "",
+            fatherName: "KRISNA CHANDRA CHAKMA",
             errorFather: "",
-            motherName: "",
+            motherName: "ARUN BALA CHAKMA",
             errorMother: "",
-            dob: "",
+            isProgress: false,
+            dateVal: new Date(),
+            mode: "date",
+            show: false,
+            dob: "11-JAN-1978",
             errorDob: "",
             pinVal: "",
             errorPinVal: "",
-            errorConfirmPinVal: ""
+            ConfirmPinVal: "",
+            errorConfirmPinVal: "",
+            actNoList: [],
+            verifyRes: "",
+            otpVal: ""
         }
     }
 
-    componentDidMount() {
+    backAction = () => {
+        this.backBtn();
+        return true;
+    }
+
+    async backBtn() {
+        const {stage} = this.state;
+        if (stage > 0) {
+            this.setState({
+                stage: 0, pinVal: "",
+                errorPinVal: "",
+                ConfirmPinVal: "",
+                errorConfirmPinVal: "",
+                otpVal: ""
+            });
+        }else {
+            this.props.navigation.goBack();
+        }
+    }
+
+
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            this.backHandler = BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+        await this.getAccountDetails();
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener(
+                "hardwareBackPress", this.backHandler)
+        }
     }
 
     openModal(option, title, data, language) {
@@ -72,6 +112,32 @@ class ChangeTransPin extends Component {
         } else {
             Utility.alert(language.noRecord);
         }
+    }
+
+    async getAccountDetails() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let actRequest = {
+            CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST,
+            USER_ID: userDetails.USER_ID,
+            LOGIN_TYPE: "P",
+            ACTION: "GETOPERATIVEACCT",
+            DEVICE_ID: await Utility.getDeviceID(),
+            AUTH_FLAG: "A"
+        }
+
+        console.log("actRequest", actRequest);
+        let result = await ApiRequest.apiRequest.callApi(actRequest, {});
+        console.log("result", result);
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            console.log("response", response);
+            this.setState({actNoList: response.ACCOUNT_DTL, isProgress: false});
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+
     }
 
     enterPIN(language) {
@@ -94,7 +160,7 @@ class ChangeTransPin extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.et_new_pin_txt}
+                        {language.enterTransactionPin}
                         <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
                     <TextInput
@@ -106,7 +172,10 @@ class ChangeTransPin extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({pinVal: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorPinVal: "",
+                            pinVal: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.pinVal}
                         multiline={false}
                         numberOfLines={1}
@@ -151,7 +220,10 @@ class ChangeTransPin extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_confirm_pin_txt}
-                        onChangeText={text => this.setState({ConfirmPinVal: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorConfirmPinVal: "",
+                            ConfirmPinVal: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.ConfirmPinVal}
                         multiline={false}
                         numberOfLines={1}
@@ -239,178 +311,348 @@ class ChangeTransPin extends Component {
 
 
     userPersonal(language) {
-        return (<View>
-            <Text style={[CommonStyle.labelStyle, {
-                color: themeStyle.THEME_COLOR,
-                marginStart: 10,
-                marginEnd: 10,
-                marginTop: 6,
-                marginBottom: 4
-            }]}>
-                {language.actNo + "*"}
-            </Text>
-            <View style={styles.selectionBg}>
-                <Text style={[CommonStyle.midTextStyle, {
-                    color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                    flex: 1
+        return (
+            <View>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
                 }]}>
-                    {this.state.select_actNo}
+                    {language.actNo + "*"}
                 </Text>
-                <Image resizeMode={"contain"} style={styles.arrowStyle}
-                       source={require("../resources/images/ic_arrow_down.png")}/>
-            </View>
-            {this.state.selectTypeVal !== -1 ? <View style={{
-                borderColor: themeStyle.BORDER,
-                marginStart: 10,
-                marginEnd: 10,
-                borderRadius: 5,
-                marginTop: 10,
-                overflow: "hidden",
-                borderWidth: 2
-            }}>
-                <View>
-                    <View style={{
-                        flexDirection: "row",
-                        marginStart: 10,
-                        height: Utility.setHeight(50),
-                        alignItems: "center",
-                        marginEnd: 10,
-                    }}>
-                        <Text style={[CommonStyle.textStyle]}>
-                            {language.fatherName}
-                            <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("account", language.select_actNo, this.state.actNoList, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.select_actNo}
                         </Text>
-                        <TextInput
-                            selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {
-                                alignItems: "flex-end",
-                                textAlign: 'right',
-                                flex: 1,
-                                marginLeft: 10
-                            }]}
-                            placeholder={language.et_father_name}
-                            onChangeText={text => this.setState({fatherName: Utility.userInput(text)})}
-                            value={this.state.fatherName}
-                            multiline={false}
-                            numberOfLines={1}
-                            contextMenuHidden={true}
-                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}/>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../resources/images/ic_arrow_down.png")}/>
                     </View>
-                    {this.state.errorFather !== "" ?
-                        <Text style={{
-                            marginLeft: 5,
-                            marginRight: 10,
-                            color: themeStyle.THEME_COLOR,
-                            fontSize: FontSize.getSize(11),
-                            fontFamily: fontStyle.RobotoRegular,
-                            alignSelf: "flex-end",
-                            marginBottom: 10,
-                        }}>{this.state.errorFather}</Text> : null}
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View>
+                </TouchableOpacity>
+                {this.state.selectTypeVal !== -1 ?
                     <View style={{
-                        flexDirection: "row",
+                        borderColor: themeStyle.BORDER,
                         marginStart: 10,
-                        height: Utility.setHeight(50),
-                        alignItems: "center",
                         marginEnd: 10,
+                        borderRadius: 5,
+                        marginTop: 10,
+                        overflow: "hidden",
+                        borderWidth: 2
                     }}>
-                        <Text style={[CommonStyle.textStyle]}>
-                            {language.motherName}
-                            <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                        </Text>
-                        <TextInput
-                            selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {
-                                alignItems: "flex-end",
-                                textAlign: 'right',
-                                flex: 1,
-                                marginLeft: 10
-                            }]}
-                            placeholder={language.et_mother_name}
-                            onChangeText={text => this.setState({motherName: Utility.userInput(text)})}
-                            value={this.state.motherName}
-                            multiline={false}
-                            numberOfLines={1}
-                            contextMenuHidden={true}
-                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}/>
-                    </View>
-                    {this.state.errorMother !== "" ?
-                        <Text style={{
-                            marginLeft: 5,
-                            marginRight: 10,
-                            color: themeStyle.THEME_COLOR,
-                            fontSize: FontSize.getSize(11),
-                            fontFamily: fontStyle.RobotoRegular,
-                            alignSelf: "flex-end",
-                            marginBottom: 10,
-                        }}>{this.state.errorMother}</Text> : null}
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View>
-                    <View style={{
-                        flexDirection: "row",
-                        marginStart: 10,
-                        height: Utility.setHeight(50),
-                        alignItems: "center",
-                        marginEnd: 10,
-                    }}>
-                        <Text style={[CommonStyle.textStyle]}>
-                            {language.et_dob}
-                            <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                        </Text>
-                        <TextInput
-                            selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {
-                                alignItems: "flex-end",
-                                textAlign: 'right',
-                                flex: 1,
-                                marginLeft: 10
-                            }]}
-                            placeholder={"MM/YY"}
-                            onChangeText={text => this.setState({dob: Utility.input(text, "0123456789/")})}
-                            value={this.state.dob}
-                            multiline={false}
-                            numberOfLines={1}
-                            contextMenuHidden={true}
-                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}
-                            maxLength={5}/>
-                    </View>
-                    {this.state.errorDob !== "" ?
-                        <Text style={{
-                            marginLeft: 5,
-                            marginRight: 10,
-                            color: themeStyle.THEME_COLOR,
-                            fontSize: FontSize.getSize(11),
-                            fontFamily: fontStyle.RobotoRegular,
-                            alignSelf: "flex-end",
-                            marginBottom: 10,
-                        }}>{this.state.errorDob}</Text> : null}
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        <View>
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: 10,
+                                height: Utility.setHeight(50),
+                                alignItems: "center",
+                                marginEnd: 10,
+                            }}>
+                                <Text style={[CommonStyle.textStyle]}>
+                                    {language.fatherName}
+                                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                                </Text>
+                                <TextInput
+                                    selectionColor={themeStyle.THEME_COLOR}
+                                    style={[CommonStyle.textStyle, {
+                                        alignItems: "flex-end",
+                                        textAlign: 'right',
+                                        flex: 1,
+                                        marginLeft: 10
+                                    }]}
+                                    placeholder={language.et_father_name}
+                                    onChangeText={text => this.setState({
+                                        errorFather: "",
+                                        fatherName: Utility.userInput(text)
+                                    })}
+                                    value={this.state.fatherName}
+                                    multiline={false}
+                                    numberOfLines={1}
+                                    contextMenuHidden={true}
+                                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                    autoCorrect={false}/>
+                            </View>
+                            {this.state.errorFather !== "" ?
+                                <Text style={{
+                                    marginLeft: 5,
+                                    marginRight: 10,
+                                    color: themeStyle.THEME_COLOR,
+                                    fontSize: FontSize.getSize(11),
+                                    fontFamily: fontStyle.RobotoRegular,
+                                    alignSelf: "flex-end",
+                                    marginBottom: 10,
+                                }}>{this.state.errorFather}</Text> : null}
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        <View>
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: 10,
+                                height: Utility.setHeight(50),
+                                alignItems: "center",
+                                marginEnd: 10,
+                            }}>
+                                <Text style={[CommonStyle.textStyle]}>
+                                    {language.motherName}
+                                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                                </Text>
+                                <TextInput
+                                    selectionColor={themeStyle.THEME_COLOR}
+                                    style={[CommonStyle.textStyle, {
+                                        alignItems: "flex-end",
+                                        textAlign: 'right',
+                                        flex: 1,
+                                        marginLeft: 10
+                                    }]}
+                                    placeholder={language.et_mother_name}
+                                    onChangeText={text => this.setState({
+                                        errorMother: "",
+                                        motherName: Utility.userInput(text)
+                                    })}
+                                    value={this.state.motherName}
+                                    multiline={false}
+                                    numberOfLines={1}
+                                    contextMenuHidden={true}
+                                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                    autoCorrect={false}/>
+                            </View>
+                            {this.state.errorMother !== "" ?
+                                <Text style={{
+                                    marginLeft: 5,
+                                    marginRight: 10,
+                                    color: themeStyle.THEME_COLOR,
+                                    fontSize: FontSize.getSize(11),
+                                    fontFamily: fontStyle.RobotoRegular,
+                                    alignSelf: "flex-end",
+                                    marginBottom: 10,
+                                }}>{this.state.errorMother}</Text> : null}
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        <View>
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: 10,
+                                height: Utility.setHeight(50),
+                                alignItems: "center",
+                                marginEnd: 10,
+                            }}>
+                                <Text style={[CommonStyle.textStyle]}>
+                                    {language.et_dob}
+                                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                                </Text>
+                                <TouchableOpacity style={{
+                                    marginLeft: 10,
+                                    flex: 1,
+                                }} onPress={() => this.showDatepicker(0)}>
+                                    <TextInput
+                                        selectionColor={themeStyle.THEME_COLOR}
+                                        style={[CommonStyle.textStyle, {
+                                            alignItems: "flex-end",
+                                            textAlign: 'right',
+                                        }]}
+                                        placeholder={language.select_date}
+                                        editable={false}
+                                        value={this.state.dob}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                        contextMenuHidden={true}
+                                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                        autoCorrect={false}/>
+                                </TouchableOpacity>
+                            </View>
+                            {this.state.errorDob !== "" ?
+                                <Text style={{
+                                    marginLeft: 5,
+                                    marginRight: 10,
+                                    color: themeStyle.THEME_COLOR,
+                                    fontSize: FontSize.getSize(11),
+                                    fontFamily: fontStyle.RobotoRegular,
+                                    alignSelf: "flex-end",
+                                    marginBottom: 10,
+                                }}>{this.state.errorDob}</Text> : null}
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            </View> : null}
-        </View>)
+                    </View> : null}
+            </View>)
     }
 
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "account") {
-            this.setState({select_actNo: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({
+                select_actNo: item.ACCOUNT_NO,
+                selectTypeVal: parseInt(item.ACCOUNT_NO),
+                modalVisible: false
+            })
+        }
+    }
+
+    resetAll() {
+        this.setState({
+            stage: 0,
+            fatherName: "",
+            errorFather: "",
+            motherName: "",
+            errorMother: "",
+            isProgress: false,
+            dateVal: new Date(),
+            mode: "date",
+            show: false,
+            dob: "",
+            pinVal: "",
+            ConfirmPinVal: "",
+            verifyRes: "",
+            otpVal: ""
+        });
+    }
+
+    async changeTransPin(language, navigation) {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let changeReq = {
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            USER_ID: userDetails.USER_ID,
+            AUTH_FLAG: userDetails.AUTH_FLAG,
+            ACCT_NO: this.state.select_actNo,
+            NEW_PIN: this.state.pinVal,
+            REQ_FLAG: "R",
+            PASS_TYPE: "T",
+            REQUEST_CD: this.state.verifyRes.REQUEST_CD.toString(),
+            REQ_TYPE: "V",
+            ACTION: "CHANGETXNPIN",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            DEVICE_ID: await Utility.getDeviceID(),
+            ...Config.commonReq
+        }
+        console.log("request", changeReq);
+
+        let result = await ApiRequest.apiRequest.callApi(changeReq, {});
+        result = result[0];
+
+        if (result.STATUS === "0") {
+            this.resetAll();
+            Utility.alert(result.MESSAGE);
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
         }
     }
 
     async onSubmit(language, navigation) {
-        const {stage} = this.state;
-        if (stage === 2)
-            Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
-        else
-            this.setState({stage: stage + 1});
+        if (this.state.fatherName === "") {
+            this.setState({errorFather: "Please enter father name"});
+        } else if (this.state.motherName === "") {
+            this.setState({errorMother: "Please enter mother name"});
+        } else if (this.state.dob === "") {
+            this.setState({errorDob: "Please select date of birth"});
+        } else if (this.state.stage === 2) {
+            if (this.state.pinVal === "") {
+                this.setState({errorPinVal: language.errTransactionPin})
+            } else if (this.state.ConfirmPinVal === "") {
+                this.setState({errorConfirmPinVal: language.errTConfPin})
+            } else {
+                await this.changeTransPin(language, navigation);
+            }
+        } else if (this.state.stage === 1) {
+            if (this.state.otpVal.length !== 4) {
+                Utility.alert(language.errOTP);
+            } else {
+                await this.processOTP(language, navigation);
+            }
+        } else {
+            await this.verifyTransPin();
+        }
+    }
+
+
+    async processOTP(language, navigation) {
+        let verifyRes = this.state.verifyRes;
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let otpReq = {
+            OTP_NO: this.state.otpVal,
+            USER_ID: userDetails.USER_ID,
+            AUTH_FLAG: userDetails.AUTH_FLAG,
+            REQ_FLAG: "R",
+            REQUEST_CD: verifyRes.REQUEST_CD.toString(),
+            MOBILE_NO: userDetails.MOBILE_NO,
+            REQ_TYPE: "O",
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            ACTION: "CHANGETXNPIN",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            DEVICE_ID: await Utility.getDeviceID(),
+            ...Config.commonReq
+        }
+
+        console.log("request", otpReq);
+
+        let result = await ApiRequest.apiRequest.callApi(otpReq, {});
+        result = result[0];
+        if (result.STATUS === "0") {
+            console.log("response", result.RESPONSE[0]);
+            this.setState({isProgress: false, stage: this.state.stage + 1});
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+
+    }
+
+    showDatepicker = (id) => {
+        console.log("click");
+        this.setState({currentSelection: id, show: true, mode: "date"});
+    };
+
+    onChange = (event, selectedDate) => {
+        if (event.type !== "dismissed" && selectedDate !== undefined) {
+            console.log("selectedDate-", selectedDate);
+            let currentDate = selectedDate === "" ? new Date() : selectedDate;
+            currentDate = moment(currentDate).format("DD-MMM-YYYY");
+            this.setState({dateVal: selectedDate, dob: currentDate, show: false});
+        } else {
+            this.setState({show: false});
+        }
+    };
+
+    async verifyTransPin() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let verifyReq = {
+            USER_ID: userDetails.USER_ID,
+            AUTH_FLAG: userDetails.AUTH_FLAG,
+            ACCT_NO: this.state.select_actNo,
+            REQ_FLAG: "R",
+            PASS_TYPE: "T",
+            REQ_TYPE: "A",
+            MOTHER_NM: this.state.motherName,
+            BIRTH_DATE: this.state.dob,
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            ACTION: "CHANGETXNPIN",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            FATHER_NM: this.state.fatherName,
+            DEVICE_ID: await Utility.getDeviceID(),
+            ...Config.commonReq
+        }
+        console.log("actRequest", verifyReq);
+        let result = await ApiRequest.apiRequest.callApi(verifyReq, {});
+        result = result[0];
+        console.log("response", result.RESPONSE[0]);
+
+        if (result.STATUS === "0") {
+            console.log("response", result.RESPONSE[0]);
+            this.setState({isProgress: false, stage: this.state.stage + 1, verifyRes: result.RESPONSE[0]});
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+
     }
 
     render() {
@@ -421,7 +663,7 @@ class ChangeTransPin extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() => this.backBtn()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
@@ -431,12 +673,9 @@ class ChangeTransPin extends Component {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
 
-                        <TouchableOpacity
-                            onPress={() => this.openModal("account", language.select_actNo, actNumber, language)}>
+                        {this.state.stage === 0 ? this.userPersonal(language) :
+                            this.state.stage === 1 ? this.otpEnter(language) : this.enterPIN(language)}
 
-                            {this.state.stage === 0 ? this.userPersonal(language) :
-                                this.state.stage === 1 ? this.otpEnter(language) : this.enterPIN(language)}
-                        </TouchableOpacity>
                         {this.state.selectTypeVal === -1 ? null : <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
@@ -482,12 +721,11 @@ class ChangeTransPin extends Component {
                                 <Text style={[CommonStyle.midTextStyle, {
                                     textAlign: "center",
                                     color: themeStyle.WHITE,
-
                                 }]}>{this.state.modalTitle}</Text>
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => item.key}
+                                      data={this.state.modalData} keyExtractor={(item, index) => index + ""}
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -496,7 +734,7 @@ class ChangeTransPin extends Component {
                                                       style={[CommonStyle.textStyle, {
                                                           color: themeStyle.THEME_COLOR,
                                                           marginStart: 10
-                                                      }]}>{item.label}</Text>
+                                                      }]}>{item.ACCOUNT_NO}</Text>
                                               </View>
                                           </TouchableOpacity>
                                       }
@@ -504,6 +742,16 @@ class ChangeTransPin extends Component {
                         </View>
                     </View>
                 </Modal>
+                {this.state.show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={this.state.dateVal}
+                        mode={this.state.mode}
+                        is24Hour={false}
+                        display="default"
+                        onChange={this.onChange}
+                    />
+                )}
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
@@ -550,17 +798,12 @@ const
 
     }
 
-const
-    mapStateToProps = (state) => {
-        return {
-            langId: state.accountReducer.langId,
-            language: state.accountReducer.language,
-        };
+const mapStateToProps = (state) => {
+    return {
+        userDetails: state.accountReducer.userDetails,
+        langId: state.accountReducer.langId,
+        language: state.accountReducer.language,
     };
+};
 
-export default connect(mapStateToProps)
-
-(
-    ChangeTransPin
-)
-;
+export default connect(mapStateToProps)(ChangeTransPin);

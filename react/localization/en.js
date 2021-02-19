@@ -92,6 +92,7 @@ export default {
     et_mother_name: "Enter Mother Name",
     et_dob: "Date Of Birth",
     select_dob: "Enter Date of Birth",
+    etTransPin:"Please ",
     yes_txt: "Yes",
     no_txt: "No",
     user_id: "User ID",
@@ -100,7 +101,9 @@ export default {
     conf_email: "Confirm Email Address",
     setPwdTxt: "Set Password",
     etPasswordTxt: "Enter Password here",
-    enterTransactionPin: "Enter transaction PIN",
+    enterTransactionPin: "Enter Transaction PIN",
+    errTransactionPin: "Please enter transaction pin",
+    errTConfPin: "Confirm new transaction pin mismatch with new transaction pin",
     last_trans_date: "Last Transaction Date",
     last_trans_amount: "Last Transaction Amount",
     personalise_profile: "Personalise Profile",
@@ -228,7 +231,7 @@ export default {
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",
     exitConfirm: "Are you sure want to exit from App?",
-
+    select_date:"Select Date",
 
     /*arrays*/
     optionTypeArr: [

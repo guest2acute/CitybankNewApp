@@ -43,13 +43,13 @@ class CredentialDetails extends Component {
             selectCard: props.language.selectCard,
             selectActCard: props.language.accountTypeArr[0],
             accountNo: "2101038360001",
-            cardPin: "",
+            cardPin: "0000",
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            expiryDate: "",
-            creditCardNo: "",
+            expiryDate: "11/23",
+            creditCardNo: "376948112527300",
             transactionPin: "",
             cityTouchUserId: "zebatest2",
             errActNo: "",
@@ -413,7 +413,7 @@ class CredentialDetails extends Component {
             if (this.state.creditCardNo.length === 0) {
                 this.setState({errCardNo: language.errCardNo});
                 return;
-            } else if (this.state.expiryDate.length !== 5) {
+            } else if (this.state.expiryDate.length === "") {
                 this.setState({errExpiryDate: language.errExpiryDate});
                 return;
             } else if (this.state.cardPin.length !== 4) {

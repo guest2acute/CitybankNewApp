@@ -61,9 +61,10 @@ class LoginScreen extends Component {
 
     async processLoginResponse(result) {
         let response = result.RESPONSE[0];
-        console.log("responseVal",response);
+        console.log("responseVal", response);
         let userDetails = {
             UserName: this.state.userID,
+            AUTH_FLAG: response.AUTH_FLAG,
             ACTIVITY_CD: result.ACTIVITY_CD,
             CUSTOMER_DTL_LIST: response.CUSTOMER_DTL_LIST,
             CUSTOMER_ID: response.CUSTOMER_ID,
@@ -81,7 +82,7 @@ class LoginScreen extends Component {
             TXN_PASS_EXP_ALERT_MSG: response.TXN_PASS_EXP_ALERT_MSG,
             USER_PROFILE_IMG: response.USER_PROFILE_IMG,
         };
-        console.log("userDetails",userDetails);
+        console.log("userDetails", userDetails);
 
         this.props.dispatch({
             type: actions.account.SET_USER_DETAILS,
@@ -159,7 +160,7 @@ class LoginScreen extends Component {
             ...Config.commonReq
         };
         console.log("requets", loginReq);
-        let result = await ApiRequest.apiRequest.callApi(loginReq,{});
+        let result = await ApiRequest.apiRequest.callApi(loginReq, {});
         console.log("result", result);
         result = result[0];
         this.setState({isProgress: false});
@@ -171,7 +172,6 @@ class LoginScreen extends Component {
             Utility.alert(result.MESSAGE);
         }
     }
-
 
     render() {
         let language = this.props.language;

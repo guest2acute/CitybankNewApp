@@ -41,7 +41,6 @@ import ChangeLoginPIN from "./react/screens/ChangeLoginPIN";
 import ChangeContactDetails from "./react/screens/ChangeContactDetails";
 import UploadSupportDoc from "./react/screens/UploadSupportDoc";
 import PinLogin from "./react/screens/PinLogin";
-import ExpandList from "./react/screens/ExpandList";
 
 
 const store = configureStore(window.__State__);

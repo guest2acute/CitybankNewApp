@@ -46,17 +46,14 @@ class More extends Component {
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
                 {
-                    id: "changeTransPin",
-                    title: language.change_transaction_pin,
-                    icon: require("../../resources/images/ic_credential_management.png")
-                },
-                {
                     id: "UploadDoc",
                     title: language.upload_documents,
                     icon: require("../../resources/images/ic_credential_management.png")
-                },
+                }
             ]
         }
+
+
     }
 
     /**
@@ -75,6 +72,18 @@ class More extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+
+        if (this.props.userDetails.AUTH_FLAG === "TP") {
+            const {data} = this.state;
+            let arr = data;
+            let obj = {
+                id: "changeTransPin",
+                title:this.props.language.change_transaction_pin,
+                icon: require("../../resources/images/ic_credential_management.png")
+            }
+            arr.push(obj);
+            this.setState({data: arr});
+        }
     }
 
     moveScreen(item) {
@@ -216,6 +225,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

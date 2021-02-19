@@ -173,9 +173,10 @@ class PinLogin extends Component {
 
     async processLoginResponse(result, userName) {
         let response = result.RESPONSE[0];
-
+        console.log("response",response);
         let userDetails = {
             UserName: userName,
+            AUTH_FLAG: response.AUTH_FLAG,
             ACTIVITY_CD: result.ACTIVITY_CD,
             CUSTOMER_DTL_LIST: response.CUSTOMER_DTL_LIST,
             CUSTOMER_ID: response.CUSTOMER_ID,
