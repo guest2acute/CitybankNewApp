@@ -70,6 +70,7 @@ export default {
     email: "EMAIL",
     otpViaMob: "You will receive an One Time Password (OTP) via SMS to Mobile Number: ",
     otpViaEmail: "You will receive an One Time Password (OTP) via Email to Email Address: ",
+    otpViaBoth: "You will receive an One Time Password (OTP) via both Email and SMS ",
     register_title: "Citytouch Online Registration",
     signupWithAccount: "SIGN UP WITH ACCOUNT",
     signupWithCard: "SIGN UP WITH CREDIT/PREPAID CARD",
@@ -166,7 +167,6 @@ export default {
         {label: "Pin", value: 1},
     ],
 
-
     contactList: [
         {label: "Change Mobile Number", value: 0},
         {label: "Change Email Address", value: 1},
@@ -176,7 +176,6 @@ export default {
         {label: "Change Mobile Number", value: 0},
         {label: "Change Email Address", value: 1},
     ],
-
 
     supportDocument: "Supporting Document",
     selectDocument: "Select the supporting document",

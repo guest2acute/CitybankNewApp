@@ -60,21 +60,12 @@ class SplashScreen extends Component {
     }
 
     async callToken(deviceId) {
-        if (deviceId === undefined || deviceId === null || deviceId === "") {
-            let uniqueId = await DeviceInfo.getUniqueId();
-            if (uniqueId === undefined || uniqueId === null || uniqueId === "") {
-                uniqueId = Utility.getCurrentTimeStamp();
-            }
-            deviceId = uniqueId;
-            await StorageClass.store(Config.DeviceId, uniqueId);
-        }
-
         Config.commonReq = {
             BROWSER: Platform.OS + " native",
             LATITUDE: "0.0",
             LONGITUDE: '0.0',
             DEVICE: Platform.OS.toUpperCase(),
-            IMEI: deviceId,
+            IMEI: await Utility.getDeviceID(),
             DEVICE_IP: await DeviceInfo.getIpAddress(),
             DEVICE_IPV6: await DeviceInfo.getIpAddress(),
             DEVICE_MAC: await DeviceInfo.getMacAddress(),
@@ -91,7 +82,7 @@ class SplashScreen extends Component {
         let tokenReq = JSON.stringify({
             ACTION: "GET_AUTH_CRED",
         });
-        let result = await ApiRequest.apiRequest.callApi(tokenReq,{});
+        let result = await ApiRequest.apiRequest.callApi(tokenReq, {});
         console.log("result", result);
         Config.AUTH = result;
     }
@@ -108,8 +99,8 @@ class SplashScreen extends Component {
     }
 
     async initSetup() {
-        let deviceId = await StorageClass.retrieve(Config.DeviceId);
-        await this.callToken(deviceId);
+
+        await this.callToken();
         await this.changeLanguage();
         await this.getAuth();
         await this.redirectScreen();

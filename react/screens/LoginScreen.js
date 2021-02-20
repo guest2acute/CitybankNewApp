@@ -106,19 +106,21 @@ class LoginScreen extends Component {
 
     }
 
-    deviceChange() {
+    deviceChange(result) {
+        let that = this;
         Alert.alert(
             Config.appName,
-            this.props.language.deviceChangeTxt,
+            result.MESSAGE,
             [
                 {
-                    text: "No"
+                    text:that.props.language.no_txt
                 },
                 {
-                    text: "Yes", onPress: () =>
+                    text:that.props.language.yes_txt, onPress: () =>
                         this.props.navigation.navigate("TermConditionScreen",
                             {
-                                showButton: true
+                                showButton: true,
+                                deviceChangeRes:result.RESPONSE[0],
                             })
                 },
             ]
@@ -160,7 +162,7 @@ class LoginScreen extends Component {
             PASSWORD: passwordVal,
             ...Config.commonReq
         };
-        console.log("requets", loginReq);
+        console.log("request", loginReq);
         let result = await ApiRequest.apiRequest.callApi(loginReq, {});
         console.log("result", result);
         result = result[0];
@@ -168,7 +170,7 @@ class LoginScreen extends Component {
         if (result.STATUS === "0") {
             await this.processLoginResponse(result);
         } else if (result.STATUS === "71") {
-            this.deviceChange();
+            this.deviceChange(result);
         } else {
             Utility.alert(result.MESSAGE);
         }

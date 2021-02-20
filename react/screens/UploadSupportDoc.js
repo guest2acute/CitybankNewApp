@@ -316,7 +316,6 @@ class UploadSupportDoc extends Component {
 
     }
 
-
     async getAccounts() {
         let userDetails = this.props.userDetails;
         this.setState({isProgress: true});
