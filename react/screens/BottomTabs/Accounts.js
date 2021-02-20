@@ -139,7 +139,7 @@ class Accounts extends Component {
         }
 
         await responseArr.map(async (level1) => {
-            let level1Obj = {title: level1.HEADER_NAME, opened: true};
+            let level1Obj = {title: level1.HEADER_NAME, opened: mainArray.length === 0};
             let items = [];
             let level2Arr = level1.HEADER_ACCT_DTL;
             if (level2Arr.length > 1) {
@@ -157,7 +157,7 @@ class Accounts extends Component {
                 if (level3Arr.length > 0) {
                     let level2Obj = {
                         title: level2.PARENTPRODUCTNAME,
-                        opened: true,
+                        opened: items.length ===0 ,
                         items: level3Arr
                     };
                     items.push(level2Obj);
@@ -167,6 +167,18 @@ class Accounts extends Component {
                 mainArray.push({...level1Obj, items});
         });
         this.setState({isProgress: false, dataList: mainArray});
+    }
+
+    async getBalance(id, accountNo) {
+        this.setState({isProgress: true});
+        let req = {
+            ACTION: "GETACCTBALDETAIL",
+            ACCT_NO: accountNo,
+            RES_FLAG: "B",
+            SOURCE: "FINACLE",
+            CURRENCYCODE: ""
+        }
+        console.log("req", req);
     }
 
     render() {
