@@ -1,6 +1,4 @@
-/*Example of Expandable ListView in React Native*/
 import React, {Component} from 'react';
-//import react in our project
 import {
     LayoutAnimation,
     Image,
@@ -12,7 +10,7 @@ import {
     TouchableOpacity,
     Platform, SafeAreaView, StatusBar,
 } from 'react-native';
-//import basic react native components
+
 import NestedListView, {NestedRow} from 'react-native-nested-listview'
 import CommonStyle from "../../resources/CommonStyle";
 import themeStyle from "../../resources/theme.style";
@@ -20,32 +18,9 @@ import Utility from "../../utilize/Utility";
 import {connect} from "react-redux";
 import fontStyle from "../../resources/FontStyle";
 import FontSize from "../../resources/ManageFontSize";
+import ApiRequest from "../../config/ApiRequest";
+import {BusyIndicator} from "../../resources/busy-indicator";
 
-const data = [{
-    title: 'CityTouch Conventional Banking',
-    opened: true,
-    items: [{
-        title: 'Current/Savings Accounts',
-        opened: true,
-        items: [{
-            PRODUCTNAME: 'GENERAL SAVINGS-STAFF A/C', ACCOUNTORCARDNO: '2252742574001',
-        }]
-    },
-    ]
-},
-    {
-        title: 'CityTouch Islamic Banking',
-        opened:false,
-        items: [{
-            title: 'Credit Card Accounts',
-            opened:false,
-            items: [{PRODUCTNAME: 'Gold Staff Dual Primary', ACCOUNTORCARDNO: '376948010808307'},
-                {PRODUCTNAME: 'Agora Co-Brand Gold Staff Primary', ACCOUNTORCARDNO: '376948010808307'},
-                {PRODUCTNAME: 'Biman Co-Brand Gold Staff Primary', ACCOUNTORCARDNO: '376948010808307'},
-                {PRODUCTNAME: 'VISA Classic Debit - Staff', ACCOUNTORCARDNO: '376948010808307'}]
-        }]
-    }
-]
 
 class Accounts extends Component {
     constructor() {
@@ -53,10 +28,10 @@ class Accounts extends Component {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
-        this.state = {dataList: data, contentVisible: false};
+        this.state = {dataList: null, contentVisible: false};
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -69,6 +44,7 @@ class Accounts extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
+        await this.getAccounts(this.props.language, this.props.navigation)
     }
 
 
@@ -134,6 +110,64 @@ class Accounts extends Component {
             </View>)
     }
 
+    async getAccounts(language, navigation) {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let actReq = {
+            ACTION: "GETTYPEWISEACLIST",
+            CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST
+        }
+        console.log("request", actReq);
+        let result = await ApiRequest.apiRequest.callApi(actReq, {});
+        result = result[0];
+
+        if (result.STATUS === "0") {
+            await this.processSummary(result.RESPONSE);
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
+    async processSummary(responseArr) {
+        let mainArray = [];
+
+        if (responseArr.length > 1) {
+            responseArr = responseArr.sort((a, b) => {
+                return parseInt(a.DISPLAY_ORDER) - parseInt(b.DISPLAY_ORDER)
+            })
+        }
+
+        await responseArr.map(async (level1) => {
+            let level1Obj = {title: level1.HEADER_NAME, opened: true};
+            let items = [];
+            let level2Arr = level1.HEADER_ACCT_DTL;
+            if (level2Arr.length > 1) {
+                level2Arr = level2Arr.sort(function (a, b) {
+                    return parseInt(a.DISPLAY_ORDER) - parseInt(b.DISPLAY_ORDER)
+                });
+            }
+            await level2Arr.map((level2) => {
+                let level3Arr = level2.ACCT_LIST;
+                if (level3Arr.length > 1) {
+                    level3Arr = level3Arr.sort(function (a, b) {
+                        return parseInt(a.DISPLAY_ORDER) - parseInt(b.DISPLAY_ORDER)
+                    });
+                }
+                if (level3Arr.length > 0) {
+                    let level2Obj = {
+                        title: level2.PARENTPRODUCTNAME,
+                        opened: true,
+                        items: level3Arr
+                    };
+                    items.push(level2Obj);
+                }
+            });
+            if (items.length > 0)
+                mainArray.push({...level1Obj, items});
+        });
+        this.setState({isProgress: false, dataList: mainArray});
+    }
 
     render() {
         let language = this.props.language;
@@ -161,12 +195,11 @@ class Accounts extends Component {
                     <Text style={styles.title}>{language.goodEvening}</Text>
                 </View>
 
-                <NestedListView
-                    data={data}
+                {this.state.dataList !== null ? <NestedListView
+                    data={this.state.dataList}
                     getChildrenName={(node) => 'items'}
                     onNodePressed={(node) => this.setState({contentVisible: !this.state.contentVisible})}
                     renderNode={(node, level, isLastLevel) => {
-                        console.log("level", level + "-" + node);
                         return (
                             <NestedRow
                                 paddingLeftIncrement={0}
@@ -176,8 +209,8 @@ class Accounts extends Component {
                         )
                     }
                     }
-                />
-
+                /> : null}
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>
         );
     }
@@ -209,6 +242,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };
