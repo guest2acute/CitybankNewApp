@@ -8,7 +8,7 @@ import {
     ScrollView,
     UIManager,
     TouchableOpacity,
-    Platform, SafeAreaView, StatusBar,
+    Platform, SafeAreaView, StatusBar, ActivityIndicator,
 } from 'react-native';
 
 import NestedListView, {NestedRow} from 'react-native-nested-listview'
@@ -20,6 +20,7 @@ import fontStyle from "../../resources/FontStyle";
 import FontSize from "../../resources/ManageFontSize";
 import ApiRequest from "../../config/ApiRequest";
 import {BusyIndicator} from "../../resources/busy-indicator";
+import themesStyle from "../../resources/theme.style";
 
 
 class Accounts extends Component {
@@ -98,11 +99,16 @@ class Accounts extends Component {
                                 flex: 1,
                                 color: themeStyle.DIMCOLOR
                             }]}>{account.ACCOUNTORCARDNO}</Text>
-                            <TouchableOpacity onPress={() => this.updateBalance(account, "10000")}>
-                                <Text style={[CommonStyle.textStyle, {
+                            {account.BALANCE ? <Text style={[CommonStyle.textStyle, {
                                     color: themeStyle.THEME_COLOR
-                                }]}>{account.balance ? account.balance : this.props.language.view_balance}</Text>
-                            </TouchableOpacity>
+                                }]}>{account.BALANCE}</Text>
+                                : <View style={{
+                                    width: Utility.setWidth(100),
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }}>
+                                    <ActivityIndicator size="small" color={themesStyle.THEME_COLOR}/>
+                                </View>}
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -117,7 +123,7 @@ class Accounts extends Component {
             ACTION: "GETTYPEWISEACLIST",
             CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST
         }
-        console.log("request", actReq);
+        console.log("actReq", actReq);
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
         result = result[0];
 
@@ -131,7 +137,7 @@ class Accounts extends Component {
 
     async processSummary(responseArr) {
         let mainArray = [];
-
+        let actArr = [];
         if (responseArr.length > 1) {
             responseArr = responseArr.sort((a, b) => {
                 return parseInt(a.DISPLAY_ORDER) - parseInt(b.DISPLAY_ORDER)
@@ -157,28 +163,80 @@ class Accounts extends Component {
                 if (level3Arr.length > 0) {
                     let level2Obj = {
                         title: level2.PARENTPRODUCTNAME,
-                        opened: items.length ===0 ,
+                        opened: items.length === 0,
                         items: level3Arr
                     };
+                    actArr = [...actArr, ...level3Arr];
                     items.push(level2Obj);
                 }
             });
             if (items.length > 0)
                 mainArray.push({...level1Obj, items});
         });
-        this.setState({isProgress: false, dataList: mainArray});
+        this.setState({isProgress: false, dataList: mainArray}, () => {
+            console.log("actArr", actArr);
+            actArr.map((accountVal) => {
+                this.getBalance(accountVal.ACCOUNTORCARDNO);
+            })
+        });
     }
 
-    async getBalance(id, accountNo) {
-        this.setState({isProgress: true});
-        let req = {
+    async getBalance(accountNo) {
+        let balanceReq = {
             ACTION: "GETACCTBALDETAIL",
             ACCT_NO: accountNo,
             RES_FLAG: "B",
             SOURCE: "FINACLE",
             CURRENCYCODE: ""
         }
-        console.log("req", req);
+        console.log("balanceReq", balanceReq);
+        let result = await ApiRequest.apiRequest.callApi(balanceReq, {});
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            await this.processBalance(response);
+            console.log("balance", response.AVAILBALANCE);
+        }
+    }
+
+
+    async processBalance(response) {
+        let accountNo = response.ACCOUNT;
+        let availBalance = response.AVAILBALANCE;
+        let dataList = this.state.dataList;
+        let objectPos = -1;
+        let object;
+        let sectionPos = -1;
+        let level1Pos = -1;
+        let level2Pos = -1;
+        for (let l1 = 0; l1 < dataList.length; l1++) {
+            let dataItem = dataList[l1].items;
+            for (let l2 = 0; l2 < dataItem.length; l2++) {
+                console.log(l1 + "-" + l2 + "-dataItem", dataItem[l2].items);
+                objectPos = dataItem[l2].items.findIndex(item => item.ACCOUNTORCARDNO === accountNo);
+                if (objectPos > -1) {
+                    level1Pos = l1;
+                    level2Pos = l2;
+                    object = dataItem[l2].items[objectPos];
+                    break;
+                }
+            }
+            if (objectPos > -1) {
+                break;
+            }
+
+        }
+
+        console.log("before-datalist", dataList);
+        let level3Arr = dataList[level1Pos].items[level2Pos].items;
+        console.log("beforelevel3Arr", level3Arr);
+        object = {...object, BALANCE: availBalance};
+        level3Arr[objectPos] = object;
+        console.log("level3Arr", level3Arr);
+        dataList[level1Pos].items[level2Pos] = {...dataList[level1Pos].items[level2Pos], items: level3Arr};
+        console.log("dataList[level1Pos].items[level2Pos]", dataList[level1Pos].items);
+        dataList[level1Pos] = {...dataList[level1Pos].items[level2Pos], items: dataList[level1Pos].items};
+        console.log("after- datalist", dataList);
+        this.setState({dataList: dataList});
     }
 
     render() {

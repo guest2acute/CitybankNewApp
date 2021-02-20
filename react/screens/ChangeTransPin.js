@@ -245,7 +245,7 @@ class ChangeTransPin extends Component {
                 marginEnd: Utility.setWidth(10),
                 marginTop: Utility.setHeight(10),
                 marginBottom: Utility.setHeight(20),
-            }]}> {language.otp_description + language.otp_signup}</Text>
+            }]}> {language.otp_description + language.otp_change_tPin}</Text>
             <View style={{
                 borderColor: themeStyle.BORDER,
                 width: Utility.getDeviceWidth() - 30,

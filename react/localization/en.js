@@ -56,6 +56,7 @@ export default {
     otp_fgt_pwd: "to process forgot password",
     otp_fgt_pin: "to process forgot PIN",
     otp_fgt_uid: "to process forgot User ID",
+    otp_change_tPin: "to process change transaction pin",
     otp_activate: "to activate Citytouch Digital Banking Service",
     otp_signup: "to process registration in Citytouch Digital Banking Service",
     otp_pwd: "to change password in Citytouch Digital Banking Service",
