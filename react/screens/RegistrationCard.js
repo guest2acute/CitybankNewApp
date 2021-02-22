@@ -22,6 +22,7 @@ import CheckBox from "@react-native-community/checkbox";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Config from "../config/Config";
 import {CommonActions, StackActions} from "@react-navigation/native";
+import MonthPicker from "react-native-month-year-picker";
 
 
 class RegistrationCard extends Component {
@@ -34,8 +35,10 @@ class RegistrationCard extends Component {
             conf_mobile: "",
             cardPin: "",
             errorMobile: "",
+            error_conf_mobile:"",
             conf_email: "",
             errorEmail: "",
+            errorCard_No:"",
             errorUserId: "",
             userId: "",
             userId_type: 0,
@@ -44,6 +47,7 @@ class RegistrationCard extends Component {
             isTerm: false,
             debitPin: "",
             errorPin: "",
+            cardExpiry:"",
             errorExpiry: "",
             errorFather: "",
             errorMother: "",
@@ -54,14 +58,19 @@ class RegistrationCard extends Component {
             motherName: "",
             transPin: "",
             errorTransPin: "",
+            loginPin:"",
+            errorLoginPin:"",
+            errorpassword:"",
             stateVal: 0,
             options: [
                 {title: props.language.signupWithAccount, selected: false},
                 {title: props.language.signupWithCard, selected: true},
-            ]
+            ],
+            dateVal: new Date(),
+            showMonthPicker: false,
+            expiryDate: "",
         }
     }
-
 
     componentDidMount() {
         if (Platform.OS === "android") {
@@ -97,6 +106,22 @@ class RegistrationCard extends Component {
             this.setState({stateVal: stateVal - 1});
     }
 
+    onValueChange = (event, newDate) => {
+        console.log("event", event + "-" + newDate);
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        switch (event) {
+            case "dateSetAction":
+                console.log("event", "in");
+                this.setState({expiryDate: dateVal, showMonthPicker: false});
+                break;
+            case "neutralAction":
+                break;
+            case "dismissedAction":
+            default:
+                this.setState({showMonthPicker: false});
+        }
+    }
+
     passwordSet(language) {
         return (<View style={{
             borderColor: themeStyle.BORDER,
@@ -117,6 +142,7 @@ class RegistrationCard extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.transactionPin}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -127,7 +153,7 @@ class RegistrationCard extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterTransactionPin}
-                        onChangeText={text => this.setState({transPin: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({errorTransPin:"",transPin: Utility.input(text, "0123456789/")})}
                         value={this.state.transPin}
                         multiline={false}
                         numberOfLines={1}
@@ -135,6 +161,10 @@ class RegistrationCard extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event)=>{
+                            this.loginPinRef.focus();
+                        }}
                         maxLength={4}/>
                 </View>
                 {this.state.errorTransPin !== "" ?
@@ -160,8 +190,10 @@ class RegistrationCard extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.loginPin}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
+                        ref={(ref)=>this.loginPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -170,17 +202,21 @@ class RegistrationCard extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.setLoginPIn}
-                        onChangeText={text => this.setState({transPin: Utility.input(text, "0123456789/")})}
-                        value={this.state.transPin}
+                        onChangeText={text => this.setState({errorLoginPin:"",loginPin: Utility.input(text, "0123456789/")})}
+                        value={this.state.loginPin}
                         multiline={false}
                         numberOfLines={1}
                         keyboardType={"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={ (event)=>{
+                            this.passwordRef.focus();
+                        }}
                         maxLength={6}/>
                 </View>
-                {this.state.errorTransPin !== "" ?
+                {this.state.errorLoginPin !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -189,7 +225,7 @@ class RegistrationCard extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorTransPin}</Text> : null}
+                    }}>{this.state.errorLoginPin}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -203,8 +239,10 @@ class RegistrationCard extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.setPwdTxt}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
+                        ref ={(ref)=> this.passwordRef=ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -213,7 +251,7 @@ class RegistrationCard extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.etPasswordTxt}
-                        onChangeText={text => this.setState({password: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorpassword:"",password: Utility.userInput(text)})}
                         value={this.state.password}
                         multiline={false}
                         numberOfLines={1}
@@ -223,7 +261,7 @@ class RegistrationCard extends Component {
                         autoCorrect={false}
                         maxLength={6}/>
                 </View>
-                {this.state.errorTransPin !== "" ?
+                {this.state.errorpassword !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -232,7 +270,7 @@ class RegistrationCard extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorTransPin}</Text> : null}
+                    }}>{this.state.errorpassword}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
@@ -341,8 +379,10 @@ class RegistrationCard extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.user_id}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
+                        ref={(ref)=>this.user_idRef= ref }
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -351,7 +391,7 @@ class RegistrationCard extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.user_id_enter}
-                        onChangeText={text => this.setState({userId: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({errorUserId:"",userId: Utility.input(text, "0123456789")})}
                         value={this.state.userId}
                         multiline={false}
                         numberOfLines={1}
@@ -458,6 +498,7 @@ class RegistrationCard extends Component {
                     }}>
                         <Text style={[CommonStyle.textStyle]}>
                             {language.credit_card_no}
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                         </Text>
                         <TextInput
                             selectionColor={themeStyle.THEME_COLOR}
@@ -468,17 +509,26 @@ class RegistrationCard extends Component {
                                 marginLeft: 10
                             }]}
                             placeholder={language.enter_card_no}
-                            onChangeText={text => this.setState({cardNo: Utility.input(text, "0123456789")})}
+                            onChangeText={text => this.setState({errorCard_No:"",cardNo: Utility.input(text, "0123456789")})}
                             value={this.state.cardNo}
                             multiline={false}
                             numberOfLines={1}
                             contextMenuHidden={true}
-                            secureTextEntry={true}
                             keyboardType={"number-pad"}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                             autoCorrect={false}
                             maxLength={16}/>
                     </View>
+                    {this.state.errorCard_No !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorCard_No}</Text> : null}
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                     <View style={{
@@ -519,6 +569,7 @@ class RegistrationCard extends Component {
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
                                 {language.conf_mobile}
+                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                             </Text>
                             <TextInput
                                 selectionColor={themeStyle.THEME_COLOR}
@@ -529,7 +580,7 @@ class RegistrationCard extends Component {
                                     marginLeft: 10
                                 }]}
                                 placeholder={"01********"}
-                                onChangeText={text => this.setState({conf_mobile: Utility.input(text, "0123456789")})}
+                                onChangeText={text => this.setState({errorMobile:"",conf_mobile: Utility.input(text, "0123456789")})}
                                 value={this.state.conf_mobile}
                                 multiline={false}
                                 numberOfLines={1}
@@ -537,6 +588,10 @@ class RegistrationCard extends Component {
                                 keyboardType={"number-pad"}
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                 autoCorrect={false}
+                                returnKeyType={"next"}
+                                onSubmitEditing={(event)=>{
+                                    this.emailref.focus();
+                                }}
                                 maxLength={14}/>
                         </View>
                         {this.state.errorMobile !== "" ?
@@ -550,10 +605,7 @@ class RegistrationCard extends Component {
                                 marginBottom: 10,
                             }}>{this.state.errorMobile}</Text> : null}
                     </View>
-
-
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
                     <View>
                         <View style={{
                             flexDirection: "row",
@@ -564,8 +616,10 @@ class RegistrationCard extends Component {
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
                                 {language.conf_email}
+                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                             </Text>
                             <TextInput
+                                ref ={(ref)=> this.emailref  = ref}
                                 selectionColor={themeStyle.THEME_COLOR}
                                 style={[CommonStyle.textStyle, {
                                     alignItems: "flex-end",
@@ -574,7 +628,7 @@ class RegistrationCard extends Component {
                                     marginLeft: 10
                                 }]}
                                 placeholder={"a********@gmail.com"}
-                                onChangeText={text => this.setState({conf_email: Utility.userInput(text)})}
+                                onChangeText={text => this.setState({errorEmail:"",conf_email: Utility.userInput(text)})}
                                 value={this.state.conf_email}
                                 multiline={false}
                                 numberOfLines={1}
@@ -618,7 +672,12 @@ class RegistrationCard extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.enterExpiry}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
+                    <TouchableOpacity style={{
+                        flex: 1,
+                        marginLeft: 10
+                    }} onPress={() => this.setState({errorExpiry: "",showMonthPicker: true})}>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
@@ -628,14 +687,20 @@ class RegistrationCard extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterCardExpiry}
-                        onChangeText={text => this.setState({cardExpiry: Utility.input(text, "0123456789")})}
-                        value={this.state.cardExpiry}
+                       // onChangeText={text => this.setState({errorExpiry:"",cardExpiry: Utility.input(text, "0123456789")})}
+                        editable={false}
+                        value={this.state.expiryDate}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event)=>{
+                            this.debitPinRef.focus();
+                        }}
                         maxLength={5}/>
+                    </TouchableOpacity>
                 </View>
                 {this.state.errorExpiry !== "" ?
                     <Text style={{
@@ -660,8 +725,10 @@ class RegistrationCard extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.enterCardPin}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
+                        ref={(ref)=>this.debitPinRef= ref }
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -670,7 +737,7 @@ class RegistrationCard extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({cardPin: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({errorPin:"",cardPin: Utility.input(text, "0123456789")})}
                         value={this.state.cardPin}
                         multiline={false}
                         numberOfLines={1}
@@ -678,6 +745,10 @@ class RegistrationCard extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         keyboardType={"number-pad"}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event)=>{
+                            this.user_idRef.focus();
+                        }}
                         maxLength={6}/>
                 </View>
                 {this.state.errorPin !== "" ?
@@ -698,7 +769,45 @@ class RegistrationCard extends Component {
 
     submit(language, navigation) {
         const {stateVal} = this.state;
-        if (stateVal === 4) {
+        if(stateVal === 0 ) {
+            if(this.state.cardNo === ""){
+                this.setState({ errorCard_No:language.errCardNo})
+                return;
+            }else if(this.state.conf_mobile === ""){
+                this.setState({ errorMobile:language.require_mobile})
+                return;
+            }else if(this.state.conf_email === ""){
+                this.setState({errorEmail: language.require_email});
+                return;
+            }
+        }
+        else if(stateVal === 1) {
+            if (this.state.expiryDate === "") {
+                this.setState({errorExpiry: language.errExpiryDate});
+                return;
+            }else if (this.state.cardPin === "") {
+                this.setState({errorPin: language.errCardPin});
+                return;
+            }else if (this.state.userId === "") {
+                this.setState({errorUserId: language.errorUserId});
+                return;
+            }
+        }
+
+        else if(stateVal === 3) {
+            if(this.state.transPin === ""){
+                this.setState({errorTransPin: language.errTransPin});
+                return;
+            }else if(this.state.loginPin===""){
+                this.setState({errorLoginPin:language.errValidPin})
+                return;
+            }
+            else if(this.state.password === ""){
+                this.setState({errorpassword:language.errorpassword})
+                return;
+            }
+        }
+        else if(stateVal === 4){
             Alert.alert(
                 Config.appName,
                 language.success_register,
@@ -713,9 +822,9 @@ class RegistrationCard extends Component {
                     },
                 ]
             );
-        } else
-            this.setState({stateVal: stateVal + 1});
-
+            return;
+        }
+        this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
     }
 
     render() {
@@ -757,7 +866,6 @@ class RegistrationCard extends Component {
                                 marginStart: Utility.setWidth(10),
                                 marginRight: Utility.setWidth(10),
                                 marginTop: Utility.setHeight(20),
-
                             }}>
                                 <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
                                     <View style={{
@@ -793,6 +901,14 @@ class RegistrationCard extends Component {
                         </View>
                     </ScrollView>
                 </View>
+                {this.state.showMonthPicker ? <MonthPicker
+                    onChange={this.onValueChange}
+                    value={new Date()}
+                    minimumDate={new Date()}
+                    maximumDate={new Date(new Date().getFullYear() + 10, 12)}
+                    locale="en"
+                    mode="number"
+                /> : null}
             </View>);
     }
 }

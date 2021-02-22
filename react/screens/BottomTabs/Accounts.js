@@ -45,7 +45,7 @@ class Accounts extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
-        await this.getAccounts(this.props.language, this.props.navigation)
+
     }
 
 
