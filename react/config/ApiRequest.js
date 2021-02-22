@@ -12,7 +12,10 @@ export default class ApiRequest {
                 }
             }).then(response => {
                 console.log("response", response.data)
-                return resolve(response.data);
+                let result = response.data;
+                if(Object.prototype.toString.call(result) === '[object Array]')
+                    result = result[0];
+                return resolve(result);
             }).catch(error => {
                 console.log("error", error);
                 return reject(error);

@@ -299,7 +299,7 @@ class UploadSupportDoc extends Component {
         }
         console.log("uploadReq", uploadReq);
         let result = await ApiRequest.apiRequest.callApi(uploadReq, {});
-        result = result[0];
+       // result = result[0];
         console.log("Result", result);
         this.setState({isProgress: false});
         if (result.STATUS === "0") {

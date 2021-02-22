@@ -25,6 +25,8 @@ import {CommonActions, StackActions} from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import MonthPicker from "react-native-month-year-picker";
+import ApiRequest from "../config/ApiRequest";
+import {BusyIndicator} from "../resources/busy-indicator";
 
 
 class RegistrationAccount extends Component {
@@ -32,12 +34,16 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "",
+            accountNo: "2251262980001",
+            disableButton: true,
             actName: "",
+            placeMobile:"",
+            placeEmail:"",
             conf_mobile: "",
             errorMobile: "",
             conf_email: "",
             cardExpiry: "",
+            hasDebitCard:true,
             debitPin: "",
             errorEmail: "",
             errorUserId: "",
@@ -54,7 +60,7 @@ class RegistrationAccount extends Component {
             errorDob: "",
             errorTransDate: "",
             errorTransAmt: "",
-            transAmt:"",
+            transAmt: "",
             errorAccount_no: "",
             error_conf_mobile: "",
             transDate: "",
@@ -63,10 +69,10 @@ class RegistrationAccount extends Component {
             fatherName: "",
             motherName: "",
             transPin: "",
-            loginPin:"",
+            loginPin: "",
             errorTransPin: "",
-            errorLoginPin:"",
-            errorpassword:"",
+            errorLoginPin: "",
+            errorpassword: "",
             stateVal: 0,
             options: [
                 {title: props.language.signupWithAccount, selected: true},
@@ -77,6 +83,7 @@ class RegistrationAccount extends Component {
             dateVal: new Date(),
             showMonthPicker: false,
             expiryDate: "",
+            signUpResponse:""
         }
     }
 
@@ -174,7 +181,7 @@ class RegistrationAccount extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={(event)=>{
+                        onSubmitEditing={(event) => {
                             this.loginPinRef.focus();
                         }}
                         maxLength={4}/>
@@ -205,7 +212,7 @@ class RegistrationAccount extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
-                        ref={(ref)=>this.loginPinRef = ref}
+                        ref={(ref) => this.loginPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -214,7 +221,10 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.setLoginPIn}
-                        onChangeText={text => this.setState({errorLoginPin:"",loginPin: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({
+                            errorLoginPin: "",
+                            loginPin: Utility.input(text, "0123456789/")
+                        })}
                         value={this.state.loginPin}
                         multiline={false}
                         numberOfLines={1}
@@ -223,7 +233,7 @@ class RegistrationAccount extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={ (event)=>{
+                        onSubmitEditing={(event) => {
                             this.passwordRef.focus();
                         }}
                         maxLength={6}/>
@@ -254,7 +264,7 @@ class RegistrationAccount extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
-                        ref ={(ref)=> this.passwordRef=ref}
+                        ref={(ref) => this.passwordRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -263,7 +273,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.etPasswordTxt}
-                        onChangeText={text => this.setState({errorpassword:"",password: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorpassword: "", password: Utility.userInput(text)})}
                         value={this.state.password}
                         multiline={false}
                         numberOfLines={1}
@@ -414,7 +424,7 @@ class RegistrationAccount extends Component {
                                 marginLeft: 10,
                             }]}
                             placeholder={language.enterUserId}
-                            onChangeText={text => this.setState({errorUserId:"",userId: Utility.userInput(text)})}
+                            onChangeText={text => this.setState({errorUserId: "", userId: Utility.userInput(text)})}
                             value={this.state.userId}
                             multiline={false}
                             editable={this.state.userId_type !== 0}
@@ -502,6 +512,36 @@ class RegistrationAccount extends Component {
 
     }
 
+    async accountVerifyRequest(act_no, type) {
+        this.setState({isProgress: true});
+        let request = {
+            ACCT_NO: act_no,
+            REQ_FLAG: "",
+            REG_WITH: type,
+            RES_TYPE: "D",
+            ACTION: "VERIFYUSERACCT"
+        };
+        console.log("body", request);
+
+        let result = await ApiRequest.apiRequest.callApi(request, {});
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            console.log("verifyres", JSON.stringify(response));
+            this.setState({
+                isShowingAccountName: true,
+                actName: response.CUST_NAME,
+                placeMobile: response.MASK_MOBILE_NO,
+                placeEmail: response.MASK_MAIL_ID,
+                signUpResponse:response,
+                hasDebitCard:response.DEBIT_CARD.length > 0
+            });
+            this.setState({disableButton:false});
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
     accountView(language) {
         return (
             <View>
@@ -541,6 +581,10 @@ class RegistrationAccount extends Component {
                             value={this.state.accountNo}
                             multiline={false}
                             numberOfLines={1}
+                            returnKeyType={"done"}
+                            onSubmitEditing={async (event) => {
+                                await this.accountVerifyRequest(this.state.accountNo, "A");
+                            }}
                             contextMenuHidden={true}
                             keyboardType={"number-pad"}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
@@ -596,7 +640,7 @@ class RegistrationAccount extends Component {
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
-                                {language.conf_mobile}
+                                {language.mobile}
                                 <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                             </Text>
                             <TextInput
@@ -607,7 +651,7 @@ class RegistrationAccount extends Component {
                                     flex: 1,
                                     marginLeft: 10
                                 }]}
-                                placeholder={"01********"}
+                                placeholder={this.state.placeMobile}
                                 onChangeText={text => this.setState({
                                     errorMobile: "",
                                     conf_mobile: Utility.input(text, "0123456789")
@@ -620,7 +664,7 @@ class RegistrationAccount extends Component {
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                 autoCorrect={false}
                                 returnKeyType={"next"}
-                                onSubmitEditing={(event)=>{
+                                onSubmitEditing={(event) => {
                                     this.emailref.focus();
                                 }}
                                 maxLength={14}/>
@@ -648,11 +692,11 @@ class RegistrationAccount extends Component {
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
-                                {language.conf_email}
+                                {language.email}
                                 <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                             </Text>
                             <TextInput
-                                ref ={(ref)=> this.emailref  = ref}
+                                ref={(ref) => this.emailref = ref}
                                 selectionColor={themeStyle.THEME_COLOR}
                                 style={[CommonStyle.textStyle, {
                                     alignItems: "flex-end",
@@ -660,7 +704,7 @@ class RegistrationAccount extends Component {
                                     flex: 1,
                                     marginLeft: 10
                                 }]}
-                                placeholder={"a********@gmail.com"}
+                                placeholder={this.state.placeEmail}
                                 onChangeText={text => this.setState({
                                     errorEmail: "",
                                     conf_email: Utility.userInput(text)
@@ -719,7 +763,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_father_name}
-                        onChangeText={text => this.setState({errorFather:"",fatherName: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorFather: "", fatherName: Utility.userInput(text)})}
                         value={this.state.fatherName}
                         multiline={false}
                         numberOfLines={1}
@@ -765,7 +809,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_mother_name}
-                        onChangeText={text => this.setState({errorMother:"",motherName: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorMother: "", motherName: Utility.userInput(text)})}
                         value={this.state.motherName}
                         multiline={false}
                         numberOfLines={1}
@@ -811,7 +855,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={"MM/YY"}
-                        onChangeText={text => this.setState({errorDob:"",dob: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({errorDob: "", dob: Utility.input(text, "0123456789/")})}
                         value={this.state.dob}
                         multiline={false}
                         numberOfLines={1}
@@ -858,7 +902,10 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={"dd/MM/YYYY"}
-                        onChangeText={text => this.setState({ errorTransDate:"",transDate: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({
+                            errorTransDate: "",
+                            transDate: Utility.input(text, "0123456789/")
+                        })}
                         value={this.state.transDate}
                         multiline={false}
                         numberOfLines={1}
@@ -904,7 +951,10 @@ class RegistrationAccount extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        onChangeText={text => this.setState({errorTransAmt:"",transAmt: Utility.input(text, "0123456789.")})}
+                        onChangeText={text => this.setState({
+                            errorTransAmt: "",
+                            transAmt: Utility.input(text, "0123456789.")
+                        })}
                         value={this.state.transAmt}
                         multiline={false}
                         numberOfLines={1}
@@ -955,32 +1005,32 @@ class RegistrationAccount extends Component {
                     <TouchableOpacity style={{
                         flex: 1,
                         marginLeft: 10
-                    }} onPress={() => this.setState({errorExpiry: "",showMonthPicker: true})}>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.enterCardExpiry}
-/*                        onChangeText={text => this.setState({
-                            errorExpiry: "",
-                            expiryDate: Utility.input(text, "0123456789/")
-                        })}*/
-                        editable={false}
-                        value={this.state.expiryDate}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event)=>{
-                            this.debitPinRef.focus();
-                        }}
-                        maxLength={5}/>
+                    }} onPress={() => this.setState({errorExpiry: "", showMonthPicker: true})}>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={language.enterCardExpiry}
+                            /*                        onChangeText={text => this.setState({
+                                                        errorExpiry: "",
+                                                        expiryDate: Utility.input(text, "0123456789/")
+                                                    })}*/
+                            editable={false}
+                            value={this.state.expiryDate}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            returnKeyType={"next"}
+                            onSubmitEditing={(event) => {
+                                this.debitPinRef.focus();
+                            }}
+                            maxLength={5}/>
                     </TouchableOpacity>
                 </View>
                 {this.state.errorExpiry !== "" ?
@@ -1008,7 +1058,7 @@ class RegistrationAccount extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
-                        ref={(ref)=>this.debitPinRef= ref }
+                        ref={(ref) => this.debitPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -1049,96 +1099,83 @@ class RegistrationAccount extends Component {
     submit(language, navigation) {
         const {stateVal} = this.state;
         console.log(stateVal)
-            if(stateVal === 0){
-                if(this.state.accountNo.length !== 13){
-                    this.setState({errorAccount_no: language.require_account_no});
-                    return;
-                }
-                else if(this.state.conf_mobile === ""){
-                    this.setState({errorMobile: language.require_mobile});
-                    return;
-                }else if(this.state.conf_email === ""){
-                    this.setState({errorEmail: language.require_email});
-                    return;
-                }else if(this.state.UserId === ""){
-                    this.setState({errorUserId: language.require_email});
-                    return;
-                }
-            }
-
-            else if(stateVal === 1) {
-                if(this.state.expiryDate === ""){
-                    this.setState({errorExpiry: language.errExpiryDate});
-                    return;
-                }
-                else if (this.state.debitPin === "") {
-                    this.setState({errorPin: language.errCardPin});
-                    return;
-                }else if(this.state.userId === "") {
-                    this.setState({errorUserId: language.errorUserId});
-                    return;
-                }
-            }
-            else if(stateVal === 2) {
-                if (this.state.fatherName === "") {
-                    this.setState({errorFather: language.et_father_name});
-                    return;
-                } else if (this.state.motherName === "") {
-                    console.log("error mother")
-                    this.setState({errorMother: language.errorMother});
-                    return;
-                } else if (this.state.dob === "") {
-                    this.setState({errorDob: language.errorDob})
-                    return;
-                } else if (this.state.transDate === "") {
-                    this.setState({errorTransDate: language.errorTransDate})
-                    return;
-                }else if (this.state.transAmt === "") {
-                    this.setState({errorTransAmt: language.errorTransAmt})
-                    return;
-                }else if (this.state.UserId === "") {
-                    this.setState({errorUserId: language.errorUserId})
-                    return;
-                }
-
-            }
-            else if(stateVal === 3) {
-                 if(this.state.otpVal.length !== 4) {
-                    Utility.alert(language.errOTP);
-                    return;
-                }
-            }
-            else if(stateVal === 4){
-                if(this.state.transPin === ""){
-                    this.setState({errorTransPin: language.errTransPin});
-                    return;
-                }else if(this.state.loginPin===""){
-                    this.setState({errorLoginPin:language.errValidPin})
-                    return;
-                }
-                else if(this.state.password === ""){
-                    this.setState({errorpassword:language.errorpassword})
-                    return;
-                }
-                Alert.alert(
-                    Config.appName,
-                    language.success_register,
-                    [
-                        {
-                            text: language.ok, onPress: () => navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 0,
-                                    routes: [{name: "LoginScreen"}],
-                                })
-                            )
-                        },
-                    ]
-                );
+        if (stateVal === 0) {
+            if (this.state.accountNo.length !== 13) {
+                this.setState({errorAccount_no: language.errActNo});
                 return;
-            }else{
-                console.log("stateVal else part",stateVal)
+            } else if (this.state.conf_mobile === "") {
+                this.setState({errorMobile: language.require_mobile});
+                return;
+            } else if (Utility.validateEmail(this.state.conf_email)) {
+                this.setState({errorEmail: language.invalidEmail});
+                return;
             }
-                this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
+        } else if (stateVal === 1) {
+            if (this.state.expiryDate === "") {
+                this.setState({errorExpiry: language.errExpiryDate});
+                return;
+            } else if (this.state.debitPin === "") {
+                this.setState({errorPin: language.errCardPin});
+                return;
+            } else if (this.state.userId === "") {
+                this.setState({errorUserId: language.errorUserId});
+                return;
+            }
+        } else if (stateVal === 2) {
+            if (this.state.fatherName === "") {
+                this.setState({errorFather: language.et_father_name});
+                return;
+            } else if (this.state.motherName === "") {
+                console.log("error mother")
+                this.setState({errorMother: language.errorMother});
+                return;
+            } else if (this.state.dob === "") {
+                this.setState({errorDob: language.errorDob})
+                return;
+            } else if (this.state.transDate === "") {
+                this.setState({errorTransDate: language.errorTransDate})
+                return;
+            } else if (this.state.transAmt === "") {
+                this.setState({errorTransAmt: language.errorTransAmt})
+                return;
+            } else if (this.state.UserId === "") {
+                this.setState({errorUserId: language.errorUserId})
+                return;
+            }
+
+        } else if (stateVal === 3) {
+            if (this.state.otpVal.length !== 4) {
+                Utility.alert(language.errOTP);
+                return;
+            }
+        } else if (stateVal === 4) {
+            if (this.state.transPin === "") {
+                this.setState({errorTransPin: language.errTransPin});
+                return;
+            } else if (this.state.loginPin === "") {
+                this.setState({errorLoginPin: language.errValidPin})
+                return;
+            } else if (this.state.password === "") {
+                this.setState({errorpassword: language.errorpassword})
+                return;
+            }
+            Alert.alert(
+                Config.appName,
+                language.success_register,
+                [
+                    {
+                        text: language.ok, onPress: () => navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [{name: "LoginScreen"}],
+                            })
+                        )
+                    },
+                ]
+            );
+            return;
+        }
+        this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
     }
 
     render() {
@@ -1198,17 +1235,17 @@ class RegistrationAccount extends Component {
                                 </TouchableOpacity>
                                 <View style={{width: Utility.setWidth(20)}}/>
 
-                                <TouchableOpacity style={{flex: 1}}
+                                <TouchableOpacity disabled={this.state.disableButton} style={{flex: 1}}
                                                   onPress={() => this.submit(language, this.props.navigation)}>
                                     <View style={{
                                         alignItems: "center",
                                         justifyContent: "center",
                                         height: Utility.setHeight(46),
                                         borderRadius: Utility.setHeight(23),
-                                        backgroundColor: themeStyle.THEME_COLOR
+                                        backgroundColor: this.state.disableButton?themeStyle.PLACEHOLDER_COLOR:themeStyle.THEME_COLOR
                                     }}>
                                         <Text
-                                            style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 4 ? language.submit_txt : language.next}</Text>
+                                            style={[CommonStyle.midTextStyle, {color: this.state.disableButton?themeStyle.WHITE:themeStyle.WHITE}]}>{this.state.stateVal === 4 ? language.submit_txt : language.next}</Text>
                                     </View>
                                 </TouchableOpacity>
 
@@ -1224,6 +1261,8 @@ class RegistrationAccount extends Component {
                     locale="en"
                     mode="number"
                 /> : null}
+
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>);
     }
 }

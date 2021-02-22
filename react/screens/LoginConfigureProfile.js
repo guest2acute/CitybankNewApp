@@ -84,7 +84,7 @@ class LoginConfigureProfile extends Component {
         console.log("request", userRequest);
         let result = await ApiRequest.apiRequest.callApi(userRequest,{});
         console.log("result", result);
-        result = result[0];
+       // result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             await StorageClass.store(Config.isFirstTime, userID);

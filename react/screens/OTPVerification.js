@@ -73,7 +73,7 @@ class OTPVerification extends Component {
         console.log("request", deviceRegReq);
         let result = await ApiRequest.apiRequest.callApi(deviceRegReq, {});
         console.log("result", result);
-        result = result[0];
+        //result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             this.setState({stageVal: this.state.stageVal + 1, otpResponse: result.RESPONSE[0]})
@@ -95,7 +95,7 @@ class OTPVerification extends Component {
         console.log("request", deviceRegReq);
         let result = await ApiRequest.apiRequest.callApi(deviceRegReq, {});
         console.log("result", result);
-        result = result[0];
+        //result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0" || result.STATUS === "999") {
             Utility.alertWithBack(language.ok, result.MESSAGE, navigation);

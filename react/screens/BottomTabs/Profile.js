@@ -282,7 +282,7 @@ class Profile extends Component {
         console.log("request", userRequest);
         let result = await ApiRequest.apiRequest.callApi(userRequest, {});
         console.log("result", result);
-        result = result[0];
+       // result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
@@ -308,7 +308,7 @@ class Profile extends Component {
         console.log("request", getUserRequest);
         let result = await ApiRequest.apiRequest.callApi(getUserRequest, {});
 
-        result = result[0];
+        //result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
