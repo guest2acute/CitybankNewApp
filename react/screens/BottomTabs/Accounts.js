@@ -35,10 +35,10 @@ const data = [{
 },
     {
         title: 'CityTouch Islamic Banking',
-        opened:false,
+        opened: false,
         items: [{
             title: 'Credit Card Accounts',
-            opened:false,
+            opened: false,
             items: [{PRODUCTNAME: 'Gold Staff Dual Primary', ACCOUNTORCARDNO: '376948010808307'},
                 {PRODUCTNAME: 'Agora Co-Brand Gold Staff Primary', ACCOUNTORCARDNO: '376948010808307'},
                 {PRODUCTNAME: 'Biman Co-Brand Gold Staff Primary', ACCOUNTORCARDNO: '376948010808307'},
@@ -69,6 +69,42 @@ class Accounts extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
+        this.listAccount();
+
+    }
+
+    listAccount() {
+        let tempArry = [];
+        //let level1obj = {title: item.HEADER_NAME};
+        let level2obj ={ };
+        let dataArray = this.props.language.dataListArray;
+        console.log(" array is this", dataArray)
+        dataArray.map((item, i) => {
+            if (item.HEADER_ACCT_DTL.length > 0) {
+                item.HEADER_ACCT_DTL.map((headerDetail, i) => {
+                     level2obj.push({PARENTPRODUCTNAME:headerDetail.PARENTPRODUCTNAME,PARENTPRODUCTCODE:headerDetail.PARENTPRODUCTCODE})
+               headerDetail.ACCT_LIST.map((subheader,i)=>{
+                   let level2obj ={ACCT_LABEL:subheader.ACCT_LABEL}
+               })
+                })
+            }
+        })
+               /* let level1obj = {title: item.HEADER_NAME};*/
+
+               /* tempArry.push({
+                    title: item.HEADER_NAME,
+                    items: {title:item.HEADER_ACCT_DTL[0].PARENTPRODUCTNAME,
+                    subitem: item.HEADER_ACCT_DTL[0].ACCT_LIST
+                })
+            }
+            console.log("check array is ", dataArray)
+        })*/
+        /* dataArray.map((item,i)=>{
+            console.log("titile",item.HEADER_NAME),
+             item.HEADER_ACCT_DTL.map((item,i)=>{
+                 console.log("header",item.PARENTPRODUCTNAME)
+ })
+             })*/
     }
 
 
