@@ -20,6 +20,7 @@ import Config from "../config/Config";
 import {CommonActions} from "@react-navigation/native";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
+import MonthPicker from "react-native-month-year-picker";
 
 let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
     key: "1",
@@ -54,8 +55,19 @@ class ChangeContactDetails extends Component {
             conf_new_pwd: "",
             errorConfCredential: "",
             errorCredential: "",
+            errorMobile:"",
             newCredential:"",
-            confNewCredential:""
+            confNewCredential:"",
+            errorTransPin: "",
+            errorExpiry:"",
+            errorPin: "",
+            otpVal: "",
+            dateVal: new Date(),
+            showMonthPicker: false,
+            errorConfMobile:"",
+            errorConfEmail:"",
+            errorEmail:"",
+
         }
     }
 
@@ -82,6 +94,22 @@ class ChangeContactDetails extends Component {
             });
         } else {
             Utility.alert(language.noRecord);
+        }
+    }
+
+    onValueChange = (event, newDate) => {
+        console.log("event", event + "-" + newDate);
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        switch (event) {
+            case "dateSetAction":
+                console.log("event", "in");
+                this.setState({expiryDate: dateVal, showMonthPicker: false});
+                break;
+            case "neutralAction":
+                break;
+            case "dismissedAction":
+            default:
+                this.setState({showMonthPicker: false});
         }
     }
 
@@ -118,17 +146,30 @@ class ChangeContactDetails extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({transactionPin: Utility.input(text, "0123456789")})}
+                        //onChangeText={text => this.setState({transactionPin: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorTransPin: "",
+                            transactionPin: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.transactionPin}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
-                        secureTextEntry={true}
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={4}/>
                 </View>
+                {this.state.errorTransPin !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorTransPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View> : null}
         </View>)
@@ -152,33 +193,55 @@ class ChangeContactDetails extends Component {
             </TouchableOpacity>
 
 
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.enterExpiry}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                </Text>
-                <TextInput
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
+            <View>
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.enterExpiry}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TouchableOpacity style={{
                         flex: 1,
                         marginLeft: 10
-                    }]}
-                    placeholder={language.expiryDate}
-                    onChangeText={text => this.setState({expiryDate: Utility.input(text, "0123456789/")})}
-                    value={this.state.expiryDate}
-                    multiline={false}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    secureTextEntry={true}
-                    keyboardType={"number-pad"}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    maxLength={5}/>
+                    }} onPress={() => this.setState({errorExpiry: "",showMonthPicker: true})}>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={language.enterCardExpiry}
+                            editable={false}
+                            value={this.state.expiryDate}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            returnKeyType={"next"}
+                            onSubmitEditing={(event)=>{
+                                this.debitPinRef.focus();
+                            }}
+                            maxLength={5}/>
+                    </TouchableOpacity>
+                </View>
+                {this.state.errorExpiry !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorExpiry}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
@@ -198,7 +261,9 @@ class ChangeContactDetails extends Component {
                         marginLeft: 10
                     }]}
                     placeholder={language.enterPinHere}
-                    onChangeText={text => this.setState({cardPin: Utility.input(text, "0123456789")})}
+                    onChangeText={text => this.setState({
+                        errorPin: "",
+                        cardPin: Utility.input(text, "0123456789")})}
                     value={this.state.cardPin}
                     multiline={false}
                     numberOfLines={1}
@@ -209,6 +274,16 @@ class ChangeContactDetails extends Component {
                     autoCorrect={false}
                     maxLength={4}/>
             </View>
+            {this.state.errorPin !== "" ?
+                <Text style={{
+                    marginLeft: 5,
+                    marginRight: 10,
+                    color: themeStyle.THEME_COLOR,
+                    fontSize: FontSize.getSize(11),
+                    fontFamily: fontStyle.RobotoRegular,
+                    alignSelf: "flex-end",
+                    marginBottom: 10,
+                }}>{this.state.errorPin}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
     }
@@ -224,24 +299,69 @@ class ChangeContactDetails extends Component {
         } else if (modelSelection === "cardType") {
             this.setState({selectCard: item.label, modalVisible: false, stateVal: 0})
         }
-
     }
 
     submit(language, navigation) {
         const {stateVal} = this.state;
         console.log("this.state.selectActCard", this.state.selectActCard);
         console.log("this.state.stateVal", this.state.stateVal);
-        if (this.state.selectActCard.value === 0) {
-            if (stateVal !== 2)
-                this.setState({stateVal: stateVal + 1});
-            else
-                Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
-        } else if (this.state.selectActCard.value === 1) {
-            if (stateVal !== 1)
-                this.setState({stateVal: stateVal + 1});
-            else
-                Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+        if(stateVal === 0){
+            if (this.state.selectActCard.value === 0) {
+                if (this.state.select_actNo === "Select Account Number") {
+                    Utility.alert("Please Select Account Number");
+                    return;
+                } else if (this.state.transactionPin === "") {
+                    this.setState({errorTransPin: language.errTransPin});
+                    return;
+                }
+            } else if(this.state.selectActCard.value === 1) {
+                if(this.state.expiryDate === ""){
+                    this.setState({errorExpiry: language.errExpiryDate});
+                    return;
+                }
+                else if (this.state.cardPin === "") {
+                    this.setState({errorPin: language.errCardPin});
+                    return;
+                }
+            }
         }
+        else if(stateVal === 1) {
+            if (this.state.selectActCard.value === 0) {
+                if (this.state.otpVal.length !== 4) {
+                    Utility.alert(language.errOTP);
+                    return;
+                }
+            }
+        }
+        else if(stateVal === 3) {
+            if (this.state.newCredential === "") {
+                this.setState({errorMobile: this.state.select_contact_type.value === 0 ? language.errorNewMobNo:language.errorEmail });
+                return;
+            }else if (this.state.confNewCredential !== this.state.newCredential ) {
+                this.setState({errorConfMobile: this.state.select_contact_type.value === 0 ?language.errorMobConfNo:language.errorConfEmail});
+                return;
+            }
+        }
+        else if(stateVal === 4){
+            Alert.alert(
+                Config.appName,
+                language.success_register,
+                [
+                    {
+                        text: language.ok, onPress: () => navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [{name: "LoginScreen"}],
+                            })
+                        )
+                    },
+                ]
+            );
+            return;
+        }else{
+            console.log("stateVal else part",stateVal)
+        }
+        this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
     }
 
     componentDidMount() {
@@ -255,6 +375,14 @@ class ChangeContactDetails extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+    }
+
+    backEvent() {
+        const {stateVal} = this.state;
+        if (stateVal === 0)
+            this.props.navigation.goBack(null);
+        else
+            this.setState({stateVal: stateVal !== 3 ? stateVal - 1 : stateVal - 2});
     }
 
     passwordSet(language) {
@@ -287,7 +415,10 @@ class ChangeContactDetails extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterHere}
-                        onChangeText={text => this.setState({newCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
+                        onChangeText={text => this.setState({
+                            errorMobile:"",
+                            errorEmail:"",
+                            newCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
                         value={this.state.newCredential}
                         multiline={false}
                         numberOfLines={1}
@@ -296,7 +427,7 @@ class ChangeContactDetails extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorCredential !== "" ?
+                {this.state.errorMobile !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -305,7 +436,18 @@ class ChangeContactDetails extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorCredential}</Text> : null}
+                    }}>{this.state.errorMobile}</Text> : null}
+
+                {/*{this.state.errorEmail !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorEmail}</Text> : null}*/}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -329,7 +471,7 @@ class ChangeContactDetails extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterHere}
-                        onChangeText={text => this.setState({confNewCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorConfMobile:"",errorConfEmail:"",confNewCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
                         value={this.state.confNewCredential}
                         multiline={false}
                         numberOfLines={1}
@@ -338,16 +480,17 @@ class ChangeContactDetails extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorConfCredential !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfCredential}</Text> : null}
+                    {this.state.errorConfMobile !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorConfMobile} </Text> : null }
+
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
@@ -469,7 +612,6 @@ class ChangeContactDetails extends Component {
         </View>)
     }
 
-
     render() {
         let language = this.props.language;
         return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
@@ -477,7 +619,7 @@ class ChangeContactDetails extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() =>  this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
@@ -486,10 +628,8 @@ class ChangeContactDetails extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-
                         {this.state.stateVal === 0 ? this.mainLayout(language) : null}
                         {this.state.select_contact_type.value !== -1 ? this.processStage(language) : null}
-
                         {this.state.select_contact_type.value !== -1 ? <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
@@ -554,6 +694,14 @@ class ChangeContactDetails extends Component {
                         </View>
                     </View>
                 </Modal>
+                {this.state.showMonthPicker ? <MonthPicker
+                    onChange={this.onValueChange}
+                    value={new Date()}
+                    minimumDate={new Date()}
+                    maximumDate={new Date(new Date().getFullYear() + 10, 12)}
+                    locale="en"
+                    mode="number"
+                /> : null}
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
