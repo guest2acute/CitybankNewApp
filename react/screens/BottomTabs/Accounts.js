@@ -135,7 +135,28 @@ class Accounts extends Component {
         }
     }
 
+    async getLoanTermBalance(language, navigation,isLoan,source,accountNo) {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let balReq = {
+            ACCT_NO:accountNo,
+            ACTION: isLoan?"GETLOANACCTDTL":"GETTERMDEPACCTDTL",
+            APPCUSTOMER_ID: userDetails.CUSTOMER_ID,
+            SOURCE:source,
+        }
+        console.log("balReq", balReq);
+        let result = await ApiRequest.apiRequest.callApi(balReq, {});
+        if (result.STATUS === "0") {
+            console.log("res",result);
+            //await this.processSummary(result.RESPONSE);
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
     async processSummary(responseArr) {
+        console.log("responseArr",responseArr);
         let mainArray = [];
         let actArr = [];
         if (responseArr.length > 1) {
@@ -177,6 +198,7 @@ class Accounts extends Component {
             console.log("actArr", actArr);
             actArr.map((accountVal) => {
                 this.getBalance(accountVal.ACCOUNTORCARDNO);
+                //getLoanTermBalance
             })
         });
     }
