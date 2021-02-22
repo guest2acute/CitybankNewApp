@@ -24,14 +24,16 @@ import fontStyle from "../resources/FontStyle";
 import FontSize from "../resources/ManageFontSize";
 import Utility from "../utilize/Utility";
 import CommonStyle from "../resources/CommonStyle";
+import {StackActions} from "@react-navigation/native";
 
-let showButton = true;
+let showButton = true, deviceChangeRes;
 
 class TermConditionScreen extends Component {
 
     constructor(props) {
         super(props);
         showButton = props.route.params.showButton;
+        deviceChangeRes = props.route.params.deviceChangeRes ? props.route.params.deviceChangeRes : null;
     }
 
 
@@ -104,7 +106,10 @@ class TermConditionScreen extends Component {
                     <View style={{width: Utility.setWidth(20)}}/>
 
                     <TouchableOpacity style={{flex: 1}}
-                                      onPress={() => this.props.navigation.navigate("OTPVerification")}>
+                                      onPress={() =>
+                                          this.props.navigation.dispatch(
+                                              StackActions.replace("OTPVerification", {deviceChangeRes})
+                                          )}>
                         <View style={{
                             alignItems: "center",
                             justifyContent: "center",

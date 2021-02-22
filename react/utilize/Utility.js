@@ -110,7 +110,7 @@ export default class Utility {
         } else if (status === "9") {
             Utility.sessionTimeout(message, props.language);
         } else if (status === "999") {
-            Utility.alertWithBack(props.language.ok, message,props.navigation);
+            Utility.alertWithBack(props.language.ok, message, props.navigation);
         }
 
     }
@@ -156,7 +156,6 @@ export default class Utility {
     }
 
 
-
     static async parseResponse(response) {
         console.log("response", response);
     }
@@ -171,7 +170,7 @@ export default class Utility {
         return moment(new Date()).format('DD-MM-YYYY-HH-ss');
     }
 
-    static dateInFormat(dateVal,formatType){
+    static dateInFormat(dateVal, formatType) {
         return moment(dateVal).format(formatType);
     }
 
@@ -185,16 +184,19 @@ export default class Utility {
     }
 
     static async getDeviceID() {
-        let userId = await StorageClass.retrieve(Config.UserId);
-        if (userId === undefined) {
-            userId = "";
-        }
-        let deviceId = await DeviceInfo.getUniqueId();
+        let deviceId = await StorageClass.retrieve(Config.DeviceId);
         if (deviceId === undefined || deviceId === null || deviceId === "") {
-            deviceId = userId + "-" + Utility.getCurrentTimeStamp();
+            let randomNumber = Math.floor(Math.random() * 100) + 1 ;
+            let uniqueId = await DeviceInfo.getUniqueId();
+            if (uniqueId === undefined || uniqueId === null || uniqueId === "") {
+                uniqueId = Utility.getCurrentTimeStamp()+randomNumber;
+            }
+            deviceId = uniqueId;
+            await StorageClass.store(Config.DeviceId, uniqueId);
         }
         return deviceId;
     }
+
 
     static getDeviceWidth() {
         return Math.round(Dimensions.get("window").width);

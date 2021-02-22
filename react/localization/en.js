@@ -56,6 +56,7 @@ export default {
     otp_fgt_pwd: "to process forgot password",
     otp_fgt_pin: "to process forgot PIN",
     otp_fgt_uid: "to process forgot User ID",
+    otp_change_tPin: "to process change transaction pin",
     otp_activate: "to activate Citytouch Digital Banking Service",
     otp_signup: "to process registration in Citytouch Digital Banking Service",
     otp_pwd: "to change password in Citytouch Digital Banking Service",
@@ -70,6 +71,7 @@ export default {
     email: "EMAIL",
     otpViaMob: "You will receive an One Time Password (OTP) via SMS to Mobile Number: ",
     otpViaEmail: "You will receive an One Time Password (OTP) via Email to Email Address: ",
+    otpViaBoth: "You will receive an One Time Password (OTP) via both Email and SMS ",
     register_title: "Citytouch Online Registration",
     signupWithAccount: "SIGN UP WITH ACCOUNT",
     signupWithCard: "SIGN UP WITH CREDIT/PREPAID CARD",
@@ -92,7 +94,7 @@ export default {
     et_mother_name: "Enter Mother Name",
     et_dob: "Date Of Birth",
     select_dob: "Enter Date of Birth",
-    etTransPin:"Please ",
+    etTransPin: "Please ",
     yes_txt: "Yes",
     no_txt: "No",
     user_id: "User ID",
@@ -112,6 +114,7 @@ export default {
     change_login_pin: "Change Login PIN",
     change_transaction_pin: "Change Transaction PIN",
     upload_documents: "Upload Supporting Document",
+    err_upload_documents: "Please upload  supporting document",
     upload_docs: "Upload Document",
     withdrawChk: "Withdrawn",
     dateTitle: "Date",
@@ -146,6 +149,8 @@ export default {
     LoginWith: "Login With User ID?",
     PINLogin: "PIN Login",
     PinNumber: "Enter Your PIN Number",
+    errSelRequest: "Please select request",
+
     Language_M: [
         {label: "English", value: 0},
         {label: "বাংলা", value: 1},
@@ -163,7 +168,6 @@ export default {
         {label: "Pin", value: 1},
     ],
 
-
     contactList: [
         {label: "Change Mobile Number", value: 0},
         {label: "Change Email Address", value: 1},
@@ -174,10 +178,10 @@ export default {
         {label: "Change Email Address", value: 1},
     ],
 
-
     supportDocument: "Supporting Document",
     selectDocument: "Select the supporting document",
     documentNo: "Document Number",
+    errDocumentNo: "Please enter document number",
     documentTypeArr: [
         {label: "NID", value: 1},
         {label: "Rental Deed", value: 2},
@@ -237,7 +241,7 @@ export default {
     /*confirmation message*/
     logout_confirm: "Are you sure want to Logout?",
     exitConfirm: "Are you sure want to exit from App?",
-    select_date:"Select Date",
+    select_date: "Select Date",
 
     /*arrays*/
     optionTypeArr: [
@@ -338,7 +342,8 @@ export default {
     otp_sent_txt: "Get OTP",
 
     new_pwd_txt: "New Password",
-
+    act_card_no: "Account Number/Card Number",
+    sel_act_card_no: "Select Account Number/Card Number",
     confirm_pwd_txt: "Confirm Password",
     select_request: "Select Request",
     prepaid_card: "Using Prepaid Card",

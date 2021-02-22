@@ -36,15 +36,15 @@ class ChangeTransPin extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            fatherName: "KRISNA CHANDRA CHAKMA",
+            fatherName: "",
             errorFather: "",
-            motherName: "ARUN BALA CHAKMA",
+            motherName: "",
             errorMother: "",
             isProgress: false,
             dateVal: new Date(),
             mode: "date",
             show: false,
-            dob: "11-JAN-1978",
+            dob: "",
             errorDob: "",
             pinVal: "",
             errorPinVal: "",
@@ -117,17 +117,7 @@ class ChangeTransPin extends Component {
     async getAccountDetails() {
         let userDetails = this.props.userDetails;
         this.setState({isProgress: true});
-        let actRequest = {
-            CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST,
-            USER_ID: userDetails.USER_ID,
-            LOGIN_TYPE: "P",
-            ACTION: "GETOPERATIVEACCT",
-            DEVICE_ID: await Utility.getDeviceID(),
-            AUTH_FLAG: "A"
-        }
-
-        console.log("actRequest", actRequest);
-        let result = await ApiRequest.apiRequest.callApi(actRequest, {});
+        let result = await ApiRequest.apiRequest.getAccountDetails(userDetails, {});
         console.log("result", result);
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
@@ -137,7 +127,6 @@ class ChangeTransPin extends Component {
             this.setState({isProgress: false});
             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
         }
-
     }
 
     enterPIN(language) {
@@ -256,7 +245,7 @@ class ChangeTransPin extends Component {
                 marginEnd: Utility.setWidth(10),
                 marginTop: Utility.setHeight(10),
                 marginBottom: Utility.setHeight(20),
-            }]}> {language.otp_description + language.otp_signup}</Text>
+            }]}> {language.otp_description + language.otp_change_tPin}</Text>
             <View style={{
                 borderColor: themeStyle.BORDER,
                 width: Utility.getDeviceWidth() - 30,
