@@ -41,7 +41,7 @@ export default class ApiRequest {
     }
 
 
-    static veryAccountRequest = (reg_with, card_details, signupDetails, authFlag, otp_value, date_of_birth,
+    veryAccountRequest = (reg_with, card_details, signupDetails, authFlag, otp_value, date_of_birth,
                                  user_id, uniqueId, account_no, card_pin, expiry_date, fatherName, motherName, debitCardNo) => {
         console.log("signupDetailsIn", signupDetails);
         return new Promise(async (resolve, reject) => {
@@ -78,9 +78,9 @@ export default class ApiRequest {
         });
     }
 
-    static requestSignup = (LOGIN_PIN, TRANSACTION_PIN, CUSTOMER_ID, ACTIVATION_CD, authFlag, MOBILE_NO, REQ_TYPE, PASSWORD) => {
+    requestSignup = (LOGIN_PIN, TRANSACTION_PIN, CUSTOMER_ID, ACTIVATION_CD, authFlag, MOBILE_NO, REQ_TYPE, PASSWORD,props) => {
         return new Promise(async (resolve, reject) => {
-            let request =  {
+            let request = {
                 LOGIN_PIN: LOGIN_PIN,
                 TRANSACTION_PIN: TRANSACTION_PIN,
                 CUSTOMER_ID: CUSTOMER_ID,
@@ -95,8 +95,61 @@ export default class ApiRequest {
             console.log("request", request);
             let result = await ApiRequest.apiRequest.callApi(request, {});
             console.log("resultAPI", JSON.stringify(result));
-            return resolve(result);
+            if (result.STATUS === "21" || result.STATUS === "0") {
+                return resolve(result.MESSAGE);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
         });
+    }
+
+    accountVerifyRequest = async (act_no, type, props) => {
+        return new Promise(async (resolve, reject) => {
+            let request = {
+                ACCT_NO: act_no,
+                REQ_FLAG: "",
+                REG_WITH: type,
+                RES_TYPE: "D",
+                ACTION: "VERIFYUSERACCT"
+            };
+            console.log("body", request);
+
+            let result = await ApiRequest.apiRequest.callApi(request, {});
+            if (result.STATUS === "0") {
+                return resolve(result.RESPONSE[0]);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
+        });
+    }
+
+
+    getOTPCall = async (otpVal, reqFlag, response, AUTH_FLAG,props) => {
+        return new Promise(async (resolve, reject) => {
+            let otpRequest = {
+                OTP_NO: otpVal,
+                CUSTOMER_ID: response.CUSTOMER_ID,
+                ACTIVATION_CD: response.ACTIVATION_CD,
+                AUTH_FLAG: AUTH_FLAG,
+                REQ_FLAG: reqFlag,
+                MOBILE_NO: response.MOBILE_NO,
+                REQ_TYPE: "O",
+                ACTION: "REGUSERVERIFY", ...Config.commonReq
+            };
+
+            console.log("otpRequest", otpRequest);
+            let result = await ApiRequest.apiRequest.callApi(otpRequest, {});
+            if (result.STATUS === "0") {
+                return resolve("success");
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
+
+        });
+
     }
 
 

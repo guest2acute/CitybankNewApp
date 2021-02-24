@@ -34,7 +34,7 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "2252742574001",
+            accountNo: "",
             disableButton: false,
             actName: "",
             placeMobile: "",
@@ -49,7 +49,7 @@ class RegistrationAccount extends Component {
             userId: "",
             userId_type: 0,
             otp_type: 0,
-            otpVal: "0000",
+            otpVal: "",
             isTerm: false,
             debitPin: "",
             errorPin: "",
@@ -63,10 +63,10 @@ class RegistrationAccount extends Component {
             errorAccount_no: "",
             error_conf_mobile: "",
             transDate: "",
-            dob: "11-NOV-1983",
+            dob: "",
             password: "",
-            fatherName: "MD. FAZLUR RAHMAN",
-            motherName: "ALEYA RAHMAN",
+            fatherName: "",
+            motherName: "",
             transPin: "",
             loginPin: "",
             errorTransPin: "",
@@ -79,11 +79,12 @@ class RegistrationAccount extends Component {
             ],
             show: false,
             mode: "date",
+            currentSelection: 0,
             dateVal: new Date(),
             showMonthPicker: false,
             signUpResponse: "",
             errorDCardNo: "",
-            debitCardNo: "4105201010697449"
+            debitCardNo: ""
         }
     }
 
@@ -138,75 +139,55 @@ class RegistrationAccount extends Component {
         }
     }
 
-    async getOTPCall() {
+    async getOTP() {
         const {signUpResponse, hasDebitCard} = this.state;
         this.setState({isProgress: true});
+        await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", signUpResponse,
+            hasDebitCard ? "CP" : "TP", this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false, stateVal: 4});
 
-        let otpRequest = {
-            OTP_NO: this.state.otpVal,
-            CUSTOMER_ID: signUpResponse.CUSTOMER_ID,
-            ACTIVATION_CD: signUpResponse.ACTIVATION_CD,
-            AUTH_FLAG: hasDebitCard ? "CP" : "TP",
-            REQ_FLAG: "R",
-            MOBILE_NO: signUpResponse.MOBILE_NO,
-            REQ_TYPE: "O",
-            ACTION: "REGUSERVERIFY", ...Config.commonReq
-        };
-
-        console.log("otpRequest", otpRequest);
-
-        let result = await ApiRequest.apiRequest.callApi(otpRequest, {});
-        this.setState({isProgress: false});
-        if (result.STATUS === "0") {
-            this.setState({stateVal: 4});
-        } else {
-            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
-        }
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
     }
 
     async processSignup(language) {
         const {signUpResponse} = this.state;
         this.setState({isProgress: true});
-
-        let result = await ApiRequest.requestSignup(this.state.loginPin, this.state.transPin, signUpResponse.CUSTOMER_ID, signUpResponse.ACTIVATION_CD, this.state.hasDebitCard?"CP":"TP", signUpResponse.MOBILE_NO, "P", this.state.password)
-        this.setState({isProgress: false});
-        console.log("result",result)
-        if (result.STATUS === "21" || result.STATUS === "0") {
-            Alert.alert(
-                Config.appName,
-                result.MESSAGE,
-                [
-                    {
-                        text: language.ok, onPress: () => this.props.navigation.dispatch(
-                            CommonActions.reset({
-                                index: 0,
-                                routes: [{name: "LoginScreen"}],
-                            })
-                        )
-                    },
-                ]
-            );
-        }
-        else if (result.STATUS === "999") {
-            Alert.alert(
-                Config.appName,
-                result.MESSAGE,
-                [
-                    {
-                        text: language.ok, onPress: () => this.setState({stateVal:0})
-                    },
-                ]
-            );
-        }
-        else {
-            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
-        }
+        await ApiRequest.apiRequest.requestSignup(this.state.loginPin, this.state.transPin,
+            signUpResponse.CUSTOMER_ID,
+            signUpResponse.ACTIVATION_CD,
+            this.state.hasDebitCard ? "CP" : "TP",
+            signUpResponse.MOBILE_NO, "P", this.state.password, this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                Alert.alert(
+                    Config.appName,
+                    response,
+                    [
+                        {
+                            text: language.ok, onPress: () => this.props.navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 0,
+                                    routes: [{name: "LoginScreen"}],
+                                })
+                            )
+                        },
+                    ]
+                );
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
     }
 
     passwordSet(language) {
         return (<View key={'passwordSet'} style={{
             borderColor: themeStyle.BORDER,
-            width: Utility.getDeviceWidth() - 20,
             borderRadius: 5,
             marginTop: 10,
             overflow: "hidden",
@@ -297,6 +278,7 @@ class RegistrationAccount extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
+                        secureTextEntry={true}
                         onSubmitEditing={(event) => {
                             this.passwordRef.focus();
                         }}
@@ -344,7 +326,8 @@ class RegistrationAccount extends Component {
                         contextMenuHidden={true}
                         secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}/>
+                        autoCorrect={false}
+                        maxLength={12}/>
                 </View>
                 {this.state.errorpassword !== "" ?
                     <Text style={{
@@ -417,9 +400,9 @@ class RegistrationAccount extends Component {
         </View>)
 
     }
+
     listView(value) {
         let item = value.item;
-        console.log("item", value.item);
         return (
             <TouchableOpacity disabled={value.index === 0} style={{height: Utility.setHeight(40)}}
                               onPress={() => this.props.navigation.dispatch(
@@ -558,36 +541,29 @@ class RegistrationAccount extends Component {
         </View>)
     }
 
-    async accountVerifyRequest(act_no, type) {
+    async accountVerify(act_no, type, language) {
+        if (act_no.length !== 13) {
+            this.setState({errorAccount_no: language.errActNo});
+            return;
+        }
         this.setState({isProgress: true});
-        let request = {
-            ACCT_NO: act_no,
-            REQ_FLAG: "",
-            REG_WITH: type,
-            RES_TYPE: "D",
-            ACTION: "VERIFYUSERACCT"
-        };
-        console.log("body", request);
-
-        let result = await ApiRequest.apiRequest.callApi(request, {});
-        this.setState({isProgress: false});
-        if (result.STATUS === "0") {
-            let response = result.RESPONSE[0];
-            console.log("verifyres", JSON.stringify(response));
+        await ApiRequest.apiRequest.accountVerifyRequest(act_no, type, this.props).then((response) => {
+            console.log("response", JSON.stringify(response));
             this.setState({
+                isProgress: false,
                 isShowingAccountName: true,
                 actName: response.CUST_NAME,
                 placeMobile: response.MASK_MOBILE_NO,
                 placeEmail: response.MASK_MAIL_ID,
-                conf_mobile: response.MOBILE_NO,
-                conf_email: response.MAIL_ID,
+                //conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
+                //conf_email: response.MAIL_ID,
                 signUpResponse: response,
                 hasDebitCard: response.DEBIT_CARD.length > 0
             });
-            this.setState({disableButton: false});
-        } else {
-            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
-        }
+        }, (error) => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     accountView(language) {
@@ -595,7 +571,6 @@ class RegistrationAccount extends Component {
             <View key={"accountView"}>
                 <View style={{
                     borderColor: themeStyle.BORDER,
-                    width: Utility.getDeviceWidth() - 20,
                     borderRadius: 5,
                     marginTop: 10,
                     overflow: "hidden",
@@ -631,7 +606,7 @@ class RegistrationAccount extends Component {
                             numberOfLines={1}
                             returnKeyType={"done"}
                             onSubmitEditing={async (event) => {
-                                await this.accountVerifyRequest(this.state.accountNo, "A");
+                                await this.accountVerify(this.state.accountNo, "A", language);
                             }}
                             contextMenuHidden={true}
                             keyboardType={"number-pad"}
@@ -802,9 +777,8 @@ class RegistrationAccount extends Component {
     };
 
     userPersonal(language) {
-        return (<View  key={"userPersonal"} style={{
+        return (<View key={"userPersonal"} style={{
             borderColor: themeStyle.BORDER,
-            width: Utility.getDeviceWidth() - 20,
             borderRadius: 5,
             marginTop: 10,
             overflow: "hidden",
@@ -1045,13 +1019,12 @@ class RegistrationAccount extends Component {
         return (<View
             key={"debitCardUI"}
             style={{
-            borderColor: themeStyle.BORDER,
-            width: Utility.getDeviceWidth() - 20,
-            borderRadius: 5,
-            marginTop: 10,
-            overflow: "hidden",
-            borderWidth: 2
-        }}>
+                borderColor: themeStyle.BORDER,
+                borderRadius: 5,
+                marginTop: 10,
+                overflow: "hidden",
+                borderWidth: 2
+            }}>
 
             <View>
                 <View style={{
@@ -1222,7 +1195,7 @@ class RegistrationAccount extends Component {
             authFlag = "TP";
         }
 
-        let signupResult = await ApiRequest.veryAccountRequest("A", card_details, this.state.signUpResponse,
+        let signupResult = await ApiRequest.apiRequest.veryAccountRequest("A", card_details, this.state.signUpResponse,
             authFlag, this.state.otp_type === 0 ? "S" : this.state.otp_type === 1 ? "E" : "B",
             this.state.dob,
             this.state.userId, await Utility.getDeviceID(), this.state.accountNo, this.state.debitPin,
@@ -1245,23 +1218,22 @@ class RegistrationAccount extends Component {
     }
 
     async submit(language, navigation) {
-        const {stateVal} = this.state;
-        console.log(stateVal)
+        const {stateVal, conf_mobile, conf_email, signUpResponse} = this.state;
         if (stateVal === 0) {
             if (this.state.accountNo.length !== 13) {
                 this.setState({errorAccount_no: language.errActNo});
-                return;
-            } else if (this.state.conf_mobile === "") {
+            } else if (this.state.actName === "") {
+                await this.accountVerify(this.state.accountNo, "A", language);
+            } else if (conf_mobile === "") {
                 this.setState({errorMobile: language.require_mobile});
-                return;
-            } else if (this.state.conf_mobile !== this.state.signUpResponse.MOBILE_NO) {
-                this.setState({errorMobile: language.wrongMobile});
-                return;
-            } else if (this.state.conf_email !== this.state.signUpResponse.MAIL_ID) {
-                this.setState({errorMobile: language.wrongEmail});
-                return;
+            } else if (conf_email === "") {
+                this.setState({errorEmail: language.require_email});
+            } else if (conf_mobile !== signUpResponse.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, "")) {
+                this.setState({errorMobile: language.invalidMobile});
+            } else if (conf_email !== signUpResponse.MAIL_ID) {
+                this.setState({errorEmail: language.invalidEmail});
             } else {
-                if (this.state.signUpResponse.DEBIT_CARD.length > 0) {
+                if (signUpResponse.DEBIT_CARD.length > 0) {
                     this.setState({stateVal: stateVal + 1});
                 } else {
                     this.setState({stateVal: stateVal + 2});
@@ -1270,13 +1242,10 @@ class RegistrationAccount extends Component {
         } else if (stateVal === 1) {
             if (this.state.debitCardNo === "") {
                 this.setState({errorDCardNo: language.errDebitCard});
-                return;
             } else if (this.state.cardExpiry === "") {
                 this.setState({errorExpiry: language.errExpiryDate});
-                return;
             } else if (this.state.debitPin === "") {
                 this.setState({errorPin: language.errCardPin});
-                return;
             } else {
                 let userRes = Utility.verifyUserId(this.state.userId, language)
                 if (userRes !== "") {
@@ -1322,7 +1291,7 @@ class RegistrationAccount extends Component {
                 Utility.alert(language.errOTP);
                 return;
             }
-            await this.getOTPCall();
+            await this.getOTP();
 
         } else if (stateVal === 4) {
             if (this.state.transPin === "") {
@@ -1334,9 +1303,8 @@ class RegistrationAccount extends Component {
             } else if (this.state.password === "") {
                 this.setState({errorpassword: language.errorpassword})
                 return;
-            }
-            else{
-               await this.processSignup(language)
+            } else {
+                await this.processSignup(language)
             }
 
         }

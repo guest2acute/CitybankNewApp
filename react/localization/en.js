@@ -78,6 +78,7 @@ export default {
     welcome_signup: "Welcome to CityTouch Online Registration process. Please enter your ",
     accountNo: "account Number",
     cardNoInput: "card Number",
+    cardDetails: "card details",
     debitCard: "debit card details",
     debitCardNo: "Debit card Number",
     errDebitCard: "Please enter 16 digits debit card details",
@@ -201,6 +202,7 @@ export default {
     loginFinger: "Login using Fingerprint",
     placeFinger: "Place your finger on fingerprint scanner to login",
     invalidEmail: "Invalid email address",
+    invalidMobile: "Invalid Mobile Number",
 
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
@@ -233,7 +235,7 @@ export default {
     errValidType: "Please select type",
     errActNo: "Please enter 13 digits account number",
     errTransPin: "Please enter 4 digits PIN",
-    errCardNo: "Please enter card number",
+    errCardNo: "Please enter valid card number",
     errExpiryDate: "Please select expiry date",
     errCardPin: "Please enter 4 digits card PIN",
     errorUserId: "Please enter User ID ",
@@ -250,6 +252,8 @@ export default {
     exitConfirm: "Are you sure want to exit from App?",
     select_date: "Select Date",
     wrongMobile: "Please enter correct mobile number",
+    maskingMobile: "Please enter the missing letters of mobile",
+    maskingEmail: "Please enter the missing letters of email",
     wrongEmail: "Please enter correct email address",
     errorLUserID : "Length of user id should be 8 to 12 characters.",
     errorAUserID : "User id can be character or combination of alphanumeric and special characters.",
