@@ -25,6 +25,37 @@ export default class Utility {
         );
     }
 
+    static verifyUserId(id,language) {
+        if (id === ""){
+            return language.errorUserId;
+        }
+        let number = "0123456789";
+        let alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+        let value = "";
+        let cn = 0;
+        let ca = 0;
+        let csp = 0;
+        for (let k = 0; k < id.length; k++) {
+            if (number.indexOf(id[k]) === -1 && alphabet.indexOf(id[k]) === -1) {
+                csp = csp + 1;
+            } else if (number.indexOf(id[k]) !== -1) {
+                cn = cn + 1;
+            } else if (alphabet.indexOf(id[k]) !== -1) {
+                ca = ca + 1;
+            }
+        }
+        if (id.length < 8 || id.length > 12) {
+            return language.errorLUserID;
+        }
+        else if (ca === 0) {
+            return language.errorAUserID;
+        }
+        return "";
+
+
+    }
+
 
     static alertConfirm(positive_txt, negative_txt, msg, navigation) {
         Alert.alert(
@@ -48,7 +79,7 @@ export default class Utility {
                         navigation.dispatch(
                             CommonActions.reset({
                                 index: 0,
-                                routes: [{name: "PinLogin"}],
+                                routes: [{name: "LoginScreen"}],
                             })
                         )
                     }
@@ -186,10 +217,10 @@ export default class Utility {
     static async getDeviceID() {
         let deviceId = await StorageClass.retrieve(Config.DeviceId);
         if (deviceId === undefined || deviceId === null || deviceId === "") {
-            let randomNumber = Math.floor(Math.random() * 100) + 1 ;
+            let randomNumber = Math.floor(Math.random() * 100) + 1;
             let uniqueId = await DeviceInfo.getUniqueId();
             if (uniqueId === undefined || uniqueId === null || uniqueId === "") {
-                uniqueId = Utility.getCurrentTimeStamp()+randomNumber;
+                uniqueId = Utility.getCurrentTimeStamp() + randomNumber;
             }
             deviceId = uniqueId;
             await StorageClass.store(Config.DeviceId, uniqueId);

@@ -79,6 +79,9 @@ export default {
     accountNo: "account Number",
     cardNoInput: "card Number",
     debitCard: "debit card details",
+    debitCardNo: "Debit card Number",
+    errDebitCard: "Please enter 16 digits debit card details",
+
     provideDetails: "Welcome to CityTouch Online Registration process. Please provide below details.",
     account: "Accounts",
     city_pay: "CityPay",
@@ -246,6 +249,11 @@ export default {
     logout_confirm: "Are you sure want to Logout?",
     exitConfirm: "Are you sure want to exit from App?",
     select_date: "Select Date",
+    wrongMobile: "Please enter correct mobile number",
+    wrongEmail: "Please enter correct email address",
+    errorLUserID : "Length of user id should be 8 to 12 characters.",
+    errorAUserID : "User id can be character or combination of alphanumeric and special characters.",
+    errorTerm : "Please accept term and conditions",
 
     /*arrays*/
     optionTypeArr: [
