@@ -21,11 +21,12 @@ import FontSize from "../../resources/ManageFontSize";
 import ApiRequest from "../../config/ApiRequest";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import themesStyle from "../../resources/theme.style";
+import axios from "axios";
 
 
 class Accounts extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
@@ -45,6 +46,9 @@ class Accounts extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
+
+        await this.getAccounts(this.props.language, this.props.navigation)
+
 
     }
 
@@ -121,11 +125,12 @@ class Accounts extends Component {
         this.setState({isProgress: true});
         let actReq = {
             ACTION: "GETTYPEWISEACLIST",
-            CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST
+            CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST,
+            SCREEN_TYPE:"DASHBOARD"
         }
         console.log("actReq", actReq);
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
-        result = result[0];
+        // result = result[0];
 
         if (result.STATUS === "0") {
             await this.processSummary(result.RESPONSE);
@@ -135,28 +140,8 @@ class Accounts extends Component {
         }
     }
 
-    async getLoanTermBalance(language, navigation,isLoan,source,accountNo) {
-        let userDetails = this.props.userDetails;
-        this.setState({isProgress: true});
-        let balReq = {
-            ACCT_NO:accountNo,
-            ACTION: isLoan?"GETLOANACCTDTL":"GETTERMDEPACCTDTL",
-            APPCUSTOMER_ID: userDetails.CUSTOMER_ID,
-            SOURCE:source,
-        }
-        console.log("balReq", balReq);
-        let result = await ApiRequest.apiRequest.callApi(balReq, {});
-        if (result.STATUS === "0") {
-            console.log("res",result);
-            //await this.processSummary(result.RESPONSE);
-        } else {
-            this.setState({isProgress: false});
-            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
-        }
-    }
 
     async processSummary(responseArr) {
-        console.log("responseArr",responseArr);
         let mainArray = [];
         let actArr = [];
         if (responseArr.length > 1) {
@@ -175,6 +160,7 @@ class Accounts extends Component {
                 });
             }
             await level2Arr.map((level2) => {
+                console.log("level1.HEADER_NAME", level2.PARENTPRODUCTNAME);
                 let level3Arr = level2.ACCT_LIST;
                 if (level3Arr.length > 1) {
                     level3Arr = level3Arr.sort(function (a, b) {
@@ -184,46 +170,60 @@ class Accounts extends Component {
                 if (level3Arr.length > 0) {
                     let level2Obj = {
                         title: level2.PARENTPRODUCTNAME,
-                        opened: items.length === 0,
+                        code: level2.PARENTPRODUCTCODE,
+                        opened: true,
                         items: level3Arr
                     };
                     actArr = [...actArr, ...level3Arr];
                     items.push(level2Obj);
                 }
             });
+
             if (items.length > 0)
                 mainArray.push({...level1Obj, items});
         });
-        this.setState({isProgress: false, dataList: mainArray}, () => {
+
+        this.setState({isProgress: false, dataList: mainArray}, async () => {
             console.log("actArr", actArr);
-            actArr.map((accountVal) => {
-                this.getBalance(accountVal.ACCOUNTORCARDNO);
-                //getLoanTermBalance
+            actArr.map((account) => {
+               // if (accountVal.PRODUCTTYPE === "SBA")
+                    this.getBalance(account);
+               /* else{
+                    this.getLoanTermBalance(accountVal.PRODUCTTYPE === "TDA", accountVal)
+                }*/
             })
         });
     }
 
-    async getBalance(accountNo) {
+    async getBalance(account) {
+        let accountNo = account.ACCOUNTORCARDNO;
         let balanceReq = {
-            ACTION: "GETACCTBALDETAIL",
-            ACCT_NO: accountNo,
-            RES_FLAG: "B",
-            SOURCE: "FINACLE",
-            CURRENCYCODE: ""
+            ACCT_NO: account.ACCOUNTORCARDNO,
+            ACTION: account.PARENTPRODUCTCODE==="FD_ACCOUNT"? "GETTERMDEPACCTDTL":account.PARENTPRODUCTCODE==="LOAN_ACCOUNT"?"GETLOANACCTDTL":"GETACCTBALDETAIL",
+            SOURCE: account.SOURCE,
         }
+
+        if(account.PRODUCTTYPE==="SBA"){
+            balanceReq = {...balanceReq, RES_FLAG: "B", CURRENCYCODE: ""}
+        }
+        else{
+            balanceReq = {...balanceReq, APPCUSTOMER_ID: account.APPCUSTOMER_ID}
+        }
+
         console.log("balanceReq", balanceReq);
         let result = await ApiRequest.apiRequest.callApi(balanceReq, {});
+
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
-            await this.processBalance(response);
-            console.log("balance", response.AVAILBALANCE);
+            await this.processBalance(account.PARENTPRODUCTCODE==="FD_ACCOUNT"? response.DEPOSITAMOUNT:account.PARENTPRODUCTCODE==="LOAN_ACCOUNT"?response.TOTALOUTSTANDING:response.AVAILBALANCE, accountNo, "");
+        } else {
+            await this.processBalance("", accountNo, "");
         }
     }
 
 
-    async processBalance(response) {
-        let accountNo = response.ACCOUNT;
-        let availBalance = response.AVAILBALANCE;
+    async processBalance(balance, accountNo, message) {
+
         let dataList = this.state.dataList;
         let objectPos = -1;
         let object;
@@ -233,7 +233,6 @@ class Accounts extends Component {
         for (let l1 = 0; l1 < dataList.length; l1++) {
             let dataItem = dataList[l1].items;
             for (let l2 = 0; l2 < dataItem.length; l2++) {
-                console.log(l1 + "-" + l2 + "-dataItem", dataItem[l2].items);
                 objectPos = dataItem[l2].items.findIndex(item => item.ACCOUNTORCARDNO === accountNo);
                 if (objectPos > -1) {
                     level1Pos = l1;
@@ -245,19 +244,16 @@ class Accounts extends Component {
             if (objectPos > -1) {
                 break;
             }
-
         }
 
-        console.log("before-datalist", dataList);
         let level3Arr = dataList[level1Pos].items[level2Pos].items;
-        console.log("beforelevel3Arr", level3Arr);
-        object = {...object, BALANCE: availBalance};
+
+        object = {...object, BALANCE: balance !== "" ? balance : message};
         level3Arr[objectPos] = object;
-        console.log("level3Arr", level3Arr);
         dataList[level1Pos].items[level2Pos] = {...dataList[level1Pos].items[level2Pos], items: level3Arr};
-        console.log("dataList[level1Pos].items[level2Pos]", dataList[level1Pos].items);
-        dataList[level1Pos] = {...dataList[level1Pos].items[level2Pos], items: dataList[level1Pos].items};
-        console.log("after- datalist", dataList);
+        console.log(" dataList[level1Pos].items[level2Pos]", dataList[level1Pos].items[level2Pos]);
+        dataList[level1Pos] = {...dataList[level1Pos], items: dataList[level1Pos].items};
+        console.log("dataList",dataList);
         this.setState({dataList: dataList});
     }
 

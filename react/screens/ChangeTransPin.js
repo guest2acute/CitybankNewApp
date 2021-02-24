@@ -523,7 +523,7 @@ class ChangeTransPin extends Component {
         console.log("request", changeReq);
 
         let result = await ApiRequest.apiRequest.callApi(changeReq, {});
-        result = result[0];
+        //result = result[0];
 
         if (result.STATUS === "0") {
             this.resetAll();
@@ -583,7 +583,7 @@ class ChangeTransPin extends Component {
         console.log("request", otpReq);
 
         let result = await ApiRequest.apiRequest.callApi(otpReq, {});
-        result = result[0];
+        //result = result[0];
         if (result.STATUS === "0") {
             console.log("response", result.RESPONSE[0]);
             this.setState({isProgress: false, stage: this.state.stage + 1});
@@ -631,7 +631,7 @@ class ChangeTransPin extends Component {
         }
         console.log("actRequest", verifyReq);
         let result = await ApiRequest.apiRequest.callApi(verifyReq, {});
-        result = result[0];
+       // result = result[0];
         console.log("response", result.RESPONSE[0]);
 
         if (result.STATUS === "0") {

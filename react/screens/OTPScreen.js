@@ -70,7 +70,7 @@ class OTPScreen extends Component {
 
         console.log("request", otpReq);
         let result = await ApiRequest.apiRequest.callApi(otpReq, {});
-        result = result[0];
+        //result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0" || result.STATUS === "999") {
             this.props.route.params.onGoBack('success');

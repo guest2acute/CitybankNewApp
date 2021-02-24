@@ -12,7 +12,10 @@ export default class ApiRequest {
                 }
             }).then(response => {
                 console.log("response", response.data)
-                return resolve(response.data);
+                let result = response.data;
+                if (Object.prototype.toString.call(result) === '[object Array]')
+                    result = result[0];
+                return resolve(result);
             }).catch(error => {
                 console.log("error", error);
                 return reject(error);
@@ -35,14 +38,118 @@ export default class ApiRequest {
             console.log("result", result);
             return resolve(result);
         });
-        /* if (result.STATUS === "0") {
-             let response = result.RESPONSE[0];
-             console.log("response", response);
-             this.setState({actNoList: response.ACCOUNT_DTL, isProgress: false});
-         } else {
-             this.setState({isProgress: false});
-             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
-         }*/
+    }
+
+
+    veryAccountRequest = (reg_with, card_details, signupDetails, authFlag, otp_value, date_of_birth,
+                                 user_id, uniqueId, account_no, card_pin, expiry_date, fatherName, motherName, debitCardNo) => {
+        console.log("signupDetailsIn", signupDetails);
+        return new Promise(async (resolve, reject) => {
+            let signupRequest = {
+                ...signupDetails,
+                OTP_TYPE: otp_value,
+                REG_WITH: reg_with,
+                CARD_DETAIL: {
+                    ACCT_NO: debitCardNo,
+                    CARD_PIN: card_pin,
+                    EXPIRY_DATE: expiry_date.replace(/\//g, ''),
+                    AUTHORIZATION: Config.AUTH
+                },
+                AUTH_FLAG: authFlag,
+                ACCT_NO: account_no,
+                REQ_FLAG: "R",
+                CARD_VERIFY: card_details,
+                CUSTOM_USER_NM: user_id,
+                ACTION: "REGUSER",
+                PAN_NO: "",
+                DEVICE_ID: uniqueId,
+                ENTERED_MOBILE_NO: signupDetails.MOBILE_NO,
+                ENTERED_EMAIL_ID: signupDetails.MAIL_ID,
+                ENTERED_BIRTHDATE: date_of_birth,
+                ENTERED_FATHER_NAME: fatherName,
+                ENTERED_MOTHER_NAME: motherName,
+                ...Config.commonReq
+            };
+
+            console.log("signupRequest", signupRequest);
+            let result = await ApiRequest.apiRequest.callApi(signupRequest, {});
+            console.log("resultAPI", JSON.stringify(result));
+            return resolve(result);
+        });
+    }
+
+    requestSignup = (LOGIN_PIN, TRANSACTION_PIN, CUSTOMER_ID, ACTIVATION_CD, authFlag, MOBILE_NO, REQ_TYPE, PASSWORD,props) => {
+        return new Promise(async (resolve, reject) => {
+            let request = {
+                LOGIN_PIN: LOGIN_PIN,
+                TRANSACTION_PIN: TRANSACTION_PIN,
+                CUSTOMER_ID: CUSTOMER_ID,
+                ACTIVATION_CD: ACTIVATION_CD,
+                AUTH_FLAG: authFlag,
+                REQ_FLAG: "R",
+                MOBILE_NO: MOBILE_NO,
+                REQ_TYPE: REQ_TYPE,
+                PASSWORD: PASSWORD,
+                ACTION: "REGUSERVERIFY", ...Config.commonReq
+            };
+            console.log("request", request);
+            let result = await ApiRequest.apiRequest.callApi(request, {});
+            console.log("resultAPI", JSON.stringify(result));
+            if (result.STATUS === "21" || result.STATUS === "0") {
+                return resolve(result.MESSAGE);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
+        });
+    }
+
+    accountVerifyRequest = async (act_no, type, props) => {
+        return new Promise(async (resolve, reject) => {
+            let request = {
+                ACCT_NO: act_no,
+                REQ_FLAG: "",
+                REG_WITH: type,
+                RES_TYPE: "D",
+                ACTION: "VERIFYUSERACCT"
+            };
+            console.log("body", request);
+
+            let result = await ApiRequest.apiRequest.callApi(request, {});
+            if (result.STATUS === "0") {
+                return resolve(result.RESPONSE[0]);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
+        });
+    }
+
+
+    getOTPCall = async (otpVal, reqFlag, response, AUTH_FLAG,props) => {
+        return new Promise(async (resolve, reject) => {
+            let otpRequest = {
+                OTP_NO: otpVal,
+                CUSTOMER_ID: response.CUSTOMER_ID,
+                ACTIVATION_CD: response.ACTIVATION_CD,
+                AUTH_FLAG: AUTH_FLAG,
+                REQ_FLAG: reqFlag,
+                MOBILE_NO: response.MOBILE_NO,
+                REQ_TYPE: "O",
+                ACTION: "REGUSERVERIFY", ...Config.commonReq
+            };
+
+            console.log("otpRequest", otpRequest);
+            let result = await ApiRequest.apiRequest.callApi(otpRequest, {});
+            if (result.STATUS === "0") {
+                return resolve("success");
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
+
+        });
+
     }
 
 

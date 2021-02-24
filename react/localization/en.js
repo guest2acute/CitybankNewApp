@@ -78,7 +78,11 @@ export default {
     welcome_signup: "Welcome to CityTouch Online Registration process. Please enter your ",
     accountNo: "account Number",
     cardNoInput: "card Number",
+    cardDetails: "card details",
     debitCard: "debit card details",
+    debitCardNo: "Debit card Number",
+    errDebitCard: "Please enter 16 digits debit card details",
+
     provideDetails: "Welcome to CityTouch Online Registration process. Please provide below details.",
     account: "Accounts",
     city_pay: "CityPay",
@@ -197,7 +201,8 @@ export default {
     ],
     loginFinger: "Login using Fingerprint",
     placeFinger: "Place your finger on fingerprint scanner to login",
-
+    invalidEmail: "Invalid email address",
+    invalidMobile: "Invalid Mobile Number",
 
     /*success messages*/
     success_fgt_uid: "User id has been sent via SMS/Email",
@@ -230,10 +235,10 @@ export default {
     errValidType: "Please select type",
     errActNo: "Please enter 13 digits account number",
     errTransPin: "Please enter 4 digits PIN",
-    errCardNo: "Please enter card number",
+    errCardNo: "Please enter valid card number",
     errExpiryDate: "Please select expiry date",
     errCardPin: "Please enter 4 digits card PIN",
-    errorUserId:"Please enter User ID ",
+    errorUserId: "Please enter User ID ",
     errOTP: "Please enter 4 digit OTP",
     errorpassword: "Please enter Password",
     errorMother: "Please enter Mother Name",
@@ -246,6 +251,13 @@ export default {
     logout_confirm: "Are you sure want to Logout?",
     exitConfirm: "Are you sure want to exit from App?",
     select_date: "Select Date",
+    wrongMobile: "Please enter correct mobile number",
+    maskingMobile: "Please enter the missing letters of mobile",
+    maskingEmail: "Please enter the missing letters of email",
+    wrongEmail: "Please enter correct email address",
+    errorLUserID : "Length of user id should be 8 to 12 characters.",
+    errorAUserID : "User id can be character or combination of alphanumeric and special characters.",
+    errorTerm : "Please accept term and conditions",
 
     /*arrays*/
     optionTypeArr: [
@@ -428,9 +440,9 @@ export default {
     enterHere: "Enter Here",
     error_already_login: "you have already set a primary device. If you want to login on other device, you have to complete new app login process. Do you want to continue?",
 
-/*    registartion error*/
-    require_transaction_p:"Transaction Pin is required",
-    require_account_no:"Account Number is required",
+    /*    registartion error*/
+    require_transaction_p: "Transaction Pin is required",
+
 
     credit_card_det: "Credit Card Details",
     card_number: "Card Number",
@@ -452,60 +464,385 @@ export default {
     outstanding_bal: "Outstanding Balance",
 
     dataListArray: [{
-            "HEADER_NAME": "jhhj",
-            "HEADER_ACCT_DTL": [{
-                "PARENTPRODUCTNAME": "jhjh",
-                "PARENTPRODUCTCODE": "CARD_ACCOUNT",
-                "ACCT_LIST": [],
-                "COLUMN_DTL": []
-            }]
-        }, {
-            "HEADER_NAME": "Conventional Banking",
-            "HEADER_ACCT_DTL": [{
-                "PARENTPRODUCTNAME": "Current/Savings Accounts",
-                "PARENTPRODUCTCODE": "CASA_ACCOUNT",
+        "HEADER_NAME": "jhhj",
+        "HEADER_ACCT_DTL": [{
+            "PARENTPRODUCTNAME": "jhjh",
+            "PARENTPRODUCTCODE": "CARD_ACCOUNT",
+            "ACCT_LIST": [],
+            "COLUMN_DTL": []
+        }]
+    }, {
+        "HEADER_NAME": "Conventional Banking",
+        "HEADER_ACCT_DTL": [{
+            "PARENTPRODUCTNAME": "Current/Savings Accounts",
+            "PARENTPRODUCTCODE": "CASA_ACCOUNT",
+            "ACCT_LIST": [{
+                "ACCT_LABEL": "ACCOUNT NUMBER",
+                "SOURCE": "FINACLE",
+                "PRODUCTNAME": "HIGH VALUE SAVINGS A/C",
+                "PRODUCTTYPE": "SBA",
+                "ACCTNMORNMONCARD": "MD. AL AMIN",
+                "ACCOUNTORCARDNO": "2801407554001",
+                "CUSTOMERID": "CB1407554"
+            },
+                {
+                    "ACCT_LABEL": "ACCOUNT NUMBER",
+                    "SOURCE": "FINACLE",
+                    "PRODUCTNAME": "CURRENT DEPOSIT (RB-BR)",
+                    "PRODUCTTYPE": "CAA",
+                    "ACCTNMORNMONCARD": "MD AL AMIN",
+                    "ACCOUNTORCARDNO": "1102244164001",
+                    "CUSTOMERID": "CB2244164"
+                }
+            ],
+            "COLUMN_DTL": [{
+                "COLUMN_NAME": "ACCOUNT",
+                "COLUMN_LABEL": "Account Number",
+                "COLUMN_WIDTH": "100"
+            },
+                {
+                    "COLUMN_NAME": "ACCTTYPE",
+                    "COLUMN_LABEL": "Account Type",
+                    "COLUMN_WIDTH": "100"
+                },
+                {
+                    "COLUMN_NAME": "AVAILBALANCE",
+                    "COLUMN_LABEL": "Available Balance",
+                    "COLUMN_WIDTH": "100"
+                },
+                {
+                    "COLUMN_NAME": "BALANCE",
+                    "COLUMN_LABEL": "Ledger Balance",
+                    "COLUMN_WIDTH": "100"
+                },
+                {
+                    "COLUMN_NAME": "CURRENCYCODE",
+                    "COLUMN_LABEL": "Currency",
+                    "COLUMN_WIDTH": "100"
+                },
+                {
+                    "COLUMN_NAME": "STATUS",
+                    "COLUMN_LABEL": "Status",
+                    "COLUMN_WIDTH": "100"
+                }
+            ]
+        },
+            {
+                "PARENTPRODUCTNAME": "Team Deposits",
+                "PARENTPRODUCTCODE": "FD_ACCOUNT",
                 "ACCT_LIST": [{
                     "ACCT_LABEL": "ACCOUNT NUMBER",
                     "SOURCE": "FINACLE",
-                    "PRODUCTNAME": "HIGH VALUE SAVINGS A/C",
-                    "PRODUCTTYPE": "SBA",
+                    "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                    "PRODUCTTYPE": "TDA",
                     "ACCTNMORNMONCARD": "MD. AL AMIN",
-                    "ACCOUNTORCARDNO": "2801407554001",
+                    "ACCOUNTORCARDNO": "4541407554001",
                     "CUSTOMERID": "CB1407554"
                 },
                     {
                         "ACCT_LABEL": "ACCOUNT NUMBER",
                         "SOURCE": "FINACLE",
-                        "PRODUCTNAME": "CURRENT DEPOSIT (RB-BR)",
-                        "PRODUCTTYPE": "CAA",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4541407554002",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4541407554003",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4541407554004",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4541407554005",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4541407554006",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4541407554007",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4541407554008",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
                         "ACCTNMORNMONCARD": "MD AL AMIN",
-                        "ACCOUNTORCARDNO": "1102244164001",
+                        "ACCOUNTORCARDNO": "4542244164001",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4542244164002",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4542244164003",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4542244164004",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4542244164005",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4542244164006",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554003",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554005",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554006",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554007",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554008",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554009",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554010",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD. AL AMIN",
+                        "ACCOUNTORCARDNO": "4721407554011",
+                        "CUSTOMERID": "CB1407554"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164005",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164007",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164008",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164009",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164010",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164011",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164012",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164013",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164015",
+                        "CUSTOMERID": "CB2244164"
+                    },
+                    {
+                        "ACCT_LABEL": "ACCOUNT NUMBER",
+                        "SOURCE": "FINACLE",
+                        "PRODUCTNAME": "FIXED DEPOSIT A/C",
+                        "PRODUCTTYPE": "TDA",
+                        "ACCTNMORNMONCARD": "MD AL AMIN",
+                        "ACCOUNTORCARDNO": "4722244164016",
                         "CUSTOMERID": "CB2244164"
                     }
                 ],
+                "COLUMN_DTL": []
+            },
+            {
+                "PARENTPRODUCTNAME": "Credit Card Accounts",
+                "PARENTPRODUCTCODE": "CARD_ACCOUNT",
+                "ACCT_LIST": [],
                 "COLUMN_DTL": [{
-                    "COLUMN_NAME": "ACCOUNT",
-                    "COLUMN_LABEL": "Account Number",
+                    "COLUMN_NAME": "",
+                    "COLUMN_LABEL": "Card Type",
                     "COLUMN_WIDTH": "100"
                 },
                     {
-                        "COLUMN_NAME": "ACCTTYPE",
-                        "COLUMN_LABEL": "Account Type",
+                        "COLUMN_NAME": "",
+                        "COLUMN_LABEL": "Card Number",
                         "COLUMN_WIDTH": "100"
                     },
                     {
-                        "COLUMN_NAME": "AVAILBALANCE",
-                        "COLUMN_LABEL": "Available Balance",
+                        "COLUMN_NAME": "",
+                        "COLUMN_LABEL": "Card Holder Name",
                         "COLUMN_WIDTH": "100"
                     },
                     {
-                        "COLUMN_NAME": "BALANCE",
-                        "COLUMN_LABEL": "Ledger Balance",
-                        "COLUMN_WIDTH": "100"
-                    },
-                    {
-                        "COLUMN_NAME": "CURRENCYCODE",
-                        "COLUMN_LABEL": "Currency",
+                        "COLUMN_NAME": "",
+                        "COLUMN_LABEL": "Type",
                         "COLUMN_WIDTH": "100"
                     },
                     {
@@ -515,340 +852,26 @@ export default {
                     }
                 ]
             },
-                {
-                    "PARENTPRODUCTNAME": "Team Deposits",
-                    "PARENTPRODUCTCODE": "FD_ACCOUNT",
-                    "ACCT_LIST": [{
-                        "ACCT_LABEL": "ACCOUNT NUMBER",
-                        "SOURCE": "FINACLE",
-                        "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                        "PRODUCTTYPE": "TDA",
-                        "ACCTNMORNMONCARD": "MD. AL AMIN",
-                        "ACCOUNTORCARDNO": "4541407554001",
-                        "CUSTOMERID": "CB1407554"
-                    },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4541407554002",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4541407554003",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4541407554004",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4541407554005",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4541407554006",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4541407554007",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4541407554008",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4542244164001",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4542244164002",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4542244164003",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4542244164004",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4542244164005",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "SPECIAL TENOR FD-BR-R-O",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4542244164006",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554003",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554005",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554006",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554007",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554008",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554009",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554010",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD. AL AMIN",
-                            "ACCOUNTORCARDNO": "4721407554011",
-                            "CUSTOMERID": "CB1407554"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164005",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164007",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164008",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164009",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164010",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164011",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164012",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164013",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164015",
-                            "CUSTOMERID": "CB2244164"
-                        },
-                        {
-                            "ACCT_LABEL": "ACCOUNT NUMBER",
-                            "SOURCE": "FINACLE",
-                            "PRODUCTNAME": "FIXED DEPOSIT A/C",
-                            "PRODUCTTYPE": "TDA",
-                            "ACCTNMORNMONCARD": "MD AL AMIN",
-                            "ACCOUNTORCARDNO": "4722244164016",
-                            "CUSTOMERID": "CB2244164"
-                        }
-                    ],
-                    "COLUMN_DTL": []
+            {
+                "PARENTPRODUCTNAME": "Loan Accounts",
+                "PARENTPRODUCTCODE": "LOAN_ACCOUNT",
+                "ACCT_LIST": [],
+                "COLUMN_DTL": [{
+                    "COLUMN_NAME": "ACCOUNTNUMBER",
+                    "COLUMN_LABEL": "Account Number",
+                    "COLUMN_WIDTH": "100"
                 },
-                {
-                    "PARENTPRODUCTNAME": "Credit Card Accounts",
-                    "PARENTPRODUCTCODE": "CARD_ACCOUNT",
-                    "ACCT_LIST": [],
-                    "COLUMN_DTL": [{
-                        "COLUMN_NAME": "",
-                        "COLUMN_LABEL": "Card Type",
+                    {
+                        "COLUMN_NAME": "PRODUCTNAME",
+                        "COLUMN_LABEL": "Product Name",
                         "COLUMN_WIDTH": "100"
                     },
-                        {
-                            "COLUMN_NAME": "",
-                            "COLUMN_LABEL": "Card Number",
-                            "COLUMN_WIDTH": "100"
-                        },
-                        {
-                            "COLUMN_NAME": "",
-                            "COLUMN_LABEL": "Card Holder Name",
-                            "COLUMN_WIDTH": "100"
-                        },
-                        {
-                            "COLUMN_NAME": "",
-                            "COLUMN_LABEL": "Type",
-                            "COLUMN_WIDTH": "100"
-                        },
-                        {
-                            "COLUMN_NAME": "STATUS",
-                            "COLUMN_LABEL": "Status",
-                            "COLUMN_WIDTH": "100"
-                        }
-                    ]
-                },
-                {
-                    "PARENTPRODUCTNAME": "Loan Accounts",
-                    "PARENTPRODUCTCODE": "LOAN_ACCOUNT",
-                    "ACCT_LIST": [],
-                    "COLUMN_DTL": [{
-                        "COLUMN_NAME": "ACCOUNTNUMBER",
-                        "COLUMN_LABEL": "Account Number",
+                    {
+                        "COLUMN_NAME": "CURRENCYCODE",
+                        "COLUMN_LABEL": "Currency",
                         "COLUMN_WIDTH": "100"
                     },
+
                         {
                             "COLUMN_NAME": "PRODUCTNAME",
                             "COLUMN_LABEL": "Product Name",
@@ -1009,5 +1032,4 @@ export default {
     b_name: "Enter Beneficiary Name Here",
     b_email: "Enter Beneficiary Email",
     add_beneficiary: "Add Beneficiary",
-
-};
+}

@@ -25,6 +25,8 @@ import {CommonActions, StackActions} from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import MonthPicker from "react-native-month-year-picker";
+import ApiRequest from "../config/ApiRequest";
+import {BusyIndicator} from "../resources/busy-indicator";
 
 
 class RegistrationAccount extends Component {
@@ -33,12 +35,15 @@ class RegistrationAccount extends Component {
         super(props);
         this.state = {
             accountNo: "",
+            disableButton: false,
             actName: "",
+            placeMobile: "",
+            placeEmail: "",
             conf_mobile: "",
             errorMobile: "",
             conf_email: "",
             cardExpiry: "",
-            debitPin: "",
+            hasDebitCard: true,
             errorEmail: "",
             errorUserId: "",
             userId: "",
@@ -54,7 +59,7 @@ class RegistrationAccount extends Component {
             errorDob: "",
             errorTransDate: "",
             errorTransAmt: "",
-            transAmt:"",
+            transAmt: "",
             errorAccount_no: "",
             error_conf_mobile: "",
             transDate: "",
@@ -63,10 +68,10 @@ class RegistrationAccount extends Component {
             fatherName: "",
             motherName: "",
             transPin: "",
-            loginPin:"",
+            loginPin: "",
             errorTransPin: "",
-            errorLoginPin:"",
-            errorpassword:"",
+            errorLoginPin: "",
+            errorpassword: "",
             stateVal: 0,
             options: [
                 {title: props.language.signupWithAccount, selected: true},
@@ -74,9 +79,12 @@ class RegistrationAccount extends Component {
             ],
             show: false,
             mode: "date",
+            currentSelection: 0,
             dateVal: new Date(),
             showMonthPicker: false,
-            expiryDate: "",
+            signUpResponse: "",
+            errorDCardNo: "",
+            debitCardNo: ""
         }
     }
 
@@ -121,7 +129,7 @@ class RegistrationAccount extends Component {
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");
-                this.setState({expiryDate: dateVal, showMonthPicker: false});
+                this.setState({cardExpiry: dateVal, showMonthPicker: false});
                 break;
             case "neutralAction":
                 break;
@@ -131,10 +139,55 @@ class RegistrationAccount extends Component {
         }
     }
 
+    async getOTP() {
+        const {signUpResponse, hasDebitCard} = this.state;
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", signUpResponse,
+            hasDebitCard ? "CP" : "TP", this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false, stateVal: 4});
+
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    async processSignup(language) {
+        const {signUpResponse} = this.state;
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.requestSignup(this.state.loginPin, this.state.transPin,
+            signUpResponse.CUSTOMER_ID,
+            signUpResponse.ACTIVATION_CD,
+            this.state.hasDebitCard ? "CP" : "TP",
+            signUpResponse.MOBILE_NO, "P", this.state.password, this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                Alert.alert(
+                    Config.appName,
+                    response,
+                    [
+                        {
+                            text: language.ok, onPress: () => this.props.navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 0,
+                                    routes: [{name: "LoginScreen"}],
+                                })
+                            )
+                        },
+                    ]
+                );
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
     passwordSet(language) {
-        return (<View style={{
+        return (<View key={'passwordSet'} style={{
             borderColor: themeStyle.BORDER,
-            width: Utility.getDeviceWidth() - 20,
             borderRadius: 5,
             marginTop: 10,
             overflow: "hidden",
@@ -147,7 +200,6 @@ class RegistrationAccount extends Component {
                     marginStart: 10,
                     height: Utility.setHeight(50),
                     alignItems: "center",
-                    marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.transactionPin}
@@ -174,7 +226,7 @@ class RegistrationAccount extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={(event)=>{
+                        onSubmitEditing={(event) => {
                             this.loginPinRef.focus();
                         }}
                         maxLength={4}/>
@@ -205,7 +257,7 @@ class RegistrationAccount extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
-                        ref={(ref)=>this.loginPinRef = ref}
+                        ref={(ref) => this.loginPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -214,7 +266,10 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.setLoginPIn}
-                        onChangeText={text => this.setState({errorLoginPin:"",loginPin: Utility.input(text, "0123456789/")})}
+                        onChangeText={text => this.setState({
+                            errorLoginPin: "",
+                            loginPin: Utility.input(text, "0123456789/")
+                        })}
                         value={this.state.loginPin}
                         multiline={false}
                         numberOfLines={1}
@@ -223,7 +278,8 @@ class RegistrationAccount extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={ (event)=>{
+                        secureTextEntry={true}
+                        onSubmitEditing={(event) => {
                             this.passwordRef.focus();
                         }}
                         maxLength={6}/>
@@ -254,7 +310,7 @@ class RegistrationAccount extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
-                        ref ={(ref)=> this.passwordRef=ref}
+                        ref={(ref) => this.passwordRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -263,7 +319,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.etPasswordTxt}
-                        onChangeText={text => this.setState({errorpassword:"",password: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorpassword: "", password: Utility.userInput(text)})}
                         value={this.state.password}
                         multiline={false}
                         numberOfLines={1}
@@ -271,7 +327,7 @@ class RegistrationAccount extends Component {
                         secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        maxLength={6}/>
+                        maxLength={12}/>
                 </View>
                 {this.state.errorpassword !== "" ?
                     <Text style={{
@@ -288,39 +344,8 @@ class RegistrationAccount extends Component {
         </View>)
     }
 
-    listView(value) {
-        let item = value.item;
-        console.log("item", value.item);
-        return (
-            <TouchableOpacity disabled={value.index === 0} style={{height: Utility.setHeight(40)}}
-                              onPress={() => this.props.navigation.dispatch(
-                                  StackActions.replace('RegistrationCard')
-                              )}>
-                <View style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                    paddingLeft: 10,
-                    borderBottomLeftRadius: value.index === 0 ? 5 : 0,
-                    borderTopLeftRadius: value.index === 0 ? 5 : 0,
-                    borderBottomRightRadius: value.index + 1 === this.state.options.length ? 5 : 0,
-                    borderTopRightRadius: value.index + 1 === this.state.options.length ? 5 : 0,
-                    overflow: "hidden",
-                    paddingRight: 10,
-                    backgroundColor: item.selected ? themeStyle.THEME_COLOR : "#CCCCCC",
-                }}>
-                    <Text style={{
-                        fontFamily: fontStyle.RobotoMedium,
-                        fontSize: FontSize.getSize(11),
-                        color: item.selected ? themeStyle.WHITE : themeStyle.BLACK,
-                    }}>{item.title}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
     otpEnter(language) {
-        return (<View>
+        return (<View key={"otpEnter"}>
             <Text style={[CommonStyle.textStyle, {
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),
@@ -329,11 +354,9 @@ class RegistrationAccount extends Component {
             }]}> {language.otp_description + language.otp_signup}</Text>
             <View style={{
                 borderColor: themeStyle.BORDER,
-                width: Utility.getDeviceWidth() - 30,
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),
                 borderRadius: 5,
-                overflow: "hidden",
                 borderWidth: 2,
             }}>
                 <View style={{
@@ -349,7 +372,6 @@ class RegistrationAccount extends Component {
                         placeholder={language.otp_input_placeholder}
                         onChangeText={text => this.setState({otpVal: Utility.input(text, "0123456789")})}
                         value={this.state.otpVal}
-                        multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         secureTextEntry={true}
@@ -379,62 +401,80 @@ class RegistrationAccount extends Component {
 
     }
 
+    listView(value) {
+        let item = value.item;
+        return (
+            <TouchableOpacity disabled={value.index === 0} style={{height: Utility.setHeight(40)}}
+                              onPress={() => this.props.navigation.dispatch(
+                                  StackActions.replace('RegistrationCard')
+                              )}>
+                <View style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    paddingLeft: 10,
+                    borderBottomLeftRadius: value.index === 0 ? 5 : 0,
+                    borderTopLeftRadius: value.index === 0 ? 5 : 0,
+                    borderBottomRightRadius: value.index + 1 === this.state.options.length ? 5 : 0,
+                    borderTopRightRadius: value.index + 1 === this.state.options.length ? 5 : 0,
+                    overflow: "hidden",
+                    paddingRight: 10,
+                    backgroundColor: item.selected ? themeStyle.THEME_COLOR : "#CCCCCC",
+                }}>
+                    <Text style={{
+                        fontFamily: fontStyle.RobotoMedium,
+                        fontSize: FontSize.getSize(11),
+                        color: item.selected ? themeStyle.WHITE : themeStyle.BLACK,
+                    }}>{item.title}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+
     otpView(language) {
         return (<View>
             <View>
                 <View style={{
                     flexDirection: "row",
                     marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
                     marginEnd: 10,
                 }}>
-
-                    <RadioForm
-                        radio_props={language.userIdOption}
-                        initial={0}
-                        buttonSize={9}
-                        selectedButtonColor={themeStyle.THEME_COLOR}
-                        formHorizontal={false}
-                        labelHorizontal={true}
-                        borderWidth={1}
-                        buttonColor={themeStyle.GRAY_COLOR}
-                        labelColor={themeStyle.BLACK}
-                        labelStyle={CommonStyle.textStyle}
-                        style={{marginStart: 5, marginTop: 10}}
-                        animation={true}
-                        onPress={(value) => {
-                            this.setState({userId_type: value});
-                        }}
-                    />
-
-                    <View style={{alignItems: "flex-end", flex: 1,}}>
-                        <TextInput
-                            selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {
-                                textAlign: 'right',
-                                marginLeft: 10,
-                            }]}
-                            placeholder={language.enterUserId}
-                            onChangeText={text => this.setState({errorUserId:"",userId: Utility.userInput(text)})}
-                            value={this.state.userId}
-                            multiline={false}
-                            editable={this.state.userId_type !== 0}
-                            numberOfLines={1}
-                            contextMenuHidden={true}
-                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}/>
-                        {this.state.errorUserId !== "" ?
-                            <Text style={{
-                                marginLeft: 5,
-                                marginRight: 10,
-                                color: themeStyle.THEME_COLOR,
-                                fontSize: FontSize.getSize(11),
-                                fontFamily: fontStyle.RobotoRegular,
-                                alignSelf: "flex-end",
-                                marginBottom: 10,
-                            }}>{this.state.errorUserId}</Text> : null}
-                    </View>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.user_id}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TextInput
+                        ref={(ref) => this.userIDRef = ref}
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            marginLeft: 10,
+                            flex: 1
+                        }]}
+                        placeholder={language.enterUserId}
+                        onChangeText={text => this.setState({errorUserId: "", userId: Utility.userInput(text)})}
+                        value={this.state.userId}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={12}/>
                 </View>
-
+                {this.state.errorUserId !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorUserId}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={[CommonStyle.checkboxContainer]}>
@@ -499,15 +539,38 @@ class RegistrationAccount extends Component {
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
+    }
 
+    async accountVerify(act_no, type, language) {
+        if (act_no.length !== 13) {
+            this.setState({errorAccount_no: language.errActNo});
+            return;
+        }
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.accountVerifyRequest(act_no, type, this.props).then((response) => {
+            console.log("response", JSON.stringify(response));
+            this.setState({
+                isProgress: false,
+                isShowingAccountName: true,
+                actName: response.CUST_NAME,
+                placeMobile: response.MASK_MOBILE_NO,
+                placeEmail: response.MASK_MAIL_ID,
+                //conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
+                //conf_email: response.MAIL_ID,
+                signUpResponse: response,
+                hasDebitCard: response.DEBIT_CARD.length > 0
+            });
+        }, (error) => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     accountView(language) {
         return (
-            <View>
+            <View key={"accountView"}>
                 <View style={{
                     borderColor: themeStyle.BORDER,
-                    width: Utility.getDeviceWidth() - 20,
                     borderRadius: 5,
                     marginTop: 10,
                     overflow: "hidden",
@@ -541,6 +604,10 @@ class RegistrationAccount extends Component {
                             value={this.state.accountNo}
                             multiline={false}
                             numberOfLines={1}
+                            returnKeyType={"done"}
+                            onSubmitEditing={async (event) => {
+                                await this.accountVerify(this.state.accountNo, "A", language);
+                            }}
                             contextMenuHidden={true}
                             keyboardType={"number-pad"}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
@@ -596,7 +663,7 @@ class RegistrationAccount extends Component {
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
-                                {language.conf_mobile}
+                                {language.mobile}
                                 <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                             </Text>
                             <TextInput
@@ -607,7 +674,7 @@ class RegistrationAccount extends Component {
                                     flex: 1,
                                     marginLeft: 10
                                 }]}
-                                placeholder={"01********"}
+                                placeholder={this.state.placeMobile}
                                 onChangeText={text => this.setState({
                                     errorMobile: "",
                                     conf_mobile: Utility.input(text, "0123456789")
@@ -620,7 +687,7 @@ class RegistrationAccount extends Component {
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                 autoCorrect={false}
                                 returnKeyType={"next"}
-                                onSubmitEditing={(event)=>{
+                                onSubmitEditing={(event) => {
                                     this.emailref.focus();
                                 }}
                                 maxLength={14}/>
@@ -648,19 +715,19 @@ class RegistrationAccount extends Component {
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
-                                {language.conf_email}
+                                {language.email}
                                 <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                             </Text>
                             <TextInput
-                                ref ={(ref)=> this.emailref  = ref}
+                                ref={(ref) => this.emailref = ref}
                                 selectionColor={themeStyle.THEME_COLOR}
                                 style={[CommonStyle.textStyle, {
                                     alignItems: "flex-end",
                                     textAlign: 'right',
                                     flex: 1,
-                                    marginLeft: 10
+                                    marginLeft: 2
                                 }]}
-                                placeholder={"a********@gmail.com"}
+                                placeholder={this.state.placeEmail}
                                 onChangeText={text => this.setState({
                                     errorEmail: "",
                                     conf_email: Utility.userInput(text)
@@ -688,11 +755,30 @@ class RegistrationAccount extends Component {
             </View>);
     }
 
+    showDatepicker = (id) => {
+        console.log("click");
+        this.setState({currentSelection: id, show: true, mode: "date"});
+    };
+
+    onChange = (event, selectedDate) => {
+        if (event.type !== "dismissed" && selectedDate !== undefined) {
+            console.log("selectedDate-", selectedDate);
+            let currentDate = selectedDate === "" ? new Date() : selectedDate;
+            currentDate = moment(currentDate).format("DD-MMM-YYYY");
+            this.setState({dateVal: selectedDate, dob: currentDate, show: false}, () => {
+                if (this.state.currentSelection === 0)
+                    this.setState({errorDob: "", dob: currentDate})
+                else
+                    this.setState({errorTransDate: "", transDate: currentDate})
+            });
+        } else {
+            this.setState({show: false});
+        }
+    };
 
     userPersonal(language) {
-        return (<View style={{
+        return (<View key={"userPersonal"} style={{
             borderColor: themeStyle.BORDER,
-            width: Utility.getDeviceWidth() - 20,
             borderRadius: 5,
             marginTop: 10,
             overflow: "hidden",
@@ -719,7 +805,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_father_name}
-                        onChangeText={text => this.setState({errorFather:"",fatherName: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorFather: "", fatherName: Utility.userInput(text)})}
                         value={this.state.fatherName}
                         multiline={false}
                         numberOfLines={1}
@@ -765,7 +851,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_mother_name}
-                        onChangeText={text => this.setState({errorMother:"",motherName: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorMother: "", motherName: Utility.userInput(text)})}
                         value={this.state.motherName}
                         multiline={false}
                         numberOfLines={1}
@@ -801,28 +887,25 @@ class RegistrationAccount extends Component {
                         {language.et_dob}
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
-                    <TextInput
-                        ref={(ref) => this.dobRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={"MM/YY"}
-                        onChangeText={text => this.setState({errorDob:"",dob: Utility.input(text, "0123456789/")})}
-                        value={this.state.dob}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"true"}
-                        onSubmitEditing={(event) => {
-                            this.transDateRef.focus();
-                        }}
-                        maxLength={5}/>
+                    <TouchableOpacity style={{
+                        marginLeft: 10,
+                        flex: 1,
+                    }} onPress={() => this.showDatepicker(0)}>
+                        <TextInput
+                            ref={(ref) => this.dobRef = ref}
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                            }]}
+                            placeholder={"DD-MMM-YYYY"}
+                            value={"11-NOV-1983"}
+                            editable={false}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}/></TouchableOpacity>
                 </View>
                 {this.state.errorDob !== "" ?
                     <Text style={{
@@ -848,28 +931,26 @@ class RegistrationAccount extends Component {
                         {language.last_trans_date}
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
-                    <TextInput
-                        ref={(ref) => this.transDateRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={"dd/MM/YYYY"}
-                        onChangeText={text => this.setState({ errorTransDate:"",transDate: Utility.input(text, "0123456789/")})}
-                        value={this.state.transDate}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.transAmtRef.focus();
-                        }}
-                        maxLength={10}/>
+                    <TouchableOpacity style={{
+                        marginLeft: 10,
+                        flex: 1,
+                    }} onPress={() => this.showDatepicker(1)}>
+                        <TextInput
+                            ref={(ref) => this.transDateRef = ref}
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right'
+                            }]}
+                            placeholder={"DD-MMM-YYYY"}
+                            value={this.state.transDate}
+                            multiline={false}
+                            editable={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                        /></TouchableOpacity>
                 </View>
                 {this.state.errorTransDate !== "" ?
                     <Text style={{
@@ -904,7 +985,10 @@ class RegistrationAccount extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        onChangeText={text => this.setState({errorTransAmt:"",transAmt: Utility.input(text, "0123456789.")})}
+                        onChangeText={text => this.setState({
+                            errorTransAmt: "",
+                            transAmt: Utility.input(text, "0123456789.")
+                        })}
                         value={this.state.transAmt}
                         multiline={false}
                         numberOfLines={1}
@@ -932,14 +1016,67 @@ class RegistrationAccount extends Component {
     }
 
     debitCardUI(language) {
-        return (<View style={{
-            borderColor: themeStyle.BORDER,
-            width: Utility.getDeviceWidth() - 20,
-            borderRadius: 5,
-            marginTop: 10,
-            overflow: "hidden",
-            borderWidth: 2
-        }}>
+        return (<View
+            key={"debitCardUI"}
+            style={{
+                borderColor: themeStyle.BORDER,
+                borderRadius: 5,
+                marginTop: 10,
+                overflow: "hidden",
+                borderWidth: 2
+            }}>
+
+            <View>
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.debitCardNo}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.debitCardNo}
+                        onChangeText={text => this.setState({
+                            errorDCardNo: "",
+                            debitCardNo: Utility.input(text, "0123456789")
+                        })}
+                        value={this.state.debitCardNo}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.debitPinRef.focus();
+                        }}
+                        maxLength={15}/>
+
+                </View>
+                {this.state.errorDCardNo !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorDCardNo}</Text> : null}
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
                     flexDirection: "row",
@@ -955,32 +1092,28 @@ class RegistrationAccount extends Component {
                     <TouchableOpacity style={{
                         flex: 1,
                         marginLeft: 10
-                    }} onPress={() => this.setState({errorExpiry: "",showMonthPicker: true})}>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.enterCardExpiry}
-/*                        onChangeText={text => this.setState({
-                            errorExpiry: "",
-                            expiryDate: Utility.input(text, "0123456789/")
-                        })}*/
-                        editable={false}
-                        value={this.state.expiryDate}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event)=>{
-                            this.debitPinRef.focus();
-                        }}
-                        maxLength={5}/>
+                    }} onPress={() => this.setState({errorExpiry: "", showMonthPicker: true})}>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={language.enterCardExpiry}
+                            editable={false}
+                            value={this.state.cardExpiry}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            returnKeyType={"next"}
+                            onSubmitEditing={(event) => {
+                                this.debitPinRef.focus();
+                            }}
+                            maxLength={5}/>
                     </TouchableOpacity>
                 </View>
                 {this.state.errorExpiry !== "" ?
@@ -1008,7 +1141,7 @@ class RegistrationAccount extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
-                        ref={(ref)=>this.debitPinRef= ref }
+                        ref={(ref) => this.debitPinRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -1028,7 +1161,11 @@ class RegistrationAccount extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         keyboardType={"number-pad"}
-                        maxLength={6}/>
+                        maxLength={4}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.userIDRef.focus();
+                        }}/>
                 </View>
                 {this.state.errorPin !== "" ?
                     <Text style={{
@@ -1046,99 +1183,132 @@ class RegistrationAccount extends Component {
         </View>)
     }
 
-    submit(language, navigation) {
-        const {stateVal} = this.state;
-        console.log(stateVal)
-            if(stateVal === 0){
-                if(this.state.accountNo.length !== 13){
-                    this.setState({errorAccount_no: language.require_account_no});
-                    return;
-                }
-                else if(this.state.conf_mobile === ""){
-                    this.setState({errorMobile: language.require_mobile});
-                    return;
-                }else if(this.state.conf_email === ""){
-                    this.setState({errorEmail: language.require_email});
-                    return;
-                }else if(this.state.UserId === ""){
-                    this.setState({errorUserId: language.require_email});
-                    return;
-                }
-            }
+    async signupRequest() {
+        let {stateVal} = this.state;
+        this.setState({isProgress: true});
+        let card_details, authFlag;
+        if (this.state.hasDebitCard) {
+            card_details = "Y";
+            authFlag = "CP";
+        } else {
+            card_details = "N";
+            authFlag = "TP";
+        }
 
-            else if(stateVal === 1) {
-                if(this.state.expiryDate === ""){
-                    this.setState({errorExpiry: language.errExpiryDate});
-                    return;
-                }
-                else if (this.state.debitPin === "") {
-                    this.setState({errorPin: language.errCardPin});
-                    return;
-                }else if(this.state.userId === "") {
-                    this.setState({errorUserId: language.errorUserId});
-                    return;
-                }
-            }
-            else if(stateVal === 2) {
-                if (this.state.fatherName === "") {
-                    this.setState({errorFather: language.et_father_name});
-                    return;
-                } else if (this.state.motherName === "") {
-                    console.log("error mother")
-                    this.setState({errorMother: language.errorMother});
-                    return;
-                } else if (this.state.dob === "") {
-                    this.setState({errorDob: language.errorDob})
-                    return;
-                } else if (this.state.transDate === "") {
-                    this.setState({errorTransDate: language.errorTransDate})
-                    return;
-                }else if (this.state.transAmt === "") {
-                    this.setState({errorTransAmt: language.errorTransAmt})
-                    return;
-                }else if (this.state.UserId === "") {
-                    this.setState({errorUserId: language.errorUserId})
-                    return;
-                }
+        let signupResult = await ApiRequest.apiRequest.veryAccountRequest("A", card_details, this.state.signUpResponse,
+            authFlag, this.state.otp_type === 0 ? "S" : this.state.otp_type === 1 ? "E" : "B",
+            this.state.dob,
+            this.state.userId, await Utility.getDeviceID(), this.state.accountNo, this.state.debitPin,
+            this.state.cardExpiry, this.state.fatherName,
+            this.state.motherName, this.state.debitCardNo);
 
+        this.setState({isProgress: false});
+        console.log("signupResult", signupResult);
+        if (signupResult.STATUS === "0") {
+            let response = signupResult.RESPONSE[0];
+            let signUpResponse = {
+                ...this.state.signUpResponse,
+                ACTIVATION_CD: response.ACTIVATION_CD,
+                CUSTOMER_ID: response.CUSTOMER_ID
             }
-            else if(stateVal === 3) {
-                 if(this.state.otpVal.length !== 4) {
-                    Utility.alert(language.errOTP);
-                    return;
+            this.setState({signUpResponse: signUpResponse, stateVal: 3})
+        } else {
+            Utility.errorManage(signupResult.STATUS, signupResult.MESSAGE, this.props);
+        }
+    }
+
+    async submit(language, navigation) {
+        const {stateVal, conf_mobile, conf_email, signUpResponse} = this.state;
+        if (stateVal === 0) {
+            if (this.state.accountNo.length !== 13) {
+                this.setState({errorAccount_no: language.errActNo});
+            } else if (this.state.actName === "") {
+                await this.accountVerify(this.state.accountNo, "A", language);
+            } else if (conf_mobile === "") {
+                this.setState({errorMobile: language.require_mobile});
+            } else if (conf_email === "") {
+                this.setState({errorEmail: language.require_email});
+            } else if (conf_mobile !== signUpResponse.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, "")) {
+                this.setState({errorMobile: language.invalidMobile});
+            } else if (conf_email !== signUpResponse.MAIL_ID) {
+                this.setState({errorEmail: language.invalidEmail});
+            } else {
+                if (signUpResponse.DEBIT_CARD.length > 0) {
+                    this.setState({stateVal: stateVal + 1});
+                } else {
+                    this.setState({stateVal: stateVal + 2});
                 }
             }
-            else if(stateVal === 4){
-                if(this.state.transPin === ""){
-                    this.setState({errorTransPin: language.errTransPin});
+        } else if (stateVal === 1) {
+            if (this.state.debitCardNo === "") {
+                this.setState({errorDCardNo: language.errDebitCard});
+            } else if (this.state.cardExpiry === "") {
+                this.setState({errorExpiry: language.errExpiryDate});
+            } else if (this.state.debitPin === "") {
+                this.setState({errorPin: language.errCardPin});
+            } else {
+                let userRes = Utility.verifyUserId(this.state.userId, language)
+                if (userRes !== "") {
+                    this.setState({errorUserId: userRes});
                     return;
-                }else if(this.state.loginPin===""){
-                    this.setState({errorLoginPin:language.errValidPin})
+                } else if (!this.state.isTerm) {
+                    Utility.alert(language.errorTerm);
                     return;
                 }
-                else if(this.state.password === ""){
-                    this.setState({errorpassword:language.errorpassword})
-                    return;
-                }
-                Alert.alert(
-                    Config.appName,
-                    language.success_register,
-                    [
-                        {
-                            text: language.ok, onPress: () => navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 0,
-                                    routes: [{name: "LoginScreen"}],
-                                })
-                            )
-                        },
-                    ]
-                );
+                await this.signupRequest();
+            }
+        } else if (stateVal === 2) {
+            if (this.state.fatherName === "") {
+                this.setState({errorFather: language.et_father_name});
                 return;
-            }else{
-                console.log("stateVal else part",stateVal)
+            } else if (this.state.motherName === "") {
+                console.log("error mother")
+                this.setState({errorMother: language.errorMother});
+                return;
+            } else if (this.state.dob === "") {
+                this.setState({errorDob: language.errorDob})
+                return;
+            } else if (this.state.transDate === "") {
+                this.setState({errorTransDate: language.errorTransDate})
+                return;
+            } else if (this.state.transAmt === "") {
+                this.setState({errorTransAmt: language.errorTransAmt})
+                return;
+            } else {
+                let userRes = Utility.verifyUserId(this.state.userId, language)
+                if (userRes !== "") {
+                    this.setState({errorUserId: userRes});
+                    return;
+                } else if (!this.state.isTerm) {
+                    Utility.alert(language.errorTerm);
+                    return;
+                }
+                await this.signupRequest();
             }
-                this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
+
+        } else if (stateVal === 3) {
+            if (this.state.otpVal.length !== 4) {
+                Utility.alert(language.errOTP);
+                return;
+            }
+            await this.getOTP();
+
+        } else if (stateVal === 4) {
+            if (this.state.transPin === "") {
+                this.setState({errorTransPin: language.errTransPin});
+                return;
+            } else if (this.state.loginPin === "") {
+                this.setState({errorLoginPin: language.errValidPin})
+                return;
+            } else if (this.state.password === "") {
+                this.setState({errorpassword: language.errorpassword})
+                return;
+            } else {
+                await this.processSignup(language)
+            }
+
+        }
+
     }
 
     render() {
@@ -1198,17 +1368,17 @@ class RegistrationAccount extends Component {
                                 </TouchableOpacity>
                                 <View style={{width: Utility.setWidth(20)}}/>
 
-                                <TouchableOpacity style={{flex: 1}}
+                                <TouchableOpacity disabled={this.state.disableButton} style={{flex: 1}}
                                                   onPress={() => this.submit(language, this.props.navigation)}>
                                     <View style={{
                                         alignItems: "center",
                                         justifyContent: "center",
                                         height: Utility.setHeight(46),
                                         borderRadius: Utility.setHeight(23),
-                                        backgroundColor: themeStyle.THEME_COLOR
+                                        backgroundColor: this.state.disableButton ? themeStyle.PLACEHOLDER_COLOR : themeStyle.THEME_COLOR
                                     }}>
                                         <Text
-                                            style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 4 ? language.submit_txt : language.next}</Text>
+                                            style={[CommonStyle.midTextStyle, {color: this.state.disableButton ? themeStyle.WHITE : themeStyle.WHITE}]}>{this.state.stateVal === 4 ? language.submit_txt : language.next}</Text>
                                     </View>
                                 </TouchableOpacity>
 
@@ -1224,6 +1394,17 @@ class RegistrationAccount extends Component {
                     locale="en"
                     mode="number"
                 /> : null}
+                {this.state.show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={this.state.dateVal}
+                        mode={this.state.mode}
+                        is24Hour={false}
+                        display="default"
+                        onChange={this.onChange}
+                    />
+                )}
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>);
     }
 }

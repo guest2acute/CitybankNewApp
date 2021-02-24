@@ -160,8 +160,8 @@ class PinLogin extends Component {
         };
         console.log("request", loginReq);
         let result = await ApiRequest.apiRequest.callApi(loginReq, {});
-
-        result = result[0];
+        console.log("logres",result);
+       // result = result[0];
 
         this.setState({isProgress: false});
         if (result.STATUS === "0") {

@@ -447,7 +447,7 @@ class CredentialDetails extends Component {
         console.log("request", commonReq);
         let result = await ApiRequest.apiRequest.callApi(commonReq, {});
         console.log("result", result);
-        result = result[0];
+        //result = result[0];
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
             if (this.state.selectTypeVal > 0 && response.USER_ID !== this.state.responseUserId.USER_ID) {
@@ -502,7 +502,7 @@ class CredentialDetails extends Component {
         }
         console.log("request", resetReq);
         let result = await ApiRequest.apiRequest.callApi(resetReq, {});
-        result = result[0];
+       // result = result[0];
         this.setState({isProgress: false});
 
         if (result.STATUS === "0" || result.STATUS === "999") {
@@ -535,7 +535,7 @@ class CredentialDetails extends Component {
         }
         console.log("userReq", userReq);
         let result = await ApiRequest.apiRequest.callApi(userReq, {});
-        result = result[0];
+        //result = result[0];
         console.log("result", result);
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
@@ -636,7 +636,7 @@ class CredentialDetails extends Component {
 
         console.log("request", otpReq);
         let result = await ApiRequest.apiRequest.callApi(otpReq, {});
-        result = result[0];
+       // result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0" || result.STATUS === "999") {
 
@@ -882,7 +882,7 @@ class CredentialDetails extends Component {
             changeReq = {...changeReq, PASS_TYPE: this.state.selectTypeVal === 1 ? "L" : "P"}
         console.log("changeReq", changeReq);
         let result = await ApiRequest.apiRequest.callApi(changeReq, {});
-        result = result[0]
+        //result = result[0]
         this.setState({isProgress: false});
         if (result.STATUS === "0" || result.STATUS === "999") {
             console.log("result final", result.MESSAGE);

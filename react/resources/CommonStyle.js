@@ -71,5 +71,8 @@ export default StyleSheet.create({
         marginBottom: 5,
         marginRight: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
         fontFamily: fontStyle.RobotoRegular,
+    },
+    disable:{
+
     }
 });
