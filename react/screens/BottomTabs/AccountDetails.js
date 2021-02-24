@@ -50,7 +50,6 @@ class AccountDetails extends Component {
                 <Text style={[styles.textStyle, {flex: 1, fontSize: 9}]}>{item.Description}</Text>
                 <Text style={[styles.textStyle, {
                     color: themeStyle.THEME_COLOR,
-                    width: Utility.setWidth(60),
                     textAlign: "center",
                 }]}>{item.Type}</Text>
                 <Text style={[styles.textStyle, {

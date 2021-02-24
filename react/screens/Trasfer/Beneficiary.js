@@ -17,7 +17,7 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 
 
-class AddBeneficiary extends Component {
+class Beneficiary extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -81,7 +81,7 @@ class AddBeneficiary extends Component {
             return;
         }
         else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate("AddBeneficiaryWCityBank");
+            this.props.navigation.navigate("BeneficiaryWithCityBank");
             return;
         } else if (this.state.selectTypeVal === 1) {
             this.props.navigation.navigate("AddBeneficiaryOtherBank");
@@ -280,4 +280,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(AddBeneficiary);
+export default connect(mapStateToProps)(Beneficiary);

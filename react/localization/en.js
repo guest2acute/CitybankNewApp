@@ -432,6 +432,25 @@ export default {
     require_transaction_p:"Transaction Pin is required",
     require_account_no:"Account Number is required",
 
+    credit_card_det: "Credit Card Details",
+    card_number: "Card Number",
+    statement_date: "Statement Due Date",
+    payment_date: "Payment Date",
+    last_balance: "Last Outstanding Balance",
+    minimum_payment: "Minimum Payment Due",
+    previous_bal: "Previous Balance",
+    interest_charge: "Interest Charge",
+    pay_now: "Pay Now",
+    unbilled: "UNBILLED",
+    current: "CURRENT",
+    bdt: "BDT",
+    visa: "VISA",
+    date: "DATE",
+    amount: "AMOUNT",
+    total_credit: "Total Credit Line",
+    credit_available: "Credit Available",
+    outstanding_bal: "Outstanding Balance",
+
     dataListArray: [{
             "HEADER_NAME": "jhhj",
             "HEADER_ACCT_DTL": [{
@@ -858,6 +877,137 @@ export default {
                     ]
                 }
             ]
-        }]
+        }],
+
+    /*Transfer Category screen message*/
+    transfer_title: "Transfer Category",
+    transfer_subtitle: "Please Select One of the Category",
+    transfer_owncbl_acct: "Transfer within own CBL Accounts",
+    transfer_othercbl_acct: "Transfer within other CBL Accounts",
+    transfer_otherbank_acct: "Transfer within other Bank Accounts",
+    transfer_bkash: "Transfer to bkash",
+    cash_by_code: "Cash By Code",
+
+    /*Transfer History screen message*/
+    description: "Description",
+    amount: "Amount",
+    transfer_history: "Transfer History",
+
+    /*beneficiary management message*/
+    add_beneficiary:"Add Beneficiary",
+    delete_beneficiary:"Delete Beneficiary",
+    beneficiary_management:"Beneficiary Managements",
+
+    type_transfer:"Type Of Transfer *",
+    select_type_transfer: "Select Transfer Type",
+    select_beneficiary_type:"Select Beneficiary Type",
+    transferTypeArr: [
+        {key: "0", label: "Transfer Within City Bank", value: 0},
+        {key: "1", label: "Transfer Other Bank", value: 1},
+        {key: "2", label: "Email Transfer", value: 2},
+        {key: "3", label: "Transfer to bkash", value: 3}
+    ],
+
+    TypeOfTransferArr: [
+        {key: "0", label: "Transfer Within City Bank", value: 0},
+        {key: "1", label: "Transfer Other Bank", value: 1},
+        {key: "2", label: "Transfer Within City Bank", value: 2},
+        {key: "3", label: "Transfer Other Bank", value: 3}
+    ],
+
+    add_beneficiary_wcb: "Add Beneficiary-Within City Bank",
+    nick_name:"Nick Name",
+    account_holder_name:"Account Holder Name",
+    currency : "Currency",
+    type_act: "Type Of Account",
+    beneficiary_mobile_number: "Beneficiary Mobile Number",
+    beneficiary_Email_Address:"Beneficiary Email Address",
+    et_placeholder:"Please fill up",
+    acc_number:"Account Number",
+    beneficiary_mo_number: "Beneficiary Mobile Number",
+    et_name_number:"Enter name or number",
+
+    /*error message*/
+    require_nickname: "Nick Name is Requirered",
+    require_accnumber: "Account Number is  Required",
+    require_cardname: "Account Card Name is Required",
+    require_cardnumber:"Account Card number is Required",
+    require_bkash: "Bkash Account is required",
+    require_name: "Name is required",
+    require_bname: "Beneficiary Name is required",
+    require_email: "Email Address is required",
+
+    add_beneficiary_wob:"Add Beneficiary-Other Bank",
+    acc_card_number: "Account/Card Number",
+    acc_card_name: "Account/Card Name ",
+
+    acc_type: "Account Type",
+    bankTypeArr: [
+        {key: "0", label: "AB Bank Limited", value: 0},
+        {key: "1", label: "Agrani Bank Ltd.", value: 1},
+        {key: "2", label: "AI-arafah Islami Bank Ltd.", value: 2},
+        {key: "3", label: "Bangladesh Bank", value: 3},
+        {key: "4", label: "Bangladesh Commerce Bank Ltd.", value: 4},
+        {key: "5", label: "Bangladesh Development Bank Ltd.", value: 5},
+        {key: "6", label: "Bangladesh Krishi Bank", value: 6},
+        {key: "7", label: "Bangladesh Samabaya Bank Ltd.", value: 7},
+        {key: "8", label: "Bank Ai-Falah Ltd.", value: 8},
+        {key: "9", label: "Bank Asia Ltd.", value: 9},
+        {key: "10", label: "Basic Bank Ltd.", value: 10},
+        {key: "11", label: "Brac Bank Ltd.", value: 11},
+        {key: "12", label: "COMMUNITY BANK BANGLADESH LTD.", value: 12},
+        {key: "13", label: "City Bank N A", value: 13},
+        {key: "14", label: "Dhaka Bank Ltd", value: 14},
+    ],
+    districtTypeArr:[
+        {key: "0", label: "BAGERATH", value: 0},
+        {key: "1", label: "BANDARBAN", value: 1},
+        {key: "2", label: "BARGUNA", value: 2},
+        {key: "3", label: "BARISHAL", value: 3},
+        {key: "4", label: "BHOLA", value: 4},
+        {key: "5", label: "BOGRA", value: 5},
+        {key: "6", label: "CHANDPUR", value: 6},
+        {key: "7", label: "COMILLA", value: 7},
+    ],
+    type_bank:"Bank Name",
+    select_bank_type:"Select Bank Name",
+    type_district:"District Name",
+    select_type_account:"Select Account Type",
+    select_district_type:"Select District Name",
+    select_branch_type: "Select Branch Name",
+    type_Branch: "Branch Name",
+    districtTypeArr:[
+        {key: "0", label: "BAGERATH", value: 0},
+        {key: "1", label: "BANDARBAN", value: 1},
+        {key: "2", label: "BARGUNA", value: 2},
+        {key: "3", label: "BARISHAL", value: 3},
+        {key: "4", label: "BHOLA", value: 4},
+        {key: "5", label: "BOGRA", value: 5},
+        {key: "6", label: "CHANDPUR", value: 6},
+        {key: "7", label: "COMILLA", value: 7},
+    ],
+    branchTypeArr:[
+        {key: "0", label: "kadi", value: 0},
+        {key: "1", label: "kalol", value: 1},
+        {key: "2", label: "ahemdabad", value: 2},
+        {key: "3", label: "gadhinagar", value: 3},
+        {key: "4", label: "vijapur", value: 4},
+        {key: "5", label: "surat", value: 5},
+        {key: "6", label: "rajkot", value: 6},
+        {key: "7", label: "sitapur", value: 7},
+    ],
+    select_brach:"select branch",
+    select_branch_name:"Select Branch Name",
+
+    notes: "Notes :",
+
+    add_beneficiary_transfer: "Add Beneficiary-Transfer to bkash",
+    bkash_account: "bkash Account",
+    please_enter: "Please enter here",
+
+    name: "Name",
+    b_name: "Enter Beneficiary Name Here",
+    b_email: "Enter Beneficiary Email",
+    add_beneficiary: "Add Beneficiary",
 
 };

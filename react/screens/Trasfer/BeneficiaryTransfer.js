@@ -19,7 +19,7 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
 
-class AddBeneficiaryTransfer extends Component {
+class BeneficiaryTransfer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -301,4 +301,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(AddBeneficiaryTransfer);
+export default connect(mapStateToProps)(BeneficiaryTransfer);
