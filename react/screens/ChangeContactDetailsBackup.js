@@ -21,6 +21,7 @@ import {CommonActions} from "@react-navigation/native";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import MonthPicker from "react-native-month-year-picker";
+import ApiRequest from "../config/ApiRequest";
 
 let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
     key: "1",
@@ -67,7 +68,8 @@ class ChangeContactDetails extends Component {
             errorConfMobile:"",
             errorConfEmail:"",
             errorEmail:"",
-
+            actNoList: [],
+            responseArr:[],
         }
     }
 
@@ -116,7 +118,7 @@ class ChangeContactDetails extends Component {
     accountNoOption(language) {
         return (<View>
             <TouchableOpacity style={{marginTop: 20}}
-                              onPress={() => this.openModal("accountListType", language.selectCard, cardNumber, language)}>
+                              onPress={() => this.openModal("accountListType", language.selectCard,this.state.actNoList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -146,7 +148,6 @@ class ChangeContactDetails extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        //onChangeText={text => this.setState({transactionPin: Utility.input(text, "0123456789")})}
                         onChangeText={text => this.setState({
                             errorTransPin: "",
                             transactionPin: Utility.input(text, "0123456789")
@@ -177,9 +178,8 @@ class ChangeContactDetails extends Component {
 
     creditCardOption(language) {
         return (<View>
-
             <TouchableOpacity style={{marginTop: 20}}
-                              onPress={() => this.openModal("cardType", language.selectCard, cardNumber, language)}>
+                              onPress={() => this.openModal("cardType", language.selectCard, this.state.actNoList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -291,17 +291,39 @@ class ChangeContactDetails extends Component {
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "accountListType") {
-            this.setState({select_actNo: item.label, modalVisible: false})
+            console.log("accountlisttype is this",item)
+            this.setState({select_actNo: item.ACCOUNT_NO, modalVisible: false})
         } else if (modelSelection === "contactType") {
+            console.log("contact type")
             this.setState({select_contact_type: item, modalVisible: false, stateVal: 0})
         } else if (modelSelection === "accountType") {
-            this.setState({selectActCard: item, modalVisible: false, stateVal: 0})
+            console.log("value is",item.value)
+            console.log("account type is this",this.state.responseArr.ACCOUNT_DTL)
+
+            this.setState({
+                actNoList:item.value===0?this.state.responseArr.ACCOUNT_DTL: this.state.responseArr.CARD_DTL,
+                modalVisible: false,selectTypeVal:item.value
+            })
+
+            /*if(item.key === 0){
+                console.log("label 1 is this",item.label)
+                //this.setState({ACCOUNT_DTL:this.state.responseArr.ACCOUNT_DTL,)}
+            }*/
+            /*this.setState({
+                select_actNo: item.ACCOUNT_NO,
+                selectTypeVal: parseInt(item.ACCOUNT_NO),
+                modalVisible: false
+            })*/
+            //this.setState({selectActCard: item, modalVisible: false, stateVal: 0})
         } else if (modelSelection === "cardType") {
-            this.setState({selectCard: item.label, modalVisible: false, stateVal: 0})
+            console.log("item is this",item.label)
+            this.setState({
+                actNoList:item.value===1?this.state.responseArr.CARD_DTL:this.state.responseArr.ACCOUNT_DTL ,
+                selectCard: item.label, modalVisible: false, stateVal: 0,selectTypeVal:item.value})
         }
     }
 
-    submit(language, navigation) {
+    async submit(language, navigation) {
         const {stateVal} = this.state;
         console.log("this.state.selectActCard", this.state.selectActCard);
         console.log("this.state.stateVal", this.state.stateVal);
@@ -313,6 +335,9 @@ class ChangeContactDetails extends Component {
                 } else if (this.state.transactionPin === "") {
                     this.setState({errorTransPin: language.errTransPin});
                     return;
+                }else{
+                    console.log("")
+                    await this.contactType(language,navigation)
                 }
             } else if(this.state.selectActCard.value === 1) {
                 if(this.state.expiryDate === ""){
@@ -364,7 +389,11 @@ class ChangeContactDetails extends Component {
         this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
     }
 
-   async componentDidMount() {
+    async contactType(language,navigation){
+        console.log("called contct type ")
+    }
+
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -375,8 +404,22 @@ class ChangeContactDetails extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+        await this.getAccountDetails();
+    }
 
-        //await this.getAccountDetails();
+    async getAccountDetails() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let result = await ApiRequest.apiRequest.getAccountDetails(userDetails, {});
+        console.log("result", result);
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            console.log("response", response);
+            this.setState({responseArr: response, isProgress: false});
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
     }
 
     backEvent() {
@@ -396,7 +439,6 @@ class ChangeContactDetails extends Component {
             overflow: "hidden",
             borderWidth: 2
         }}>
-
             <View>
                 <View style={{
                     flexDirection: "row",
@@ -482,16 +524,16 @@ class ChangeContactDetails extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorConfMobile !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfMobile} </Text> : null }
+                    {this.state.errorConfMobile !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorConfMobile} </Text> : null }
 
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -688,8 +730,12 @@ class ChangeContactDetails extends Component {
                                                       style={[CommonStyle.textStyle, {
                                                           color: themeStyle.THEME_COLOR,
                                                           marginStart: 10
-                                                      }]}>{item.label}</Text>
+                                                      }]}>{ this.state.selectTypeVal === 0 ? item.ACCOUNT_NO : null }</Text>
                                               </View>
+                                              <View>
+                                                  <Text>{item.label}</Text>
+                                              </View>
+
                                           </TouchableOpacity>
                                       }
                                       ItemSeparatorComponent={this.renderSeparator}/>
@@ -751,6 +797,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

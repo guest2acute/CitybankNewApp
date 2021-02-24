@@ -41,6 +41,12 @@ import ChangeLoginPIN from "./react/screens/ChangeLoginPIN";
 import ChangeContactDetails from "./react/screens/ChangeContactDetails";
 import UploadSupportDoc from "./react/screens/UploadSupportDoc";
 import PinLogin from "./react/screens/PinLogin";
+import BeneficiaryManagement from "./react/screens/Trasfer/BeneficiaryManagement";
+import Beneficiary from "./react/screens/Trasfer/Beneficiary";
+import BeneficiaryWithCityBank from "./react/screens/Trasfer/BeneficiaryWithCityBank";
+import BeneficiaryOtherBank from "./react/screens/Trasfer/BeneficiaryOtherBank";
+import BeneficiaryTransfer from "./react/screens/Trasfer/BeneficiaryTransfer";
+import TransferWithBkash from "./react/screens/Trasfer/TransferWithBkash";
 
 
 const store = configureStore(window.__State__);
@@ -105,12 +111,29 @@ const BottomNavigator = () => {
     );
 }
 
+/*
 function TransferTab() {
     return (
         <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
+        </Stack.Navigator>);
+}
+*/
+
+function TransferTab() {
+    return (
+        <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}>
+            <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryManagement" component={BeneficiaryManagement} options={{headerShown: false}}/>
+            <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryWithCityBank" component={BeneficiaryWithCityBank} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryOtherBank" component={BeneficiaryOtherBank} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryTransfer" component={BeneficiaryTransfer} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferWithBkash" component={TransferWithBkash} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
