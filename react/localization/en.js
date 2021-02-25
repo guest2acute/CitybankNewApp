@@ -283,14 +283,14 @@ export default {
     ],
 
     transfer_props: [
-        {title: "City Bank Account", icon: require("../resources/images/ic_city_bank_account.png")},
-        {title: "Other Bank Account", icon: require("../resources/images/contact_icon.png")},
-        {title: "Cash By Code", icon: require("../resources/images/case_by_code.png")},
-        {title: "Email Transfer", icon: require("../resources/images/email_transfer.png")},
-        {title: "Transfer To Bkash", icon: require("../resources/images/transfer_to_bkash.png")},
-        {title: "Beneficiary Management", icon: require("../resources/images/beneficiary_management.png")},
-        {title: "Favorite Transfers", icon: require("../resources/images/ic_facourite_transfer.png")},
-        {title: "Transfer History", icon: require("../resources/images/ic_transfer_istory.png")}
+        {id:"cityBankAcct",title: "City Bank Account", icon: require("../resources/images/ic_city_bank_account.png")},
+        {id:"otherBankAcct",title: "Other Bank Account", icon: require("../resources/images/contact_icon.png")},
+        {id:"cashByCode",title: "Cash By Code", icon: require("../resources/images/case_by_code.png")},
+        {id:"emailTransfer",title: "Email Transfer", icon: require("../resources/images/email_transfer.png")},
+        {id:"transferToBkash",title: "Transfer To Bkash", icon: require("../resources/images/transfer_to_bkash.png")},
+        {id:"beneficiaryManagement",title: "Beneficiary Management", icon: require("../resources/images/beneficiary_management.png")},
+        {id:"favoriteTransfer",title: "Favorite Transfers", icon: require("../resources/images/ic_facourite_transfer.png")},
+        {id:"transferHistory",title: "Transfer History", icon: require("../resources/images/ic_transfer_istory.png")}
     ],
     payments_props: [
         {title: "Mobile Recharge", icon: require("../resources/images/ic_mobile_recharge.png")},
@@ -1032,4 +1032,65 @@ export default {
     b_name: "Enter Beneficiary Name Here",
     b_email: "Enter Beneficiary Email",
     add_beneficiary: "Add Beneficiary",
+
+    /*Transfer to bkash screen*/
+    transfer_bkash: "Transfer to bkash",
+    select_nickname: "Select Nickname",
+    bkash_account: "bkash Account",
+    bkash_name: "Name",
+    fromAccount: "From Account",
+    bkash_select_acct: "Select Account",
+    bkash_selectfrom_acct: "Select From Account",
+    available_bal: "Available Balance",
+    transfer_amount: "Transfer Amount",
+    services_charge: "Services Charge",
+    grand_total: "Grand Total",
+    remarks: "Remarks",
+    selectNickType: "Select Nickname",
+    nickTypeArr: [
+        {key: "0", label: "Ebad Vai", value: 0},
+        {key: "1", label: "Masvm", value: 1},
+        {key: "2", label: "Onn bKash", value: 2 }
+    ],
+    cardNumber : [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
+        key: "1",
+        label: "4567890123456123",
+        value: 4567890123456123
+    }],
+
+    /*error message*/
+    errtransferammt: "Transfer Amount is Required",
+    errRemarks: "Remarks is Required",
+
+    /*Cash By Code message*/
+    cashbycode: "Cash By Code",
+    select_debit_card:"Select Debit Card",
+    select_card_title: "Select Card  to Generate",
+    select_card: "Select Card",
+    cash_select_acct: "Debit Card",
+    cash_amount: "Amount",
+    bkash_otp_props: [
+        {label: "Screen Display", value: 0},
+        {label: "SMS", value: 1},
+        {label: "Email", value: 2},
+    ],
+    case_code_via:"Case Code Via",
+
+    /*error message*/
+    error_amount: "Total Amount is Required",
+    error_mobile: "Mobile Number is Required",
+
+    /*Fund transfer screen*/
+    fond_transfer: "Found Transfer",
+    currency: "Currency",
+    TransferType: "Transfer",
+    transfer_pay_props: [
+        {label: "Pay Now", value: 0},
+        {label: "Schedule Payment", value: 1}
+    ],
+    select_from_account: "Select From Account",
+    to_account: "To Account",
+    select_acct:"Select From Account",
+    vat: "VAT",
+
 }
