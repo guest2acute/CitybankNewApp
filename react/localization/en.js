@@ -940,7 +940,7 @@ export default {
         {key: "2", label: "Transfer Within City Bank", value: 2},
         {key: "3", label: "Transfer Other Bank", value: 3}
     ],
-
+    notAvailable:"Not available",
     add_beneficiary_wcb: "Add Beneficiary-Within City Bank",
     nick_name:"Nick Name",
     account_holder_name:"Account Holder Name",
