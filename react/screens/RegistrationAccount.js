@@ -143,7 +143,7 @@ class RegistrationAccount extends Component {
         const {signUpResponse, hasDebitCard} = this.state;
         this.setState({isProgress: true});
         await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", signUpResponse,
-            hasDebitCard ? "CP" : "TP", this.props)
+            hasDebitCard ? "CP" : "TP","REGUSERVERIFY","O",this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false, stateVal: 4});

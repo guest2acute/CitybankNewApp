@@ -125,7 +125,7 @@ class CredentialDetails extends Component {
     }
 
     accountNoOption(language) {
-        return (<View>
+        return (<View key={"accountNoOption"}>
             <View>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -231,7 +231,7 @@ class CredentialDetails extends Component {
     }
 
     creditCardOption(language) {
-        return (<View>
+        return (<View key={"creditCardOption"}>
             <View>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -557,7 +557,7 @@ class CredentialDetails extends Component {
         } else if (this.state.selectTypeVal === 2) {
             otpMsg = language.otp_fgt_pin;
         }
-        return (<View>
+        return (<View key={"otpLayout"}>
             <Text style={[CommonStyle.textStyle, {
                 marginStart: Utility.setWidth(15),
                 marginEnd: Utility.setWidth(15),
@@ -670,7 +670,7 @@ class CredentialDetails extends Component {
     }
 
     mainLayout(language) {
-        return (<View>
+        return (<View key={"mainLayout"}>
             <Text style={[CommonStyle.labelStyle, {
                 color: themeStyle.THEME_COLOR,
                 marginStart: 10,
@@ -757,7 +757,7 @@ class CredentialDetails extends Component {
     }
 
     fieldSet(language) {
-        return (<View style={{
+        return (<View key={"fieldSet"} style={{
             borderColor: themeStyle.BORDER,
             marginLeft: 10, marginRight: 10,
             borderRadius: 5,

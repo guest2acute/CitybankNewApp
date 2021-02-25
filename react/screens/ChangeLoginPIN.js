@@ -20,6 +20,7 @@ import Config from "../config/Config";
 import {CommonActions} from "@react-navigation/native";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
+import ApiRequest from "../config/ApiRequest";
 
 let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
     key: "1",
@@ -51,7 +52,10 @@ class ChangeLoginPIN extends Component {
             newPin: "",
             errorNewPin: "",
             conf_new_pin: "",
-            errorConfNewPin: ""
+            errorConfNewPin: "",
+            actNoList: [],
+            cardNoList: [],
+            selectRes: null,
         }
     }
 
@@ -82,9 +86,9 @@ class ChangeLoginPIN extends Component {
     }
 
     accountNoOption(language) {
-        return (<View>
+        return (<View key={"accountNoOption"}>
             <TouchableOpacity style={{marginTop: 20}}
-                              onPress={() => this.openModal("accountListType", language.selectCard, cardNumber, language)}>
+                              onPress={() => this.openModal("accountListType", language.selectCard, this.state.actNoList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -131,10 +135,10 @@ class ChangeLoginPIN extends Component {
     }
 
     creditCardOption(language) {
-        return (<View>
+        return (<View key={"creditCardOption"}>
 
             <TouchableOpacity style={{marginTop: 20}}
-                              onPress={() => this.openModal("cardType", language.selectCard, cardNumber, language)}>
+                              onPress={() => this.openModal("cardType", language.selectCard, this.state.cardNoList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -212,11 +216,11 @@ class ChangeLoginPIN extends Component {
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "accountListType") {
-            this.setState({select_actNo: item.label, modalVisible: false})
+            this.setState({select_actNo: item.label, modalVisible: false, selectRes: item.item})
+        } else if (modelSelection === "cardType") {
+            this.setState({selectCard: item, modalVisible: false, stateVal: 0, selectRes: item.item})
         } else if (modelSelection === "accountType") {
             this.setState({selectActCard: item, modalVisible: false, stateVal: 0})
-        } else if (modelSelection === "cardType") {
-            this.setState({selectCard: item.label, modalVisible: false, stateVal: 0})
         }
 
     }
@@ -238,7 +242,7 @@ class ChangeLoginPIN extends Component {
         }
     }
 
-    componentDidMount() {
+   async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -249,10 +253,38 @@ class ChangeLoginPIN extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+        await this.getAccount();
+    }
+
+    async getAccount() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let result = await ApiRequest.apiRequest.getAccountDetails(userDetails, {});
+        console.log("result", result);
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            console.log("response", response);
+            this.processAccounts(response);
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
+    processAccounts(response) {
+        let accountArr = [], cardArr = [];
+        response.ACCOUNT_DTL.map((account) => {
+            accountArr.push({label: account.ACCOUNT_NO, value: account.ACCOUNT_NO, item: account});
+        });
+
+        response.CARD_DTL.map((account) => {
+            cardArr.push({label: account.ACCOUNT_NO, value: account.ACCOUNT_NO, item: account});
+        });
+        this.setState({actNoList: accountArr, cardNoList: cardArr, isProgress: false});
     }
 
     passwordSet(language) {
-        return (<View style={{
+        return (<View key={"passwordSet"} style={{
             borderColor: themeStyle.BORDER,
             marginLeft: 10, marginRight: 10,
             borderRadius: 5,
@@ -357,7 +389,7 @@ class ChangeLoginPIN extends Component {
     }
 
     otpEnter(language) {
-        return (<View>
+        return (<View key={"otpEnter"}>
             <Text style={[CommonStyle.textStyle, {
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),
@@ -427,7 +459,6 @@ class ChangeLoginPIN extends Component {
             }]}>
                 {language.type_act}
             </Text>
-
             <TouchableOpacity
                 onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
                 <View style={styles.selectionBg}>
@@ -574,6 +605,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

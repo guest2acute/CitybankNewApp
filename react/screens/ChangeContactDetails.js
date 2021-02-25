@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar, Alert
+    TextInput, FlatList, Platform, StatusBar, Alert, BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
 import CommonStyle from "../resources/CommonStyle";
@@ -21,12 +21,7 @@ import {CommonActions} from "@react-navigation/native";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import MonthPicker from "react-native-month-year-picker";
-
-let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
-    key: "1",
-    label: "4567890123456123",
-    value: 4567890123456123
-}];
+import ApiRequest from "../config/ApiRequest";
 
 
 class ChangeContactDetails extends Component {
@@ -50,24 +45,23 @@ class ChangeContactDetails extends Component {
             creditCardNo: "",
             transactionPin: "",
             stateVal: 0,
-            newPwd: "",
-            errorNewPwd: "",
-            conf_new_pwd: "",
             errorConfCredential: "",
             errorCredential: "",
-            errorMobile:"",
-            newCredential:"",
-            confNewCredential:"",
+            errorMobile: "",
+            newCredential: "8801719365358",
+            confNewCredential: "8801719365358",
             errorTransPin: "",
-            errorExpiry:"",
+            errorExpiry: "",
             errorPin: "",
             otpVal: "",
             dateVal: new Date(),
             showMonthPicker: false,
-            errorConfMobile:"",
-            errorConfEmail:"",
-            errorEmail:"",
-
+            errorConfMobile: "",
+            errorConfEmail: "",
+            errorEmail: "",
+            actNoList: [],
+            cardNoList: [],
+            selectRes: null,
         }
     }
 
@@ -114,9 +108,9 @@ class ChangeContactDetails extends Component {
     }
 
     accountNoOption(language) {
-        return (<View>
+        return (<View key={"accountNoOption"}>
             <TouchableOpacity style={{marginTop: 20}}
-                              onPress={() => this.openModal("accountListType", language.selectCard, cardNumber, language)}>
+                              onPress={() => this.openModal("accountListType", language.select_actNo, this.state.actNoList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -176,10 +170,10 @@ class ChangeContactDetails extends Component {
     }
 
     creditCardOption(language) {
-        return (<View>
+        return (<View key={"creditCardOption"}>
 
             <TouchableOpacity style={{marginTop: 20}}
-                              onPress={() => this.openModal("cardType", language.selectCard, cardNumber, language)}>
+                              onPress={() => this.openModal("cardType", language.selectCard, this.state.cardNoList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -208,7 +202,7 @@ class ChangeContactDetails extends Component {
                     <TouchableOpacity style={{
                         flex: 1,
                         marginLeft: 10
-                    }} onPress={() => this.setState({errorExpiry: "",showMonthPicker: true})}>
+                    }} onPress={() => this.setState({errorExpiry: "", showMonthPicker: true})}>
                         <TextInput
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
@@ -225,10 +219,6 @@ class ChangeContactDetails extends Component {
                             contextMenuHidden={true}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                             autoCorrect={false}
-                            returnKeyType={"next"}
-                            onSubmitEditing={(event)=>{
-                                this.debitPinRef.focus();
-                            }}
                             maxLength={5}/>
                     </TouchableOpacity>
                 </View>
@@ -263,7 +253,8 @@ class ChangeContactDetails extends Component {
                     placeholder={language.enterPinHere}
                     onChangeText={text => this.setState({
                         errorPin: "",
-                        cardPin: Utility.input(text, "0123456789")})}
+                        cardPin: Utility.input(text, "0123456789")
+                    })}
                     value={this.state.cardPin}
                     multiline={false}
                     numberOfLines={1}
@@ -289,82 +280,138 @@ class ChangeContactDetails extends Component {
     }
 
     onSelectItem(item) {
+        console.log("item", item);
         const {modelSelection} = this.state;
         if (modelSelection === "accountListType") {
-            this.setState({select_actNo: item.label, modalVisible: false})
+            this.setState({select_actNo: item.label, modalVisible: false, selectRes: item.item})
+        } else if (modelSelection === "cardType") {
+            this.setState({selectCard: item.label, modalVisible: false, stateVal: 0, selectRes: item.item})
         } else if (modelSelection === "contactType") {
             this.setState({select_contact_type: item, modalVisible: false, stateVal: 0})
         } else if (modelSelection === "accountType") {
-            this.setState({selectActCard: item, modalVisible: false, stateVal: 0})
-        } else if (modelSelection === "cardType") {
-            this.setState({selectCard: item.label, modalVisible: false, stateVal: 0})
+            this.setState({selectActCard: item, modalVisible: false, stateVal: 0,
+                expiryDate: "",transactionPin:"",cardPin: "",selectCard: this.props.language.selectCard,select_actNo: this.props.language.select_actNo})
         }
     }
 
-    submit(language, navigation) {
+    async getMailMobOtp() {
+        let {stateVal, selectRes, selectActCard, select_contact_type, transactionPin} = this.state;
+        console.log("selectRes", selectRes);
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let otpRequest = {
+            APPCUSTOMER_ID: selectRes.APPCUSTOMER_ID,
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            USER_ID: userDetails.USER_ID,
+            AUTH_FLAG: selectActCard.value === 0 ? "TP" : "CP",
+            REQ_FLAG: "R",
+            REQ_TYPE: select_contact_type.value === 0 ? "UPD_MOBILE" : "UPD_EMAIL",
+            ACTION: "GENUPDEMAILMBOTP",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            SOURCE: selectRes.SOURCE,
+            DEVICE_ID: await Utility.getDeviceID(),
+            ...Config.commonReq
+        }
+        let header = {};
+        if (selectActCard.value === 1) {
+            otpRequest = {
+                ...otpRequest,
+                CARD_DETAIL: {
+                    ACCT_NO: selectRes.ACCOUNT_NO,
+                    CARD_PIN: this.state.cardPin,
+                    EXPIRY_DATE: this.state.expiryDate.replace("/", ""),
+                    AUTHORIZATION: Config.AUTH
+                }
+            }
+            header = {CARD_VERIFY: "Y"};
+        } else {
+            otpRequest = {
+                ...otpRequest,
+                TRANSACTION_PIN: transactionPin,
+            }
+        }
+        console.log("otpRequest", otpRequest);
+        let result = await ApiRequest.apiRequest.callApi(otpRequest, header);
+        console.log("result", result);
+        this.setState({isProgress: false});
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            selectRes = {...selectRes, REQUEST_CD: response.REQUEST_CD.toString()}
+            this.setState({selectRes, stateVal: 1});
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
+    async submit(language, navigation) {
         const {stateVal} = this.state;
         console.log("this.state.selectActCard", this.state.selectActCard);
         console.log("this.state.stateVal", this.state.stateVal);
-        if(stateVal === 0){
+        if (stateVal === 0) {
             if (this.state.selectActCard.value === 0) {
                 if (this.state.select_actNo === "Select Account Number") {
                     Utility.alert("Please Select Account Number");
-                    return;
                 } else if (this.state.transactionPin === "") {
                     this.setState({errorTransPin: language.errTransPin});
-                    return;
+                } else {
+                    await this.getMailMobOtp();
                 }
-            } else if(this.state.selectActCard.value === 1) {
-                if(this.state.expiryDate === ""){
+            } else if (this.state.selectActCard.value === 1) {
+                if (this.state.selectCard === language.selectCard) {
+                    Utility.alert(language.errorSelectCard);
+                } else if (this.state.expiryDate === "") {
                     this.setState({errorExpiry: language.errExpiryDate});
-                    return;
-                }
-                else if (this.state.cardPin === "") {
+                } else if (this.state.cardPin === "") {
                     this.setState({errorPin: language.errCardPin});
-                    return;
+                } else {
+                    await this.getMailMobOtp();
                 }
             }
-        }
-        else if(stateVal === 1) {
+        } else if (stateVal === 1) {
             if (this.state.selectActCard.value === 0) {
                 if (this.state.otpVal.length !== 4) {
                     Utility.alert(language.errOTP);
-                    return;
+                } else {
+                    await this.verifyOtp();
                 }
+            } else {
+                await this.processChange(language, navigation);
             }
+        } else if (stateVal === 2) {
+            await this.processChange(language, navigation);
         }
-        else if(stateVal === 3) {
-            if (this.state.newCredential === "") {
-                this.setState({errorMobile: this.state.select_contact_type.value === 0 ? language.errorNewMobNo:language.errorEmail });
-                return;
-            }else if (this.state.confNewCredential !== this.state.newCredential ) {
-                this.setState({errorConfMobile: this.state.select_contact_type.value === 0 ?language.errorMobConfNo:language.errorConfEmail});
-                return;
-            }
-        }
-        else if(stateVal === 4){
-            Alert.alert(
-                Config.appName,
-                language.success_register,
-                [
-                    {
-                        text: language.ok, onPress: () => navigation.dispatch(
-                            CommonActions.reset({
-                                index: 0,
-                                routes: [{name: "LoginScreen"}],
-                            })
-                        )
-                    },
-                ]
-            );
-            return;
-        }else{
-            console.log("stateVal else part",stateVal)
-        }
-        this.setState({stateVal: stateVal !== 1 ? stateVal + 1 : stateVal + 2});
     }
 
-   async componentDidMount() {
+    async processChange(language, navigation) {
+        if (this.state.newCredential === "") {
+            this.setState({errorCredential: this.state.select_contact_type.value === 0 ? language.errorNewMobNo : language.errorEmail});
+        } else if (this.state.confNewCredential !== this.state.newCredential) {
+            this.setState({errorConfCredential: this.state.select_contact_type.value === 0 ? language.errorMobConfNo : language.errorConfEmail});
+        } else {
+            await this.changeMobEmail(language, navigation);
+        }
+    }
+
+    async verifyOtp() {
+        const {selectActCard, selectRes, select_contact_type} = this.state;
+        let userDetails = this.props.userDetails;
+        userDetails = {...userDetails, REQUEST_CD: selectRes.REQUEST_CD}
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", userDetails,
+            selectActCard.value === 0 ? "TP" : "CP", "GENUPDEMAILMBOTPVERIFY",
+            select_contact_type.value === 0 ? "UPD_MOBILE" : "UPD_EMAIL", this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false, stateVal: 2});
+
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -375,8 +422,92 @@ class ChangeContactDetails extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+        this.backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            this.backAction
+        );
+        await this.getAccount();
+    }
 
-        //await this.getAccountDetails();
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backHandler);
+        }
+    }
+
+    async getAccount() {
+        let userDetails = this.props.userDetails;
+        this.setState({isProgress: true});
+        let result = await ApiRequest.apiRequest.getAccountDetails(userDetails, {});
+        console.log("result", result);
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+            console.log("response", response);
+            this.processAccounts(response);
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
+    async changeMobEmail(language, navigation) {
+        let {selectRes, selectActCard, select_contact_type, newCredential} = this.state;
+        let userDetails = this.props.userDetails;
+        let changeRequest = {
+            APPCUSTOMER_ID: selectRes.APPCUSTOMER_ID,
+            USER_ID: userDetails.USER_ID,
+            AUTH_FLAG: selectActCard.value === 0 ? "TP" : "CP",
+            REQ_FLAG: "R",
+            REQUEST_CD: selectRes.REQUEST_CD,
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            SOURCE: selectRes.SOURCE,
+            DEVICE_ID: await Utility.getDeviceID(),
+            ...Config.commonReq
+        }
+        if (select_contact_type.value === 0) {
+            changeRequest = {
+                ...changeRequest, ACTION: "UPDATEMOBILENO",
+                REQ_TYPE: "UPD_MOBILE", OLDMOBILENO: "8801719365359", NEWMOBILENO: newCredential
+            };
+        } else {
+            changeRequest = {
+                ...changeRequest, ACTION: "UPDATEEMAILID", REQ_TYPE: "UPD_EMAIL",
+                OLDEMAILID: selectRes.EMAIL_ID, NEWEMAILID: newCredential
+            };
+        }
+
+        this.setState({isProgress: true});
+        console.log("result", changeRequest);
+        let result = await ApiRequest.apiRequest.callApi(changeRequest, {});
+        console.log("result", result);
+        this.setState({isProgress: false});
+
+        if (result.STATUS === "0") {
+            Utility.alertWithBack(language.ok, result.MESSAGE, navigation)
+        } else if (result.STATUS === "999") {
+            Utility.alert(result.MESSAGE);
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
+    processAccounts(response) {
+        let accountArr = [], cardArr = [];
+        response.ACCOUNT_DTL.map((account) => {
+            accountArr.push({label: account.ACCOUNT_NO, value: account.ACCOUNT_NO, item: account});
+        });
+
+        response.CARD_DTL.map((card) => {
+            cardArr.push({label: card.ACCOUNT_NO, value: card.ACCOUNT_NO, item: card});
+        });
+        this.setState({actNoList: accountArr, cardNoList: cardArr, isProgress: false});
     }
 
     backEvent() {
@@ -384,11 +515,41 @@ class ChangeContactDetails extends Component {
         if (stateVal === 0)
             this.props.navigation.goBack(null);
         else
-            this.setState({stateVal: stateVal !== 3 ? stateVal - 1 : stateVal - 2});
+            this.setState({stateVal: stateVal - 1});
     }
 
+    async verifyCard(language) {
+        this.setState({isProgress: true});
+        let commonReq = {
+            ACCT_NO: "376948010808307",
+            ACTION: "VERIFYCARDGETUID",
+            AUTHORIZATION: Config.AUTH,
+            REG_WITH: "C",
+            CARD_PIN: this.state.cardPin,
+            EXPIRY_DATE: this.state.expiryDate.replace("/", ""),
+            ...Config.commonReq
+        }
+        if (isCard) {
+            commonReq = {
+                ...commonReq,
+            }
+        }
+
+        console.log("request", commonReq);
+        let result = await ApiRequest.apiRequest.callApi(commonReq, {});
+        console.log("result", result);
+        //result = result[0];
+        if (result.STATUS === "0") {
+            let response = result.RESPONSE[0];
+        } else {
+            this.setState({isProgress: false});
+            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
+        }
+    }
+
+
     passwordSet(language) {
-        return (<View style={{
+        return (<View key={"passwordSet"} style={{
             borderColor: themeStyle.BORDER,
             marginLeft: 10, marginRight: 10,
             borderRadius: 5,
@@ -418,18 +579,22 @@ class ChangeContactDetails extends Component {
                         }]}
                         placeholder={language.enterHere}
                         onChangeText={text => this.setState({
-                            errorMobile:"",
-                            errorEmail:"",
-                            newCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
+                            errorCredential: "",
+                            newCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)
+                        })}
                         value={this.state.newCredential}
                         multiline={false}
                         numberOfLines={1}
                         keyboardType={this.state.select_contact_type.value === 0 ? "number-pad" : "email-address"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.confRef.focus();
+                        }}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorMobile !== "" ?
+                {this.state.errorCredential !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -438,18 +603,8 @@ class ChangeContactDetails extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorMobile}</Text> : null}
+                    }}>{this.state.errorCredential}</Text> : null}
 
-                {/*{this.state.errorEmail !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorEmail}</Text> : null}*/}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -465,6 +620,7 @@ class ChangeContactDetails extends Component {
                         {this.state.select_contact_type.value === 0 ? language.conf_new_mobile_no : language.conf_new_email}
                     </Text>
                     <TextInput
+                        ref={(ref) => this.confRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -473,7 +629,10 @@ class ChangeContactDetails extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterHere}
-                        onChangeText={text => this.setState({errorConfMobile:"",errorConfEmail:"",confNewCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)})}
+                        onChangeText={text => this.setState({
+                            errorConfCredential: "",
+                            confNewCredential: this.state.select_contact_type.value === 0 ? Utility.input(text, "0123456789") : Utility.userInput(text)
+                        })}
                         value={this.state.confNewCredential}
                         multiline={false}
                         numberOfLines={1}
@@ -482,7 +641,7 @@ class ChangeContactDetails extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorConfMobile !== "" ?
+                {this.state.errorConfCredential !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -491,7 +650,7 @@ class ChangeContactDetails extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorConfMobile} </Text> : null }
+                    }}>{this.state.errorConfCredential} </Text> : null}
 
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -506,16 +665,16 @@ class ChangeContactDetails extends Component {
     }
 
     otpEnter(language) {
-        return (<View>
+        return (<View key={"otpEnter"}>
             <Text style={[CommonStyle.textStyle, {
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),
                 marginTop: Utility.setHeight(10),
                 marginBottom: Utility.setHeight(20),
-            }]}> {language.otp_description + language.otp_pwd}</Text>
+            }]}> {this.state.select_contact_type.value === 0 ? language.otp_description + language.otp_mobile :
+                language.otp_description + language.otp_email}</Text>
             <View style={{
                 borderColor: themeStyle.BORDER,
-                width: Utility.getDeviceWidth() - 30,
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),
                 borderRadius: 5,
@@ -604,7 +763,7 @@ class ChangeContactDetails extends Component {
                     onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
                     <View style={styles.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
-                            {this.state.selectActCard.label}
+                            {this.state.selectActCard.label ? this.state.selectActCard.label : this.state.selectActCard.ACCOUNT_NO}
                         </Text>
                         <Image resizeMode={"contain"} style={styles.arrowStyle}
                                source={require("../resources/images/ic_arrow_down.png")}/>
@@ -621,7 +780,7 @@ class ChangeContactDetails extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() =>  this.backEvent()}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
@@ -688,7 +847,7 @@ class ChangeContactDetails extends Component {
                                                       style={[CommonStyle.textStyle, {
                                                           color: themeStyle.THEME_COLOR,
                                                           marginStart: 10
-                                                      }]}>{item.label}</Text>
+                                                      }]}>{item.label ? item.label : item.ACCOUNT_NO}</Text>
                                               </View>
                                           </TouchableOpacity>
                                       }
@@ -751,6 +910,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };
