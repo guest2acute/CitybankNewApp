@@ -71,7 +71,7 @@ class ChangeTransPin extends Component {
                 errorConfirmPinVal: "",
                 otpVal: ""
             });
-        }else {
+        } else {
             this.props.navigation.goBack();
         }
     }
@@ -130,7 +130,7 @@ class ChangeTransPin extends Component {
     }
 
     enterPIN(language) {
-        return (<View style={{
+        return (<View key={"enterPIN"} style={{
             borderColor: themeStyle.BORDER,
             marginStart: 10,
             marginEnd: 10,
@@ -239,7 +239,7 @@ class ChangeTransPin extends Component {
     }
 
     otpEnter(language) {
-        return (<View>
+        return (<View key={"otpEnter"}>
             <Text style={[CommonStyle.textStyle, {
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),
@@ -301,7 +301,7 @@ class ChangeTransPin extends Component {
 
     userPersonal(language) {
         return (
-            <View>
+            <View key={"userPersonal"}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
                     marginStart: 10,
@@ -631,7 +631,7 @@ class ChangeTransPin extends Component {
         }
         console.log("actRequest", verifyReq);
         let result = await ApiRequest.apiRequest.callApi(verifyReq, {});
-       // result = result[0];
+        // result = result[0];
         console.log("response", result.RESPONSE[0]);
 
         if (result.STATUS === "0") {

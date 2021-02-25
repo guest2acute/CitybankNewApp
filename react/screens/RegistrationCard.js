@@ -840,9 +840,10 @@ class RegistrationCard extends Component {
     }
 
     async getOTP() {
-        const {signUpResponse, hasDebitCard} = this.state;
+        const {signUpResponse} = this.state;
         this.setState({isProgress: true});
-        await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", signUpResponse, "CP", this.props)
+        await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", signUpResponse,
+            "CP", "REGUSERVERIFY", "O", this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false, stateVal: 3});

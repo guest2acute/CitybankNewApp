@@ -42,7 +42,7 @@ export default class ApiRequest {
 
 
     veryAccountRequest = (reg_with, card_details, signupDetails, authFlag, otp_value, date_of_birth,
-                                 user_id, uniqueId, account_no, card_pin, expiry_date, fatherName, motherName, debitCardNo) => {
+                          user_id, uniqueId, account_no, card_pin, expiry_date, fatherName, motherName, debitCardNo) => {
         console.log("signupDetailsIn", signupDetails);
         return new Promise(async (resolve, reject) => {
             let signupRequest = {
@@ -78,7 +78,7 @@ export default class ApiRequest {
         });
     }
 
-    requestSignup = (LOGIN_PIN, TRANSACTION_PIN, CUSTOMER_ID, ACTIVATION_CD, authFlag, MOBILE_NO, REQ_TYPE, PASSWORD,props) => {
+    requestSignup = (LOGIN_PIN, TRANSACTION_PIN, CUSTOMER_ID, ACTIVATION_CD, authFlag, MOBILE_NO, REQ_TYPE, PASSWORD, props) => {
         return new Promise(async (resolve, reject) => {
             let request = {
                 LOGIN_PIN: LOGIN_PIN,
@@ -126,22 +126,31 @@ export default class ApiRequest {
     }
 
 
-    getOTPCall = async (otpVal, reqFlag, response, AUTH_FLAG,props) => {
+    getOTPCall = async (otpVal, reqFlag, response, AUTH_FLAG, action, REQ_TYPE, props) => {
         return new Promise(async (resolve, reject) => {
-            let otpRequest = {
+            let otpVerifyRequest = {
                 OTP_NO: otpVal,
                 CUSTOMER_ID: response.CUSTOMER_ID,
-                ACTIVATION_CD: response.ACTIVATION_CD,
                 AUTH_FLAG: AUTH_FLAG,
                 REQ_FLAG: reqFlag,
                 MOBILE_NO: response.MOBILE_NO,
-                REQ_TYPE: "O",
-                ACTION: "REGUSERVERIFY", ...Config.commonReq
+                REQ_TYPE: REQ_TYPE,
+                ACTION: action, ...Config.commonReq
             };
 
-            console.log("otpRequest", otpRequest);
-            let result = await ApiRequest.apiRequest.callApi(otpRequest, {});
+            if (action === "GENUPDEMAILMBOTPVERIFY") {
+                otpVerifyRequest = {
+                    ...otpVerifyRequest, USER_ID: response.USER_ID,
+                    REQUEST_CD: response.REQUEST_CD, ACTIVITY_CD: response.ACTIVITY_CD
+                };
+            } else {
+                otpVerifyRequest = {...otpVerifyRequest, ACTIVATION_CD: response.ACTIVATION_CD}
+            }
+
+            console.log("otpVerifyRequest", otpVerifyRequest);
+            let result = await ApiRequest.apiRequest.callApi(otpVerifyRequest, {});
             if (result.STATUS === "0") {
+                console.log("successResponse",JSON.stringify(result));
                 return resolve("success");
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);

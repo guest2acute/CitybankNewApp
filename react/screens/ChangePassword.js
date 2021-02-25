@@ -82,7 +82,7 @@ class ChangePassword extends Component {
     }
 
     accountNoOption(language) {
-        return (<View>
+        return (<View key={"accountNoOption"}>
             <TouchableOpacity style={{marginTop: 20}}
                               onPress={() => this.openModal("accountListType", language.selectCard, cardNumber, language)}>
                 <View style={styles.selectionBg}>
@@ -131,7 +131,7 @@ class ChangePassword extends Component {
     }
 
     creditCardOption(language) {
-        return (<View>
+        return (<View key={"creditCardOption"}>
 
             <TouchableOpacity style={{marginTop: 20}}
                               onPress={() => this.openModal("cardType", language.selectCard, cardNumber, language)}>
@@ -252,7 +252,7 @@ class ChangePassword extends Component {
     }
 
     passwordSet(language) {
-        return (<View style={{
+        return (<View key={"passwordSet"} style={{
             borderColor: themeStyle.BORDER,
             marginLeft: 10, marginRight: 10,
             borderRadius: 5,
@@ -353,7 +353,7 @@ class ChangePassword extends Component {
     }
 
     otpEnter(language) {
-        return (<View>
+        return (<View key={"otpEnter"}>
             <Text style={[CommonStyle.textStyle, {
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),
@@ -570,6 +570,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

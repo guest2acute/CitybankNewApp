@@ -32,6 +32,7 @@ export default {
     actName: "Account Name",
     actNo_here: "Enter account number here",
     selectCard: "Select Card",
+    errorSelectCard: "Please select card",
     transactionPin: "Transaction PIN",
     loginPin: "Login PIN",
     setLoginPIn: "Set Login PIN",
@@ -60,6 +61,8 @@ export default {
     otp_activate: "to activate Citytouch Digital Banking Service",
     otp_signup: "to process registration in Citytouch Digital Banking Service",
     otp_pwd: "to change password in Citytouch Digital Banking Service",
+    otp_mobile: "to change mobile number in Citytouch Digital Banking Service",
+    otp_email: "to change email address in Citytouch Digital Banking Service",
 
     otp_input_placeholder: "Enter 4 Digit One Time Password(OTP)",
     dnReceiveOTP: "Did not receive your OTP? ",
