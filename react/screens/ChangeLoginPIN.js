@@ -21,6 +21,7 @@ import {CommonActions} from "@react-navigation/native";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import ApiRequest from "../config/ApiRequest";
+import MonthPicker from "react-native-month-year-picker";
 
 let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
     key: "1",
@@ -49,13 +50,18 @@ class ChangeLoginPIN extends Component {
             creditCardNo: "",
             transactionPin: "",
             stateVal: 0,
-            newPin: "",
-            errorNewPin: "",
-            conf_new_pin: "",
-            errorConfNewPin: "",
+            newCredential: "",
+            errorNewCredential: "",
+            confNewCredential: "",
+            errorConfNewCredential: "",
             actNoList: [],
             cardNoList: [],
             selectRes: null,
+            errorTransPin: "",
+            errorCardPin:"",
+            errorExpiry:"",
+            dateVal: new Date(),
+            showMonthPicker:false
         }
     }
 
@@ -82,6 +88,22 @@ class ChangeLoginPIN extends Component {
             });
         } else {
             Utility.alert(language.noRecord);
+        }
+    }
+
+    onValueChange = (event, newDate) => {
+        console.log("event", event + "-" + newDate);
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        switch (event) {
+            case "dateSetAction":
+                console.log("event", "in");
+                this.setState({expiryDate: dateVal, showMonthPicker: false});
+                break;
+            case "neutralAction":
+                break;
+            case "dismissedAction":
+            default:
+                this.setState({showMonthPicker: false});
         }
     }
 
@@ -118,7 +140,10 @@ class ChangeLoginPIN extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({transactionPin: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorTransPin: "",
+                            transactionPin: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.transactionPin}
                         multiline={false}
                         numberOfLines={1}
@@ -129,6 +154,16 @@ class ChangeLoginPIN extends Component {
                         autoCorrect={false}
                         maxLength={4}/>
                 </View>
+                {this.state.errorTransPin !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                        marginBottom: 10,
+                    }}>{this.state.errorTransPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View> : null}
         </View>)
@@ -151,7 +186,6 @@ class ChangeLoginPIN extends Component {
                 </View>
             </TouchableOpacity>
 
-
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
@@ -160,26 +194,40 @@ class ChangeLoginPIN extends Component {
                     {language.enterExpiry}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
-                <TextInput
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        flex: 1,
-                        marginLeft: 10
-                    }]}
-                    placeholder={language.expiryDate}
-                    onChangeText={text => this.setState({expiryDate: Utility.input(text, "0123456789/")})}
-                    value={this.state.expiryDate}
-                    multiline={false}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    secureTextEntry={true}
-                    keyboardType={"number-pad"}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    maxLength={5}/>
+                <TouchableOpacity style={{
+                    flex: 1,
+                    marginLeft: 10
+                }} onPress={() => this.setState({errorExpiry: "", showMonthPicker: true})}>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.expiryDate}
+                        value={this.state.expiryDate}
+                        editable={false}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        secureTextEntry={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={5}/></TouchableOpacity>
             </View>
+            {this.state.errorExpiry !== "" ?
+                <Text style={{
+                    marginLeft: 5,
+                    marginRight: 10,
+                    color: themeStyle.THEME_COLOR,
+                    fontSize: FontSize.getSize(11),
+                    fontFamily: fontStyle.RobotoRegular,
+                    alignSelf: "flex-end",
+                    marginBottom: 10,
+                }}>{this.state.errorExpiry}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -198,7 +246,7 @@ class ChangeLoginPIN extends Component {
                         marginLeft: 10
                     }]}
                     placeholder={language.enterPinHere}
-                    onChangeText={text => this.setState({cardPin: Utility.input(text, "0123456789")})}
+                    onChangeText={text => this.setState({errorCardPin:"",cardPin: Utility.input(text, "0123456789")})}
                     value={this.state.cardPin}
                     multiline={false}
                     numberOfLines={1}
@@ -209,6 +257,16 @@ class ChangeLoginPIN extends Component {
                     autoCorrect={false}
                     maxLength={4}/>
             </View>
+            {this.state.errorCardPin !== "" ?
+                <Text style={{
+                    marginLeft: 5,
+                    marginRight: 10,
+                    color: themeStyle.THEME_COLOR,
+                    fontSize: FontSize.getSize(11),
+                    fontFamily: fontStyle.RobotoRegular,
+                    alignSelf: "flex-end",
+                    marginBottom: 10,
+                }}>{this.state.errorCardPin}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
     }
@@ -218,31 +276,70 @@ class ChangeLoginPIN extends Component {
         if (modelSelection === "accountListType") {
             this.setState({select_actNo: item.label, modalVisible: false, selectRes: item.item})
         } else if (modelSelection === "cardType") {
-            this.setState({selectCard: item, modalVisible: false, stateVal: 0, selectRes: item.item})
+            this.setState({selectCard: item.label, modalVisible: false, stateVal: 0, selectRes: item.item})
         } else if (modelSelection === "accountType") {
             this.setState({selectActCard: item, modalVisible: false, stateVal: 0})
         }
-
     }
 
-    submit(language, navigation) {
-        const {stateVal} = this.state;
+    async submit(language, navigation) {
+        const {stateVal, select_actNo, transactionPin, selectCard} = this.state;
         console.log("this.state.selectActCard", this.state.selectActCard);
         console.log("this.state.stateVal", this.state.stateVal);
-        if (this.state.selectActCard.value === 0) {
-            if (stateVal !== 2)
-                this.setState({stateVal: stateVal + 1});
-            else
-                Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
-        } else if (this.state.selectActCard.value === 1) {
-            if (stateVal !== 1)
-                this.setState({stateVal: stateVal + 1});
-            else
-                Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+        if (stateVal === 0) {
+            if (this.state.selectActCard.value === 0) {
+                if (select_actNo === this.props.language.select_actNo) {
+                    Utility.alert(language.errorActNo);
+                } else if (transactionPin === "") {
+                    this.setState({errorTransPin: language.errTransPin});
+                } else {
+                    await this.verifyCard();
+                }
+            } else if (this.state.selectActCard.value === 1) {
+                if (this.state.selectCard === language.selectCard) {
+                    Utility.alert(language.errorSelectCard);
+                } else if (this.state.expiryDate === "") {
+                    this.setState({errorExpiry: language.errExpiryDate});
+                } else if (this.state.cardPin === "") {
+                    this.setState({errorCardPin: language.errCardPin});
+                } else {
+                    await this.verifyCard();
+                }
+            }
+        } else if (stateVal === 1) {
+            if (this.state.selectActCard.value === 0) {
+                if (this.state.otpVal.length !== 4) {
+                    Utility.alert(language.errOTP);
+                } else {
+                    await this.verifyOtp();
+                }
+            } else {
+                await this.changeCredential(language, navigation);
+            }
+        } else if (stateVal === 2) {
+            await this.changeCredential(language, navigation);
         }
     }
 
-   async componentDidMount() {
+    async verifyOtp() {
+        const {selectActCard, selectRes, select_contact_type} = this.state;
+        let userDetails = this.props.userDetails;
+        userDetails = {...userDetails, REQUEST_CD: selectRes.REQUEST_CD, MOBILE_NO: selectRes.MOBILE_NO,}
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", userDetails,
+            selectActCard.value === 0 ? "TP" : "CP", "CHANGEPWD",
+            "O", this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false, stateVal: 2});
+
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -283,6 +380,60 @@ class ChangeLoginPIN extends Component {
         this.setState({actNoList: accountArr, cardNoList: cardArr, isProgress: false});
     }
 
+    async resetPwd() {
+        if (this.state.pwdVal === "") {
+            Utility.alert("Please enter new pin");
+            return;
+        } else if (this.state.conf_pwdVal === "") {
+            Utility.alert("Confirm pin mismatch with new pin");
+            return;
+        }
+        this.setState({isProgress: true});
+        let userReq = {
+            CUSTOMER_ID: userDetails.CUSTOMER_ID.toString(),
+            USER_ID: userDetails.USER_ID,
+            AUTH_FLAG: this.state.account_type_val === 0 ? "TP" : "CP",
+            REQ_FLAG: "R",
+            REQUEST_CD: REQUEST_CD.toString(),
+            REQ_TYPE: "P",
+            ACTION: "CHANGEPWD",
+            PASSWORD: this.state.pwdVal,
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            ...Config.commonReq
+        }
+        if (this.state.account_type_val === 0) {
+            userReq = {...userReq, TRANSACTION_PIN: this.state.et_trans_pin}
+        }
+
+        console.log("userReq", userReq);
+        fetch(Config.base_url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "CARD_VERIFY": this.state.account_type_val === 0 ? "N" : "Y"
+            },
+            body: JSON.stringify(userReq),
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log('ACTIVITY_CD_responseJson', responseJson);
+                this.setState({isProgress: false});
+                if (responseJson != null) {
+                    let result = responseJson[0];
+                    console.log("result", result);
+                    if (result.STATUS === "0") {
+                        Utility.alertWithBack("OK", result.MESSAGE, this.props.navigation);
+                    } else {
+                        Utility.alert(result.MESSAGE);
+                    }
+                }
+            })
+            .catch((error) => {
+                this.setState({isProgress: false});
+                return "";
+            });
+    }
+
     passwordSet(language) {
         return (<View key={"passwordSet"} style={{
             borderColor: themeStyle.BORDER,
@@ -313,17 +464,24 @@ class ChangeLoginPIN extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_new_pin_txt}
-                        onChangeText={text => this.setState({newPin: Utility.input(text, "0123456789")})}
-                        value={this.state.newPin}
+                        onChangeText={text => this.setState({
+                            errorNewCredential: "",
+                            newCredential: Utility.input(text, "0123456789")
+                        })}
+                        value={this.state.newCredential}
                         multiline={false}
                         numberOfLines={1}
                         keyboardType={"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.newCredentialRef.focus();
+                        }}
                         maxLength={6}/>
                 </View>
-                {this.state.errorNewPin !== "" ?
+                {this.state.errorNewCredential !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -332,7 +490,7 @@ class ChangeLoginPIN extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorNewPin}</Text> : null}
+                    }}>{this.state.errorNewCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -348,6 +506,7 @@ class ChangeLoginPIN extends Component {
                         {language.confirm_pin_txt}
                     </Text>
                     <TextInput
+                        ref={(ref) => this.newCredentialRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -356,8 +515,11 @@ class ChangeLoginPIN extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_confirm_pin_txt}
-                        onChangeText={text => this.setState({conf_new_pin: Utility.input(text, "0123456789/")})}
-                        value={this.state.conf_new_pin}
+                        onChangeText={text => this.setState({
+                            errorConfNewCredential: "",
+                            confNewCredential: Utility.input(text, "0123456789/")
+                        })}
+                        value={this.state.confNewCredential}
                         multiline={false}
                         numberOfLines={1}
                         keyboardType={"number-pad"}
@@ -366,7 +528,7 @@ class ChangeLoginPIN extends Component {
                         autoCorrect={false}
                         maxLength={6}/>
                 </View>
-                {this.state.errorConfNewPin !== "" ?
+                {this.state.errorConfNewCredential !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -375,7 +537,7 @@ class ChangeLoginPIN extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
                         marginBottom: 10,
-                    }}>{this.state.errorConfNewPin}</Text> : null}
+                    }}>{this.state.errorConfNewCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
@@ -387,6 +549,59 @@ class ChangeLoginPIN extends Component {
         else
             return this.state.stateVal === 0 ? this.creditCardOption(language) : this.passwordSet(language);
     }
+
+    async verifyCard() {
+        const {select_actNo, expiryDate, transactionPin, cardPin, selectCard, selectActCard, selectRes} = this.state;
+        let userDetails = this.props.userDetails;
+        let pin = this.state.selectActCard.value === 0 ? transactionPin : cardPin;
+        let actCardNumber = selectActCard.value === 0 ? select_actNo : selectCard;
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.verifyAccountCard(selectActCard.value === 1,
+            actCardNumber, pin, expiryDate, userDetails, this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({
+                    isProgress: false,
+                    selectRes: {...selectRes, REQUEST_CD: response.REQUEST_CD.toString()},
+                    stateVal: selectActCard.value === 0 ? 1 : 2
+                });
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    async changeCredential(language, navigation) {
+        const {
+            selectRes,
+            newCredential,
+            selectActCard,
+            errorNewCredential,
+            confNewCredential,
+            errorConfNewCredential
+        } = this.state;
+        if (newCredential.length !== 6) {
+            this.setState({errorNewCredential: language.errorNewPIN});
+            return;
+        } else if (confNewCredential !== newCredential) {
+            this.setState({errorConfNewCredential: language.errorNewConfPIN});
+            return;
+        }
+        let userDetails = this.props.userDetails;
+        userDetails = {...userDetails, REQUEST_CD: selectRes.REQUEST_CD}
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.changeCredential(selectActCard.value === 1, newCredential
+            , userDetails, "P", this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                Utility.alertWithBack(language.ok, response.MESSAGE, navigation)
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
 
     otpEnter(language) {
         return (<View key={"otpEnter"}>
@@ -473,7 +688,6 @@ class ChangeLoginPIN extends Component {
 
     }
 
-
     render() {
         let language = this.props.language;
         return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
@@ -541,7 +755,7 @@ class ChangeLoginPIN extends Component {
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => item.key}
+                                      data={this.state.modalData} keyExtractor={(item, index) => index + ""}
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -558,6 +772,14 @@ class ChangeLoginPIN extends Component {
                         </View>
                     </View>
                 </Modal>
+                {this.state.showMonthPicker ? <MonthPicker
+                    onChange={this.onValueChange}
+                    value={new Date()}
+                    minimumDate={new Date()}
+                    maximumDate={new Date(new Date().getFullYear() + 10, 12)}
+                    locale="en"
+                    mode="number"
+                /> : null}
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )

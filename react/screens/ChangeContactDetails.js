@@ -518,35 +518,6 @@ class ChangeContactDetails extends Component {
             this.setState({stateVal: stateVal - 1});
     }
 
-    async verifyCard(language) {
-        this.setState({isProgress: true});
-        let commonReq = {
-            ACCT_NO: "376948010808307",
-            ACTION: "VERIFYCARDGETUID",
-            AUTHORIZATION: Config.AUTH,
-            REG_WITH: "C",
-            CARD_PIN: this.state.cardPin,
-            EXPIRY_DATE: this.state.expiryDate.replace("/", ""),
-            ...Config.commonReq
-        }
-        if (isCard) {
-            commonReq = {
-                ...commonReq,
-            }
-        }
-
-        console.log("request", commonReq);
-        let result = await ApiRequest.apiRequest.callApi(commonReq, {});
-        console.log("result", result);
-        //result = result[0];
-        if (result.STATUS === "0") {
-            let response = result.RESPONSE[0];
-        } else {
-            this.setState({isProgress: false});
-            Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
-        }
-    }
-
 
     passwordSet(language) {
         return (<View key={"passwordSet"} style={{

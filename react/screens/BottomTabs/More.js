@@ -73,7 +73,7 @@ class More extends Component {
             tabBarLabel: this.props.language.more
         });
 
-        if (this.props.userDetails.AUTH_FLAG === "TP") {
+       // if (this.props.userDetails.AUTH_FLAG === "TP") {
             const {data} = this.state;
             let arr = data;
             let obj = {
@@ -83,7 +83,7 @@ class More extends Component {
             }
             arr.push(obj);
             this.setState({data: arr});
-        }
+       // }
     }
 
     moveScreen(item) {

@@ -127,6 +127,7 @@ export default class ApiRequest {
 
 
     getOTPCall = async (otpVal, reqFlag, response, AUTH_FLAG, action, REQ_TYPE, props) => {
+
         return new Promise(async (resolve, reject) => {
             let otpVerifyRequest = {
                 OTP_NO: otpVal,
@@ -135,28 +136,102 @@ export default class ApiRequest {
                 REQ_FLAG: reqFlag,
                 MOBILE_NO: response.MOBILE_NO,
                 REQ_TYPE: REQ_TYPE,
+                ACTIVITY_CD: response.ACTIVITY_CD,
+                USER_ID: response.USER_ID?response.USER_ID:"",
+                MOBILE_NO: response.MOBILE_NO?response.MOBILE_NO:"",
+                REQUEST_CD: response.REQUEST_CD?response.REQUEST_CD:"",
+                DEVICE_ID: await Utility.getDeviceID(),
                 ACTION: action, ...Config.commonReq
             };
 
-            if (action === "GENUPDEMAILMBOTPVERIFY") {
+          /*  if (action === "GENUPDEMAILMBOTPVERIFY") {
                 otpVerifyRequest = {
-                    ...otpVerifyRequest, USER_ID: response.USER_ID,
-                    REQUEST_CD: response.REQUEST_CD, ACTIVITY_CD: response.ACTIVITY_CD
+                    ...otpVerifyRequest,
+
                 };
             } else {
-                otpVerifyRequest = {...otpVerifyRequest, ACTIVATION_CD: response.ACTIVATION_CD}
-            }
+                otpVerifyRequest = {...otpVerifyRequest}
+            }*/
 
             console.log("otpVerifyRequest", otpVerifyRequest);
             let result = await ApiRequest.apiRequest.callApi(otpVerifyRequest, {});
             if (result.STATUS === "0") {
-                console.log("successResponse",JSON.stringify(result));
+                console.log("successResponse", JSON.stringify(result));
                 return resolve("success");
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 return reject(result.STATUS);
             }
 
+        });
+
+    }
+
+
+    verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response, props) => {
+        return new Promise(async (resolve, reject) => {
+            let verifyReq = {
+                CUSTOMER_ID: response.CUSTOMER_ID.toString(),
+                USER_ID: response.USER_ID,
+                REQ_FLAG: "R",
+                PASS_TYPE: "P",
+                REQ_TYPE: "A",
+                ACCOUNT_NO: actCardNumber,
+                DEVICE_ID: await Utility.getDeviceID(),
+                ACTIVITY_CD: response.ACTIVITY_CD,
+                ACTION: "CHANGEPWD",
+                ...Config.commonReq
+            }
+
+            if (isCard) {
+                verifyReq = {
+                    ...verifyReq, CARD_DETAIL: {
+                        ACCT_NO: actCardNumber, CARD_PIN: pin,
+                        EXPIRY_DATE: expiryDate,
+                        AUTHORIZATION: Config.AUTH
+                    }, AUTH_FLAG: "CP"
+                };
+            } else {
+                verifyReq = {...verifyReq, TRANSACTION_PIN: pin, AUTH_FLAG: "TP"};
+            }
+            console.log("verifyReq", verifyReq);
+            let result = await ApiRequest.apiRequest.callApi(verifyReq,  {"CARD_VERIFY": isCard ? "Y" : "N"});
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result.RESPONSE[0]);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
+        });
+
+    }
+
+    changeCredential = async (isCard, credential, response,passType, props) => {
+        return new Promise(async (resolve, reject) => {
+            let changeReq = {
+                CUSTOMER_ID: response.CUSTOMER_ID.toString(),
+                USER_ID: response.USER_ID,
+                ACTIVITY_CD: response.ACTIVITY_CD,
+                AUTH_FLAG: isCard ? "CP" : "TP",
+                REQ_FLAG: "R",
+                REQ_TYPE: "P",
+                PASS_TYPE: passType,
+                REQUEST_CD: response.REQUEST_CD,
+                ACTION: "CHANGEPWD",
+                PASSWORD: credential,
+                ...Config.commonReq
+            }
+
+            console.log("changeReq", changeReq);
+            let result = await ApiRequest.apiRequest.callApi(changeReq, {});
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
         });
 
     }
