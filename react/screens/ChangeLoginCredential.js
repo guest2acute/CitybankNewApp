@@ -30,7 +30,7 @@ let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}
 }];
 
 
-class ChangeLoginPIN extends Component {
+class ChangeLoginCredential extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -809,4 +809,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(ChangeLoginPIN);
+export default connect(mapStateToProps)(ChangeLoginCredential);

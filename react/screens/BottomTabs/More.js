@@ -68,17 +68,16 @@ class More extends Component {
             tabBarLabel: this.props.language.more
         });
 
-       // if (this.props.userDetails.AUTH_FLAG === "TP") {
-            const {data} = this.state;
-            let arr = data;
+        if (this.props.userDetails.AUTH_FLAG === "TP") {
+            let {data} = this.state;
             let obj = {
                 id: "changeTransPin",
-                title:this.props.language.change_transaction_pin,
+                title: this.props.language.change_transaction_pin,
                 icon: require("../../resources/images/ic_credential_management.png")
             }
-            arr.push(obj);
-            this.setState({data: arr});
-       // }
+            let dataArr = [...data, obj]
+            this.setState({data: dataArr});
+        }
     }
 
     moveScreen(item) {
@@ -93,7 +92,7 @@ class More extends Component {
                 this.props.navigation.navigate("ChangePassword");
                 break;
             case "change_Credential":
-                this.props.navigation.navigate("ChangeLoginPIN");
+                this.props.navigation.navigate("ChangeLoginCredential");
                 break;
             case "changeContact":
                 this.props.navigation.navigate("ChangeContactDetails");
