@@ -168,13 +168,13 @@ export default class ApiRequest {
     }
 
 
-    verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response, props) => {
+    verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response,passType, props) => {
         return new Promise(async (resolve, reject) => {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
                 USER_ID: response.USER_ID,
                 REQ_FLAG: "R",
-                PASS_TYPE: "P",
+                PASS_TYPE: passType,
                 REQ_TYPE: "A",
                 ACCOUNT_NO: actCardNumber,
                 DEVICE_ID: await Utility.getDeviceID(),

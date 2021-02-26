@@ -46,7 +46,6 @@ class Accounts extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
-
         await this.getAccounts(this.props.language, this.props.navigation)
     }
 
@@ -259,7 +258,7 @@ class Accounts extends Component {
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
-                <View style={[styles.toolbar, {marginBottom: 10}]}>
+                <View style={[styles.toolbar, {marginBottom: 0}]}>
                     <Image resizeMode={"contain"} style={{width: Utility.setWidth(90), height: Utility.setHeight(50)}}
                            source={require("../../resources/images/citytouch_header.png")}/>
                     <TouchableOpacity

@@ -35,6 +35,7 @@ class ChangeLoginPIN extends Component {
         super(props);
         this.state = {
             isProgress: false,
+            select_credential_type: {label: props.language.select_credential_type, value: -1},
             select_actNo: props.language.select_actNo,
             selectType: props.language.selectType,
             selectTypeVal: -1,
@@ -58,10 +59,10 @@ class ChangeLoginPIN extends Component {
             cardNoList: [],
             selectRes: null,
             errorTransPin: "",
-            errorCardPin:"",
-            errorExpiry:"",
+            errorCardPin: "",
+            errorExpiry: "",
             dateVal: new Date(),
-            showMonthPicker:false
+            showMonthPicker: false
         }
     }
 
@@ -110,7 +111,7 @@ class ChangeLoginPIN extends Component {
     accountNoOption(language) {
         return (<View key={"accountNoOption"}>
             <TouchableOpacity style={{marginTop: 20}}
-                              onPress={() => this.openModal("accountListType", language.selectCard, this.state.actNoList, language)}>
+                              onPress={() => this.openModal("accountListType", language.select_actNo, this.state.actNoList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -246,7 +247,7 @@ class ChangeLoginPIN extends Component {
                         marginLeft: 10
                     }]}
                     placeholder={language.enterPinHere}
-                    onChangeText={text => this.setState({errorCardPin:"",cardPin: Utility.input(text, "0123456789")})}
+                    onChangeText={text => this.setState({errorCardPin: "", cardPin: Utility.input(text, "0123456789")})}
                     value={this.state.cardPin}
                     multiline={false}
                     numberOfLines={1}
@@ -279,6 +280,8 @@ class ChangeLoginPIN extends Component {
             this.setState({selectCard: item.label, modalVisible: false, stateVal: 0, selectRes: item.item})
         } else if (modelSelection === "accountType") {
             this.setState({selectActCard: item, modalVisible: false, stateVal: 0})
+        } else if (modelSelection === "credentialType") {
+            this.setState({select_credential_type: item, modalVisible: false, stateVal: 0})
         }
     }
 
@@ -380,59 +383,6 @@ class ChangeLoginPIN extends Component {
         this.setState({actNoList: accountArr, cardNoList: cardArr, isProgress: false});
     }
 
-    async resetPwd() {
-        if (this.state.pwdVal === "") {
-            Utility.alert("Please enter new pin");
-            return;
-        } else if (this.state.conf_pwdVal === "") {
-            Utility.alert("Confirm pin mismatch with new pin");
-            return;
-        }
-        this.setState({isProgress: true});
-        let userReq = {
-            CUSTOMER_ID: userDetails.CUSTOMER_ID.toString(),
-            USER_ID: userDetails.USER_ID,
-            AUTH_FLAG: this.state.account_type_val === 0 ? "TP" : "CP",
-            REQ_FLAG: "R",
-            REQUEST_CD: REQUEST_CD.toString(),
-            REQ_TYPE: "P",
-            ACTION: "CHANGEPWD",
-            PASSWORD: this.state.pwdVal,
-            ACTIVITY_CD: userDetails.ACTIVITY_CD,
-            ...Config.commonReq
-        }
-        if (this.state.account_type_val === 0) {
-            userReq = {...userReq, TRANSACTION_PIN: this.state.et_trans_pin}
-        }
-
-        console.log("userReq", userReq);
-        fetch(Config.base_url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "CARD_VERIFY": this.state.account_type_val === 0 ? "N" : "Y"
-            },
-            body: JSON.stringify(userReq),
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log('ACTIVITY_CD_responseJson', responseJson);
-                this.setState({isProgress: false});
-                if (responseJson != null) {
-                    let result = responseJson[0];
-                    console.log("result", result);
-                    if (result.STATUS === "0") {
-                        Utility.alertWithBack("OK", result.MESSAGE, this.props.navigation);
-                    } else {
-                        Utility.alert(result.MESSAGE);
-                    }
-                }
-            })
-            .catch((error) => {
-                this.setState({isProgress: false});
-                return "";
-            });
-    }
 
     passwordSet(language) {
         return (<View key={"passwordSet"} style={{
@@ -453,7 +403,7 @@ class ChangeLoginPIN extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.new_pin_txt}
+                        {this.state.select_credential_type.value === 0 ? language.pwd_txt : language.new_pin_txt}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -463,15 +413,15 @@ class ChangeLoginPIN extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.et_new_pin_txt}
+                        placeholder={this.state.select_credential_type.value === 0 ? language.new_pass_txt : language.et_new_pin_txt}
                         onChangeText={text => this.setState({
                             errorNewCredential: "",
-                            newCredential: Utility.input(text, "0123456789")
+                            newCredential: this.state.select_credential_type.value === 0 ? Utility.userInput(text) : Utility.input(text, "0123456789")
                         })}
                         value={this.state.newCredential}
                         multiline={false}
                         numberOfLines={1}
-                        keyboardType={"number-pad"}
+                        keyboardType={this.state.select_credential_type.value === 0 ?"default":"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
@@ -479,7 +429,7 @@ class ChangeLoginPIN extends Component {
                         onSubmitEditing={(event) => {
                             this.newCredentialRef.focus();
                         }}
-                        maxLength={6}/>
+                        maxLength={this.state.select_credential_type.value === 0 ?12:6}/>
                 </View>
                 {this.state.errorNewCredential !== "" ?
                     <Text style={{
@@ -503,7 +453,7 @@ class ChangeLoginPIN extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.confirm_pin_txt}
+                        {this.state.select_credential_type.value === 0 ? language.conf_new_pass_txt : language.conf_new_pass_txt}
                     </Text>
                     <TextInput
                         ref={(ref) => this.newCredentialRef = ref}
@@ -514,19 +464,19 @@ class ChangeLoginPIN extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={language.et_confirm_pin_txt}
+                        placeholder={this.state.select_credential_type.value === 0 ? language.et_confirm_pwd_txt : language.et_confirm_pin_txt}
                         onChangeText={text => this.setState({
                             errorConfNewCredential: "",
-                            confNewCredential: Utility.input(text, "0123456789/")
+                            confNewCredential: this.state.select_credential_type.value === 0 ? Utility.userInput(text) : Utility.input(text, "0123456789")
                         })}
                         value={this.state.confNewCredential}
                         multiline={false}
                         numberOfLines={1}
-                        keyboardType={"number-pad"}
+                        keyboardType={this.state.select_credential_type.value === 0 ?"default":"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        maxLength={6}/>
+                        maxLength={this.state.select_credential_type.value === 0 ?12:6}/>
                 </View>
                 {this.state.errorConfNewCredential !== "" ?
                     <Text style={{
@@ -557,7 +507,7 @@ class ChangeLoginPIN extends Component {
         let actCardNumber = selectActCard.value === 0 ? select_actNo : selectCard;
         this.setState({isProgress: true});
         await ApiRequest.apiRequest.verifyAccountCard(selectActCard.value === 1,
-            actCardNumber, pin, expiryDate, userDetails, this.props)
+            actCardNumber, pin, expiryDate, userDetails,this.state.select_credential_type.value === 0 ? "L" : "P", this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({
@@ -578,20 +528,25 @@ class ChangeLoginPIN extends Component {
             selectActCard,
             errorNewCredential,
             confNewCredential,
-            errorConfNewCredential
+            errorConfNewCredential,
+            select_credential_type
         } = this.state;
-        if (newCredential.length !== 6) {
-            this.setState({errorNewCredential: language.errorNewPIN});
+
+
+        if ((select_credential_type.value === 0 && newCredential === "") || (select_credential_type.value === 1 && newCredential.length !== 6)) {
+            this.setState({errorNewCredential: select_credential_type.value === 0 ? language.errorNewPwd : language.errorNewPIN});
             return;
         } else if (confNewCredential !== newCredential) {
-            this.setState({errorConfNewCredential: language.errorNewConfPIN});
+            this.setState({errorConfNewCredential: select_credential_type.value === 0 ? language.errorNewConfPIN : language.errorNewConfPIN});
             return;
         }
+
+
         let userDetails = this.props.userDetails;
         userDetails = {...userDetails, REQUEST_CD: selectRes.REQUEST_CD}
         this.setState({isProgress: true});
         await ApiRequest.apiRequest.changeCredential(selectActCard.value === 1, newCredential
-            , userDetails, "P", this.props)
+            , userDetails, this.state.select_credential_type.value === 0 ? "L" : "P", this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -672,18 +627,40 @@ class ChangeLoginPIN extends Component {
                 marginTop: 6,
                 marginBottom: 4
             }]}>
-                {language.type_act}
+                {language.type_credential}
             </Text>
+
             <TouchableOpacity
-                onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
+                onPress={() => this.openModal("credentialType", language.select_credential_type, language.credentialList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
-                        {this.state.selectActCard.label}
+                        {this.state.select_credential_type.label}
                     </Text>
                     <Image resizeMode={"contain"} style={styles.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
+            {this.state.select_credential_type.value !== -1 ?
+                <View key={"accountSelection"}>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.THEME_COLOR,
+                        marginStart: 10,
+                        marginEnd: 10,
+                        marginTop: 6,
+                        marginBottom: 4
+                    }]}>
+                        {language.type_act}
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
+                        <View style={styles.selectionBg}>
+                            <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
+                                {this.state.selectActCard.label}
+                            </Text>
+                            <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                   source={require("../resources/images/ic_arrow_down.png")}/>
+                        </View>
+                    </TouchableOpacity></View> : null}
         </View>)
 
     }
@@ -704,32 +681,31 @@ class ChangeLoginPIN extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-
                         {this.state.stateVal === 0 ? this.mainLayout(language) : null}
-                        {this.processStage(language)}
-
-                        <View style={{
-                            flexDirection: "row",
-                            marginStart: Utility.setWidth(10),
-                            marginRight: Utility.setWidth(10),
-                            marginTop: Utility.setHeight(20)
-                        }}>
-                            <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.submit(language, this.props.navigation)}>
-                                <View style={{
-                                    alignSelf: "center",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    width: Utility.getDeviceWidth() / 3,
-                                    height: Utility.setHeight(46),
-                                    borderRadius: Utility.setHeight(23),
-                                    backgroundColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal !== 2 ? language.next : language.submit}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                        {this.state.select_credential_type.value !== -1 ? this.processStage(language) : null}
+                        {this.state.select_credential_type.value !== -1 ?
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: Utility.setWidth(10),
+                                marginRight: Utility.setWidth(10),
+                                marginTop: Utility.setHeight(20)
+                            }}>
+                                <TouchableOpacity style={{flex: 1}}
+                                                  onPress={() => this.submit(language, this.props.navigation)}>
+                                    <View style={{
+                                        alignSelf: "center",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        width: Utility.getDeviceWidth() / 3,
+                                        height: Utility.setHeight(46),
+                                        borderRadius: Utility.setHeight(23),
+                                        backgroundColor: themeStyle.THEME_COLOR
+                                    }}>
+                                        <Text
+                                            style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal !== 2 ? language.next : language.submit}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View> : null}
                     </View>
                 </ScrollView>
                 <Modal

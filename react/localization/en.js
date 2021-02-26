@@ -22,6 +22,7 @@ export default {
     privacy: "Privacy",
     contact: "Contact",
     select_contact_type: "Select Contact Type",
+    select_credential_type: "Select Credential Type",
     select_actNo: "Select Account Number",
     credentialDetails: "Credential Details",
     selectionType: "Selection Type *",
@@ -122,6 +123,7 @@ export default {
     change_contact: "Change Contact Details",
     change_login_password: "Change Login Password",
     change_login_pin: "Change Login PIN",
+    change_Credential: "Change Credentials",
     change_transaction_pin: "Change Transaction PIN",
     upload_documents: "Upload Supporting Document",
     err_upload_documents: "Please upload  supporting document",
@@ -160,6 +162,7 @@ export default {
     et_confirm_pwd_txt: "Enter Confirm New Password",
     open_account: "Open Account",
     type_contact: "Contact Type *",
+    type_credential: "Credential Type *",
     LoginWith: "Login With User ID?",
     PINLogin: "PIN Login",
     PinNumber: "Enter Your PIN Number",
@@ -185,6 +188,11 @@ export default {
     contactList: [
         {label: "Change Mobile Number", value: 0},
         {label: "Change Email Address", value: 1},
+    ],
+
+    credentialList: [
+        {label: "Change Login Password", value: 0},
+        {label: "Change Login PIN", value: 1},
     ],
 
     DocumentRequiredForArr: [
