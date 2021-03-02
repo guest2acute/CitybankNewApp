@@ -12,6 +12,7 @@ import {StackActions} from "@react-navigation/native";
 import StorageClass from "../utilize/StorageClass";
 import ApiRequest from "../config/ApiRequest";
 import * as DeviceInfo from "react-native-device-info";
+import CryptoJS from "react-native-crypto-js";
 
 
 /**
@@ -98,7 +99,35 @@ class SplashScreen extends Component {
         await this.initSetup();
     }
 
+    encryptWithKey(){
+        let encrypted = CryptoJS.AES.encrypt("Test123", Config.key);
+        console.log("Ciphertext (Base64):\n" + encrypted.toString());
+        let output = CryptoJS.enc.Hex.parse(encrypted);
+        console.log("hex",output);
+
+        // Ciphertext
+       // let decrypted = CryptoJS.AES.decrypt(encrypted.toString(), Config.key, { mode: CryptoJS.mode.ECB });
+       // console.log("Decrypted:\n" + CryptoJS.enc.Utf8.parse(decrypted)); // Plaintext
+    }
+
+    encryptFun() {
+        let data = "123456";
+        let key  = CryptoJS.enc.Latin1.parse(Config.key);
+        let iv   = CryptoJS.enc.Latin1.parse(Config.key);
+        let encrypted = CryptoJS.AES.encrypt(
+            data,
+            key,
+            {iv:iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding
+            });
+        console.log('encrypted: ' + encrypted) ;
+        let decrypted = CryptoJS.AES.decrypt(encrypted,key,{iv:iv,padding:CryptoJS.pad.ZeroPadding});
+        console.log('decrypted: '+decrypted.toString(CryptoJS.enc.Utf8));
+    }
+
+
     async initSetup() {
+       // let key = CryptoJS.enc.Base64.parse(Config.key);
+      // this.encryptWithKey();
 
         await this.callToken();
         await this.changeLanguage();

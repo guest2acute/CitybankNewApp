@@ -7,6 +7,7 @@ import {Dimensions, Platform} from "react-native";
 export default class Config {
 
 
+
     /**
      * API Base url
      * @type {string}
@@ -26,6 +27,7 @@ export default class Config {
     static infoURl = "";
     static contactURl = "";
     static privacyURl = "";
+    static key= "ACUTEAMCBMOBIPRO";
     /**
      * App Version
      */

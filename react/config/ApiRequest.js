@@ -237,6 +237,38 @@ export default class ApiRequest {
     }
 
 
+    blockProcess = async (response,description,props) => {
+        return new Promise(async (resolve, reject) => {
+            let blockReq = {
+                ACTION: "BLOCK_CP_PROCESS",
+                BLOCK_PROCESS_TYPE:"UPDATE_BLOCK_STATUS",
+                ACTUAL_ACTION:"USER_REG_REQ",
+                BLOCK_ACTIVITY_DECRIPTION:description,
+                ACCT_NO:response.ACCT_NO,
+                UPDATE_BLOCK_STATUS:"Y",
+                ACTIVITY_CD:response.ACTIVITY_CD,
+                AUTH_FLAG:"USERAUTH",
+                REQUEST_CD:response.REQUEST_CD,
+                BLOCK_STATUS_CHECK:"Y",
+                BLOCK_AUTH_STATUS:"N"
+            }
+
+            console.log("blockReq", blockReq);
+            let result = await ApiRequest.apiRequest.callApi(changeReq, {});
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                return reject(result.STATUS);
+            }
+        });
+
+    }
+
+
+
+
     static apiRequest = new ApiRequest();
 }
 
