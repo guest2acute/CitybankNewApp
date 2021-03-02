@@ -79,7 +79,7 @@ export default class Utility {
                         navigation.dispatch(
                             CommonActions.reset({
                                 index: 0,
-                                routes: [{name: "LoginScreen"}],
+                                routes: [{name: "PinLogin"}],
                             })
                         )
                     }
@@ -88,7 +88,7 @@ export default class Utility {
         );
     }
 
-    static sessionTimeout(message, language) {
+    static sessionTimeout(message, language,navigation) {
         Alert.alert(
             Config.appName,
             message,
@@ -98,7 +98,7 @@ export default class Utility {
                         navigation.dispatch(
                             CommonActions.reset({
                                 index: 0,
-                                routes: [{name: "LoginScreen"}],
+                                routes: [{name: "PinLogin"}],
                             })
                         )
                     }
@@ -139,7 +139,7 @@ export default class Utility {
         if (status === "99" || status === "1") {
             Utility.alert(message);
         } else if (status === "9") {
-            Utility.sessionTimeout(message, props.language);
+            Utility.sessionTimeout(message, props.language, props.navigation);
         } else if (status === "999") {
             Utility.alertWithBack(props.language.ok, message, props.navigation);
         }
