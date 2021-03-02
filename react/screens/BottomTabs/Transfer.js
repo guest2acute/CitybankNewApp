@@ -15,8 +15,40 @@ class Transfer extends Component {
         super(props);
     }
 
+    moveScreen(item) {
+        console.log("item in movescreen",item)
+        this.props.navigation.navigate("TransferHistory");
+        switch (item.id) {
+            case "cityBankAcct":
+                this.props.navigation.navigate("FundTransfer");
+                break;
+            case "otherBankAcct":
+                this.props.navigation.navigate("OtherBankAccount");
+                break;
+            case "cashByCode":
+                this.props.navigation.navigate("CashByCode");
+                break;
+            case "emailTransfer":
+                this.props.navigation.navigate("EmailTransfer");
+                break;
+            case "transferToBkash":
+                this.props.navigation.navigate("TransferToBkash");
+                break;
+            case "beneficiaryManagement":
+                this.props.navigation.navigate("BeneficiaryManagement");
+                break;
+            case "favoriteTransfer":
+                this.props.navigation.navigate("FavoriteTransfers");
+                break;
+            case "transferHistory":
+                this.props.navigation.navigate("TransferCategory");
+                break;
+        }
+    }
+
     _renderItem = ({item, index}) =>{
         return(
+            <TouchableOpacity onPress={()=>{this.moveScreen(item)}}>
             <View style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -38,6 +70,7 @@ class Transfer extends Component {
                     fontSize: FontSize.getSize(12),
                 }]}>{item.title}</Text>
             </View>
+            </TouchableOpacity>
         )
     }
 

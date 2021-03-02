@@ -84,16 +84,16 @@ class Beneficiary extends Component {
             this.props.navigation.navigate("BeneficiaryWithCityBank");
             return;
         } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("AddBeneficiaryOtherBank");
+            this.props.navigation.navigate("BeneficiaryOtherBank");
             return;
             console.log("11111")
         } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("AddBeneficiaryIn");
+            this.props.navigation.navigate("TransferWithBkash");
             return;
             console.log("22222")
         }
         else{
-            this.props.navigation.navigate("AddBeneficiaryTransfer")
+            this.props.navigation.navigate("BeneficiaryTransfer")
         }
         }
 

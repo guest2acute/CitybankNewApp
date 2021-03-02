@@ -48,7 +48,7 @@ class PinLogin extends Component {
             fiveFocus: false,
             sixFocus: false,
             password: true,
-            passwordTxt: "",
+            passwordTxt: "Acute@123",
             errorTextPwd: "",
             hasFinger: false,
             biometryType: null,

@@ -886,35 +886,35 @@ export default {
                         "COLUMN_WIDTH": "100"
                     },
 
-                        {
-                            "COLUMN_NAME": "PRODUCTNAME",
-                            "COLUMN_LABEL": "Product Name",
-                            "COLUMN_WIDTH": "100"
-                        },
-                        {
-                            "COLUMN_NAME": "CURRENCYCODE",
-                            "COLUMN_LABEL": "Currency",
-                            "COLUMN_WIDTH": "100"
-                        },
-                        {
-                            "COLUMN_NAME": "TENUREBALANCEMONTHS",
-                            "COLUMN_LABEL": "Tenure",
-                            "COLUMN_WIDTH": "100"
-                        },
-                        {
-                            "COLUMN_NAME": "OUTSTANDINGPRINCIPAL",
-                            "COLUMN_LABEL": "Outstanding Balance\t",
-                            "COLUMN_WIDTH": "100"
-                        },
-                        {
-                            "COLUMN_NAME": "NEXTINSTALLMENTDATE",
-                            "COLUMN_LABEL": "Next Installment Date",
-                            "COLUMN_WIDTH": "100"
-                        }
-                    ]
-                }
-            ]
-        }],
+                    {
+                        "COLUMN_NAME": "PRODUCTNAME",
+                        "COLUMN_LABEL": "Product Name",
+                        "COLUMN_WIDTH": "100"
+                    },
+                    {
+                        "COLUMN_NAME": "CURRENCYCODE",
+                        "COLUMN_LABEL": "Currency",
+                        "COLUMN_WIDTH": "100"
+                    },
+                    {
+                        "COLUMN_NAME": "TENUREBALANCEMONTHS",
+                        "COLUMN_LABEL": "Tenure",
+                        "COLUMN_WIDTH": "100"
+                    },
+                    {
+                        "COLUMN_NAME": "OUTSTANDINGPRINCIPAL",
+                        "COLUMN_LABEL": "Outstanding Balance\t",
+                        "COLUMN_WIDTH": "100"
+                    },
+                    {
+                        "COLUMN_NAME": "NEXTINSTALLMENTDATE",
+                        "COLUMN_LABEL": "Next Installment Date",
+                        "COLUMN_WIDTH": "100"
+                    }
+                ]
+            }
+        ]
+    }],
 
     /*Transfer Category screen message*/
     transfer_title: "Transfer Category",
