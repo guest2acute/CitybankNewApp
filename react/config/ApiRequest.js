@@ -254,7 +254,7 @@ export default class ApiRequest {
             }
 
             console.log("blockReq", blockReq);
-            let result = await ApiRequest.apiRequest.callApi(changeReq, {});
+            let result = await ApiRequest.apiRequest.callApi(blockReq, {});
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
                 return resolve(result);

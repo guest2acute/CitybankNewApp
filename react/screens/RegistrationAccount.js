@@ -143,7 +143,7 @@ class RegistrationAccount extends Component {
         const {signUpResponse, hasDebitCard} = this.state;
         this.setState({isProgress: true});
         await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", signUpResponse,
-            hasDebitCard ? "CP" : "TP","REGUSERVERIFY","O",this.props)
+            hasDebitCard ? "CP" : "TP", "REGUSERVERIFY", "O", this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false, stateVal: 4});
@@ -1239,7 +1239,7 @@ class RegistrationAccount extends Component {
                     this.setState({stateVal: stateVal + 2});
                 }
             }
-        } else if (stateVal === 1) {
+        } else if (stateVal === 2) {
             if (this.state.debitCardNo === "") {
                 this.setState({errorDCardNo: language.errDebitCard});
             } else if (this.state.cardExpiry === "") {
@@ -1257,7 +1257,7 @@ class RegistrationAccount extends Component {
                 }
                 await this.signupRequest();
             }
-        } else if (stateVal === 2) {
+        } else if (stateVal === 1) {
             if (this.state.fatherName === "") {
                 this.setState({errorFather: language.et_father_name});
             } else if (this.state.motherName === "") {
@@ -1269,18 +1269,13 @@ class RegistrationAccount extends Component {
                 this.setState({errorTransDate: language.errorTransDate})
             } else if (this.state.transAmt === "") {
                 this.setState({errorTransAmt: language.errorTransAmt})
-            }
-            else if (this.state.fatherName.toLowerCase() !== signUpResponse.FATHER_NAME.toLowerCase()) {
-                this.setState({errorFather: language.et_father_name});
-            }
-            else if (this.state.motherName.toLowerCase() !== signUpResponse.FATHER_NAME.toLowerCase()) {
-                this.setState({errorFather: language.et_father_name});
-            }
-            else if (this.state.dob.toLowerCase() !== signUpResponse.FATHER_NAME.toLowerCase()) {
-                this.setState({errorFather: language.et_father_name});
-            }
-
-            else {
+            } else if (this.state.fatherName.toLowerCase() !== signUpResponse.FATHERS_NAME.toLowerCase()) {
+                await this.blockUser("Invalid Father Name");
+            } else if (this.state.motherName.toLowerCase() !== signUpResponse.MOTHERS_NAME.toLowerCase()) {
+                await this.blockUser("Invalid Mother Name");
+            } else if (this.state.dob.toLowerCase() !== signUpResponse.BIRTH_DT.toLowerCase()) {
+                await this.blockUser("Invalid Date of Birth");
+            } else {
                 let userRes = Utility.verifyUserId(this.state.userId, language)
                 if (userRes !== "") {
                     this.setState({errorUserId: userRes});
@@ -1302,13 +1297,10 @@ class RegistrationAccount extends Component {
         } else if (stateVal === 4) {
             if (this.state.transPin === "") {
                 this.setState({errorTransPin: language.errTransPin});
-                return;
             } else if (this.state.loginPin === "") {
                 this.setState({errorLoginPin: language.errValidPin})
-                return;
             } else if (this.state.password === "") {
                 this.setState({errorpassword: language.errorpassword})
-                return;
             } else {
                 await this.processSignup(language)
             }
@@ -1316,6 +1308,24 @@ class RegistrationAccount extends Component {
         }
 
     }
+
+    async blockUser(description) {
+        const {signUpResponse} = this.state;
+
+        userDetails = {...signUpResponse, REQUEST_CD: signUpResponse.REQUEST_CD,ACCT_NO:}
+
+        this.setState({isProgress: true});
+        await ApiRequest.apiRequest.blockProcess(signUpResponse, description, this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                Utility.alert(description);
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
 
     render() {
         let language = this.props.language;

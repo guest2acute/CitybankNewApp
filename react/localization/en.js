@@ -976,7 +976,7 @@ export default {
 
     add_beneficiary_wob:"Add Beneficiary-Other Bank",
     acc_card_number: "Account/Card Number",
-    acc_card_name: "Account/Card Name ",
+    acc_card_name: "Account/Card Name",
 
     acc_type: "Account Type",
     bankTypeArr: [
