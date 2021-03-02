@@ -237,18 +237,18 @@ export default class ApiRequest {
     }
 
 
-    blockProcess = async (response,description,props) => {
+    blockProcess = async (ACCT_NO,response,description,props) => {
         return new Promise(async (resolve, reject) => {
             let blockReq = {
                 ACTION: "BLOCK_CP_PROCESS",
                 BLOCK_PROCESS_TYPE:"UPDATE_BLOCK_STATUS",
                 ACTUAL_ACTION:"USER_REG_REQ",
                 BLOCK_ACTIVITY_DECRIPTION:description,
-                ACCT_NO:response.ACCT_NO,
+                ACCT_NO:ACCT_NO,
                 UPDATE_BLOCK_STATUS:"Y",
-                ACTIVITY_CD:response.ACTIVITY_CD,
+                ACTIVITY_CD:"",
                 AUTH_FLAG:"USERAUTH",
-                REQUEST_CD:response.REQUEST_CD,
+                REQUEST_CD:"0",
                 BLOCK_STATUS_CHECK:"Y",
                 BLOCK_AUTH_STATUS:"N"
             }
