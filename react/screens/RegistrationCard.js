@@ -77,7 +77,7 @@ class RegistrationCard extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-            this.backHandler = BackHandler.addEventListener(
+           BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -87,7 +87,7 @@ class RegistrationCard extends Component {
 
     componentWillUnmount() {
         if (Platform.OS === "android") {
-            BackHandler.removeEventListener("hardwareBackPress", this.backHandler);
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
         }
     }
 

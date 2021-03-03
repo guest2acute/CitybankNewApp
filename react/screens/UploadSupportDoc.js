@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {
+    BackHandler,
     FlatList,
     Image,
     Modal,
@@ -54,11 +55,27 @@ class UploadSupportDoc extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
         await this.getAccounts()
+    }
+
+    backAction = () => {
+        this.props.navigation.goBack(null);
+        return true;
+    }
+
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
     }
 
     openModal(option, title, data, language) {
@@ -76,20 +93,20 @@ class UploadSupportDoc extends Component {
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "accountCardNo") {
-            this.setState({AccountCardNo: item.label, accountCardVal: item.actDetails, modalVisible: false})
+            this.setState({AccountCardNo: item.label, accountCardVal: item.actDetails, modalVisible: false});
         } else if (modelSelection === "documentFor") {
-            this.setState({DocumentRequiredFor: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({DocumentRequiredFor: item.label, selectTypeVal: item.value, modalVisible: false});
         } else if (modelSelection === "documentType") {
-            this.setState({documentType: item.label, docTypeVal: item.value, modalVisible: false})
+            this.setState({documentType: item.label, docTypeVal: item.value, modalVisible: false});
         }
     }
 
     async onSubmit(language, navigation) {
         if (this.state.documentNo === "") {
-            this.setState({errorDocumentNo: language.errDocumentNo})
+            this.setState({errorDocumentNo: language.errDocumentNo});
             return;
         } else if (this.state.select_file === "") {
-            this.setState({errorDocumentAttach: language.err_upload_documents})
+            this.setState({errorDocumentAttach: language.err_upload_documents});
             return;
         }
         await this.uploadData();

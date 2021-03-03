@@ -479,7 +479,7 @@ class LoginScreen extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-            this.backHandler = BackHandler.addEventListener(
+           BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -487,13 +487,12 @@ class LoginScreen extends Component {
        let encryptVal = Secure.encryptData("Test123",Config.key);
         console.log("encryptVal",encryptVal);
 
-       // this.process();
     }
 
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener(
-                "hardwareBackPress", this.backHandler)
+                "hardwareBackPress", this.backAction)
         }
     }
 

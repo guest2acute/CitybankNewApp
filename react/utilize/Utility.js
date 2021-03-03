@@ -20,13 +20,21 @@ export default class Utility {
             Config.appName,
             msg,
             [
-                {text: btn_txt, onPress: () => navigation.goBack(null)},
+                {
+                    text: btn_txt, onPress: () => {
+                        try {
+                            navigation.goBack();
+                        } catch (e) {
+                            console.log("back button error");
+                        }
+                    }
+                },
             ]
         );
     }
 
-    static verifyUserId(id,language) {
-        if (id === ""){
+    static verifyUserId(id, language) {
+        if (id === "") {
             return language.errorUserId;
         }
         let number = "0123456789";
@@ -47,12 +55,10 @@ export default class Utility {
         }
         if (id.length < 8 || id.length > 12) {
             return language.errorLUserID;
-        }
-        else if (ca === 0) {
+        } else if (ca === 0) {
             return language.errorAUserID;
         }
         return "";
-
 
     }
 
@@ -88,7 +94,7 @@ export default class Utility {
         );
     }
 
-    static sessionTimeout(message, language,navigation) {
+    static sessionTimeout(message, language, navigation) {
         Alert.alert(
             Config.appName,
             message,

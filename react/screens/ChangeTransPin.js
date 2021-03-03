@@ -61,7 +61,7 @@ class ChangeTransPin extends Component {
         return true;
     }
 
-    async backBtn() {
+     backBtn() {
         const {stage} = this.state;
         if (stage > 0) {
             this.setState({
@@ -84,7 +84,7 @@ class ChangeTransPin extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-            this.backHandler = BackHandler.addEventListener(
+            BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -98,7 +98,7 @@ class ChangeTransPin extends Component {
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener(
-                "hardwareBackPress", this.backHandler)
+                "hardwareBackPress", this.backAction)
         }
     }
 
@@ -509,6 +509,7 @@ class ChangeTransPin extends Component {
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
             AUTH_FLAG: userDetails.AUTH_FLAG,
+            MOBILE_NO:userDetails.MOBILE_NO,
             ACCT_NO: this.state.select_actNo,
             NEW_PIN: this.state.pinVal,
             REQ_FLAG: "R",

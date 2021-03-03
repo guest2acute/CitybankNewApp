@@ -172,6 +172,7 @@ export default class ApiRequest {
         return new Promise(async (resolve, reject) => {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
+                MOBILE_NO:response.MOBILE_NO,
                 USER_ID: response.USER_ID,
                 REQ_FLAG: "R",
                 PASS_TYPE: passType,

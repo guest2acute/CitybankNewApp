@@ -8,7 +8,7 @@ import {
     ScrollView,
     UIManager,
     TouchableOpacity,
-    Platform, SafeAreaView, StatusBar, ActivityIndicator,
+    Platform, SafeAreaView, StatusBar, ActivityIndicator,BackHandler
 } from 'react-native';
 
 import NestedListView, {NestedRow} from 'react-native-nested-listview'
@@ -21,7 +21,7 @@ import FontSize from "../../resources/ManageFontSize";
 import ApiRequest from "../../config/ApiRequest";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import themesStyle from "../../resources/theme.style";
-import axios from "axios";
+
 
 
 class Accounts extends Component {
@@ -40,6 +40,11 @@ class Accounts extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+
+           BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
 
         // bottom tab management
@@ -49,6 +54,17 @@ class Accounts extends Component {
         await this.getAccounts(this.props.language, this.props.navigation)
     }
 
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener(
+                "hardwareBackPress",  this.backAction)
+        }
+    }
+
+    backAction = () => {
+        Utility.exitApp(this.props.language);
+        return true;
+    }
 
     level1(node) {
         return (

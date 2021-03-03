@@ -489,7 +489,7 @@ class LoginConfigureProfile extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-            this.backHandler = BackHandler.addEventListener(
+           BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -499,7 +499,7 @@ class LoginConfigureProfile extends Component {
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener(
-                "hardwareBackPress", this.backHandler)
+                "hardwareBackPress", this.backAction)
         }
     }
 

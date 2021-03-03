@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar, Alert
+    TextInput, FlatList, Platform, StatusBar, Alert, BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
 import CommonStyle from "../resources/CommonStyle";
@@ -349,11 +349,35 @@ class ChangeLoginCredential extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
         await this.getAccount();
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
+    }
+
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        const {stateVal} = this.state;
+        if (stateVal === 0)
+            this.props.navigation.goBack(null);
+        else
+            this.setState({stateVal: stateVal - 1});
     }
 
     async getAccount() {
@@ -672,7 +696,7 @@ class ChangeLoginCredential extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>

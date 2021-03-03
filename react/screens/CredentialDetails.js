@@ -110,7 +110,7 @@ class CredentialDetails extends Component {
                 StatusBar.setBarStyle("light-content");
             });
 
-            this.backHandler = BackHandler.addEventListener(
+          BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -120,7 +120,7 @@ class CredentialDetails extends Component {
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener(
-                "hardwareBackPress", this.backHandler)
+                "hardwareBackPress", this.backAction)
         }
     }
 

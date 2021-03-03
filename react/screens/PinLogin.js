@@ -8,7 +8,7 @@ import {
     StatusBar,
     TouchableOpacity,
     Image,
-    Platform, AsyncStorage
+    Platform, AsyncStorage, Alert, BackHandler
 } from 'react-native';
 
 import {actions} from "../redux/actions";
@@ -64,11 +64,27 @@ class PinLogin extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
         let loginPref = await StorageClass.retrieve(Config.LoginPref);
         this.setState({loginPref: loginPref});
         if (loginPref === "2")
             this.checkFingerTouch();
+    }
+
+    backAction = () => {
+        Utility.exitApp(this.props.language);
+        return true;
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener(
+                "hardwareBackPress", this.backAction)
+        }
     }
 
 

@@ -289,8 +289,16 @@ class ChangeContactDetails extends Component {
         } else if (modelSelection === "contactType") {
             this.setState({select_contact_type: item, modalVisible: false, stateVal: 0})
         } else if (modelSelection === "accountType") {
-            this.setState({selectActCard: item, modalVisible: false, stateVal: 0,
-                expiryDate: "",transactionPin:"",cardPin: "",selectCard: this.props.language.selectCard,select_actNo: this.props.language.select_actNo})
+            this.setState({
+                selectActCard: item,
+                modalVisible: false,
+                stateVal: 0,
+                expiryDate: "",
+                transactionPin: "",
+                cardPin: "",
+                selectCard: this.props.language.selectCard,
+                select_actNo: this.props.language.select_actNo
+            })
         }
     }
 
@@ -310,6 +318,7 @@ class ChangeContactDetails extends Component {
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             SOURCE: selectRes.SOURCE,
             DEVICE_ID: await Utility.getDeviceID(),
+            MOBILE_NO: userDetails.MOBILE_NO,
             ...Config.commonReq
         }
         let header = {};
@@ -418,14 +427,14 @@ class ChangeContactDetails extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-        this.backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            this.backAction
-        );
         await this.getAccount();
     }
 
@@ -436,7 +445,7 @@ class ChangeContactDetails extends Component {
 
     componentWillUnmount() {
         if (Platform.OS === "android") {
-            BackHandler.removeEventListener("hardwareBackPress", this.backHandler);
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
         }
     }
 

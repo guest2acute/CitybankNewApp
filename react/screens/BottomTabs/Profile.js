@@ -1,14 +1,12 @@
 import {connect} from "react-redux";
 import {
-    I18nManager,
-    Modal,
     SafeAreaView,
     ScrollView,
     Text,
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar
+    TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import fontStyle from "../../resources/FontStyle";
@@ -17,11 +15,9 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import RadioForm from "react-native-simple-radio-button";
 import StorageClass from "../../utilize/StorageClass";
 import Config from "../../config/Config";
 import {actions} from "../../redux/actions";
-import {StackActions} from "@react-navigation/native";
 import FingerprintScanner from "react-native-fingerprint-scanner";
 import ApiRequest from "../../config/ApiRequest";
 
@@ -225,7 +221,7 @@ class Profile extends Component {
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-           {/* <View style={{
+            {/* <View style={{
                 flexDirection: "row", alignItems: "center", marginTop: 15
             }}>
                 <Text style={[CommonStyle.textStyle, {marginRight: 15, marginStart: 10}]}>
@@ -281,7 +277,7 @@ class Profile extends Component {
         console.log("request", userRequest);
         let result = await ApiRequest.apiRequest.callApi(userRequest, {});
         console.log("result", result);
-       // result = result[0];
+        // result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
@@ -421,6 +417,10 @@ class Profile extends Component {
         )
     }
 
+    backAction = () => {
+        this.props.navigation.goBack();
+        return true;
+    }
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -429,12 +429,25 @@ class Profile extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
         await this.getUserDetails();
     }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener(
+                "hardwareBackPress", this.backAction)
+        }
+    }
+
 }
 
 const styles = {
