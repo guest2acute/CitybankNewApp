@@ -1106,5 +1106,4 @@ export default {
     to_account: "To Account",
     select_acct:"Select From Account",
     vat: "VAT",
-
 }
