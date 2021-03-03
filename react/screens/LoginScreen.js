@@ -6,6 +6,7 @@ import {
     StatusBar,
     TextInput,
     Linking,
+    NativeModules,
     Platform, TouchableOpacity, Image, ScrollView, Alert, BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
@@ -22,8 +23,9 @@ import CommonStyle from "../resources/CommonStyle";
 import Config from "../config/Config";
 import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
-import * as DeviceInfo from "react-native-device-info";
 import ApiRequest from "../config/ApiRequest";
+import Secure from "../config/Secure";
+let Aes = NativeModules.Aes;
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -40,9 +42,39 @@ class LoginScreen extends Component {
         };
     }
 
-    /**
-     * onSubmit button action
-     */
+
+    process(){
+        try {
+            Secure.generateKey(Config.key, '', 5000, 256).then(key => {
+                console.log('Key:', key)
+                Secure.encryptData("Test123", key)
+                    .then(({ cipher, iv }) => {
+                        console.log('Encrypted:', cipher)
+
+                        Secure.decryptData({ cipher, iv }, key)
+                            .then(text => {
+                                console.log('Decrypted:', text)
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            })
+
+                        Aes.hmac256(cipher, key).then(hash => {
+                            console.log('HMAC', hash)
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            })
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
+
+
+
 
     async onSubmit(language) {
         const {userID, passwordTxt} = this.state;
@@ -452,6 +484,10 @@ class LoginScreen extends Component {
                 this.backAction
             );
         }
+       let encryptVal = Secure.encryptData("Test123",Config.key);
+        console.log("encryptVal",encryptVal);
+
+       // this.process();
     }
 
     componentWillUnmount() {

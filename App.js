@@ -36,7 +36,7 @@ import LoginConfigureProfile from "./react/screens/LoginConfigureProfile";
 import Profile from "./react/screens/BottomTabs/Profile";
 import ChangeTransPin from "./react/screens/ChangeTransPin";
 import ChangePassword from "./react/screens/ChangePassword";
-import ChangeLoginPIN from "./react/screens/ChangeLoginPIN";
+import ChangeLoginCredential from "./react/screens/ChangeLoginCredential";
 import ChangeContactDetails from "./react/screens/ChangeContactDetails";
 import UploadSupportDoc from "./react/screens/UploadSupportDoc";
 import PinLogin from "./react/screens/PinLogin";
@@ -185,7 +185,7 @@ function MoreTab() {
             <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeTransPin" component={ChangeTransPin} options={{headerShown: false}}/>
             <Stack.Screen name="ChangePassword" component={ChangePassword} options={{headerShown: false}}/>
-            <Stack.Screen name="ChangeLoginPIN" component={ChangeLoginPIN} options={{headerShown: false}}/>
+            <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeContactDetails" component={ChangeContactDetails} options={{headerShown: false}}/>
             <Stack.Screen name="UploadSupportDoc" component={UploadSupportDoc} options={{headerShown: false}}/>
         </Stack.Navigator>);

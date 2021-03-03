@@ -34,7 +34,7 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "",
+            accountNo: "2251657635001",
             disableButton: false,
             actName: "",
             placeMobile: "",
@@ -555,8 +555,8 @@ class RegistrationAccount extends Component {
                 actName: response.CUST_NAME,
                 placeMobile: response.MASK_MOBILE_NO,
                 placeEmail: response.MASK_MAIL_ID,
-                //conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
-                //conf_email: response.MAIL_ID,
+                conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
+                conf_email: response.MAIL_ID,
                 signUpResponse: response,
                 hasDebitCard: response.DEBIT_CARD.length > 0
             });
@@ -1260,21 +1260,27 @@ class RegistrationAccount extends Component {
         } else if (stateVal === 2) {
             if (this.state.fatherName === "") {
                 this.setState({errorFather: language.et_father_name});
-                return;
             } else if (this.state.motherName === "") {
                 console.log("error mother")
                 this.setState({errorMother: language.errorMother});
-                return;
             } else if (this.state.dob === "") {
                 this.setState({errorDob: language.errorDob})
-                return;
             } else if (this.state.transDate === "") {
                 this.setState({errorTransDate: language.errorTransDate})
-                return;
             } else if (this.state.transAmt === "") {
                 this.setState({errorTransAmt: language.errorTransAmt})
-                return;
-            } else {
+            }
+            else if (this.state.fatherName.toLowerCase() !== signUpResponse.FATHER_NAME.toLowerCase()) {
+                this.setState({errorFather: language.et_father_name});
+            }
+            else if (this.state.motherName.toLowerCase() !== signUpResponse.FATHER_NAME.toLowerCase()) {
+                this.setState({errorFather: language.et_father_name});
+            }
+            else if (this.state.dob.toLowerCase() !== signUpResponse.FATHER_NAME.toLowerCase()) {
+                this.setState({errorFather: language.et_father_name});
+            }
+
+            else {
                 let userRes = Utility.verifyUserId(this.state.userId, language)
                 if (userRes !== "") {
                     this.setState({errorUserId: userRes});
@@ -1344,7 +1350,7 @@ class RegistrationAccount extends Component {
                                 marginLeft: 10,
                                 marginRight: 10
                             }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
-                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.debitCardUI(language) : this.state.stateVal === 2 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
+                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 2 ? this.debitCardUI(language) : this.state.stateVal === 1 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
                             <View style={{
                                 flexDirection: "row",
                                 marginStart: Utility.setWidth(10),
