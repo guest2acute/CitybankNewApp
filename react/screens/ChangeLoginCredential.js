@@ -527,6 +527,7 @@ class ChangeLoginCredential extends Component {
     async verifyCard() {
         const {select_actNo, expiryDate, transactionPin, cardPin, selectCard, selectActCard, selectRes} = this.state;
         let userDetails = this.props.userDetails;
+        userDetails = {...userDetails,MOBILE_NO:selectRes.MOBILE_NO,EMAIL_ID:selectRes.EMAIL_ID};
         let pin = this.state.selectActCard.value === 0 ? transactionPin : cardPin;
         let actCardNumber = selectActCard.value === 0 ? select_actNo : selectCard;
         this.setState({isProgress: true});

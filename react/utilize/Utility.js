@@ -62,6 +62,16 @@ export default class Utility {
 
     }
 
+    static maskString(value) {
+        let updatedStr = "";
+        for (let l = 0; l < value.length; l++) {
+            if (l > 1 && l < value.length - 2)
+                updatedStr += '*';
+            else
+                updatedStr += value[l];
+        }
+        return updatedStr;
+    }
 
     static alertConfirm(positive_txt, negative_txt, msg, navigation) {
         Alert.alert(

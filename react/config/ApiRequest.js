@@ -134,7 +134,6 @@ export default class ApiRequest {
                 CUSTOMER_ID: response.CUSTOMER_ID,
                 AUTH_FLAG: AUTH_FLAG,
                 REQ_FLAG: reqFlag,
-                MOBILE_NO: response.MOBILE_NO,
                 REQ_TYPE: REQ_TYPE,
                 ACTIVITY_CD: response.ACTIVITY_CD,
                 USER_ID: response.USER_ID?response.USER_ID:"",
@@ -143,15 +142,6 @@ export default class ApiRequest {
                 DEVICE_ID: await Utility.getDeviceID(),
                 ACTION: action, ...Config.commonReq
             };
-
-          /*  if (action === "GENUPDEMAILMBOTPVERIFY") {
-                otpVerifyRequest = {
-                    ...otpVerifyRequest,
-
-                };
-            } else {
-                otpVerifyRequest = {...otpVerifyRequest}
-            }*/
 
             console.log("otpVerifyRequest", otpVerifyRequest);
             let result = await ApiRequest.apiRequest.callApi(otpVerifyRequest, {});
@@ -173,6 +163,7 @@ export default class ApiRequest {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
                 MOBILE_NO:response.MOBILE_NO,
+                EMAIL_ID: selectRes.EMAIL_ID,
                 USER_ID: response.USER_ID,
                 REQ_FLAG: "R",
                 PASS_TYPE: passType,

@@ -524,7 +524,6 @@ class ChangeTransPin extends Component {
         console.log("request", changeReq);
 
         let result = await ApiRequest.apiRequest.callApi(changeReq, {});
-        //result = result[0];
 
         if (result.STATUS === "0") {
             this.resetAll();

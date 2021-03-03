@@ -141,6 +141,7 @@ class Accounts extends Component {
             CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST,
             SCREEN_TYPE: "DASHBOARD"
         }
+        console.log("actReq",actReq);
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
         // result = result[0];
 

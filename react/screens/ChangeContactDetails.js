@@ -318,7 +318,8 @@ class ChangeContactDetails extends Component {
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             SOURCE: selectRes.SOURCE,
             DEVICE_ID: await Utility.getDeviceID(),
-            MOBILE_NO: userDetails.MOBILE_NO,
+            MOBILE_NO: selectRes.MOBILE_NO,
+            EMAIL_ID: selectRes.EMAIL_ID,
             ...Config.commonReq
         }
         let header = {};
@@ -510,11 +511,11 @@ class ChangeContactDetails extends Component {
     processAccounts(response) {
         let accountArr = [], cardArr = [];
         response.ACCOUNT_DTL.map((account) => {
-            accountArr.push({label: account.ACCOUNT_NO, value: account.ACCOUNT_NO, item: account});
+            accountArr.push({label: Utility.maskString(account.ACCOUNT_NO)+"/"+account.ACCT_TYPE_NM, value: account.ACCOUNT_NO, item: account});
         });
 
         response.CARD_DTL.map((card) => {
-            cardArr.push({label: card.ACCOUNT_NO, value: card.ACCOUNT_NO, item: card});
+            cardArr.push({label: Utility.maskString(card.ACCOUNT_NO)+"/"+card.ACCT_TYPE_NM, value: card.ACCOUNT_NO, item: card});
         });
         this.setState({actNoList: accountArr, cardNoList: cardArr, isProgress: false});
     }
