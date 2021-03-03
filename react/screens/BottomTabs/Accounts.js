@@ -46,16 +46,13 @@ class Accounts extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
-
         await this.getAccounts(this.props.language, this.props.navigation)
-
-
     }
 
 
     level1(node) {
         return (
-            <View style={{
+            <View key={"level1"} style={{
                 backgroundColor: themeStyle.THEME_COLOR,
                 height: Utility.setHeight(35),
                 alignItems: "center",
@@ -70,7 +67,7 @@ class Accounts extends Component {
     }
 
     level2(node) {
-        return (<View>
+        return (<View key={"level2"}>
             <View style={{
                 backgroundColor: themeStyle.TITLE_BG,
                 height: Utility.setHeight(35),
@@ -87,8 +84,9 @@ class Accounts extends Component {
     }
 
     level3(account) {
+        console.log("account", account);
         return (
-            <View>
+            <View key={"level3"}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate("AccountDetails")}>
                     <View style={{
                         backgroundColor: themeStyle.WHITE,
@@ -110,8 +108,7 @@ class Accounts extends Component {
                                     width: Utility.setWidth(100),
                                     alignItems: "center",
                                     justifyContent: "center"
-                                }}>
-                                    <ActivityIndicator size="small" color={themesStyle.THEME_COLOR}/>
+                                }}><ActivityIndicator size="small" color={themesStyle.THEME_COLOR}/>
                                 </View>}
                         </View>
                     </View>
@@ -126,9 +123,8 @@ class Accounts extends Component {
         let actReq = {
             ACTION: "GETTYPEWISEACLIST",
             CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST,
-            SCREEN_TYPE:"DASHBOARD"
+            SCREEN_TYPE: "DASHBOARD"
         }
-        console.log("actReq", actReq);
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
         // result = result[0];
 
@@ -160,7 +156,7 @@ class Accounts extends Component {
                 });
             }
             await level2Arr.map((level2) => {
-                console.log("level1.HEADER_NAME", level2.PARENTPRODUCTNAME);
+
                 let level3Arr = level2.ACCT_LIST;
                 if (level3Arr.length > 1) {
                     level3Arr = level3Arr.sort(function (a, b) {
@@ -186,12 +182,8 @@ class Accounts extends Component {
         this.setState({isProgress: false, dataList: mainArray}, async () => {
             console.log("actArr", actArr);
             actArr.map((account) => {
-               // if (accountVal.PRODUCTTYPE === "SBA")
-                    this.getBalance(account);
-               /* else{
-                    this.getLoanTermBalance(accountVal.PRODUCTTYPE === "TDA", accountVal)
-                }*/
-            })
+                this.getBalance(account);
+            });
         });
     }
 
@@ -199,23 +191,25 @@ class Accounts extends Component {
         let accountNo = account.ACCOUNTORCARDNO;
         let balanceReq = {
             ACCT_NO: account.ACCOUNTORCARDNO,
-            ACTION: account.PARENTPRODUCTCODE==="FD_ACCOUNT"? "GETTERMDEPACCTDTL":account.PARENTPRODUCTCODE==="LOAN_ACCOUNT"?"GETLOANACCTDTL":"GETACCTBALDETAIL",
+            ACTION: account.PARENTPRODUCTCODE === "FD_ACCOUNT" ? "GETTERMDEPACCTDTL" : account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? "GETLOANACCTDTL" : "GETACCTBALDETAIL",
             SOURCE: account.SOURCE,
+            RES_FLAG: "B", CURRENCYCODE: "BDT"
         }
 
-        if(account.PRODUCTTYPE==="SBA"){
+        if (account.PRODUCTTYPE === "SBA") {
             balanceReq = {...balanceReq, RES_FLAG: "B", CURRENCYCODE: ""}
-        }
-        else{
+        } else {
             balanceReq = {...balanceReq, APPCUSTOMER_ID: account.APPCUSTOMER_ID}
         }
 
-        console.log("balanceReq", balanceReq);
+        console.log(account.ACCOUNTORCARDNO + "->balanceReq", balanceReq);
         let result = await ApiRequest.apiRequest.callApi(balanceReq, {});
+
+        console.log(account.ACCOUNTORCARDNO + "->", result);
 
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
-            await this.processBalance(account.PARENTPRODUCTCODE==="FD_ACCOUNT"? response.DEPOSITAMOUNT:account.PARENTPRODUCTCODE==="LOAN_ACCOUNT"?response.TOTALOUTSTANDING:response.AVAILBALANCE, accountNo, "");
+            await this.processBalance(account.PARENTPRODUCTCODE === "FD_ACCOUNT" ? response.DEPOSITAMOUNT : account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.AVAILBALANCE, accountNo, "");
         } else {
             await this.processBalance("", accountNo, "");
         }
@@ -223,8 +217,10 @@ class Accounts extends Component {
 
 
     async processBalance(balance, accountNo, message) {
-
+        balance = balance===""?this.props.language.notAvailable:balance;
+        console.log("accountNo", accountNo);
         let dataList = this.state.dataList;
+        console.log("beforeDataList", JSON.stringify(dataList));
         let objectPos = -1;
         let object;
         let sectionPos = -1;
@@ -247,22 +243,22 @@ class Accounts extends Component {
         }
 
         let level3Arr = dataList[level1Pos].items[level2Pos].items;
-
-        object = {...object, BALANCE: balance !== "" ? balance : message};
+        console.log("level3Arr", level3Arr);
+        object = {...object, BALANCE:balance};
         level3Arr[objectPos] = object;
         dataList[level1Pos].items[level2Pos] = {...dataList[level1Pos].items[level2Pos], items: level3Arr};
-        console.log(" dataList[level1Pos].items[level2Pos]", dataList[level1Pos].items[level2Pos]);
         dataList[level1Pos] = {...dataList[level1Pos], items: dataList[level1Pos].items};
-        console.log("dataList",dataList);
+        console.log("AfterDataList", JSON.stringify(dataList));
         this.setState({dataList: dataList});
     }
 
     render() {
+        console.log("this.state.dataList", JSON.stringify(this.state.dataList));
         let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
-                <View style={[styles.toolbar, {marginBottom: 10}]}>
+                <View style={[styles.toolbar, {marginBottom: 0}]}>
                     <Image resizeMode={"contain"} style={{width: Utility.setWidth(90), height: Utility.setHeight(50)}}
                            source={require("../../resources/images/citytouch_header.png")}/>
                     <TouchableOpacity

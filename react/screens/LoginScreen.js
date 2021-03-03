@@ -30,7 +30,7 @@ class LoginScreen extends Component {
         super(props);
         this.state = {
             userID: "Test@123",
-            passwordTxt: "Test@123",
+            passwordTxt: "Test1234",
             isProgress: false,
             passwordVisible: false,
             errorTextUid: "",

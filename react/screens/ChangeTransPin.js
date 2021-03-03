@@ -36,9 +36,9 @@ class ChangeTransPin extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            fatherName: "",
+            fatherName: "MD. FAZLUR RAHMAN",
             errorFather: "",
-            motherName: "",
+            motherName: "ALEYA RAHMAN",
             errorMother: "",
             isProgress: false,
             dateVal: new Date(),
@@ -536,11 +536,11 @@ class ChangeTransPin extends Component {
 
     async onSubmit(language, navigation) {
         if (this.state.fatherName === "") {
-            this.setState({errorFather: "Please enter father name"});
+            this.setState({errorFather: language.errorFatherName});
         } else if (this.state.motherName === "") {
-            this.setState({errorMother: "Please enter mother name"});
+            this.setState({errorMother: language.errorMotherName});
         } else if (this.state.dob === "") {
-            this.setState({errorDob: "Please select date of birth"});
+            this.setState({errorDob: language.errorDob});
         } else if (this.state.stage === 2) {
             if (this.state.pinVal === "") {
                 this.setState({errorPinVal: language.errTransactionPin})

@@ -36,13 +36,8 @@ class More extends Component {
                     icon: require("../../resources/images/contact_icon.png")
                 },
                 {
-                    id: "changePassword",
-                    title: language.change_login_password,
-                    icon: require("../../resources/images/ic_credential_management.png")
-                },
-                {
-                    id: "changeLoginPIN",
-                    title: language.change_login_pin,
+                    id: "change_Credential",
+                    title: language.change_Credential,
                     icon: require("../../resources/images/ic_credential_management.png")
                 },
                 {
@@ -74,15 +69,14 @@ class More extends Component {
         });
 
         if (this.props.userDetails.AUTH_FLAG === "TP") {
-            const {data} = this.state;
-            let arr = data;
+            let {data} = this.state;
             let obj = {
                 id: "changeTransPin",
-                title:this.props.language.change_transaction_pin,
+                title: this.props.language.change_transaction_pin,
                 icon: require("../../resources/images/ic_credential_management.png")
             }
-            arr.push(obj);
-            this.setState({data: arr});
+            let dataArr = [...data, obj]
+            this.setState({data: dataArr});
         }
     }
 
@@ -97,8 +91,8 @@ class More extends Component {
             case "changePassword":
                 this.props.navigation.navigate("ChangePassword");
                 break;
-            case "changeLoginPIN":
-                this.props.navigation.navigate("ChangeLoginPIN");
+            case "change_Credential":
+                this.props.navigation.navigate("ChangeLoginCredential");
                 break;
             case "changeContact":
                 this.props.navigation.navigate("ChangeContactDetails");
