@@ -12,7 +12,6 @@ import {CommonActions, NavigationContainer} from "@react-navigation/native";
 
 import SplashScreen from "./react/screens/SplashScreen";
 import {Provider} from "react-redux";
-
 import configureStore from "./react/redux/store/configureStore";
 import LoginScreen from "./react/screens/LoginScreen";
 import CredentialDetails from "./react/screens/CredentialDetails";
@@ -47,6 +46,17 @@ import BeneficiaryWithCityBank from "./react/screens/Trasfer/BeneficiaryWithCity
 import BeneficiaryOtherBank from "./react/screens/Trasfer/BeneficiaryOtherBank";
 import BeneficiaryTransfer from "./react/screens/Trasfer/BeneficiaryTransfer";
 import TransferWithBkash from "./react/screens/Trasfer/TransferWithBkash";
+import TransferCategory from "./react/screens/TransferCategory";
+import TransferHistory from "./react/screens/TransferHistory";
+import TransferToBkash from "./react/screens/Trasfer/TransferToBkash";
+import CashByCode from "./react/screens/Trasfer/CashByCode";
+import FundTransfer from "./react/screens/Trasfer/FundTransfer";
+import OtherBankAccount from "./react/screens/Trasfer/OtherBankAccount";
+import FavoriteTransfers from "./react/screens/Trasfer/FavoriteTransfers";
+import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
+import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
+import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
+import SwipeList from "./react/screens/Trasfer/SwipeList";
 
 
 const store = configureStore(window.__State__);
@@ -134,9 +144,18 @@ function TransferTab() {
             <Stack.Screen name="BeneficiaryOtherBank" component={BeneficiaryOtherBank} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryTransfer" component={BeneficiaryTransfer} options={{headerShown: false}}/>
             <Stack.Screen name="TransferWithBkash" component={TransferWithBkash} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferCategory" component={TransferCategory} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferHistory" component={TransferHistory} options={{headerShown: false}}/>
+            <Stack.Screen name="CashByCode" component={CashByCode} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferToBkash" component={TransferToBkash} options={{headerShown: false}}/>
+            <Stack.Screen name="FundTransfer" component={FundTransfer} options={{headerShown: false}}/>
+            <Stack.Screen name="OtherBankAccount" component={OtherBankAccount} options={{headerShown: false}}/>
+            <Stack.Screen name="FavTransferBkash" component={FavTransferBkash} options={{headerShown: false}}/>
+            <Stack.Screen name="FavoriteTransfers" component={FavoriteTransfers} options={{headerShown: false}}/>
+            <Stack.Screen name="EmailTransfer" component={EmailTransfer} options={{headerShown: false}}/>
+            <Stack.Screen name="EmailTransferScreen" component={EmailTransferScreen} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
-
 
 function PaymentTab() {
     return (
@@ -171,8 +190,6 @@ function MoreTab() {
             <Stack.Screen name="UploadSupportDoc" component={UploadSupportDoc} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
-
-
 
 function Root() {
     return (
