@@ -1312,8 +1312,6 @@ class RegistrationAccount extends Component {
     async blockUser(description) {
         const {signUpResponse} = this.state;
 
-        userDetails = {...signUpResponse, REQUEST_CD: signUpResponse.REQUEST_CD,ACCT_NO:}
-
         this.setState({isProgress: true});
         await ApiRequest.apiRequest.blockProcess(signUpResponse, description, this.props)
             .then((response) => {

@@ -4,7 +4,6 @@ import {Platform, StatusBar, View, Image} from "react-native";
 import {actions} from "../redux/actions";
 import {connect} from "react-redux";
 import Config from "../config/Config";
-
 import themeStyle from "../resources/theme.style";
 import {LoginScreen} from "./LoginScreen";
 import Utility from "../utilize/Utility";
@@ -12,8 +11,7 @@ import {StackActions} from "@react-navigation/native";
 import StorageClass from "../utilize/StorageClass";
 import ApiRequest from "../config/ApiRequest";
 import * as DeviceInfo from "react-native-device-info";
-import CryptoJS from "react-native-crypto-js";
-
+/*import CryptoJS from "react-native-crypto-js";*/
 
 /**
  * splash page
@@ -99,7 +97,7 @@ class SplashScreen extends Component {
         await this.initSetup();
     }
 
-    encryptWithKey(){
+   /* encryptWithKey(){
         let encrypted = CryptoJS.AES.encrypt("Test123", Config.key);
         console.log("Ciphertext (Base64):\n" + encrypted.toString());
         let output = CryptoJS.enc.Hex.parse(encrypted);
@@ -108,8 +106,9 @@ class SplashScreen extends Component {
         // Ciphertext
        // let decrypted = CryptoJS.AES.decrypt(encrypted.toString(), Config.key, { mode: CryptoJS.mode.ECB });
        // console.log("Decrypted:\n" + CryptoJS.enc.Utf8.parse(decrypted)); // Plaintext
-    }
+    }*/
 
+/*
     encryptFun() {
         let data = "123456";
         let key  = CryptoJS.enc.Latin1.parse(Config.key);
@@ -123,6 +122,7 @@ class SplashScreen extends Component {
         let decrypted = CryptoJS.AES.decrypt(encrypted,key,{iv:iv,padding:CryptoJS.pad.ZeroPadding});
         console.log('decrypted: '+decrypted.toString(CryptoJS.enc.Utf8));
     }
+*/
 
 
     async initSetup() {

@@ -28,43 +28,39 @@ class OtherBankAccount extends Component {
         this.state = {
             nickname: "",
             accountNo: "",
-            mobile_number:"",
+            mobile_number: "",
             emailTxt: "",
             errorEmail: "",
-            error_nickname:"",
-            error_accountNo:"",
-            errorbkashname:"",
+            error_nickname: "",
+            error_accountNo: "",
             focusUid: false,
             focusPwd: false,
             isProgress: false,
             selectNicknameType: props.language.select_nickname,
             selectAcctType: props.language.bkash_select_acct,
-            selectPaymentType:props.language.select_payment,
+            selectPaymentType: props.language.select_payment,
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
-           // selectTypeAccount: props.language.select_type_account,
             selectTypeVal: -1,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
             otp_type: 0,
-            availablebalance:"",
-            error_availablebal:"",
-            transferamt:"",
-            error_transferamt:"",
-            servicescharge:"",
-            error_servicescharge:"",
-            grandtotal:"",
-            error_grandtotal:"",
-            remarks:"",
-            error_remarks:"",
-            bankName:"",
-            districtName:"",
-            accountType:"",
-            branchName:"",
-            numberPayment:"",
-            errorpaymentdate:"",
+            availableBalance: "",
+            transferAmount: "",
+            errorTransferAmount: "",
+            servicesCharge: "",
+            errorServicesCharge: "",
+            grandTotal: "",
+            remarks: "",
+            error_remarks: "",
+            bankName: "",
+            districtName: "",
+            accountType: "",
+            branchName: "",
+            numberPayment: "",
+            errorPaymentDate: "",
             mode: "date",
             dateVal: new Date(),
         }
@@ -72,7 +68,7 @@ class OtherBankAccount extends Component {
 
     showDatepicker = (id) => {
         console.log("click");
-        this.setState({errorpaymentdate:"",currentSelection: id, show: true, mode: "date"});
+        this.setState({errorPaymentDate: "", currentSelection: id, show: true, mode: "date"});
     };
 
     onChange = (event, selectedDate) => {
@@ -102,14 +98,11 @@ class OtherBankAccount extends Component {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
             this.setState({selectNicknameType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }
-          else if (modelSelection === "bankType") {
+        } else if (modelSelection === "bankType") {
             this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
-          }
-        else if (modelSelection === "district_type") {
+        } else if (modelSelection === "district_type") {
             this.setState({selectDistrictType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }
-        else if (modelSelection === "branch_type") {
+        } else if (modelSelection === "branch_type") {
             this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
@@ -120,26 +113,24 @@ class OtherBankAccount extends Component {
         this.setState({nickname: text, error_nickname: ""})
     }
 
-    accountchange(text){
+    accountchange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
         this.setState({accountNo: text, error_accountNo: ""})
     }
 
     async onSubmit(language, navigation) {
-        if(this.state.selectAcctType==="Select Account"){
+        if (this.state.selectAcctType === "Select Account") {
             Utility.alert("Please Select From Account");
             return;
-        }
-        else if (this.state.selectNicknameType === "Select Nickname") {
+        } else if (this.state.selectNicknameType === "Select Nickname") {
             Utility.alert("Please Select Nickname");
             return;
-        }
-        else if(this.state.transferamt===""){
-            this.setState({error_transferamt:language.errtransferammt})
+        } else if (this.state.transferAmount === "") {
+            this.setState({errorTransferAmount: language.errtransferammt})
             return;
-        }else if(this.state.remarks === "") {
-            this.setState({error_remarks:language.errRemarks})
+        } else if (this.state.remarks === "") {
+            this.setState({error_remarks: language.errRemarks})
             return;
         }
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
@@ -189,13 +180,17 @@ class OtherBankAccount extends Component {
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_availablebal: "",
-                        availablebalance: Utility.userInput(text)
+                        availableBalance: Utility.userInput(text)
                     })}
-                    value={this.state.availablebalance}
+                    value={this.state.availableBalance}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -276,9 +271,18 @@ class OtherBankAccount extends Component {
                       data={language.balanceTypeArr}
                       renderItem={({item}) =>
                           <View>
-                            <TouchableOpacity  onPress={this.getListViewItem.bind(this, item)} style={{marginRight:10,marginLeft:10,marginTop:10,borderRadius:3,padding:7,flexDirection: 'row',justifyContent:"space-around",backgroundColor:themeStyle.THEME_COLOR}}>
-                                <Text style={[CommonStyle.textStyle,{color:themeStyle.WHITE}]}>{item.label}</Text>
-                            </TouchableOpacity>
+                              <TouchableOpacity onPress={this.getListViewItem.bind(this, item)} style={{
+                                  marginRight: 10,
+                                  marginLeft: 10,
+                                  marginTop: 10,
+                                  borderRadius: 3,
+                                  padding: 7,
+                                  flexDirection: 'row',
+                                  justifyContent: "space-around",
+                                  backgroundColor: themeStyle.THEME_COLOR
+                              }}>
+                                  <Text style={[CommonStyle.textStyle, {color: themeStyle.WHITE}]}>{item.label}</Text>
+                              </TouchableOpacity>
                           </View>
                       }
             />
@@ -293,13 +297,18 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.transferamtRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_transferamt: "",
-                        transferamt: Utility.userInput(text)
+                        errorTransferAmount: "",
+                        transferAmount: Utility.userInput(text)
                     })}
-                    value={this.state.transferamt}
+                    value={this.state.transferAmount}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -310,15 +319,15 @@ class OtherBankAccount extends Component {
                     autoCorrect={false}
                     maxLength={13}/>
             </View>
-            {this.state.error_transferamt !==  "" ?
+            {this.state.errorTransferAmount !== "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_transferamt}</Text> : null}
+                }}>{this.state.errorTransferAmount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            <View style={{flexDirection:"row",marginStart:10,marginEnd:10}}>
-                <Text style={[CommonStyle.textStyle,{ marginTop: 10}]}>
+            <View style={{flexDirection: "row", marginStart: 10, marginEnd: 10}}>
+                <Text style={[CommonStyle.textStyle, {marginTop: 10}]}>
                     {language.transfer_mode}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
@@ -333,8 +342,8 @@ class OtherBankAccount extends Component {
                     borderColor={themeStyle.PLACEHOLDER_COLOR}
                     buttonColor={themeStyle.GRAY_COLOR}
                     labelColor={themeStyle.PLACEHOLDER_COLOR}
-                    labelStyle={[CommonStyle.textStyle, {color:themeStyle.PLACEHOLDER_COLOR}]}
-                    style={{marginStart:15, marginTop: 10,marginBottom:10,alignItems:"center"}}
+                    labelStyle={[CommonStyle.textStyle, {color: themeStyle.PLACEHOLDER_COLOR}]}
+                    style={{marginStart: 15, marginTop: 10, marginBottom: 10, alignItems: "center"}}
                     animation={true}
                     onPress={(value) => {
                         this.setState({otp_type: value});
@@ -352,7 +361,12 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.transferamtRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={""}
                     onChangeText={text => this.setState({
                         error_toAccount: "",
@@ -381,7 +395,12 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.grandtotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={""}
                     onChangeText={text => this.setState({
                         bankName: Utility.userInput(text)
@@ -409,7 +428,12 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.grandtotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={""}
                     onChangeText={text => this.setState({
                         accountType: Utility.userInput(text)
@@ -436,7 +460,12 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.grandtotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={""}
                     onChangeText={text => this.setState({
                         districtName: Utility.userInput(text)
@@ -463,7 +492,12 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.grandtotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={""}
                     onChangeText={text => this.setState({
                         branchName: Utility.userInput(text)
@@ -492,13 +526,18 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.serviceschargeRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_servicescharge: "",
-                        servicescharge: Utility.userInput(text)
+                        errorServicesCharge: "",
+                        servicesCharge: Utility.userInput(text)
                     })}
-                    value={this.state.servicescharge}
+                    value={this.state.servicesCharge}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -514,11 +553,11 @@ class OtherBankAccount extends Component {
                     }}
                     maxLength={13}/>
             </View>
-            {this.state.error_servicescharge !==  "" ?
+            {this.state.errorServicesCharge !== "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_servicescharge}</Text> : null}
+                }}>{this.state.errorServicesCharge}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -531,7 +570,12 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.serviceschargeRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
                         error_vat: "",
@@ -565,13 +609,17 @@ class OtherBankAccount extends Component {
                 <TextInput
                     ref={(ref) => this.grandtotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_grandtotal: "",
-                        grandtotal: Utility.userInput(text)
+                        grandTotal: Utility.userInput(text)
                     })}
-                    value={this.state.grandtotal}
+                    value={this.state.grandTotal}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -583,15 +631,10 @@ class OtherBankAccount extends Component {
                     editable={false}
                     returnKeyType={"next"}
                     onSubmitEditing={(event) => {
-                        this.grandtotalRef.focus();
+                        this.grandTotalRef.focus();
                     }}
                     maxLength={13}/>
             </View>
-            {this.state.error_grandtotal !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_grandtotal}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -603,9 +646,14 @@ class OtherBankAccount extends Component {
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
-                    ref={(ref) => this.grandtotalRef = ref}
+                    ref={(ref) => this.grandTotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({
                         error_remarks: "",
@@ -621,7 +669,7 @@ class OtherBankAccount extends Component {
                     autoCorrect={false}
                     maxLength={13}/>
             </View>
-            {this.state.error_remarks !==  "" ?
+            {this.state.error_remarks !== "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
@@ -716,7 +764,7 @@ class OtherBankAccount extends Component {
                                 autoCorrect={false}/>
                         </TouchableOpacity>
                     </View>
-                    {this.state.errorpaymentdate !== "" ?
+                    {this.state.errorPaymentDate !== "" ?
                         <Text style={{
                             marginLeft: 5,
                             marginRight: 10,
@@ -725,7 +773,7 @@ class OtherBankAccount extends Component {
                             fontFamily: fontStyle.RobotoRegular,
                             alignSelf: "flex-end",
                             marginBottom: 10,
-                        }}>{this.state.errorpaymentdate}</Text> : null}
+                        }}>{this.state.errorPaymentDate}</Text> : null}
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                     <View style={{flex: 1}}>
@@ -766,7 +814,12 @@ class OtherBankAccount extends Component {
                         <TextInput
                             ref={(ref) => this.transferamtRef = ref}
                             selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
                             placeholder={language.et_placeholder}
                             onChangeText={text => this.setState({
                                 error_numberPayment: "",
@@ -783,34 +836,38 @@ class OtherBankAccount extends Component {
                             autoCorrect={false}
                             maxLength={13}/>
                     </View>
-                    {this.state.error_numberPayment !==  "" ?
+                    {this.state.error_numberPayment !== "" ?
                         <Text style={{
                             marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                             fontFamily: fontStyle.RobotoRegular,
                         }}>{this.state.error_numberPayment}</Text> : null}
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 </View>
-                :null
+                : null
             }
 
 
-            <Text style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
+            <Text
+                style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
             </Text>
 
-            <View style={{ marginTop: 10,}}>
+            <View style={{marginTop: 10,}}>
                 <Text style={styles.textView}>{language.notes}</Text>
                 <Text style={styles.textView}>1. Maximum transcation limit from Citytouch is BDT 5 lacs per day.</Text>
-                <Text style={styles.textView}>2. BEFTN: transfer request placed before 2:00PM will be excuted on the .</Text>
+                <Text style={styles.textView}>2. BEFTN: transfer request placed before 2:00PM will be excuted on the
+                    .</Text>
                 <Text style={styles.textView}>same day and transfer request placed after </Text>
                 <Text style={styles.textView}>2:PM will be executed on the next working day after 10.00 AM.</Text>
                 <Text style={styles.textView}>3. RTGS Available from 10:30 to 03:00 PM for instant .</Text>
-                <Text style={styles.textView}>transfer of 1 to 5 lacs within working day.Fee BDT 100 (VAT Inclusive)</Text>
-                <Text style={styles.textView}>4. NPSB: Transfer limit is BDT 5 lacs in 10 transcation per day   </Text>
+                <Text style={styles.textView}>transfer of 1 to 5 lacs within working day.Fee BDT 100 (VAT
+                    Inclusive)</Text>
+                <Text style={styles.textView}>4. NPSB: Transfer limit is BDT 5 lacs in 10 transcation per day </Text>
                 <Text style={styles.textView}>and maximum BDT 1 lacs per transaction</Text>
                 <Text style={styles.textView}>5. Credit card master limit: minimum transferable amount is </Text>
                 <Text style={styles.textView}>BDT is 500 and up to 50% of total available BDT limit. </Text>
                 <Text style={styles.textView}>6.Processing fee +VAT will be Applicable. </Text>
-                <Text style={styles.textView}>7.Concecutive transaction in the same account will take 10 minutes of interval </Text>
+                <Text style={styles.textView}>7.Concecutive transaction in the same account will take 10 minutes of
+                    interval </Text>
             </View>
         </View>)
     }
@@ -977,7 +1034,7 @@ const styles = {
         alignItems: "center",
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
-    textView:{
+    textView: {
         marginStart: 10, color: themeStyle.THEME_COLOR
     },
     modalView: {

@@ -1095,7 +1095,7 @@ export default {
     error_mobile: "Mobile Number is Required",
 
     /*Fund transfer screen*/
-    fond_transfer: "Found Transfer",
+    fund_transfer: "Fund Transfer",
     currency: "Currency",
     TransferType: "Transfer",
     transfer_pay_props: [
@@ -1106,4 +1106,78 @@ export default {
     to_account: "To Account",
     select_acct:"Select From Account",
     vat: "VAT",
+
+
+    fund_select_acct:"Select From Account",
+    select_to_acct: "Select To Account",
+    to_acct: "To Account",
+    balanceTypeArr:[
+        {key: "0", label: "2000", value: 0},
+        {key: "1", label: "5000", value: 1},
+        {key: "2", label: "10000", value: 2},
+        {key: "3", label: "20000", value: 3},
+        {key: "4", label: "50000", value: 4}
+    ],
+    ownAccount: "OWN ACCOUNT",
+    cityAccount: "CITY ACCOUNT",
+    payment_date: "Payment Date",
+    select_payment_date:"Select Payment Date",
+    Frequency: "Frequency",
+    select_payment: "Select Payment Frequency",
+    number_of_payment: "Number Of Payment",
+    payment_array : [{key: "0", label: "Monthly", value: 1234567890123456},
+        {key: "1",label: "Quartely",value: 4567890123456123},
+        {key: "1",label: "Halfyearly",value: 4567890123456123},
+        {key: "1",label: "Yearly",value: 4567890123456123}
+    ],
+
+    error_payment_ammt:"Payment Amount is Required",
+    error_less_ammt: "Transfer Amount should be greater then or equal to 500.",
+    error_payment_date: "Select Payment Date",
+    error_numberPayment: "Number of payment is Required",
+
+    own_accountt: "OWN ACCOUNT",
+    city_accountt: "CITY ACCOUNT",
+    to_account: "To Account",
+
+    /*Transfer to bkash screen message*/
+    other_bank_account_title: "Other Bank Account Fund Transfer",
+    bank_name: "Bank Name",
+    account_type: "Account Type",
+    district_type: "District Name",
+    branch_name: "Branch Name",
+    other_bank_props: [
+        {label: "BEFTN(Ragular Transfer)", value: 0},
+        {label: "RTGS(Instant Transfer)", value: 1},
+        {label: "NPSB(Instant Transfer)", value: 2},
+    ],
+    transfer_mode :"Transfer Mode",
+
+    /* Favorite Transfer screen message*/
+    Donation: "Donation",
+    transfer_bkash: "Transfer to bkash",
+    favoriteTitle: "Swipe Right to left to Delete Favirote item",
+    favorite_transferTitle: "Favorite Transfer",
+
+    /* Email Transfer screen message*/
+    send: "SEND",
+    waiting: "WAITING",
+    send_message:" You can transfer fund Email Transfer.",
+    email: "Email",
+    email_transfer: "Email Transfer",
+    payment_amount: "Payment Amount",
+    security_questions: "Security Questions",
+    answer: "Answer (case sensitive)",
+    security_pl_holder:"Enter Your Security Question",
+    payment_amount_pl:"Enter Payment Amount Here",
+    answer_pl:"Enter Your Answer",
+    beneficiary_type: "Beneficiary",
+
+    /*error message*/
+    err_payment_amount:"Payment amount is required",
+    err_security:"Enter Your Security Question",
+    error_answer: "Enter Your Answer"
+
+
+
 }
