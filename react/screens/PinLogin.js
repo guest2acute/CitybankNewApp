@@ -33,7 +33,6 @@ import {BusyIndicator} from "../resources/busy-indicator";
 class PinLogin extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             one: '',
             two: '',
@@ -142,6 +141,8 @@ class PinLogin extends Component {
                 this.setState({errorPIN: language.errValidPin});
                 return;
             }
+        } else {
+            password = await StorageClass.retrieve(Config.BioPinPref);
         }
         await this.loginRequest(password);
     }
@@ -160,8 +161,7 @@ class PinLogin extends Component {
         };
         console.log("request", loginReq);
         let result = await ApiRequest.apiRequest.callApi(loginReq, {});
-        console.log("logres",result);
-       // result = result[0];
+        console.log("logres", result);
 
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
@@ -173,7 +173,7 @@ class PinLogin extends Component {
 
     async processLoginResponse(result, userName) {
         let response = result.RESPONSE[0];
-        console.log("response",response);
+        console.log("response", response);
         let userDetails = {
             UserName: userName,
             AUTH_FLAG: response.AUTH_FLAG,
@@ -367,8 +367,8 @@ class PinLogin extends Component {
             FingerprintScanner.authenticate({
                 description: this.getMessage()
             })
-                .then(() => {
-                    this.props.navigation.replace("Navigator");
+                .then(async () => {
+                    await this.onSubmit(this.props.language);
                 })
                 .catch((error) => {
                     FingerprintScanner.release();
@@ -665,8 +665,8 @@ class PinLogin extends Component {
                 </TouchableOpacity>
             </View>
 
-            {this.state.loginPref === "1" ? <View style={{
-                marginTop: 10,
+            <View style={{
+                marginTop: 20,
                 marginHorizontal: 10,
                 backgroundColor: themeStyle.THEME_COLOR,
                 height: 40,
@@ -691,7 +691,7 @@ class PinLogin extends Component {
                         fontFamily: fontStyle.RobotoBold,
                     }}>{this.props.language.LoginWith}</Text>
                 </TouchableOpacity>
-            </View> : null}
+            </View>
         </View>)
     }
 

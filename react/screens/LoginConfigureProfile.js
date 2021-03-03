@@ -79,16 +79,21 @@ class LoginConfigureProfile extends Component {
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             LOGIN_PIN: this.state.loginPin,
             LANGUAGE: this.props.langId === "en" ? "E" : "B",
+            BIO_FLAG: this.state.loginPrefVal === "2" ? "Y" : "N",
             ...Config.commonReq
         };
         console.log("request", userRequest);
-        let result = await ApiRequest.apiRequest.callApi(userRequest,{});
+        let result = await ApiRequest.apiRequest.callApi(userRequest, {});
         console.log("result", result);
-       // result = result[0];
+        // result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             await StorageClass.store(Config.isFirstTime, userID);
             await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
+            if (this.state.loginPrefVal === "2") {
+                let response = result.RESPONSE[0];
+                await StorageClass.store(Config.BioPinPref, response.BIO_PIN);
+            }
             navigation.dispatch(
                 StackActions.replace("BottomNavigator", {userID: userID})
             );
@@ -369,7 +374,7 @@ class LoginConfigureProfile extends Component {
         } else if (this.state.loginPin !== conf_loginPin) {
             this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
         } else {
-           await this.updateUserRequest(navigation);
+            await this.updateUserRequest(navigation);
         }
     }
 

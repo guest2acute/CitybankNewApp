@@ -57,6 +57,7 @@ import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
 
+
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

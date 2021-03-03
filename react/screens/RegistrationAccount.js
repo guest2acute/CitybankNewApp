@@ -1239,7 +1239,7 @@ class RegistrationAccount extends Component {
                     this.setState({stateVal: stateVal + 2});
                 }
             }
-        } else if (stateVal === 2) {
+        } else if (stateVal === 1) {
             if (this.state.debitCardNo === "") {
                 this.setState({errorDCardNo: language.errDebitCard});
             } else if (this.state.cardExpiry === "") {
@@ -1257,7 +1257,7 @@ class RegistrationAccount extends Component {
                 }
                 await this.signupRequest();
             }
-        } else if (stateVal === 1) {
+        } else if (stateVal === 2) {
             if (this.state.fatherName === "") {
                 this.setState({errorFather: language.et_father_name});
             } else if (this.state.motherName === "") {
@@ -1270,11 +1270,11 @@ class RegistrationAccount extends Component {
             } else if (this.state.transAmt === "") {
                 this.setState({errorTransAmt: language.errorTransAmt})
             } else if (this.state.fatherName.toLowerCase() !== signUpResponse.FATHERS_NAME.toLowerCase()) {
-                await this.blockUser("Invalid Father Name");
+                await this.blockUser(language.invalidFatherName);
             } else if (this.state.motherName.toLowerCase() !== signUpResponse.MOTHERS_NAME.toLowerCase()) {
-                await this.blockUser("Invalid Mother Name");
+                await this.blockUser(language.invalidMotherName);
             } else if (this.state.dob.toLowerCase() !== signUpResponse.BIRTH_DT.toLowerCase()) {
-                await this.blockUser("Invalid Date of Birth");
+                await this.blockUser(language.invalidDob);
             } else {
                 let userRes = Utility.verifyUserId(this.state.userId, language)
                 if (userRes !== "") {
@@ -1313,7 +1313,7 @@ class RegistrationAccount extends Component {
         const {signUpResponse} = this.state;
 
         this.setState({isProgress: true});
-        await ApiRequest.apiRequest.blockProcess(signUpResponse, description, this.props)
+        await ApiRequest.apiRequest.blockProcess(this.state.accountNo,signUpResponse, description, this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -1358,7 +1358,7 @@ class RegistrationAccount extends Component {
                                 marginLeft: 10,
                                 marginRight: 10
                             }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
-                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 2 ? this.debitCardUI(language) : this.state.stateVal === 1 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
+                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.debitCardUI(language) : this.state.stateVal === 2 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
                             <View style={{
                                 flexDirection: "row",
                                 marginStart: Utility.setWidth(10),

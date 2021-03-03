@@ -47,6 +47,7 @@ export default class Config {
     static UserId = "userid";
     static UserName = "userName";
     static LoginPref = "login_preference";
+    static BioPinPref = "bio_pin_pref";
     static DeviceId = "deviceId";
     static isFirstTime = "isFirstTime";
     static ActivityCd = "ACTIVITY_CD";

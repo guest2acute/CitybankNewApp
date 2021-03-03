@@ -225,8 +225,7 @@ class Profile extends Component {
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-
-            <View style={{
+           {/* <View style={{
                 flexDirection: "row", alignItems: "center", marginTop: 15
             }}>
                 <Text style={[CommonStyle.textStyle, {marginRight: 15, marginStart: 10}]}>
@@ -250,7 +249,7 @@ class Profile extends Component {
                         this.setState({loginPrefVal: value.toString()});
                     }}
                 />
-            </View>
+            </View>*/}
         </View>)
     }
 
