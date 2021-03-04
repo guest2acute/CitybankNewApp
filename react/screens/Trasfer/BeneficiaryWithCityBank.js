@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar
+    TextInput, FlatList, Platform, StatusBar,BackHandler
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import fontStyle from "../../resources/FontStyle";
@@ -17,7 +17,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import {GETACCTBALDETAIL} from '../Requests/RequestBenificeryCityBank';
+import {GETACCTBALDETAIL, addBeneficiary} from '../Requests/RequestBenificeryCityBank';
 
 class BeneficiaryWithCityBank extends Component {
     constructor(props) {
@@ -36,7 +36,9 @@ class BeneficiaryWithCityBank extends Component {
             error_accountNo: "",
             focusUid: false,
             focusPwd: false,
-            isMainForm: true
+            isMainForm: true,
+            stageVal: 0,
+            accountDetails: null,
         }
     }
 
@@ -47,29 +49,40 @@ class BeneficiaryWithCityBank extends Component {
         this.setState({nickname: text, error_nickname: ""})
     }
 
-    accountchange(text) {
+    accountChange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
         this.setState({accountNo: text, error_accountNo: ""})
     }
 
     async onSubmit(language, navigation) {
-        if (this.state.nickname === "") {
-            this.setState({error_nickname: language.require_nickname});
-            return;
-        } else if (this.state.accountNo.length !== 13) {
-            this.setState({error_accountNo: language.require_accnumber})
-            return;
+        const {stageVal, nickname, accountNo, account_holder_name} = this.state;
+        if (stageVal === 0) {
+            if (nickname === "") {
+                this.setState({error_nickname: language.require_nickname});
+            } else if (accountNo.length !== 13) {
+                this.setState({error_accountNo: language.require_accnumber});
+            } else if (account_holder_name === "") {
+                this.getActDetails(language);
+            } else {
+                this.setState({stageVal: stageVal + 1});
+            }
+        } else if (stageVal === 1) {
+            this.beneficiaryAdd();
+        } else {
+            Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
-        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+
     }
 
-    getActDetails() {
-        GETACCTBALDETAIL(this.state.accountNo, this.props).then(response => {
+    beneficiaryAdd(language) {
+        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
+        this.setState({isProgress: true});
+        addBeneficiary(accountDetails, this.props.userDetails, nickname, mobile_number, emailTxt, this.props).then(response => {
             console.log("response", response);
             this.setState({
-                isProgress: false, account_holder_name: response.ACCOUNTNAME,
-                currency: response.CURRENCYCODE, type_act: response.ACCTTYPE
+                isProgress: false, stageVal: this.state.stageVal + 1,
+                REQUEST_CD: response.REQUEST_CD
             });
         }).catch(error => {
             this.setState({isProgress: false});
@@ -77,7 +90,25 @@ class BeneficiaryWithCityBank extends Component {
         });
     }
 
-    accountNoOption(language) {
+    getActDetails(language) {
+        if (this.state.accountNo.length !== 13) {
+            this.setState({error_accountNo: language.require_accnumber})
+            return;
+        }
+        this.setState({isProgress: true});
+        GETACCTBALDETAIL(this.state.accountNo, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false, account_holder_name: response.ACCOUNTNAME,
+                currency: response.CURRENCYCODE, type_act: response.ACCTTYPE,accountDetails:response
+            });
+        }).catch(error => {
+            this.setState({isProgress: false, error_accountNo: language.require_valid_actNumber});
+            console.log("error", error);
+        });
+    }
+
+    accountNoOption(language, flag) {
         return (<View>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -105,7 +136,7 @@ class BeneficiaryWithCityBank extends Component {
                     onFocus={() => this.setState({focusUid: true})}
                     onBlur={() => this.setState({focusUid: false})}
                     numberOfLines={1}
-                    editable={this.state.isMainForm}
+                    editable={flag}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
@@ -139,7 +170,7 @@ class BeneficiaryWithCityBank extends Component {
                         marginLeft: 10
                     }]}
                     placeholder={language.et_placeholder}
-                    onChangeText={text => this.accountchange(text)}
+                    onChangeText={text => this.accountChange(text)}
                     value={this.state.accountNo}
                     multiline={false}
                     numberOfLines={1}
@@ -147,11 +178,11 @@ class BeneficiaryWithCityBank extends Component {
                     onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
-                    editable={this.state.isMainForm}
+                    editable={flag}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
                     onSubmitEditing={(event) => {
-                        this.setState({isProgress: true}, () => this.getActDetails());
+                        this.getActDetails(language);
                     }}
                     maxLength={13}/>
             </View>
@@ -274,14 +305,14 @@ class BeneficiaryWithCityBank extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={this.state.isMainForm?"01********":""}
+                        placeholder={flag ? "01********" : ""}
                         onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
                         value={this.state.mobile_number}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         keyboardType={"number-pad"}
-                        editable={this.state.isMainForm}
+                        editable={flag}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
@@ -312,12 +343,12 @@ class BeneficiaryWithCityBank extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={this.state.isMainForm?"a********@gmail.com":""}
+                        placeholder={flag ? "a********@gmail.com" : ""}
                         onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
                         value={this.state.emailTxt}
                         multiline={false}
                         numberOfLines={1}
-                        editable={this.state.isMainForm}
+                        editable={flag}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
@@ -335,10 +366,23 @@ class BeneficiaryWithCityBank extends Component {
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <Text
-                style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
+                style={{
+                    display: flag ? "flex" : "none",
+                    marginStart: 10,
+                    marginTop: 20,
+                    color: themeStyle.THEME_COLOR
+                }}>*{language.mark_field_mandatory}
             </Text>
 
         </View>)
+    }
+
+    tPinView(language) {
+        return (<View key={"tPinView"}>
+
+
+        </View>)
+
     }
 
     render() {
@@ -373,7 +417,8 @@ class BeneficiaryWithCityBank extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.accountNoOption(language)}
+                        {this.state.stageVal === 0 ? this.accountNoOption(language, true) :
+                            this.state.stageVal === 1 ? this.accountNoOption(language, false) : this.tPinView(language)}
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
@@ -424,11 +469,21 @@ class BeneficiaryWithCityBank extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
 
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
     }
 }
 
@@ -471,6 +526,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };
