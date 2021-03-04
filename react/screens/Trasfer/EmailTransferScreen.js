@@ -61,6 +61,8 @@ class EmailTransferScreen extends Component {
             error_security:"",
             errorAnswer:"",
             answer:"",
+            title:"",
+            email:""
         }
     }
 
@@ -129,6 +131,10 @@ class EmailTransferScreen extends Component {
         }
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
+    setTitle= (item) => {
+        console.log("item is this",item)
+        this.setState({title: item.name,email:item.email})
+    }
 
     accountNoOption(language) {
         return (<View>
@@ -143,14 +149,18 @@ class EmailTransferScreen extends Component {
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TouchableOpacity
-                    onPress={() => this.openModal("type", language.select_type_transfer, language.transferTypeArr, language)}>
-                    <View style={styles.selectionBg}>
-                        <Text style={[CommonStyle.midTextStyle, {
+                    onPress={() => this.props.navigation.navigate("SelectBeneficiary",{setTitle:this.setTitle.bind(this)})}>
+                    <View style={[styles.selectionBg,{}]}>
+                        <View style={{flex:1,flexDirection:"column"}}>
+                            <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.title?this.state.title:this.state.selectBeneficiaryType}</Text>
+                            <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.email?this.state.email:null}</Text>
+                        </View>
+                        {/*<Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBeneficiaryType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectBeneficiaryType}
-                        </Text>
+                        </Text>*/}
                         <Image resizeMode={"contain"} style={styles.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
@@ -576,7 +586,7 @@ class EmailTransferScreen extends Component {
         }
 
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.more
+            tabBarLabel: this.props.language.transfer
         });
     }
 }

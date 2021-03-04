@@ -44,8 +44,10 @@ class BeneficiaryOtherBank extends Component {
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
-            modalData: []
+            modalData: [],
+            updateTitle: props.route.params.title
         }
+        console.log("updated title is",props.route.params.title)
     }
 
     openModal(option, title, data, language) {
@@ -151,6 +153,7 @@ class BeneficiaryOtherBank extends Component {
                     onBlur={() => this.setState({focusUid: false})}
                     numberOfLines={1}
                     contextMenuHidden={true}
+                    editable={this.state.updateTitle==="Update Beneficiary - Other Bank"?false:true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
                 />
@@ -170,7 +173,7 @@ class BeneficiaryOtherBank extends Component {
                     }]}>
                         {language.acc_type}
                     </Text>
-                    <TouchableOpacity
+                    <TouchableOpacity disabled={this.state.updateTitle==="Update Beneficiary - Other Bank"?true:false}
                         onPress={() => this.openModal("type", language.selectActType, language.accountTypeArr, language)}>
                         <View style={styles.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
@@ -210,6 +213,7 @@ class BeneficiaryOtherBank extends Component {
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
                     returnKeyType={"next"}
+                    editable={this.state.updateTitle==="Update Beneficiary - Other Bank"?false:true}
                     onSubmitEditing={(event) => {
                         this.cardnameRef.focus();
                     }}
@@ -250,6 +254,7 @@ class BeneficiaryOtherBank extends Component {
                         numberOfLines={1}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        editable={this.state.updateTitle==="Update Beneficiary - Other Bank"?false:true}
                         autoCorrect={false}
                     />
                 </View>
@@ -456,7 +461,7 @@ class BeneficiaryOtherBank extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.add_beneficiary_wob}</Text>
+                    <Text style={CommonStyle.title}> {this.state.updateTitle}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),

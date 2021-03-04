@@ -14,9 +14,37 @@ class Payments extends Component {
     constructor(props) {
         super(props);
     }
+    moveScreen(item){
+        console.log("moveScreen called",item)
+        switch (item.id){
+            case "MobileRecharge":
+            this.props.navigation.navigate("MobileRecharge")
+             break;
+            case "CityCreditCard":
+             this.props.navigation.navigate("MobileRecharge")
+             break;
+            case "ValueAddedServices":
+                this.props.navigation.navigate("MobileRecharge")
+                break;
+            case "VisaInstantPayment":
+                this.props.navigation.navigate("MobileRecharge")
+                break;
+            case "BeneficiaryManagement":
+                this.props.navigation.navigate("MobileRecharge")
+                break;
+            case "FavoritePayments":
+                this.props.navigation.navigate("MobileRecharge")
+                break;
+            case "PaymentHistory":
+                this.props.navigation.navigate("MobileRecharge")
+                break;
+        }
+    }
+
 
     _renderItem = ({item, index}) =>{
         return(
+            <TouchableOpacity onPress={()=>this.moveScreen(item)}>
             <View style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -40,6 +68,7 @@ class Payments extends Component {
                     fontSize: FontSize.getSize(12),
                 }]}>{item.title}</Text>
             </View>
+            </TouchableOpacity>
         )
     }
 
