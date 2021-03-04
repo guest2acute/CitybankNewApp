@@ -17,24 +17,26 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import RadioForm from "react-native-simple-radio-button";
+import {GETACCTBALDETAIL} from '../Requests/RequestBenificeryCityBank';
 
 class BeneficiaryWithCityBank extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isProgress: false,
             nickname: "",
             account_holder_name: "",
-            currency:"",
-            accountNo: "",
-            type_act:"",
-            mobile_number:"",
+            currency: "",
+            accountNo: "2251657635001",
+            type_act: "",
+            mobile_number: "",
             emailTxt: "",
             errorEmail: "",
-            error_nickname:"",
-            error_accountNo:"",
+            error_nickname: "",
+            error_accountNo: "",
             focusUid: false,
             focusPwd: false,
+            isMainForm: true
         }
     }
 
@@ -44,7 +46,8 @@ class BeneficiaryWithCityBank extends Component {
 
         this.setState({nickname: text, error_nickname: ""})
     }
-    accountchange(text){
+
+    accountchange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
         this.setState({accountNo: text, error_accountNo: ""})
@@ -54,14 +57,25 @@ class BeneficiaryWithCityBank extends Component {
         if (this.state.nickname === "") {
             this.setState({error_nickname: language.require_nickname});
             return;
-        }
-        else if(this.state.accountNo.length!==13){
-            this.setState({error_accountNo:language.require_accnumber})
+        } else if (this.state.accountNo.length !== 13) {
+            this.setState({error_accountNo: language.require_accnumber})
             return;
         }
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
+    getActDetails() {
+        GETACCTBALDETAIL(this.state.accountNo, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false, account_holder_name: response.ACCOUNTNAME,
+                currency: response.CURRENCYCODE, type_act: response.ACCTTYPE
+            });
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
 
     accountNoOption(language) {
         return (<View>
@@ -91,6 +105,7 @@ class BeneficiaryWithCityBank extends Component {
                     onFocus={() => this.setState({focusUid: true})}
                     onBlur={() => this.setState({focusUid: false})}
                     numberOfLines={1}
+                    editable={this.state.isMainForm}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
@@ -100,11 +115,11 @@ class BeneficiaryWithCityBank extends Component {
                     }}
                 />
             </View>
-                {this.state.error_nickname !==  "" ?
-                    <Text style={{
+            {this.state.error_nickname !== "" ?
+                <Text style={{
                     marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_nickname}</Text> : null}
+                    fontFamily: fontStyle.RobotoRegular,
+                }}>{this.state.error_nickname}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -117,7 +132,12 @@ class BeneficiaryWithCityBank extends Component {
                 <TextInput
                     ref={(ref) => this.accountNoRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.accountchange(text)}
                     value={this.state.accountNo}
@@ -127,11 +147,15 @@ class BeneficiaryWithCityBank extends Component {
                     onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
+                    editable={this.state.isMainForm}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
+                    onSubmitEditing={(event) => {
+                        this.setState({isProgress: true}, () => this.getActDetails());
+                    }}
                     maxLength={13}/>
             </View>
-            {this.state.error_accountNo !==  "" ?
+            {this.state.error_accountNo !== "" ?
                 <Text style={{
                     marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
@@ -153,13 +177,12 @@ class BeneficiaryWithCityBank extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                       // placeholder={language.et_placeholder}
+                        // placeholder={language.et_placeholder}
                         onChangeText={text => this.setState({account_holder_name: Utility.userInput(text)})}
                         value={this.state.account_holder_name}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
-                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         editable={false}
                         autoCorrect={false}/>
@@ -188,23 +211,11 @@ class BeneficiaryWithCityBank extends Component {
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         editable={false}
                         maxLength={13}/>
                 </View>
-                {this.state.currency !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.currency}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -223,7 +234,7 @@ class BeneficiaryWithCityBank extends Component {
                         flex: 1,
                         marginLeft: 10
                     }]}
-                   // placeholder={language.et_placeholder}
+                    // placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({type_act: text})}
                     value={this.state.type_act}
                     multiline={false}
@@ -246,7 +257,7 @@ class BeneficiaryWithCityBank extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.beneficiary_mobile_number}
                     </Text>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
+                    {/*<TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
                     <Image style={{
                         height: Utility.setHeight(20),
                         width: Utility.setWidth(20),
@@ -254,7 +265,7 @@ class BeneficiaryWithCityBank extends Component {
                         marginRight: Utility.setWidth(10),
                     }} resizeMode={"contain"}
                            source={require("../../resources/images/ic_beneficiary.png")}/>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
@@ -263,13 +274,14 @@ class BeneficiaryWithCityBank extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={"01********"}
+                        placeholder={this.state.isMainForm?"01********":""}
                         onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
                         value={this.state.mobile_number}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         keyboardType={"number-pad"}
+                        editable={this.state.isMainForm}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
@@ -300,11 +312,12 @@ class BeneficiaryWithCityBank extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={"a********@gmail.com"}
+                        placeholder={this.state.isMainForm?"a********@gmail.com":""}
                         onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
                         value={this.state.emailTxt}
                         multiline={false}
                         numberOfLines={1}
+                        editable={this.state.isMainForm}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
@@ -321,14 +334,15 @@ class BeneficiaryWithCityBank extends Component {
                     }}>{this.state.errorEmail}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
+            <Text
+                style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
             </Text>
 
         </View>)
     }
 
     render() {
-        console.log("nickname",this.state.error_nickname)
+        console.log("nickname", this.state.error_nickname)
         let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>

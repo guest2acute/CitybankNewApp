@@ -55,6 +55,7 @@ import FavoriteTransfers from "./react/screens/Trasfer/FavoriteTransfers";
 import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
+import BeneficiaryMobileNumber from "./react/screens/Trasfer/BeneficiaryMobileNumber";
 
 
 const store = configureStore(window.__State__);

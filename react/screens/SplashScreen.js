@@ -5,7 +5,6 @@ import {actions} from "../redux/actions";
 import {connect} from "react-redux";
 import Config from "../config/Config";
 import themeStyle from "../resources/theme.style";
-import {LoginScreen} from "./LoginScreen";
 import Utility from "../utilize/Utility";
 import {StackActions} from "@react-navigation/native";
 import StorageClass from "../utilize/StorageClass";
@@ -26,27 +25,18 @@ class SplashScreen extends Component {
     /**
      * redirect to landing screen
      */
-    async redirectScreen() {
-        let loginPref = await StorageClass.retrieve(Config.LoginPref);
+     redirectScreen(loginPref) {
         let screenName = "LoginScreen";
         if (loginPref !== null && parseInt(loginPref) > -1) {
             screenName = "PinLogin";
         }
-
-        new Promise((resolve) =>
-            setTimeout(
-                async () => {
-                    this.props.navigation.dispatch(
-                        StackActions.replace(screenName, {loginPref: loginPref})
-                    )
-                },
-                1000
-            ));
+        this.props.navigation.dispatch(
+            StackActions.replace(screenName, {loginPref: loginPref})
+        )
 
     }
 
-    async changeLanguage() {
-        let language = await StorageClass.retrieve(Config.Language);
+     changeLanguage(language) {
         if (language !== null) {
             this.props.dispatch({
                 type: actions.account.CHANGE_LANG,
@@ -96,15 +86,13 @@ class SplashScreen extends Component {
         await this.initSetup();
     }
 
-
-
-
-
     async initSetup() {
+        let loginPref = await StorageClass.retrieve(Config.LoginPref);
+        let language = await StorageClass.retrieve(Config.Language);
         await this.callToken();
-        await this.changeLanguage();
-        await this.getAuth();
-        await this.redirectScreen();
+        this.changeLanguage(language);
+
+        this.redirectScreen(loginPref);
     }
 
     render() {
