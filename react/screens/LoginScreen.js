@@ -114,6 +114,12 @@ class LoginScreen extends Component {
             TXN_PASS_EXP_ALERT_MSG: response.TXN_PASS_EXP_ALERT_MSG,
             USER_PROFILE_IMG: response.USER_PROFILE_IMG,
         };
+
+        Config.userRequest = {
+            ACTIVITY_CD: result.ACTIVITY_CD,
+            CUSTOMER_ID: response.CUSTOMER_ID,
+            USER_ID: response.USER_ID,
+        };
         console.log("userDetails", userDetails);
 
         this.props.dispatch({
@@ -197,7 +203,7 @@ class LoginScreen extends Component {
         console.log("request", loginReq);
         let result = await ApiRequest.apiRequest.callApi(loginReq, {});
         console.log("result", result);
-       // result = result[0];
+
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             await this.processLoginResponse(result);

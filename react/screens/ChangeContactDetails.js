@@ -494,7 +494,7 @@ class ChangeContactDetails extends Component {
         this.setState({isProgress: true});
         console.log("result", changeRequest);
         let result = await ApiRequest.apiRequest.callApi(changeRequest, {});
-        console.log("result", result);
+        console.log("result", JSON.stringify(result));
         this.setState({isProgress: false});
 
         if (result.STATUS === "0") {
