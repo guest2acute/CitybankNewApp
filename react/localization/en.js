@@ -739,8 +739,33 @@ export default {
     /*error message*/
     err_payment_amount:"Payment amount is required",
     err_security:"Enter Your Security Question",
-    error_answer: "Enter Your Answer"
+    error_answer: "Enter Your Answer",
+
+    update_beneficiary: "Update Beneficiary - Other Bank",
 
 
+    /*Select Beneficiary*/
+    select_beneficiary: "Select Beneficiary",
 
+    /*Mobile Recharge*/
+    operatorType: "Operator",
+    select_operator_type: "Select Operator",
+    SelectOperator : "Select Operator",
+    operatorsTypeArr: [
+        {key: "0", label: "grameenphone", value: 0},
+        {key: "1", label: "Banglink", value: 1},
+        {key: "2", label: "Robi", value: 2},
+        {key: "3", label: "Airtel", value: 3},
+        {key: "4", label: "Teletalk", value: 4}
+    ],
+    mobileRecharge: "Mobile Recharge",
+    phoneNumber: "Phone Number",
+    connectionType: "Connection Type",
+    connectionType_props: [
+        {label: "Prepaid", value: 0},
+        {label: "Postpaid", value: 1},
+    ],
+    fromAccount: "From Account",
+    selectAccountType: "Select From Account",
 }
+

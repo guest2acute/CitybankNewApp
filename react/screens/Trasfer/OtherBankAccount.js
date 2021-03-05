@@ -21,6 +21,9 @@ import Utility from "../../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import BeneficiaryOtherBank from "./BeneficiaryOtherBank";
+import StorageClass from "../../utilize/StorageClass";
+import Config from "../../config/Config";
 
 class OtherBankAccount extends Component {
     constructor(props) {
@@ -63,6 +66,7 @@ class OtherBankAccount extends Component {
             errorPaymentDate: "",
             mode: "date",
             dateVal: new Date(),
+            selected:false
         }
     }
 
@@ -87,7 +91,7 @@ class OtherBankAccount extends Component {
             this.setState({
                 modelSelection: option,
                 modalTitle: title,
-                modalData: data, modalVisible: true
+                modalData: data, modalVisible: true,selected:false
             });
         } else {
             Utility.alert(language.noRecord);
@@ -97,7 +101,9 @@ class OtherBankAccount extends Component {
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
-            this.setState({selectNicknameType: item.label, selectTypeVal: item.value, modalVisible: false})
+            console.log("selected value is this",item.value)
+            this.setState({selectNicknameType: item.label,selectTypeVal: item.value, modalVisible: false})
+            this.alertToNavigate();
         } else if (modelSelection === "bankType") {
             this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
         } else if (modelSelection === "district_type") {
@@ -105,6 +111,19 @@ class OtherBankAccount extends Component {
         } else if (modelSelection === "branch_type") {
             this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
+    }
+
+     alertToNavigate(){
+        console.log("update beneficiary ======>",this.props.language.update_beneficiary)
+
+                  Alert.alert(
+                     "",
+                     "Please update this beneficiary information",
+                     [
+                         {text: "Yes", onPress: () => this.props.navigation.navigate("BeneficiaryOtherBank",{title:this.props.language.update_beneficiary})},
+                         {text: "No"},
+                     ]
+                 );
     }
 
     userInput(text) {
@@ -993,6 +1012,9 @@ class OtherBankAccount extends Component {
                         onChange={this.onChange}
                     />
                 )}
+               {
+                    this.state.selected ? this.alertToNavigate() : null
+                }
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )

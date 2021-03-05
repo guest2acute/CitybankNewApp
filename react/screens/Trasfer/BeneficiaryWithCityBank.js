@@ -17,7 +17,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import {GETACCTBALDETAIL} from '../Requests/RequestBenificeryCityBank';
+/*import {GETACCTBALDETAIL} from '../Requests/RequestBenificeryCityBank';*/
 
 class BeneficiaryWithCityBank extends Component {
     constructor(props) {
@@ -64,7 +64,7 @@ class BeneficiaryWithCityBank extends Component {
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
-    getActDetails() {
+/*    getActDetails() {
         GETACCTBALDETAIL(this.state.accountNo, this.props).then(response => {
             console.log("response", response);
             this.setState({
@@ -75,7 +75,7 @@ class BeneficiaryWithCityBank extends Component {
             this.setState({isProgress: false});
             console.log("error", error);
         });
-    }
+    }*/
 
     accountNoOption(language) {
         return (<View>
