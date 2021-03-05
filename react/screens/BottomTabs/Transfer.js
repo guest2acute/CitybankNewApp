@@ -16,8 +16,6 @@ class Transfer extends Component {
     }
 
     moveScreen(item) {
-        console.log("item in movescreen",item)
-        this.props.navigation.navigate("TransferHistory");
         switch (item.id) {
             case "cityBankAcct":
                 this.props.navigation.navigate("FundTransfer");

@@ -121,7 +121,8 @@ class BeneficiaryOtherBank extends Component {
         else if (this.state.selectTypeVal === 2) {
             return;
         }
-        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+        this.props.navigation.navigate("ViewBeneficiaryOtherBank");
+        //Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
     accountNoOption(language) {

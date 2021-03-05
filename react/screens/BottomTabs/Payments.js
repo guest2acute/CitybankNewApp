@@ -15,13 +15,13 @@ class Payments extends Component {
         super(props);
     }
     moveScreen(item){
-        console.log("moveScreen called",item)
+        console.log("moveScreen called",item.id)
         switch (item.id){
             case "MobileRecharge":
             this.props.navigation.navigate("MobileRecharge")
              break;
             case "CityCreditCard":
-             this.props.navigation.navigate("MobileRecharge")
+             this.props.navigation.navigate("CityCreditCard")
              break;
             case "ValueAddedServices":
                 this.props.navigation.navigate("MobileRecharge")
@@ -74,6 +74,7 @@ class Payments extends Component {
 
     render() {
         let language = this.props.language;
+        console.log("beneficiary array",language.payments_props)
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>

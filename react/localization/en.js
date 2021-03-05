@@ -1,5 +1,6 @@
 import {Text} from "react-native";
 import React from "react";
+import Beneficiary from "../screens/Trasfer/Beneficiary";
 
 export default {
     language_english: "EN",
@@ -309,13 +310,13 @@ export default {
         {id:"transferHistory",title: "Transfer History", icon: require("../resources/images/ic_transfer_istory.png")}
     ],
     payments_props: [
-        {title: "Mobile Recharge", icon: require("../resources/images/ic_mobile_recharge.png")},
-        {title: "City Credit Card", icon: require("../resources/images/ic_city_credit_card.png")},
-        {title: "Value Added Services", icon: require("../resources/images/ic_value_added_services.png")},
-        {title: "Visa Instant Payment", icon: require("../resources/images/ic_visa_instant_payments.png")},
-        {title: "Beneficiary Management", icon: require("../resources/images/beneficiary_management.png")},
-        {title: "Favorite Payments", icon: require("../resources/images/ic_facourite_transfer.png")},
-        {title: "Payment History", icon: require("../resources/images/ic_transfer_istory.png")},
+        {id:"MobileRecharge",title: "Mobile Recharge", icon: require("../resources/images/ic_mobile_recharge.png")},
+        {id:"CityCreditCard",title: "City Credit Card", icon: require("../resources/images/ic_city_credit_card.png")},
+        {id:"ValueAddedServices",title: "Value Added Services", icon: require("../resources/images/ic_value_added_services.png")},
+        {id:"VisaInstantPayment",title: "Visa Instant Payment", icon: require("../resources/images/ic_visa_instant_payments.png")},
+        {id:"BeneficiaryManagement",title: "Beneficiary Management", icon: require("../resources/images/beneficiary_management.png")},
+        {id:"FavoritePayments",title: "Favorite Payments", icon: require("../resources/images/ic_facourite_transfer.png")},
+        {id:"PaymentHistory",title: "Payment History", icon: require("../resources/images/ic_transfer_istory.png")},
         {}
     ],
 
@@ -767,5 +768,35 @@ export default {
     ],
     fromAccount: "From Account",
     selectAccountType: "Select From Account",
+    totalAmount: "Total Amount",
+    totalServicesCharge: "Total Services Charge",
+    grandTotal: "Grand Total",
+
+    /*error message*/
+    errPaymentAmount: "Payment Amount is Required",
+
+    /*View Beneficiary Other Bank*/
+    account_card_number: "Account/Card Number",
+    account_card_name: "Account/Card Name",
+    bank_name: "Bank Name",
+    district_name: "District Name",
+    branch_name: "Branch Name",
+    account_Type: "Account Type",
+    add_beneficiaryOtherBank: "Add Beneficiary - Other Bank",
+
+    /*CityTouch Security verification*/
+    cards: "Cards",
+    select_card: "Select Cards",
+    cardPin: "Card PIN",
+    et_cardPlaceholder:" Enter Card Pin",
+    add: "Add",
+    security_verification: "CityTouch Security verification",
+    errSecurity:"Can not be blank",
+
+    /*Credit Card Payment*/
+    own_creditCardPayment:"OWN CREDIT CARD PAYMENT",
+    other_creditCardPayment: "OTHER CREDIT CARD PAYMENT",
+    creditCardTitle: "Credit Card Payment",
+
 }
 
