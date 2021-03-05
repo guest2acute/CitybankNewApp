@@ -284,7 +284,7 @@ export default {
 
     accountTypeArr: [
         {key: "0", label: "Account Number", value: 0},
-        {key: "1", label: "Credit Card Number", value: 1}
+        {key: "1", label: "Credit/Prepaid Card Number", value: 1}
     ],
 
     otp_props: [

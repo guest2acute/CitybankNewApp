@@ -110,7 +110,7 @@ class CredentialDetails extends Component {
                 StatusBar.setBarStyle("light-content");
             });
 
-          BackHandler.addEventListener(
+            BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -354,7 +354,7 @@ class CredentialDetails extends Component {
     async backBtn() {
         if (this.state.selectTypeVal === 0) {
             if (this.state.selectActCard.value === 0 && this.state.otpView) {
-                this.setState({otpView: false,otpVal:""});
+                this.setState({otpView: false, otpVal: ""});
             } else {
                 this.props.navigation.goBack();
             }
@@ -363,7 +363,7 @@ class CredentialDetails extends Component {
             if (this.state.selectActCard.value === 0 && this.state.isField) {
                 this.setState({isField: false, newP: "", confNewP: ""});
             } else if (this.state.selectActCard.value === 0 && this.state.otpView) {
-                this.setState({otpView: false,otpVal:""});
+                this.setState({otpView: false, otpVal: ""});
             } else if (this.state.selectActCard.value === 1 && this.state.isField) {
                 this.setState({isField: false, newP: "", confNewP: ""});
             } else {
@@ -423,7 +423,6 @@ class CredentialDetails extends Component {
         }
         this.state.selectTypeVal > 0 ? await this.getUserDetails(language) : await this.processAccount(this.state.selectActCard.value === 1);
     }
-
 
 
     async processAccount(isCard, language) {
@@ -502,7 +501,7 @@ class CredentialDetails extends Component {
         }
         console.log("request", resetReq);
         let result = await ApiRequest.apiRequest.callApi(resetReq, {});
-       // result = result[0];
+        // result = result[0];
         this.setState({isProgress: false});
 
         if (result.STATUS === "0" || result.STATUS === "999") {
@@ -636,7 +635,7 @@ class CredentialDetails extends Component {
 
         console.log("request", otpReq);
         let result = await ApiRequest.apiRequest.callApi(otpReq, {});
-       // result = result[0];
+        // result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0" || result.STATUS === "999") {
 
@@ -743,16 +742,16 @@ class CredentialDetails extends Component {
             </Text>
 
             <TouchableOpacity
+                disabled={this.state.selectTypeVal !== 0}
                 onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
-                <View style={styles.selectionBg}>
+                <View style={[styles.selectionBg, {height: Utility.setHeight(40)}]}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                         {this.state.selectActCard.label}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
-                           source={require("../resources/images/ic_arrow_down.png")}/>
+                    {this.state.selectTypeVal === 0 ? <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                                           source={require("../resources/images/ic_arrow_down.png")}/> : null}
                 </View>
             </TouchableOpacity>
-
         </View>)
     }
 

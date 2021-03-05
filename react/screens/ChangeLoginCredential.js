@@ -15,19 +15,12 @@ import CommonStyle from "../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../resources/busy-indicator";
 import Utility from "../utilize/Utility";
-import RadioForm from "react-native-simple-radio-button";
-import Config from "../config/Config";
-import {CommonActions} from "@react-navigation/native";
+
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import ApiRequest from "../config/ApiRequest";
 import MonthPicker from "react-native-month-year-picker";
 
-let cardNumber = [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
-    key: "1",
-    label: "4567890123456123",
-    value: 4567890123456123
-}];
 
 
 class ChangeLoginCredential extends Component {
@@ -40,7 +33,7 @@ class ChangeLoginCredential extends Component {
             selectType: props.language.selectType,
             selectTypeVal: -1,
             selectCard: props.language.selectCard,
-            selectActCard: props.language.accountTypeArr[0],
+            selectActCard: props.userDetails.AUTH_FLAG==="TP"?props.language.accountTypeArr[0]:props.language.accountTypeArr[1],
             accountNo: "",
             cardPin: "",
             modelSelection: "",
@@ -677,13 +670,14 @@ class ChangeLoginCredential extends Component {
                         {language.type_act}
                     </Text>
                     <TouchableOpacity
+                        disabled={true}
                         onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
-                        <View style={styles.selectionBg}>
+                        <View style={[styles.selectionBg,{height:Utility.setHeight(40)}]}>
                             <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                                 {this.state.selectActCard.label}
                             </Text>
-                            <Image resizeMode={"contain"} style={styles.arrowStyle}
-                                   source={require("../resources/images/ic_arrow_down.png")}/>
+                           {/* <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                   source={require("../resources/images/ic_arrow_down.png")}/>*/}
                         </View>
                     </TouchableOpacity></View> : null}
         </View>)

@@ -34,7 +34,7 @@ class ChangeContactDetails extends Component {
             selectType: props.language.selectType,
             selectTypeVal: -1,
             selectCard: props.language.selectCard,
-            selectActCard: props.language.accountTypeArr[0],
+            selectActCard: props.userDetails.AUTH_FLAG==="TP"?props.language.accountTypeArr[0]:props.language.accountTypeArr[1],
             accountNo: "",
             cardPin: "",
             modelSelection: "",
@@ -740,14 +740,14 @@ class ChangeContactDetails extends Component {
                     {language.type_act}
                 </Text>
 
-                <TouchableOpacity
+                <TouchableOpacity disabled={true}
                     onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={[styles.selectionBg,{height:Utility.setHeight(40)}]}>
                         <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                             {this.state.selectActCard.label ? this.state.selectActCard.label : this.state.selectActCard.ACCOUNT_NO}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
-                               source={require("../resources/images/ic_arrow_down.png")}/>
+                       {/* <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../resources/images/ic_arrow_down.png")}/>*/}
                     </View>
                 </TouchableOpacity>
             </View> : null}
