@@ -1,6 +1,7 @@
 import Utility from "../../utilize/Utility";
 import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
+import {Platform} from "react-native";
 
 export const GETACCTBALDETAIL = (accountNo, props) => {
     return new Promise(async (resolve, reject) => {
@@ -29,23 +30,33 @@ export const GETACCTBALDETAIL = (accountNo, props) => {
         });
 
     });
-
-
 }
 
 
-export const ADDBENFVERIFY = (accountNo, props) => {
+export const addBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID, props) => {
     return new Promise(async (resolve, reject) => {
         let request = {
-            USER_ID: accountNo,
-            REQUEST_CD: "256",
-            TRN_TYPE:"",
-            ACTION:"",
-            ACTIVITY_CD:""
+            ACTION: "ADDBENF",
+            USER_ID: userDetails.USER_ID,
+            BENF_TYPE: "I",
+            AUTH_FLAG:userDetails.AUTH_FLAG,
+            DEVICE: Platform.OS,
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            BENE_LIST: [{
+                LIMIT_AMT: "0",
+                TO_ACCT_NO: accountRes.ACCOUNT,
+                NICK_NAME: NICK_NAME,
+                TO_ADD1: accountRes.ADDRESS,
+                TO_CONTACT_NO: accountRes.CONTACTNUMBER,
+                TO_MOBILE_NO: MOBILE_NO,
+                TO_EMAIL_ID: EMAIL_ID,
+                TO_IFSCODE: "",
+                TO_ACCT_NM: "ACCOUNTNAME"
+            }]
         }
-        console.log("GETACCTBALDETAIL", request);
+        console.log("addBeneficiary", request);
         await ApiRequest.apiRequest.callApi(request, {}).then(result => {
-            console.log("responseVal", result)
+            console.log("responseVal", result);
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
                 return resolve(result.RESPONSE[0]);

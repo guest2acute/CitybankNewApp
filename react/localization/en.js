@@ -531,6 +531,7 @@ export default {
     /*error message*/
     require_nickname: "Nick Name is Requirered",
     require_accnumber: "Account Number is  Required",
+    require_valid_actNumber: "Invalid Account Number",
     require_cardname: "Account Card Name is Required",
     require_cardnumber:"Account Card number is Required",
     require_bkash: "Bkash Account is required",
