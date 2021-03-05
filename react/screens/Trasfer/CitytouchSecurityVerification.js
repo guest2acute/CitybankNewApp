@@ -32,8 +32,11 @@ class CitytouchSecurityVerification extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            cardPin:"",
-            errorCardPin:"",
+            cardPin: "",
+            errorCardPin: "",
+            transactionPin:"",
+            errorTransactionPin:"",
+            authFlag: props.userDetails.AUTH_FLAG
         }
     }
 
@@ -65,42 +68,165 @@ class CitytouchSecurityVerification extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
+        console.log("modelSelection is this", item)
         if (modelSelection === "type") {
             this.setState({selectCardType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
-
-
-        /* else if (modelSelection === "accountType") {
-             this.setState({selectActCard: item, modalVisible: false})
-         } else if (modelSelection === "cardType") {
-             this.setState({selectCard: item.label, modalVisible: false})
-         }*/
     }
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        console.log("selecttype value is this",this.state.selectTypeVal);
-        if (this.state.selectTypeVal === -1) {
-            Utility.alert("Please Select Card");
-            return;
+        console.log("selectType value is this", this.state.selectTypeVal);
+        console.log("authFlag",this.state.authFlag)
+        if (this.state.authFlag === "CP") {
+            if (this.state.selectTypeVal === -1) {
+                Utility.alert("Please Select Card");
+                return;
+            } else if (this.state.cardPin === "") {
+                this.setState({errorCardPin: language.errSecurity})
+                return;
+            }
+        }else if(this.state.authFlag === "TP") {
+            if(this.state.transactionPin===""){
+                this.setState({
+                    errorTransactionPin:language.errorTransactionPin
+                })
+            }
         }
-        else if (this.state.cardPin === "") {
-            this.setState({errorCardPin:language.errSecurity})
-            return;
-        } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary});
-            return;
-            console.log("11111")
-        } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("TransferWithBkash");
-            return;
-            console.log("22222")
-        }
-        else{
-            this.props.navigation.navigate("BeneficiaryTransfer")
-        }
-        }
+    }
+
+    cPinView(language) {
+        return (
+            <View key={"tPinView"} style={{flex: 1, paddingBottom: 30}}>
+            <Text style={[CommonStyle.labelStyle, {
+                color: themeStyle.THEME_COLOR,
+                marginStart: 10,
+                marginEnd: 10,
+                marginTop: 6,
+                marginBottom: 4
+            }]}>
+                {language.cards}
+                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+            </Text>
+            <TouchableOpacity
+                onPress={() => this.openModal("type", language.select_card, language.transferTypeArr, language)}>
+                <View style={styles.selectionBg}>
+                    <Text style={[CommonStyle.midTextStyle, {
+                        color: this.state.selectCardType === language.select_card ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                        flex: 1
+                    }]}>
+                        {this.state.selectCardType}
+                    </Text>
+                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                           source={require("../../resources/images/ic_arrow_down.png")}/>
+                </View>
+            </TouchableOpacity>
+
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.cardPin}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TextInput
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
+                    placeholder={language.et_cardPlaceholder}
+                    onChangeText={text => this.setState({
+                        errorCardPin: "",
+                        cardPin: Utility.userInput(text)
+                    })}
+                    value={this.state.cardPin}
+                    multiline={false}
+                    numberOfLines={1}
+                    onFocus={() => this.setState({focusUid: true})}
+                    onBlur={() => this.setState({focusUid: false})}
+                    contextMenuHidden={true}
+                    keyboardType={"number-pad"}
+                    secureTextEntry={true}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    autoCorrect={false}
+                    maxLength={4}/>
+            </View>
+            {this.state.errorCardPin !== "" ?
+                <Text style={{
+                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                    fontFamily: fontStyle.RobotoRegular,
+                }}>{this.state.errorCardPin}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <Text
+                    style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
+                </Text>
+        </View>
+
+       )
+    }
+
+    tPinView(language) {
+        return (
+            <View key={"cPinView"} style={{flex: 1}}>
+                <View style={{marginStart:10,marginEnd:10,marginTop:10}}>
+               {/* <Text style={[styles.title,{marginBottom:10}]}>{language.transactionPin}</Text>*/}
+                <Text style={[CommonStyle.textStyle,{color:themeStyle.THEME_COLOR}]}>{language.transactionTitle}</Text>
+                </View>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.transactionPin}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.et_TransPlaceholder}
+                        onChangeText={text => this.setState({
+                            errorTransactionPin: "",
+                            transactionPin: Utility.userInput(text)
+                        })}
+                        value={this.state.transactionPin}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        maxLength={4}/>
+                </View>
+                {this.state.errorTransactionPin !== "" ?
+                    <Text style={{
+                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                    }}>{this.state.errorTransactionPin}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <Text style={{
+                    marginStart: 10,
+                    marginTop: 20,
+                    color: themeStyle.THEME_COLOR
+                }}>*{language.mark_field_mandatory}
+                </Text>
+                <Text style={styles.textView}>{language.notes}:</Text>
+                <Text style={styles.textView}>1. Your Transaction PIN should be 4 digits.</Text>
+                <Text style={styles.textView}>2. Consecutive 3 wrong attempts will lock</Text>
+                <Text style={styles.textView}>  your Transaction PIN call 16243 to unlock..</Text>
+            </View>
+        )
+    }
 
     render() {
         let language = this.props.language;
@@ -131,107 +257,45 @@ class CitytouchSecurityVerification extends Component {
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{flex: 1, paddingBottom: 30}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.cards}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.openModal("type", language.select_card, language.transferTypeArr, language)}>
-                            <View style={styles.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectCardType === language.select_card ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectCardType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
+                    {this.state.authFlag === "TP" ? this.tPinView(language) : this.cPinView(language)}
+
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: Utility.setWidth(10),
+                        marginRight: Utility.setWidth(10),
+                        marginTop: Utility.setHeight(10)
+                    }}>
+                        <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <View style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                borderWidth: 1,
+                                borderColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
                             </View>
                         </TouchableOpacity>
+                        <View style={{width: Utility.setWidth(20)}}/>
 
-                        <View style={{
-                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle]}>
-                                {language.cardPin}
-                            </Text>
-                            <TextInput
-                                ref={(ref) => this.accountNoRef = ref}
-                                selectionColor={themeStyle.THEME_COLOR}
-                                style={[CommonStyle.textStyle, {
-                                    alignItems: "flex-end",
-                                    textAlign: 'right',
-                                    flex: 1,
-                                    marginLeft: 10
-                                }]}
-                                placeholder={language.et_cardPlaceholder}
-                                onChangeText={text => this.setState({errorCardPin:"",cardPin: Utility.userInput(text)})}
-                                value={this.state.accountNo}
-                                multiline={false}
-                                numberOfLines={1}
-                                onFocus={() => this.setState({focusUid: true})}
-                                onBlur={() => this.setState({focusUid: false})}
-                                contextMenuHidden={true}
-                                keyboardType={"number-pad"}
-                                editable={false}
-                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                                autoCorrect={false}
-                                maxLength={13}/>
-                        </View>
-                        {this.state.errorCardPin !== "" ?
-                            <Text style={{
-                                marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                                fontFamily: fontStyle.RobotoRegular,
-                            }}>{this.state.errorCardPin}</Text> : null}
-
-
-                        <View style={{
-                            flexDirection: "row",
-                            marginStart: Utility.setWidth(10),
-                            marginRight: Utility.setWidth(10),
-                            marginTop: Utility.setHeight(20)
-                        }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
-                                <View style={{
-                                    flex: 1,
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: Utility.setHeight(46),
-                                    borderRadius: Utility.setHeight(23),
-                                    borderWidth: 1,
-                                    borderColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <View style={{width: Utility.setWidth(20)}}/>
-
-                            <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.submit(language, this.props.navigation)}>
-                                <View style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: Utility.setHeight(46),
-                                    borderRadius: Utility.setHeight(23),
-                                    backgroundColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.add}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-                        </Text>
+                        <TouchableOpacity style={{flex: 1}}
+                                          onPress={() => this.submit(language, this.props.navigation)}>
+                            <View style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                backgroundColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.add}</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
+
                 </ScrollView>
                 <Modal
                     animationType="none"
@@ -313,12 +377,20 @@ const styles = {
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5
-    }
+    },
+    textView:{
+        marginStart: 10, color: themeStyle.THEME_COLOR
+    },
+    title: {
+        fontFamily: fontStyle.RobotoMedium,
+        fontSize: FontSize.getSize(14),
+    },
 
 }
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

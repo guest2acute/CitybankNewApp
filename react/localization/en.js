@@ -601,7 +601,7 @@ export default {
     select_brach:"select branch",
     select_branch_name:"Select Branch Name",
 
-    notes: "Notes :",
+    notes: "Notes",
 
     add_beneficiary_transfer: "Add Beneficiary-Transfer to bkash",
     bkash_account: "bkash Account",
@@ -793,11 +793,21 @@ export default {
     add: "Add",
     security_verification: "CityTouch Security verification",
     errSecurity:"Can not be blank",
+    transactionPin: "Transaction PIN",
+    et_TransPlaceholder:"Enter PIN Here",
+    errorTransactionPin: "Please enter 4 digit Transaction PIN",
+    transactionTitle:"Enter Transaction PIN",
+
+
+
 
     /*Credit Card Payment*/
     own_creditCardPayment:"OWN CREDIT CARD PAYMENT",
     other_creditCardPayment: "OTHER CREDIT CARD PAYMENT",
     creditCardTitle: "Credit Card Payment",
+    creditCard: "Credit Card",
+    selectCreditCard: "Select Credit Card",
+
 
 }
 
