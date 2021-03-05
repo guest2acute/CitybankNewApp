@@ -34,7 +34,7 @@ class ChangeContactDetails extends Component {
             selectType: props.language.selectType,
             selectTypeVal: -1,
             selectCard: props.language.selectCard,
-            selectActCard: props.userDetails.AUTH_FLAG==="TP"?props.language.accountTypeArr[0]:props.language.accountTypeArr[1],
+            selectActCard: {key: "-1", label: props.language.select_txt, value: -1},
             accountNo: "",
             cardPin: "",
             modelSelection: "",
@@ -303,7 +303,7 @@ class ChangeContactDetails extends Component {
     }
 
     async getMailMobOtp() {
-        let {stateVal, selectRes, selectActCard, select_contact_type, transactionPin} = this.state;
+        let {stateVal, selectRes, select_contact_type, transactionPin} = this.state;
         console.log("selectRes", selectRes);
         let userDetails = this.props.userDetails;
         this.setState({isProgress: true});
@@ -311,7 +311,7 @@ class ChangeContactDetails extends Component {
             APPCUSTOMER_ID: selectRes.APPCUSTOMER_ID,
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
-            AUTH_FLAG: selectActCard.value === 0 ? "TP" : "CP",
+            AUTH_FLAG: userDetails.AUTH_FLAG,
             REQ_FLAG: "R",
             REQ_TYPE: select_contact_type.value === 0 ? "UPD_MOBILE" : "UPD_EMAIL",
             ACTION: "GENUPDEMAILMBOTP",
@@ -323,7 +323,7 @@ class ChangeContactDetails extends Component {
             ...Config.commonReq
         }
         let header = {};
-        if (selectActCard.value === 1) {
+        if (userDetails.AUTH_FLAG === "CP") {
             otpRequest = {
                 ...otpRequest,
                 CARD_DETAIL: {
@@ -355,10 +355,9 @@ class ChangeContactDetails extends Component {
 
     async submit(language, navigation) {
         const {stateVal} = this.state;
-        console.log("this.state.selectActCard", this.state.selectActCard);
-        console.log("this.state.stateVal", this.state.stateVal);
+        let userDetails = this.props.userDetails;
         if (stateVal === 0) {
-            if (this.state.selectActCard.value === 0) {
+            if (userDetails.AUTH_FLAG === "TP") {
                 if (this.state.select_actNo === "Select Account Number") {
                     Utility.alert("Please Select Account Number");
                 } else if (this.state.transactionPin === "") {
@@ -366,7 +365,7 @@ class ChangeContactDetails extends Component {
                 } else {
                     await this.getMailMobOtp();
                 }
-            } else if (this.state.selectActCard.value === 1) {
+            } else if (userDetails.AUTH_FLAG === "CP") {
                 if (this.state.selectCard === language.selectCard) {
                     Utility.alert(language.errorSelectCard);
                 } else if (this.state.expiryDate === "") {
@@ -378,7 +377,7 @@ class ChangeContactDetails extends Component {
                 }
             }
         } else if (stateVal === 1) {
-            if (this.state.selectActCard.value === 0) {
+            if (userDetails.AUTH_FLAG === "TP") {
                 if (this.state.otpVal.length !== 4) {
                     Utility.alert(language.errOTP);
                 } else {
@@ -403,12 +402,12 @@ class ChangeContactDetails extends Component {
     }
 
     async verifyOtp() {
-        const {selectActCard, selectRes, select_contact_type} = this.state;
+        const {selectRes, select_contact_type} = this.state;
         let userDetails = this.props.userDetails;
         userDetails = {...userDetails, REQUEST_CD: selectRes.REQUEST_CD}
         this.setState({isProgress: true});
         await ApiRequest.apiRequest.getOTPCall(this.state.otpVal, "R", userDetails,
-            selectActCard.value === 0 ? "TP" : "CP", "GENUPDEMAILMBOTPVERIFY",
+            userDetails.AUTH_FLAG, "GENUPDEMAILMBOTPVERIFY",
             select_contact_type.value === 0 ? "UPD_MOBILE" : "UPD_EMAIL", this.props)
             .then((response) => {
                 console.log(response);
@@ -466,12 +465,12 @@ class ChangeContactDetails extends Component {
     }
 
     async changeMobEmail(language, navigation) {
-        let {selectRes, selectActCard, select_contact_type, newCredential} = this.state;
+        let {selectRes, select_contact_type, newCredential} = this.state;
         let userDetails = this.props.userDetails;
         let changeRequest = {
             APPCUSTOMER_ID: selectRes.APPCUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
-            AUTH_FLAG: selectActCard.value === 0 ? "TP" : "CP",
+            AUTH_FLAG: userDetails.AUTH_FLAG,
             REQ_FLAG: "R",
             REQUEST_CD: selectRes.REQUEST_CD,
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
@@ -511,11 +510,19 @@ class ChangeContactDetails extends Component {
     processAccounts(response) {
         let accountArr = [], cardArr = [];
         response.ACCOUNT_DTL.map((account) => {
-            accountArr.push({label: Utility.maskString(account.ACCOUNT_NO)+"/"+account.ACCT_TYPE_NM, value: account.ACCOUNT_NO, item: account});
+            accountArr.push({
+                label: Utility.maskString(account.ACCOUNT_NO) + "/" + account.ACCT_TYPE_NM,
+                value: account.ACCOUNT_NO,
+                item: account
+            });
         });
 
         response.CARD_DTL.map((card) => {
-            cardArr.push({label: Utility.maskString(card.ACCOUNT_NO)+"/"+card.ACCT_TYPE_NM, value: card.ACCOUNT_NO, item: card});
+            cardArr.push({
+                label: Utility.maskString(card.ACCOUNT_NO) + "/" + card.ACCT_TYPE_NM,
+                value: card.ACCOUNT_NO,
+                item: card
+            });
         });
         this.setState({actNoList: accountArr, cardNoList: cardArr, isProgress: false});
     }
@@ -639,7 +646,7 @@ class ChangeContactDetails extends Component {
     }
 
     processStage(language) {
-        if (this.state.selectActCard.value === 0)
+        if (this.props.userDetails.AUTH_FLAG === "TP")
             return this.state.stateVal === 0 ? this.accountNoOption(language) : this.state.stateVal === 1 ? this.otpEnter(language) : this.passwordSet(language);
         else
             return this.state.stateVal === 0 ? this.creditCardOption(language) : this.passwordSet(language);
@@ -706,7 +713,7 @@ class ChangeContactDetails extends Component {
     }
 
     mainLayout(language) {
-        return (<View>
+        return (<View key={"mainLayout"}>
             <Text style={[CommonStyle.labelStyle, {
                 color: themeStyle.THEME_COLOR,
                 marginStart: 10,
@@ -737,17 +744,16 @@ class ChangeContactDetails extends Component {
                     marginTop: 6,
                     marginBottom: 4
                 }]}>
-                    {language.type_act}
+                    {language.changeIn}
                 </Text>
-
-                <TouchableOpacity disabled={true}
-                    onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
-                    <View style={[styles.selectionBg,{height:Utility.setHeight(40)}]}>
+                <TouchableOpacity
+                    onPress={() => this.openModal("accountType", language.select_txt, language.changeInArr, language)}>
+                    <View style={styles.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
-                            {this.state.selectActCard.label ? this.state.selectActCard.label : this.state.selectActCard.ACCOUNT_NO}
+                            {this.state.selectActCard.label}
                         </Text>
-                       {/* <Image resizeMode={"contain"} style={styles.arrowStyle}
-                               source={require("../resources/images/ic_arrow_down.png")}/>*/}
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
             </View> : null}
@@ -756,7 +762,8 @@ class ChangeContactDetails extends Component {
 
     render() {
         let language = this.props.language;
-        return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+        return (
+            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -836,14 +843,16 @@ class ChangeContactDetails extends Component {
                         </View>
                     </View>
                 </Modal>
-                {this.state.showMonthPicker ? <MonthPicker
-                    onChange={this.onValueChange}
-                    value={new Date()}
-                    minimumDate={new Date()}
-                    maximumDate={new Date(new Date().getFullYear() + 10, 12)}
-                    locale="en"
-                    mode="number"
-                /> : null}
+                {
+                    this.state.showMonthPicker ? <MonthPicker
+                        onChange={this.onValueChange}
+                        value={new Date()}
+                        minimumDate={new Date()}
+                        maximumDate={new Date(new Date().getFullYear() + 10, 12)}
+                        locale="en"
+                        mode="number"
+                    /> : null
+                }
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
@@ -854,8 +863,7 @@ class ChangeContactDetails extends Component {
 const styles = {
     arrowStyle: {
         tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
+        width: Utility.setWidth(35), height: Utility.setHeight(30)
     },
     selectionBg: {
         paddingStart: 10,
@@ -890,11 +898,12 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        userDetails: state.accountReducer.userDetails,
-        langId: state.accountReducer.langId,
-        language: state.accountReducer.language,
-    };
-};
+        return {
+            userDetails: state.accountReducer.userDetails,
+            langId: state.accountReducer.langId,
+            language: state.accountReducer.language,
+        };
+    }
+;
 
 export default connect(mapStateToProps)(ChangeContactDetails);

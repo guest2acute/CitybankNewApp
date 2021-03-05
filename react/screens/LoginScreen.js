@@ -504,7 +504,6 @@ class LoginScreen extends Component {
 
 const
     styles = {
-
         optionText: {
             fontFamily: fontStyle.RobotoMedium, fontSize: FontSize.getSize(12), color: themeStyle.THEME_COLOR
         },

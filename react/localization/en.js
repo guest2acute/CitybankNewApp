@@ -30,6 +30,7 @@ export default {
     selectType: "Select Type",
     selectActType: "Select Account Type",
     type_act: "Type of Account *",
+    changeIn:"Change in",
     actNo: "Account Number",
     actName: "Account Name",
     actNo_here: "Enter account number here",
@@ -288,6 +289,10 @@ export default {
         {key: "1", label: "Credit/Prepaid Card Number", value: 1}
     ],
 
+    changeInArr: [
+        {key: "0", label: "Account", value: 0},
+        {key: "1", label: "Card", value: 1}
+    ],
     otp_props: [
         {label: "SMS", value: 0},
         {label: "Email", value: 1},
@@ -744,7 +749,7 @@ export default {
     error_answer: "Enter Your Answer",
 
     update_beneficiary: "Update Beneficiary - Other Bank",
-
+    select_txt:"Select",
 
     /*Select Beneficiary*/
     select_beneficiary: "Select Beneficiary",
