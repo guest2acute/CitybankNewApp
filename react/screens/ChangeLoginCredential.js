@@ -29,7 +29,7 @@ class ChangeLoginCredential extends Component {
         super(props);
         this.state = {
             isProgress: false,
-            select_credential_type: {label: props.language.select_credential_type, value: -1},
+            select_credential_type: props.route.params.title === props.language.change_login_password?props.language.credentialList[0]:props.language.credentialList[1],
             select_actNo: props.language.select_actNo,
             selectType: props.language.selectType,
             selectTypeVal: -1,
@@ -56,8 +56,10 @@ class ChangeLoginCredential extends Component {
             errorCardPin: "",
             errorExpiry: "",
             dateVal: new Date(),
-            showMonthPicker: false
+            showMonthPicker: false,
+            title:props.route.params.title,
         }
+        console.log("check it",props.route.params.title === props.language.change_login_password)
     }
 
     renderSeparator = () => {
@@ -697,7 +699,7 @@ class ChangeLoginCredential extends Component {
                                source={Platform.OS === "android" ?
                                    require("../resources/images/ic_back_android.png") : require("../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.change_login_pin}</Text>
+                    <Text style={CommonStyle.title}>{this.state.title}</Text>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>

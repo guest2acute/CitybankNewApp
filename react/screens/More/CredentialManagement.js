@@ -19,16 +19,15 @@ import {MoreDetails} from "../Requests/CommonRequest";
  */
 let imeiNo = "";
 
-class More extends Component {
-
+class CredentialManagement extends Component {
     constructor(props) {
         super(props);
         let language = props.language;
         this.state = {
-            data:MoreDetails(language)
+            data:props.route.params.subCategory,
+            title:props.route.params.title,
         }
     }
-
     /**
      * redirect to landing screen
      */
@@ -60,29 +59,8 @@ class More extends Component {
 
     moveScreen(item) {
         console.log("redirectScreen",item.redirectScreen)
-        this.props.navigation.navigate(item.redirectScreen,{title:item.title,subCategory:item.subCategory});
-        //this.props.navigation.navigate("Favorite",{title:this.props.language.favorite_payment})
+        this.props.navigation.navigate(item.redirectScreen,{title:item.title});
 
-        /*        switch (item.id) {
-            case "profile":
-                this.redirectProfile();
-                break;
-            case "changeTransPin":
-                this.props.navigation.navigate("ChangeTransPin");
-                break;
-            case "changePassword":
-                this.props.navigation.navigate("ChangePassword");
-                break;
-            case "change_Credential":
-                this.props.navigation.navigate("ChangeLoginCredential",{subCategory:item.subcategory});
-                break;
-            case "changeContact":
-                this.props.navigation.navigate("ChangeContactDetails");
-                break;
-            case "UploadDoc":
-                this.props.navigation.navigate("UploadSupportDoc");
-                break;
-        }*/
     }
 
     async redirectProfile() {
@@ -129,14 +107,12 @@ class More extends Component {
     }
 
     bottomLine() {
-
         return (<View style={{
             height: 1,
             marginLeft: 10,
             marginRight: 10,
             backgroundColor: "#D3D1D2"
         }}/>)
-
     }
 
     render() {
@@ -144,10 +120,15 @@ class More extends Component {
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
-                <View style={[CommonStyle.toolbar, {flexDirection: "row"}]}>
-                    <Image resizeMode={"contain"}
-                           style={{width: Utility.setWidth(90), flexGrow: 0, height: Utility.setHeight(50)}}
-                           source={require("../../resources/images/citytouch_header.png")}/>
+                <View style={CommonStyle.toolbar}>
+                    <TouchableOpacity
+                        style={CommonStyle.toolbar_back_btn_touch}
+                        onPress={() => this.props.navigation.goBack(null)}>
+                        <Image style={CommonStyle.toolbar_back_btn}
+                               source={Platform.OS === "android" ?
+                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                    </TouchableOpacity>
+                    <Text style={CommonStyle.title}>{this.state.title}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
@@ -174,7 +155,6 @@ class More extends Component {
         );
     }
 }
-
 
 const styles = {
     viewStyles: {
@@ -205,5 +185,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(More);
+export default connect(mapStateToProps)(CredentialManagement);
 

@@ -244,7 +244,7 @@ class CityCreditCard extends Component {
                             onPress={() => this.openModal("nickType", language.selectNickType, language.nickTypeArr, language)}>
                             <View style={styles.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectNicknameType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                    color: this.state.selectNicknameType === language.selectNickType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.selectNicknameType}
