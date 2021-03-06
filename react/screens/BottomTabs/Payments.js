@@ -33,7 +33,7 @@ class Payments extends Component {
                 this.props.navigation.navigate("MobileRecharge")
                 break;
             case "FavoritePayments":
-                this.props.navigation.navigate("MobileRecharge")
+                this.props.navigation.navigate("Favorite",{title:this.props.language.favorite_payment})
                 break;
             case "PaymentHistory":
                 this.props.navigation.navigate("MobileRecharge")

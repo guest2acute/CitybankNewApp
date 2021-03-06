@@ -821,6 +821,8 @@ export default {
         {label: "USD", value: 1},
     ],
     card_holderName: "Card Holder Name",
-    card_number: "Card Number"
+    card_number: "Card Number",
+    favorite_payment: "Favorite Payments",
+
 }
 

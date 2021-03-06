@@ -51,7 +51,7 @@ import TransferToBkash from "./react/screens/Trasfer/TransferToBkash";
 import CashByCode from "./react/screens/Trasfer/CashByCode";
 import FundTransfer from "./react/screens/Trasfer/FundTransfer";
 import OtherBankAccount from "./react/screens/Trasfer/OtherBankAccount";
-import FavoriteTransfers from "./react/screens/Trasfer/FavoriteTransfers";
+import Favorite from "./react/screens/Trasfer/Favorite";
 import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
@@ -156,7 +156,7 @@ function TransferTab() {
             <Stack.Screen name="FundTransfer" component={FundTransfer} options={{headerShown: false}}/>
             <Stack.Screen name="OtherBankAccount" component={OtherBankAccount} options={{headerShown: false}}/>
             <Stack.Screen name="FavTransferBkash" component={FavTransferBkash} options={{headerShown: false}}/>
-            <Stack.Screen name="FavoriteTransfers" component={FavoriteTransfers} options={{headerShown: false}}/>
+            <Stack.Screen name="Favorite" component={Favorite} options={{headerShown: false}}/>
             <Stack.Screen name="EmailTransfer" component={EmailTransfer} options={{headerShown: false}}/>
             <Stack.Screen name="EmailTransferScreen" component={EmailTransferScreen} options={{headerShown: false}}/>
             <Stack.Screen name="SelectBeneficiary" component={SelectBeneficiary} options={{headerShown: false}}/>
@@ -173,6 +173,7 @@ function PaymentTab() {
             <Stack.Screen name="Payments" component={Payments} options={{headerShown: false}}/>
             <Stack.Screen name="MobileRecharge" component={MobileRecharge} options={{headerShown: false}}/>
             <Stack.Screen name="CityCreditCard" component={CityCreditCard} options={{headerShown: false}}/>
+            <Stack.Screen name="Favorite" component={Favorite} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

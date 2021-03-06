@@ -36,7 +36,8 @@ class Transfer extends Component {
                 this.props.navigation.navigate("BeneficiaryManagement");
                 break;
             case "favoriteTransfer":
-                this.props.navigation.navigate("FavoriteTransfers");
+                this.props.navigation.navigate("Favorite",{title:this.props.language.favorite_transferTitle})
+                /*this.props.navigation.navigate("FavoriteTransfers");*/
                 break;
             case "transferHistory":
                 this.props.navigation.navigate("TransferCategory");

@@ -18,8 +18,7 @@ import Swipeable from 'react-native-swipeable-row';
  */
 let imeiNo = "";
 
-class FavoriteTransfers extends Component {
-
+class Favorite extends Component {
     constructor(props) {
         super(props);
         let language = props.language;
@@ -31,7 +30,8 @@ class FavoriteTransfers extends Component {
                     title: language.Donation,
                     description:language.transfer_bkash
                 }
-            ]
+            ],
+            updateTitle: props.route.params.title
         }
     }
 
@@ -153,7 +153,7 @@ class FavoriteTransfers extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.favorite_transferTitle}</Text>
+                    <Text style={CommonStyle.title}>{this.state.updateTitle}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
@@ -224,5 +224,5 @@ const rightButtons = [
     }}><Text>Delete</Text></TouchableOpacity>,
 ];
 
-export default connect(mapStateToProps)(FavoriteTransfers);
+export default connect(mapStateToProps)(Favorite);
 
