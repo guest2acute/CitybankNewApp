@@ -187,7 +187,6 @@ function MoreTab() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="More" component={More} options={{headerShown: false}}/>
-            <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
             <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeTransPin" component={ChangeTransPin} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
@@ -206,13 +205,6 @@ function Root() {
         <Stack.Navigator initialRouteName={"SplashScreen"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
-          {/*  <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
-            <Stack.Screen name="More" component={More} options={{headerShown: false}}/>
-            <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
-            <Stack.Screen name="AccountServices" component={AccountServices} options={{headerShown: false}}/>
-            <Stack.Screen name="CardServices" component={CardServices} options={{headerShown: false}}/>
-            <Stack.Screen name="LoanServices" component={LoanServices} options={{headerShown: false}}/>
-            <Stack.Screen name="MySettings" component={MySettings} options={{headerShown: false}}/>*/}
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>
