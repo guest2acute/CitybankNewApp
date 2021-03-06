@@ -59,8 +59,9 @@ import BeneficiaryMobileNumber from "./react/screens/Trasfer/BeneficiaryMobileNu
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
 import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOtherBank";
-import CitytouchSecurityVerification from "./react/screens/Trasfer/CitytouchSecurityVerification";
 import CityCreditCard from "./react/screens/Payments/CityCreditCard";
+import SecurityVerification from "./react/screens/Trasfer/SecurityVerification";
+
 
 
 const store = configureStore(window.__State__);
@@ -160,7 +161,7 @@ function TransferTab() {
             <Stack.Screen name="EmailTransferScreen" component={EmailTransferScreen} options={{headerShown: false}}/>
             <Stack.Screen name="SelectBeneficiary" component={SelectBeneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="ViewBeneficiaryOtherBank" component={ViewBeneficiaryOtherBank} options={{headerShown: false}}/>
-            <Stack.Screen name="CitytouchSecurityVerification" component={CitytouchSecurityVerification} options={{headerShown: false}}/>
+            <Stack.Screen name="SecurityVerification" component={SecurityVerification} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

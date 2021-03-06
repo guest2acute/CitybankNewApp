@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar,BackHandler
+    TextInput, FlatList, Platform, StatusBar
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import fontStyle from "../../resources/FontStyle";
@@ -17,7 +17,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import {GETACCTBALDETAIL, addBeneficiary} from '../Requests/RequestBenificeryCityBank';
+import {GETACCTBALDETAIL, AddBeneficiary} from '../Requests/RequestBenificeryCityBank';
 
 class BeneficiaryWithCityBank extends Component {
     constructor(props) {
@@ -72,18 +72,16 @@ class BeneficiaryWithCityBank extends Component {
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
-
     }
 
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        addBeneficiary(accountDetails, this.props.userDetails, nickname, mobile_number, emailTxt, this.props).then(response => {
+        AddBeneficiary(accountDetails, this.props.userDetails, nickname, mobile_number, emailTxt, this.props).then(response => {
             console.log("response", response);
             this.setState({
-                isProgress: false, stageVal: this.state.stageVal + 1,
-                REQUEST_CD: response.REQUEST_CD
-            });
+                isProgress: false,
+            }, () => this.props.navigation.navigate("SecurityVerification", {REQUEST_CD: response.REQUEST_CD}));
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -100,7 +98,7 @@ class BeneficiaryWithCityBank extends Component {
             console.log("response", response);
             this.setState({
                 isProgress: false, account_holder_name: response.ACCOUNTNAME,
-                currency: response.CURRENCYCODE, type_act: response.ACCTTYPE,accountDetails:response
+                currency: response.CURRENCYCODE, type_act: response.ACCTTYPE, accountDetails: response
             });
         }).catch(error => {
             this.setState({isProgress: false, error_accountNo: language.require_valid_actNumber});
@@ -469,21 +467,11 @@ class BeneficiaryWithCityBank extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-            BackHandler.addEventListener(
-                "hardwareBackPress",
-                this.backAction
-            );
         }
 
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-    }
-
-    componentWillUnmount() {
-        if (Platform.OS === "android") {
-            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
-        }
     }
 }
 

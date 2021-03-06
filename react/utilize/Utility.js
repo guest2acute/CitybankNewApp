@@ -65,7 +65,7 @@ export default class Utility {
     static maskString(value) {
         let updatedStr = "";
         for (let l = 0; l < value.length; l++) {
-            if (l > 1 && l < value.length - 2)
+            if (l > 2 && l < value.length - 3)
                 updatedStr += '*';
             else
                 updatedStr += value[l];
