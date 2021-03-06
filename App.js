@@ -56,6 +56,11 @@ import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
 import BeneficiaryMobileNumber from "./react/screens/Trasfer/BeneficiaryMobileNumber";
+import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
+import MobileRecharge from "./react/screens/Payments/MobileRecharge";
+import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOtherBank";
+import CitytouchSecurityVerification from "./react/screens/Trasfer/CitytouchSecurityVerification";
+import CityCreditCard from "./react/screens/Payments/CityCreditCard";
 
 
 const store = configureStore(window.__State__);
@@ -153,6 +158,9 @@ function TransferTab() {
             <Stack.Screen name="FavoriteTransfers" component={FavoriteTransfers} options={{headerShown: false}}/>
             <Stack.Screen name="EmailTransfer" component={EmailTransfer} options={{headerShown: false}}/>
             <Stack.Screen name="EmailTransferScreen" component={EmailTransferScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="SelectBeneficiary" component={SelectBeneficiary} options={{headerShown: false}}/>
+            <Stack.Screen name="ViewBeneficiaryOtherBank" component={ViewBeneficiaryOtherBank} options={{headerShown: false}}/>
+            <Stack.Screen name="CitytouchSecurityVerification" component={CitytouchSecurityVerification} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -162,6 +170,8 @@ function PaymentTab() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="Payments" component={Payments} options={{headerShown: false}}/>
+            <Stack.Screen name="MobileRecharge" component={MobileRecharge} options={{headerShown: false}}/>
+            <Stack.Screen name="CityCreditCard" component={CityCreditCard} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
