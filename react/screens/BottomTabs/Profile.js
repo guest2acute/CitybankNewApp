@@ -40,7 +40,7 @@ class Profile extends Component {
             errorConfTransPIN: "",
             errorMobileNo: "",
             errorEmail: "",
-            loginPrefVal: props.route.params.loginPref,
+           // loginPrefVal: props.route.params.loginPref,
             biometryType: null,
             prefOption: true
         }
@@ -280,7 +280,7 @@ class Profile extends Component {
         // result = result[0];
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
-            await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
+            //await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
             Utility.alert(result.MESSAGE);
         } else {
             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
