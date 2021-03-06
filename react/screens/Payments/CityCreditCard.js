@@ -6,7 +6,7 @@ import {
     SafeAreaView,
     ScrollView,
     StatusBar,
-    Text,
+    Text, TextInput,
     TouchableOpacity,
     View
 } from "react-native";
@@ -19,34 +19,43 @@ import {connect} from "react-redux";
 import Utility from "../../utilize/Utility";
 import FontSize from "../../resources/ManageFontSize";
 import {BusyIndicator} from "../../resources/busy-indicator";
+import RadioForm from "react-native-simple-radio-button";
+import fontStyle from "../../resources/FontStyle";
 
 
 class CityCreditCard extends Component {
     constructor(props) {
         super(props);
         let language = props.language;
-        this.state={
-            options: [
-                {id:0,title: props.language.ownAccount, selected: false},
-                {id:1, title: props.language.cityAccount, selected: true},
-            ],
+        this.state = {
             stateVal: 0,
             selectCreditCardType: props.language.selectCreditCard,
+            selectAcctType: props.language.bkash_select_acct,
+            selectPaymentType: props.language.select_payment,
+            selectNicknameType: props.language.select_nickname,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
             isProgress: false,
+            availableBalance: "",
+            errorPaymentAmount:"",
+            paymentAmount: "",
+            grandTotal: "",
+            paymentNarration: "",
+            minimumPayment: "",
+            lastOutStandingBalance: "",
+            otp_type: 0,
+            cardNumber: "",
+            cardHolderName: "",
         }
     }
 
 
-
-
     async changeCard(cardCode) {
-        console.log("cardcode is this",cardCode)
+        console.log("cardcode is this", cardCode)
         this.setState({
-            stateVal:cardCode
+            stateVal: cardCode
         })
         console.log("statevalue is this", this.state.stateVal);
     }
@@ -66,46 +75,252 @@ class CityCreditCard extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
+        console.log("modelSelection is this", item)
         if (modelSelection === "type") {
             this.setState({selectCreditCardType: item.label, selectTypeVal: item.value, modalVisible: false})
+        } else if (modelSelection === "accountType") {
+            this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
+        } else if (modelSelection === "paymentType") {
+            this.setState({selectPaymentType: item.label, selectTypeVal: item.value, modalVisible: false})
+        } else if (modelSelection === "nickType") {
+            this.setState({selectNicknameType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
-        /* else if (modelSelection === "accountType") {
-             this.setState({selectActCard: item, modalVisible: false})
-         } else if (modelSelection === "cardType") {
-             this.setState({selectCard: item.label, modalVisible: false})
-         }*/
+    }
+
+    submit(language, navigation) {
+        if(this.state.stateVal === 0) {
+            if (this.state.selectCreditCardType === language.selectCreditCard) {
+                Utility.alert("Please Select Credit Card");
+                return;
+            }else if (this.state.selectAcctType === language.bkash_select_acct) {
+                Utility.alert("Please Select From Account");
+                return;
+            } else if (this.state.paymentAmount === "") {
+                this.setState({errorPaymentAmount: language.err_payment_amount})
+                return;
+            }
+        }else if(this.state.stateVal === 1){
+              if(this.state.selectNicknameType === language.select_nickname) {
+                Utility.alert("Please Select Nick Name");
+                return;
+            }else if (this.state.selectAcctType === language.bkash_select_acct) {
+                  Utility.alert("Please Select From Account");
+                  return;
+              }else if (this.state.paymentAmount === "") {
+                  this.setState({errorPaymentAmount: language.err_payment_amount})
+                  return;
+              }
+        }
+        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
 
 
-    ownCreditCardPaymentOption(language){
-        return(
-
+    ownCreditCardPaymentOption(language) {
+        return (
             <View style={{flex: 1, paddingBottom: 30}}>
-                <Text style={[CommonStyle.labelStyle, {
-                    color: themeStyle.THEME_COLOR,
-                    marginStart: 10,
-                    marginEnd: 10,
-                    marginTop: 6,
-                    marginBottom: 4
-                }]}>
-                    {language.creditCard}
-                </Text>
-                <TouchableOpacity
-                    onPress={() => this.openModal("type", language.selectCreditCard, language.transferTypeArr, language)}>
-                    <View style={styles.selectionBg}>
-                        <Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectCreditCardType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                            flex: 1
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10
+                }}>
+                    <RadioForm
+                        radio_props={language.bdtType_props}
+                        initial={0}
+                        buttonSize={9}
+                        selectedButtonColor={themeStyle.THEME_COLOR}
+                        formHorizontal={true}
+                        labelHorizontal={true}
+                        borderWidth={1}
+                        buttonColor={themeStyle.GRAY_COLOR}
+                        labelColor={themeStyle.BLACK}
+                        labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                        style={{marginTop: 10}}
+                        animation={true}
+                    />
+                </View>
+                {this.state.stateVal === 0 ?
+                    <View>
+                        <Text style={[CommonStyle.labelStyle, {
+                            color: themeStyle.THEME_COLOR,
+                            marginStart: 10,
+                            marginEnd: 10,
+                            marginTop: 6,
+                            marginBottom: 4
                         }]}>
-                            {this.state.selectCreditCardType}
+                            {language.creditCard}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
-                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                        <TouchableOpacity
+                            onPress={() => this.openModal("type", language.selectCreditCard, language.transferTypeArr, language)}>
+                            <View style={styles.selectionBg}>
+                                <Text style={[CommonStyle.midTextStyle, {
+                                    color: this.state.selectCreditCardType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                    flex: 1
+                                }]}>
+                                    {this.state.selectCreditCardType}
+                                </Text>
+                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                       source={require("../../resources/images/ic_arrow_down.png")}/>
+                            </View>
+                        </TouchableOpacity>
+
+                        <View style={{
+                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            marginEnd: 10,
+                        }}>
+                            <Text style={[CommonStyle.textStyle]}>
+                                {language.minimum_paymentDue}
+                            </Text>
+                            <TextInput
+                                selectionColor={themeStyle.THEME_COLOR}
+                                style={[CommonStyle.textStyle, {
+                                    alignItems: "flex-end",
+                                    textAlign: 'right',
+                                    flex: 1,
+                                    marginLeft: 10
+                                }]}
+                                placeholder={"00.00"}
+                                onChangeText={text => this.setState({
+                                    minimumPayment: Utility.userInput(text)
+                                })}
+                                value={this.state.minimumPayment}
+                                multiline={false}
+                                numberOfLines={1}
+                                onFocus={() => this.setState({focusUid: true})}
+                                onBlur={() => this.setState({focusUid: false})}
+                                contextMenuHidden={true}
+                                keyboardType={"number-pad"}
+                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                autoCorrect={false}
+                                editable={false}
+                                maxLength={13}/>
+                            <Text style={{paddingLeft: 5}}>BDT</Text>
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        <View style={{
+                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            marginEnd: 10,
+                        }}>
+                            <Text style={[CommonStyle.textStyle]}>
+                                {language.last_outstanding_bal}
+                            </Text>
+                            <TextInput
+                                selectionColor={themeStyle.THEME_COLOR}
+                                style={[CommonStyle.textStyle, {
+                                    alignItems: "flex-end",
+                                    textAlign: 'right',
+                                    flex: 1,
+                                    marginLeft: 10
+                                }]}
+                                placeholder={"00.00"}
+                                onChangeText={text => this.setState({
+                                    lastOutStandingBalance: Utility.userInput(text)
+                                })}
+                                value={this.state.lastOutStandingBalance}
+                                multiline={false}
+                                numberOfLines={1}
+                                onFocus={() => this.setState({focusUid: true})}
+                                onBlur={() => this.setState({focusUid: false})}
+                                contextMenuHidden={true}
+                                keyboardType={"number-pad"}
+                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                autoCorrect={false}
+                                editable={false}
+                                maxLength={13}/>
+                            <Text style={{paddingLeft: 5}}>BDT</Text>
+                        </View>
                     </View>
-                </TouchableOpacity>
-                <View style={{flex: 1}}>
+                    :
+                    <View>
+                        <Text style={[CommonStyle.labelStyle, {
+                            color: themeStyle.THEME_COLOR,
+                            marginStart: 10,
+                            marginEnd: 10,
+                            marginTop: 6,
+                            marginBottom: 4
+                        }]}>
+                            {language.nick_name}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => this.openModal("nickType", language.selectNickType, language.nickTypeArr, language)}>
+                            <View style={styles.selectionBg}>
+                                <Text style={[CommonStyle.midTextStyle, {
+                                    color: this.state.selectNicknameType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                    flex: 1
+                                }]}>
+                                    {this.state.selectNicknameType}
+                                </Text>
+                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                       source={require("../../resources/images/ic_arrow_down.png")}/>
+                            </View>
+                        </TouchableOpacity>
+
+                        <View style={{
+                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            marginEnd: 10,
+                        }}>
+                            <Text style={[CommonStyle.textStyle]}>
+                                {language.card_holderName}
+                            </Text>
+                            <TextInput
+                                selectionColor={themeStyle.THEME_COLOR}
+                                style={[CommonStyle.textStyle, {
+                                    alignItems: "flex-end",
+                                    textAlign: 'right',
+                                    flex: 1,
+                                    marginLeft: 10
+                                }]}
+                                placeholder={""}
+                                onChangeText={text => this.setState({
+                                    cardHolderName: Utility.userInput(text)
+                                })}
+                                value={this.state.cardHolderName}
+                                multiline={false}
+                                numberOfLines={1}
+                                onFocus={() => this.setState({focusUid: true})}
+                                onBlur={() => this.setState({focusUid: false})}
+                                contextMenuHidden={true}
+                                keyboardType={"number-pad"}
+                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                autoCorrect={false}
+                                editable={false}
+                                />
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        <View style={{
+                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            marginEnd: 10,
+                        }}>
+                            <Text style={[CommonStyle.textStyle]}>
+                                {language.card_number}
+                            </Text>
+                            <TextInput
+                                selectionColor={themeStyle.THEME_COLOR}
+                                style={[CommonStyle.textStyle, {
+                                    alignItems: "flex-end",
+                                    textAlign: 'right',
+                                    flex: 1,
+                                    marginLeft: 10
+                                }]}
+                                placeholder={""}
+                                onChangeText={text => this.setState({
+                                    cardNumber: Utility.userInput(text)
+                                })}
+                                value={this.state.cardNumber}
+                                multiline={false}
+                                numberOfLines={1}
+                                onFocus={() => this.setState({focusUid: true})}
+                                onBlur={() => this.setState({focusUid: false})}
+                                contextMenuHidden={true}
+                                keyboardType={"number-pad"}
+                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                autoCorrect={false}
+                                editable={false}
+                                maxLength={13}/>
+                        </View>
+                    </View>
+                }
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
                     {<Text style={[CommonStyle.labelStyle, {
                         color: themeStyle.THEME_COLOR,
                         marginStart: 10,
@@ -118,10 +333,10 @@ class CityCreditCard extends Component {
                     </Text>
                     }
                     <TouchableOpacity
-                        onPress={() => this.openModal("bankType", language.bkash_selectfrom_acct, language.cardNumber, language)}>
+                        onPress={() => this.openModal("accountType", language.bkash_select_acct, language.cardNumber, language)}>
                         <View style={styles.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.selectAcctType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                color: this.state.selectAcctType === language.selectAcctType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectAcctType}
@@ -131,51 +346,211 @@ class CityCreditCard extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.available_bal}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={"00.00"}
+                        onChangeText={text => this.setState({
+                            availableBalance: Utility.userInput(text)
+                        })}
+                        value={this.state.availableBalance}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        editable={false}
+                        maxLength={13}/>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.payment_Amount}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={"00.00"}
+                        onChangeText={text => this.setState({
+                            errorPaymentAmount:"",
+                            paymentAmount: Utility.userInput(text)
+                        })}
+                        value={this.state.paymentAmount}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={13}/>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
+                </View>
+                {this.state.errorPaymentAmount !== "" ?
+                    <Text style={{
+                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                    }}>{this.state.errorPaymentAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{
-                    flexDirection: "row",
-                    marginStart: Utility.setWidth(10),
-                    marginRight: Utility.setWidth(10),
-                    marginTop: Utility.setHeight(20)
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
                 }}>
-                    <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
-                        <View style={{
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.grand_total}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
                             flex: 1,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            height: Utility.setHeight(46),
-                            borderRadius: Utility.setHeight(23),
-                            borderWidth: 1,
-                            borderColor: themeStyle.THEME_COLOR
-                        }}>
-                            <Text
-                                style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <View style={{width: Utility.setWidth(20)}}/>
-
-                    <TouchableOpacity style={{flex: 1}}
-                                      onPress={() => this.submit(language, this.props.navigation)}>
-                        <View style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                            height: Utility.setHeight(46),
-                            borderRadius: Utility.setHeight(23),
-                            backgroundColor: themeStyle.THEME_COLOR
-                        }}>
-                            <Text
-                                style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
-                        </View>
-                    </TouchableOpacity>
+                            marginLeft: 10
+                        }]}
+                        placeholder={"00.00"}
+                        onChangeText={text => this.setState({
+                            grandTotal: Utility.userInput(text)
+                        })}
+                        value={this.state.grandTotal}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        editable={false}
+                        maxLength={13}/>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.payment_narration}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.et_placeholder}
+                        onChangeText={text => this.setState({
+                            paymentNarration: Utility.userInput(text)
+                        })}
+                        value={this.state.paymentNarration}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                    />
+                </View>
+
+                {this.state.otp_type === 1 ?
+                    <View style={{flex: 1}}>
+                        {<Text style={[CommonStyle.labelStyle, {
+                            color: themeStyle.THEME_COLOR,
+                            marginStart: 10,
+                            marginEnd: 10,
+                            marginTop: 6,
+                            marginBottom: 4
+                        }]}>
+                            {language.Frequency}
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        </Text>
+                        }
+                        <TouchableOpacity
+                            onPress={() => this.openModal("paymentType", language.select_payment, language.payment_array, language)}>
+                            <View style={styles.selectionBg}>
+                                <Text style={[CommonStyle.midTextStyle, {
+                                    color: this.state.selectPaymentType === language.select_payment ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                    flex: 1
+                                }]}>
+                                    {this.state.selectPaymentType}
+                                </Text>
+                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                       source={require("../../resources/images/ic_arrow_down.png")}/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    : null
+                }
+
+                {this.state.stateVal === 0 ?
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10
+                }}>
+                    <RadioForm
+                        radio_props={language.transfer_pay_props}
+                        initial={0}
+                        buttonSize={9}
+                        selectedButtonColor={themeStyle.THEME_COLOR}
+                        formHorizontal={true}
+                        labelHorizontal={true}
+                        borderWidth={1}
+                        buttonColor={themeStyle.GRAY_COLOR}
+                        labelColor={themeStyle.BLACK}
+                        labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                        style={{marginTop: 10}}
+                        animation={true}
+                        onPress={(value) => {
+                            this.setState({otp_type: value});
+                        }}
+                    />
+                </View>
+                    :null }
+                <Text style={{
+                    marginStart: 10,
+                    marginTop: 10,
+                    color: themeStyle.THEME_COLOR
+                }}>*{language.mark_field_mandatory}
                 </Text>
+
             </View>
         )
     }
-    otherCreditCardOption(language){
-        return(
+
+    otherCreditCardOption(language) {
+        return (
             <View>
                 <Text>{}</Text>
             </View>
@@ -203,7 +578,7 @@ class CityCreditCard extends Component {
                                           position: "absolute",
                                           right: Utility.setWidth(10),
                                       }}
-                                      >
+                    >
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -211,48 +586,88 @@ class CityCreditCard extends Component {
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.headerLabel,{  marginTop:10,marginStart: 10,
-                    marginEnd: 10}]}>
+                <View style={[styles.headerLabel, {
+                    marginTop: 10, marginStart: 10,
+                    marginEnd: 10
+                }]}>
                     <TouchableOpacity
                         onPress={() => this.changeCard(0)}
                         style={{
-                            flex:1,
+                            flex: 1,
                             height: "100%",
                             // width: Utility.setWidth(65),
-                            paddingLeft:10,
-                            paddingRight:10,
-                            alignItems:"center",
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            paddingTop:10,
+                            paddingBottom:10,
                             justifyContent: "center",
-                            borderBottomLeftRadius:this.state.stateVal === 1 ? 3 : 0,
-                            borderTopLeftRadius:this.state.stateVal === 1 ? 3 : 0,
+                            borderBottomLeftRadius: this.state.stateVal === 1 ? 3 : 0,
+                            borderTopLeftRadius: this.state.stateVal === 1 ? 3 : 0,
                             backgroundColor: this.state.stateVal === 0 ? themeStyle.THEME_COLOR : "#F4F4F4",
                         }}>
-                        <Text style={[styles.langText, {
+                        <Text style={[styles.langText, { textAlign:"center",
                             color: this.state.stateVal === 0 ? themeStyle.WHITE : themeStyle.BLACK
                         }]}>{this.props.language.own_creditCardPayment}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => this.changeCard(1)}
                         style={{
-                            flex:1,
+                            flex: 1,
                             height: "100%",
                             //width: Utility.setWidth(65),
-                            paddingLeft:10,
-                            paddingRight:10,
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            paddingTop:10,
+                            paddingBottom:10,
                             justifyContent: "center",
-                            alignItems:"center",
-                            borderBottomRightRadius:this.state.stateVal === 1 ? 5 : 0,
-                            borderTopRightRadius:this.state.stateVal === 1 ? 5 : 0,
+                            borderBottomRightRadius: this.state.stateVal === 1 ? 5 : 0,
+                            borderTopRightRadius: this.state.stateVal === 1 ? 5 : 0,
                             backgroundColor: this.state.stateVal === 1 ? themeStyle.THEME_COLOR : "#F4F4F4",
                         }}>
-                        <Text style={[styles.langText, {
+                        <Text style={[styles.langText, {textAlign:"center",
                             color: this.state.stateVal === 1 ? themeStyle.WHITE : themeStyle.BLACK
                         }]}>{this.props.language.other_creditCardPayment}</Text>
                     </TouchableOpacity>
                 </View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    {this.state.stateVal === 0 ? this.ownCreditCardPaymentOption(language) : this.ownCreditCardPaymentOption(language)}
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: Utility.setWidth(10),
+                        marginRight: Utility.setWidth(10),
+                        marginTop: Utility.setHeight(20)
+                    }}>
+                        <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <View style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                borderWidth: 1,
+                                borderColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={{width: Utility.setWidth(20)}}/>
 
-                {this.state.stateVal === 0 ? this.ownCreditCardPaymentOption(language) : this.otherCreditCardOption(language)}
-
+                        <TouchableOpacity style={{flex: 1}}
+                                          onPress={() => this.submit(language, this.props.navigation)}>
+                            <View style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                backgroundColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
                 <Modal
                     animationType="none"
                     transparent={true}
@@ -308,16 +723,17 @@ class CityCreditCard extends Component {
         }
         // bottom tab management
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.transfer
+            tabBarLabel: this.props.language.payments
         });
     }
 }
+
 const styles = {
     headerLabel: {
         flexDirection: "row",
         //justifyContent:"space-between",
         //backgroundColor: themeStyle.THEME_COLOR,
-        height: Utility.setHeight(35),
+        height: Utility.setHeight(40),
         borderRadius: 5,
         borderWidth: 1,
         borderColor: themeStyle.WHITE,

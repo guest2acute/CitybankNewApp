@@ -807,7 +807,15 @@ export default {
     creditCardTitle: "Credit Card Payment",
     creditCard: "Credit Card",
     selectCreditCard: "Select Credit Card",
-
-
+    payment_Amount: "Payment Amount",
+    payment_narration: "Payment Narration",
+    minimum_paymentDue: "Minimum Payment Due",
+    last_outstanding_bal:"Last Outstanding Balance",
+    bdtType_props: [
+        {label: "BDT", value: 0},
+        {label: "USD", value: 1},
+    ],
+    card_holderName: "Card Holder Name",
+    card_number: "Card Number"
 }
 
