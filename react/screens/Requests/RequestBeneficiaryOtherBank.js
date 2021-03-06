@@ -8,7 +8,8 @@ export const GetBeneBank = async (userDetails, props, requestType) => {
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         REQ_TYPE: "BANK",
         MOD_TRAN: "ALL",
-        USER_ID: userDetails.USER_ID
+        USER_ID: userDetails.USER_ID,
+        ...Config.commonReq
     }
 
     console.log("request", request);

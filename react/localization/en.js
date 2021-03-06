@@ -911,7 +911,7 @@ export default {
 
     /*Credential Management*/
     change_login_password: "Change Login Password",
-    change_transaction_password: "Change Transaction Password",
+    change_transaction_password: "Change Transaction PIN",
     forgot_transaction_password: "Forgot Transaction Password",
     change_mobile_pin: "Change Mobile PIN",
 

@@ -761,6 +761,7 @@ const styles = {
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
+        maxHeight:Utility.getDeviceHeight()-100,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

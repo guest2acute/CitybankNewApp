@@ -139,6 +139,7 @@ class PinLogin extends Component {
                 langId: langCode,
             },
         });
+        Config.commonReq = {...Config.commonReq,DISPLAY_LANGUAGE: langCode}
     }
 
     async onSubmit(language) {

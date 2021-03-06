@@ -641,7 +641,7 @@ class ChangeLoginCredential extends Component {
 
     mainLayout(language) {
         return (<View>
-            <Text style={[CommonStyle.labelStyle, {
+           {/* <Text style={[CommonStyle.labelStyle, {
                 color: themeStyle.THEME_COLOR,
                 marginStart: 10,
                 marginEnd: 10,
@@ -649,9 +649,9 @@ class ChangeLoginCredential extends Component {
                 marginBottom: 4
             }]}>
                 {language.type_credential}
-            </Text>
+            </Text>*/}
 
-            <TouchableOpacity
+          {/*  <TouchableOpacity
                 onPress={() => this.openModal("credentialType", language.select_credential_type, language.credentialList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
@@ -660,8 +660,8 @@ class ChangeLoginCredential extends Component {
                     <Image resizeMode={"contain"} style={styles.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
-            </TouchableOpacity>
-            {this.state.select_credential_type.value !== -1 ?
+            </TouchableOpacity>*/}
+
                 <View key={"accountSelection"}>
                     <Text style={[CommonStyle.labelStyle, {
                         color: themeStyle.THEME_COLOR,
@@ -682,7 +682,7 @@ class ChangeLoginCredential extends Component {
                            {/* <Image resizeMode={"contain"} style={styles.arrowStyle}
                                    source={require("../resources/images/ic_arrow_down.png")}/>*/}
                         </View>
-                    </TouchableOpacity></View> : null}
+                    </TouchableOpacity></View>
         </View>)
 
     }
@@ -810,6 +810,7 @@ const styles = {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
+        maxHeight:Utility.getDeviceHeight()-100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

@@ -112,7 +112,8 @@ export default class ApiRequest {
                 REQ_FLAG: "",
                 REG_WITH: type,
                 RES_TYPE: "D",
-                ACTION: "VERIFYUSERACCT"
+                ACTION: "VERIFYUSERACCT",
+                ...Config.commonReq
             };
             console.log("body", request);
 
@@ -242,7 +243,8 @@ export default class ApiRequest {
                 AUTH_FLAG:"USERAUTH",
                 REQUEST_CD:"0",
                 BLOCK_STATUS_CHECK:"Y",
-                BLOCK_AUTH_STATUS:"N"
+                BLOCK_AUTH_STATUS:"N",
+                ...Config.commonReq
             }
 
             console.log("blockReq", blockReq);
@@ -257,9 +259,6 @@ export default class ApiRequest {
         });
 
     }
-
-
-
 
     static apiRequest = new ApiRequest();
 }

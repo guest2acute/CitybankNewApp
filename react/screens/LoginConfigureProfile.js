@@ -400,6 +400,7 @@ class LoginConfigureProfile extends Component {
                 langId: langCode,
             },
         });
+        Config.commonReq = {...Config.commonReq,DISPLAY_LANGUAGE: langCode}
     }
 
     render() {
@@ -534,6 +535,7 @@ const styles = {
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
+        maxHeight:Utility.getDeviceHeight()-100,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

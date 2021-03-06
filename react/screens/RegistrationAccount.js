@@ -34,7 +34,7 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "2251657635001",
+            accountNo: "",
             disableButton: false,
             actName: "",
             placeMobile: "",
@@ -554,8 +554,8 @@ class RegistrationAccount extends Component {
                 actName: response.CUST_NAME,
                 placeMobile: response.MASK_MOBILE_NO,
                 placeEmail: response.MASK_MAIL_ID,
-                conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
-                conf_email: response.MAIL_ID,
+              /*  conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
+                conf_email: response.MAIL_ID,*/
                 signUpResponse: response,
                 hasDebitCard: response.DEBIT_CARD.length > 0
             });
