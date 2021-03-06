@@ -231,7 +231,7 @@ class Accounts extends Component {
 
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
-            await this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.OUTSTANDINGPRINCIPAL : response.BALANCE, accountNo, "");
+            await this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.BALANCE, accountNo, "");
         } else {
             await this.processBalance("", accountNo, "");
         }

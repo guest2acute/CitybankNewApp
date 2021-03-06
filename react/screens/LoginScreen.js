@@ -490,8 +490,6 @@ class LoginScreen extends Component {
                 this.backAction
             );
         }
-       let encryptVal = Secure.encryptData("Test123",Config.key);
-        console.log("encryptVal",encryptVal);
 
     }
 

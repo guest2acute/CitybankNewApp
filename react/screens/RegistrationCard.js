@@ -131,7 +131,7 @@ class RegistrationCard extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat)
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");

@@ -20,6 +20,7 @@ import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import ApiRequest from "../config/ApiRequest";
 import MonthPicker from "react-native-month-year-picker";
+import Config from "../config/Config";
 
 
 
@@ -87,7 +88,7 @@ class ChangeLoginCredential extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat);
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");

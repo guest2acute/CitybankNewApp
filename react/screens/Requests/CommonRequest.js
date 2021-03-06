@@ -35,7 +35,6 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, prop
     let request = {
         ACCT_NO: actNo,
         ACTION: isCard ? "VERIFYCARDGETUID" : "GETUSERALLEXISTS",
-        AUTHORIZATION: Config.AUTH,
         REG_WITH: isCard ? "C" : "A",
         ...Config.commonReq
     }
@@ -54,7 +53,7 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, prop
             console.log("responseVal", result)
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve(result.RESPONSE[0]);
+                return resolve(result);
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 console.log("errorResponse", JSON.stringify(result));

@@ -28,12 +28,14 @@ class More extends Component {
                 {
                     id: "profile",
                     title: language.personalise_profile,
-                    icon: require("../../resources/images/ic_profile.png")
+                    icon: require("../../resources/images/ic_profile.png"),
+                    level1: Config.settings
                 },
                 {
                     id: "changeContact",
                     title: language.change_contact,
-                    icon: require("../../resources/images/contact_icon.png")
+                    icon: require("../../resources/images/contact_icon.png"),
+                    level1: []
                 },
                 {
                     id: "change_Credential",

@@ -54,8 +54,7 @@ export default class ApiRequest {
                 CARD_DETAIL: {
                     ACCT_NO: debitCardNo,
                     CARD_PIN: card_pin,
-                    EXPIRY_DATE: expiry_date.replace(/\//g, ''),
-                    AUTHORIZATION: Config.AUTH
+                    EXPIRY_DATE: expiry_date.replace(/\//g, '')
                 },
                 AUTH_FLAG: authFlag,
                 ACCT_NO: account_no,
@@ -165,7 +164,7 @@ export default class ApiRequest {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
                 MOBILE_NO:response.MOBILE_NO,
-                EMAIL_ID: selectRes.EMAIL_ID,
+                EMAIL_ID: response.EMAIL_ID,
                 USER_ID: response.USER_ID,
                 REQ_FLAG: "R",
                 PASS_TYPE: passType,
@@ -181,8 +180,7 @@ export default class ApiRequest {
                 verifyReq = {
                     ...verifyReq, CARD_DETAIL: {
                         ACCT_NO: actCardNumber, CARD_PIN: pin,
-                        EXPIRY_DATE: expiryDate,
-                        AUTHORIZATION: Config.AUTH
+                        EXPIRY_DATE: expiryDate
                     }, AUTH_FLAG: "CP"
                 };
             } else {

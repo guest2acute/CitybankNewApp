@@ -66,14 +66,6 @@ class SplashScreen extends Component {
         console.log("Config.commonReq ", Config.commonReq);
     }
 
-    async getAuth() {
-        let tokenReq = JSON.stringify({
-            ACTION: "GET_AUTH_CRED",
-        });
-        let result = await ApiRequest.apiRequest.callApi(tokenReq, {});
-        console.log("result", result);
-        Config.AUTH = result;
-    }
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -91,7 +83,6 @@ class SplashScreen extends Component {
         let language = await StorageClass.retrieve(Config.Language);
         await this.callToken();
         this.changeLanguage(language);
-
         this.redirectScreen(loginPref);
     }
 

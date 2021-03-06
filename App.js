@@ -126,16 +126,6 @@ const BottomNavigator = () => {
     );
 }
 
-/*
-function TransferTab() {
-    return (
-        <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-        }}>
-            <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
-        </Stack.Navigator>);
-}
-*/
 
 function TransferTab() {
     return (

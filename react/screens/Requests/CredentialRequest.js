@@ -2,13 +2,13 @@ import Utility from "../../utilize/Utility";
 import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
 
-export const VerifyResetPwd = async (isCard, cityTouchUserId, actNo, resetBy,transactionPin, props) => {
+export const VerifyResetPwd = async (isCard,authToken, cityTouchUserId, actNo, resetBy,transactionPin, props) => {
     console.log("in1");
     let request = {
         DEVICE_ID: await Utility.getDeviceID(),
         USER_ID: cityTouchUserId,
         RESET_BY: resetBy,
-        AUTH_TOKEN: Config.AUTH!==null?Config.AUTH.ACCESS_TOKEN:"",
+        AUTH_TOKEN: authToken,
         PASS_TYPE: "L",
         ACCT_NO: actNo,
         REQ_FLAG: "R",
