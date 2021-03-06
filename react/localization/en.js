@@ -295,8 +295,7 @@ export default {
     ],
     otp_props: [
         {label: "SMS", value: 0},
-        {label: "Email", value: 1},
-        {label: "Both", value: 2},
+        {label: "Email", value: 1}
     ],
 
     userIdOption: [

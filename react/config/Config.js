@@ -7,7 +7,6 @@ import {Dimensions, Platform} from "react-native";
 export default class Config {
 
 
-
     /**
      * API Base url
      * @type {string}
@@ -27,7 +26,7 @@ export default class Config {
     static infoURl = "";
     static contactURl = "";
     static privacyURl = "";
-    static key= "ACUTEAMCBMOBIPRO";
+    static key = "ACUTEAMCBMOBIPRO";
     /**
      * App Version
      */
@@ -41,6 +40,7 @@ export default class Config {
 
     static commonReq = {};
 
+    static userRequest = {};
 
     /*local preference */
 
@@ -51,19 +51,14 @@ export default class Config {
     static DeviceId = "deviceId";
     static isFirstTime = "isFirstTime";
     static ActivityCd = "ACTIVITY_CD";
-    static Language="LANGUAGE";
+    static Language = "LANGUAGE";
 
 
     /*--- end --*/
 
 
-
     static Label = "label";
     static Text = "text";
-
-
-
-
 
 
 }

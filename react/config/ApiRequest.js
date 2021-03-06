@@ -31,7 +31,9 @@ export default class ApiRequest {
                 LOGIN_TYPE: "P",
                 ACTION: "GETOPERATIVEACCT",
                 DEVICE_ID: await Utility.getDeviceID(),
-                AUTH_FLAG: "A"
+                AUTH_FLAG: "A",
+                ...Config.commonReq,
+                ...Config.userRequest
             }
             console.log("actRequest", actRequest);
             let result = await ApiRequest.apiRequest.callApi(actRequest, header);

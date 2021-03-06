@@ -21,6 +21,7 @@ import FontSize from "../../resources/ManageFontSize";
 import ApiRequest from "../../config/ApiRequest";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import themesStyle from "../../resources/theme.style";
+import Config from "../../config/Config";
 
 
 
@@ -100,7 +101,6 @@ class Accounts extends Component {
     }
 
     level3(account) {
-        console.log("account", account);
         return (
             <View key={"level3"}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate("AccountDetails")}>
@@ -139,11 +139,11 @@ class Accounts extends Component {
         let actReq = {
             ACTION: "GETTYPEWISEACLIST",
             CUSTOMER_DTL: userDetails.CUSTOMER_DTL_LIST,
-            SCREEN_TYPE: "DASHBOARD"
+            SCREEN_TYPE: "DASHBOARD",
+            ...Config.userRequest,
+            ...Config.commonReq,
         }
-        console.log("actReq",actReq);
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
-        // result = result[0];
 
         if (result.STATUS === "0") {
             await this.processSummary(result.RESPONSE);
@@ -197,7 +197,6 @@ class Accounts extends Component {
         });
 
         this.setState({isProgress: false, dataList: mainArray}, async () => {
-            console.log("actArr", actArr);
             actArr.map((account) => {
                 this.getBalance(account);
             });
@@ -205,28 +204,34 @@ class Accounts extends Component {
     }
 
     async getBalance(account) {
+
         let accountNo = account.ACCOUNTORCARDNO;
         let balanceReq = {
             ACCT_NO: account.ACCOUNTORCARDNO,
             ACTION: account.PARENTPRODUCTCODE === "FD_ACCOUNT" ? "GETTERMDEPACCTDTL" : account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? "GETLOANACCTDTL" : "GETACCTBALDETAIL",
             SOURCE: account.SOURCE,
-            RES_FLAG: "B", CURRENCYCODE: "BDT"
+            RES_FLAG: "B", CURRENCYCODE: "BDT",
+            APPCUSTOMER_ID: account.APPCUSTOMER_ID
         }
 
         if (account.PRODUCTTYPE === "SBA") {
             balanceReq = {...balanceReq, RES_FLAG: "B", CURRENCYCODE: ""}
         } else {
-            balanceReq = {...balanceReq, APPCUSTOMER_ID: account.APPCUSTOMER_ID}
+            balanceReq = {...balanceReq}
         }
 
-        console.log(account.ACCOUNTORCARDNO + "->balanceReq", balanceReq);
+
+        /*if(account.ACCOUNTORCARDNO !== "4541407554001"){
+            return;
+        }*/
+        console.log(account.PARENTPRODUCTCODE+"-",account.ACCOUNTORCARDNO + "->balanceReq", balanceReq);
         let result = await ApiRequest.apiRequest.callApi(balanceReq, {});
 
         console.log(account.ACCOUNTORCARDNO + "->", result);
 
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
-            await this.processBalance(account.PARENTPRODUCTCODE === "FD_ACCOUNT" ? response.DEPOSITAMOUNT : account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.AVAILBALANCE, accountNo, "");
+            await this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.OUTSTANDINGPRINCIPAL : response.BALANCE, accountNo, "");
         } else {
             await this.processBalance("", accountNo, "");
         }
@@ -235,9 +240,7 @@ class Accounts extends Component {
 
     async processBalance(balance, accountNo, message) {
         balance = balance===""?this.props.language.notAvailable:balance;
-        console.log("accountNo", accountNo);
         let dataList = this.state.dataList;
-        console.log("beforeDataList", JSON.stringify(dataList));
         let objectPos = -1;
         let object;
         let sectionPos = -1;
@@ -260,17 +263,14 @@ class Accounts extends Component {
         }
 
         let level3Arr = dataList[level1Pos].items[level2Pos].items;
-        console.log("level3Arr", level3Arr);
         object = {...object, BALANCE:balance};
         level3Arr[objectPos] = object;
         dataList[level1Pos].items[level2Pos] = {...dataList[level1Pos].items[level2Pos], items: level3Arr};
         dataList[level1Pos] = {...dataList[level1Pos], items: dataList[level1Pos].items};
-        console.log("AfterDataList", JSON.stringify(dataList));
         this.setState({dataList: dataList});
     }
 
     render() {
-        console.log("this.state.dataList", JSON.stringify(this.state.dataList));
         let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>

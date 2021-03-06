@@ -182,10 +182,34 @@ class PinLogin extends Component {
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             await this.processLoginResponse(result, userName);
-        } else {
+        }else if (result.STATUS === "71") {
+            this.deviceChange(result);
+        }  else {
             Utility.alert(result.MESSAGE);
         }
     }
+
+    deviceChange(result) {
+        let that = this;
+        Alert.alert(
+            Config.appName,
+            result.MESSAGE,
+            [
+                {
+                    text:that.props.language.no_txt
+                },
+                {
+                    text:that.props.language.yes_txt, onPress: () =>
+                        this.props.navigation.navigate("TermConditionScreen",
+                            {
+                                showButton: true,
+                                deviceChangeRes:result.RESPONSE[0],
+                            })
+                },
+            ]
+        );
+    }
+
 
     async processLoginResponse(result, userName) {
         let response = result.RESPONSE[0];
@@ -211,6 +235,13 @@ class PinLogin extends Component {
             USER_PROFILE_IMG: response.USER_PROFILE_IMG,
         };
         console.log("userDetails", userDetails);
+
+        Config.userRequest = {
+            ACTIVITY_CD: result.ACTIVITY_CD,
+            CUSTOMER_ID: response.CUSTOMER_ID,
+            USER_ID: response.USER_ID,
+        };
+
 
         this.props.dispatch({
             type: actions.account.SET_USER_DETAILS,

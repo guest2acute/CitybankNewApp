@@ -2,22 +2,15 @@ import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
 import Utility from "../../utilize/Utility";
 
-export const GetBeneBank = async (isCard, actNo, cardPin, expiryDate, props) => {
+export const GetBeneBank = async (userDetails, props, requestType) => {
     let request = {
-        ACCT_NO: actNo,
-        ACTION: isCard ? "VERIFYCARDGETUID" : "GETUSERALLEXISTS",
-        AUTHORIZATION: Config.AUTH,
-        REG_WITH: isCard ? "C" : "A",
-        ...Config.commonReq
+        ACTION: "GETBENFBANK",
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        REQ_TYPE: "BANK",
+        MOD_TRAN: "ALL",
+        USER_ID: userDetails.USER_ID
     }
 
-    if (isCard) {
-        request = {
-            ...request,
-            CARD_PIN: cardPin,
-            EXPIRY_DATE: expiryDate.replace("/", ""),
-        }
-    }
     console.log("request", request);
 
     return new Promise(async (resolve, reject) => {
@@ -25,7 +18,7 @@ export const GetBeneBank = async (isCard, actNo, cardPin, expiryDate, props) => 
             console.log("responseVal", result)
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve(result.RESPONSE[0]);
+                return resolve(result);
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 console.log("errorResponse", JSON.stringify(result));
