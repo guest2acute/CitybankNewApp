@@ -196,7 +196,7 @@ export default {
 
     credentialList: [
         {label: "Change Login Password", value: 0},
-        {label: "Change Login PIN", value: 1},
+        {label: "Change Mobile PIN", value: 1},
     ],
 
     DocumentRequiredForArr: [
@@ -822,6 +822,84 @@ export default {
     card_holderName: "Card Holder Name",
     card_number: "Card Number",
     favorite_payment: "Favorite Payments",
+
+    /*insurance Payments*/
+    policy_number: "Policy Number",
+    policyHolders_name: "Policy Holder's Name",
+    insurancePaid: "Insurance Paid For",
+    insuranceTypeArr: [
+        {key: "0", label: "Premium", value: 0},
+        {key: "1", label: "Application", value: 1},
+        {key: "2", label: "Loan Repayment", value: 2},
+        {key: "3", label: "Reinstatement", value: 3},
+        {key: "4", label: "Balance Premium", value: 4},
+        {key: "5", label: "APL Repayment", value: 5}
+    ],
+    selectInsurance: "Select Insurance Paid For",
+
+    /*more screen*/
+    settings: "My Settings",
+    account_services: "Account Services",
+    card_services: "Card Services",
+    loan_services: "Loan Services",
+    credential_management: "Credential Management",
+    other_qr_feature: "Other Qr Feature",
+    change_contact_details: "Change Contact Details",
+    otp_lock_unlock: "Otp Lock/Unlock",
+    online_purchase: "Online Purchase",
+    enquiry: "Enquiry",
+    rate_cityTouch: "Rate CityTouch",
+    term_condition: "Terms And Conditions",
+
+    /*my setting*/
+    pin_code: "PIN code",
+    user_id: "User ID",
+    retina: "Retina",
+    qr_merchant_payment: "QR Merchant payment",
+
+    /*account srvices*/
+    fixed_deposit:"Fixed Deposit",
+    monthly_Dps: "Monthly Deposit",
+    pay_order: "Pay Order",
+    positive_pay: "Positive Pay",
+    cheque_book_management: "Cheque Book Management",
+    tag_account_cityTouch: "Tag Account CityTouch",
+    edit_account_preview: "Edit Account Preview",
+    request_monitor: "Request Monitor",
+
+    /*Card Services*/
+    active_credit_card: "Active Credit Card",
+    active_debit_card: "Active Debit Card",
+    block_credit_card: "Block Credit Card",
+    block_debit_card: "Block Debit Card",
+    card_pin_reset: "Card PIN Reset",
+    tag_credit_card: "Tag Credit Card In CityTouch",
+
+    /*Loan Services*/
+    quick_loan: "Apply for Quick Loan",
+    loan_closure: "Loan Closure",
+    request_monitor: "Request Monitor",
+    emi_calculator: "EMI Calculator",
+
+    /*Credential Management*/
+    change_login_password: "Change Login Password",
+    change_transaction_password: "Change Transaction Password",
+    forgot_transaction_password: "Forgot Transaction Password",
+    change_mobile_pin: "Change Mobile PIN",
+
+    /*Enquiry screen*/
+    enquiry: "Enquiry",
+    customer_details: "Customer Details",
+    schedule_charges :"Schedule of Changes",
+    products:"Products",
+    submit_query: "Submit Query",
+    atm_branch_search: "Atm & Branch Search",
+    contact_call_center: "Contact Call Center",
+
+
+
+
+
 
 }
 

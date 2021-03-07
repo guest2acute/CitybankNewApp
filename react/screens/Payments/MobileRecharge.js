@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList
+    TextInput, FlatList, Platform, StatusBar
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
@@ -576,7 +576,22 @@ class MobileRecharge extends Component {
             </View>
         )
     }
+
+    componentDidMount() {
+        if (Platform.OS === "android") {
+            this.focusListener = this.props.navigation.addListener("focus", () => {
+                StatusBar.setTranslucent(false);
+                StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
+                StatusBar.setBarStyle("light-content");
+            });
+        }
+        // bottom tab management
+        this.props.navigation.setOptions({
+            tabBarLabel: this.props.language.payments
+        });
+    }
 }
+
 
 const styles = {
     arrowStyle: {
