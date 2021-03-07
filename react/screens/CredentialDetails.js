@@ -37,16 +37,16 @@ class CredentialDetails extends Component {
             selectTypeVal: -1,
             selectCard: props.language.selectCard,
             selectActCard: props.language.accountTypeArr[0],
-            accountNo: "2101038360001",
-            cardPin: "0000",
+            accountNo: "",
+            cardPin: "",
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            expiryDate: "11/23",
-            creditCardNo: "376948112527300",
+            expiryDate: "",
+            creditCardNo: "",
             transactionPin: "",
-            cityTouchUserId: "zebatest2",
+            cityTouchUserId: "",
             errActNo: "",
             errTransPin: "",
             errorUid: "",
@@ -426,14 +426,15 @@ class CredentialDetails extends Component {
         this.setState({isProgress: true});
         let actNo = isCard ? this.state.creditCardNo : this.state.accountNo;
 
-        await VerifyAccountCard(isCard, actNo, this.state.cardPin, this.state.expiryDate, this.props).then(async result => {
-            console.log("VerifyAccountCard", result);
+        await VerifyAccountCard(isCard, actNo, this.state.cardPin, this.state.expiryDate, this.props).then(async response => {
+            console.log("VerifyAccountCard", response);
+            let result = response.RESPONSE[0];
             if (this.state.selectTypeVal > 0 && result.USER_ID !== this.state.responseUserId.USER_ID) {
                 this.setState({isProgress: false});
                 Utility.alert(isCard ? language.errCardMatch : language.errAccountMatch);
                 return;
             }
-            await this.resetPwd(result.USER_ID, actNo, isCard);
+            await this.resetPwd(response.AUTH_TOKEN,result.USER_ID, actNo, isCard);
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -458,11 +459,10 @@ class CredentialDetails extends Component {
         });
     }
 
-    async resetPwd(responseUid, actNo, isCard) {
-        console.log("in");
+    async resetPwd(authToken,responseUid, actNo, isCard) {
         let language = this.props.language;
         this.setState({isProgress: true});
-        await VerifyResetPwd(isCard, responseUid, actNo,
+        await VerifyResetPwd(isCard,authToken, responseUid, actNo,
             this.state.selectTypeVal === 0 ? "U" : "P", this.state.transactionPin, this.props).then(result => {
             console.log("VerifyResetPwd", JSON.stringify(result));
             this.setState({isProgress: false});
@@ -610,7 +610,7 @@ class CredentialDetails extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat)
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");
@@ -990,6 +990,7 @@ const styles = {
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
+        maxHeight:Utility.getDeviceHeight()-100,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

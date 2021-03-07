@@ -93,7 +93,7 @@ class ChangeContactDetails extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat);
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");
@@ -329,8 +329,7 @@ class ChangeContactDetails extends Component {
                 CARD_DETAIL: {
                     ACCT_NO: selectRes.ACCOUNT_NO,
                     CARD_PIN: this.state.cardPin,
-                    EXPIRY_DATE: this.state.expiryDate.replace("/", ""),
-                    AUTHORIZATION: Config.AUTH
+                    EXPIRY_DATE: this.state.expiryDate.replace("/", "")
                 }
             }
             header = {CARD_VERIFY: "Y"};
@@ -883,6 +882,7 @@ const styles = {
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
+        maxHeight:Utility.getDeviceHeight()-100,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

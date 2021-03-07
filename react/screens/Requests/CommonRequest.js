@@ -35,7 +35,6 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, prop
     let request = {
         ACCT_NO: actNo,
         ACTION: isCard ? "VERIFYCARDGETUID" : "GETUSERALLEXISTS",
-        AUTHORIZATION: Config.AUTH,
         REG_WITH: isCard ? "C" : "A",
         ...Config.commonReq
     }
@@ -43,8 +42,11 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, prop
     if (isCard) {
         request = {
             ...request,
-            CARD_PIN: cardPin,
-            EXPIRY_DATE: expiryDate.replace("/", ""),
+            CARD_DETAIL: {
+                ACCT_NO: actNo,
+                CARD_PIN: cardPin,
+                EXPIRY_DATE: expiryDate.replace("/", ""),
+            }
         }
     }
     console.log("request", request);
@@ -54,7 +56,7 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, prop
             console.log("responseVal", result)
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve(result.RESPONSE[0]);
+                return resolve(result);
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 console.log("errorResponse", JSON.stringify(result));
@@ -73,33 +75,19 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, prop
 export const MoreDetails = (language) => {
     console.log("moredetails", language.personalise_profile)
     return [
-        /* {
-             id: "profile",
-             title: language.personalise_profile,
-             icon: require("../../resources/images/ic_profile.png"),
-             redirectScreen: "",
-             level1:[],
-         },
-         {
-             id: "UploadDoc",
-             title: language.upload_documents,
-             icon: require("../../resources/images/ic_credential_management.png"),
-             level2:[],
-             redirectScreen: ""
-         },
-         {
-             id: "changeContact",
-             title: language.change_contact,
-             icon: require("../../resources/images/contact_icon.png"),
-             level3: [],
-             redirectScreen: ""
-         },*/
         {
-            id: "change_Credential",
-            title: language.change_Credential,
+            id: "profile",
+            title: language.personalise_profile,
+            icon: require("../../resources/images/ic_profile.png"),
+            redirectScreen: "Profile",
+            subCategory: [],
+        },
+        {
+            id: "UploadDoc",
+            title: language.upload_documents,
             icon: require("../../resources/images/ic_credential_management.png"),
             subCategory: [],
-            redirectScreen: "ChangeCredential"
+            redirectScreen: "UploadSupportDoc"
         },
         {
             id: "Settings",
@@ -279,17 +267,17 @@ export const MoreDetails = (language) => {
                     redirectScreen: "ChangeLoginCredential"
                 },
                 {
-                    id: "changeTransactionPassword",
+                    id: "ChangeTransPin",
                     title: language.change_transaction_password,
                     icon: require("../../resources/images/ic_pin_code.png"),
-                    redirectScreen: ""
+                    redirectScreen: "ChangeTransPin"
                 },
-              /*  {
-                    id: "forgotTransactionPassword",
-                    title: language.forgot_transaction_password,
-                    icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: ""
-                },*/
+                /*  {
+                      id: "forgotTransactionPassword",
+                      title: language.forgot_transaction_password,
+                      icon: require("../../resources/images/ic_credit_card.png"),
+                      redirectScreen: ""
+                  },*/
                 {
                     id: "changeMobilePin",
                     title: language.change_mobile_pin,
@@ -310,7 +298,7 @@ export const MoreDetails = (language) => {
             title: language.change_contact_details,
             icon: require("../../resources/images/contact_icon.png"),
             subCategory: [],
-            redirectScreen: ""
+            redirectScreen: "ChangeLoginCredential"
         },
         {
             id: "otpLockUnlock",

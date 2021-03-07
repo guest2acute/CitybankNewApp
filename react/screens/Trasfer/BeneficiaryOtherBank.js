@@ -608,6 +608,7 @@ const styles = {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
+        maxHeight:Utility.getDeviceHeight()-100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

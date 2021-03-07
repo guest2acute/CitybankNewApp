@@ -15,8 +15,6 @@ import {Provider} from "react-redux";
 import configureStore from "./react/redux/store/configureStore";
 import LoginScreen from "./react/screens/LoginScreen";
 import CredentialDetails from "./react/screens/CredentialDetails";
-import OTPScreen from "./react/screens/OTPScreen";
-import OTPVerification from "./react/screens/OTPVerification";
 import TermConditionScreen from "./react/screens/TermConditionScreen";
 import WebScreen from "./react/screens/WebScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
@@ -61,13 +59,14 @@ import MobileRecharge from "./react/screens/Payments/MobileRecharge";
 import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOtherBank";
 import CityCreditCard from "./react/screens/Payments/CityCreditCard";
 import SecurityVerification from "./react/screens/Trasfer/SecurityVerification";
+
 import MySettings from "./react/screens/More/MySettings";
 import CredentialManagement from "./react/screens/More/CredentialManagement";
 import AccountServices from "./react/screens/More/AccountServices";
 import CardServices from "./react/screens/More/CardServices";
 import LoanServices from "./react/screens/More/LoanServices";
-
-
+import OTPVerification from "./react/screens/OTPVerification";
+import OTPScreen from "./react/screens/OTPScreen";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
@@ -131,16 +130,6 @@ const BottomNavigator = () => {
     );
 }
 
-/*
-function TransferTab() {
-    return (
-        <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-        }}>
-            <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
-        </Stack.Navigator>);
-}
-*/
 
 function TransferTab() {
     return (
@@ -198,6 +187,7 @@ function MoreTab() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="More" component={More} options={{headerShown: false}}/>
+            <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
             <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeTransPin" component={ChangeTransPin} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
@@ -226,10 +216,10 @@ function Root() {
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>
-            <Stack.Screen name="OTPVerification" component={OTPVerification} options={{headerShown: false}}/>
-            <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown: false}}/>
             <Stack.Screen name="TermConditionScreen" component={TermConditionScreen} options={{headerShown: false}}/>
             <Stack.Screen name="WebScreen" component={WebScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="OTPVerification" component={OTPVerification} options={{headerShown: false}}/>
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationAccount" component={RegistrationAccount} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationCard" component={RegistrationCard} options={{headerShown: false}}/>

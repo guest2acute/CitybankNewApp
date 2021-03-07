@@ -33,7 +33,8 @@ export default class Config {
     static iosAppVersion = "Version 1.0";
     static androidAppVersion = "Version 1.0";
     static apiVersion = "1.0";
-    static AUTH = null;
+
+    static ExpiryDateFormat:"YY/MM"
 
     static CP_AUTH_TYPE = "CP";
     static TP_AUTH_TYPE = "TP";

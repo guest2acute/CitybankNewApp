@@ -1,7 +1,7 @@
 import {actions} from "./../actions/index";
 import en from "../../localization/en";
-import bn from "../../localization/bangla";
-import bangla from "../../localization/bangla";
+import bn from "../../localization/bn";
+
 
 
 const initialState = {
@@ -20,7 +20,7 @@ export function accountReducer(state = initialState, action) {
                 {
                     ...state,
                     langId: action.payload.langId,
-                    language: action.payload.langId === 'en' ? en : bangla,
+                    language: action.payload.langId === 'en' ? en : bn,
                 },
             );
         case actions.account.CHANGE_LOGIN_PREF:

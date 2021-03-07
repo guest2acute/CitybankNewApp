@@ -10,7 +10,8 @@ export const GETACCTBALDETAIL = (accountNo, props) => {
             RES_FLAG: "D",
             ACTION: "GETACCTBALDETAIL",
             SOURCE: "FINACLE",
-            CURRENCYCODE: ""
+            CURRENCYCODE: "",
+            ...Config.commonReq
         }
         console.log("GETACCTBALDETAIL", request);
         await ApiRequest.apiRequest.callApi(request, {}).then(result => {
@@ -42,6 +43,7 @@ export const AddBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EM
             AUTH_FLAG:userDetails.AUTH_FLAG,
             DEVICE: Platform.OS,
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            ...Config.commonReq,
             BENE_LIST: [{
                 LIMIT_AMT: "0",
                 TO_ACCT_NO: accountRes.ACCOUNT,

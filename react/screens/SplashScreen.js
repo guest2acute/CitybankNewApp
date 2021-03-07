@@ -8,7 +8,6 @@ import themeStyle from "../resources/theme.style";
 import Utility from "../utilize/Utility";
 import {StackActions} from "@react-navigation/native";
 import StorageClass from "../utilize/StorageClass";
-import ApiRequest from "../config/ApiRequest";
 import * as DeviceInfo from "react-native-device-info";
 
 /**
@@ -44,6 +43,7 @@ class SplashScreen extends Component {
                     langId: language,
                 },
             });
+            Config.commonReq = {...Config.commonReq,DISPLAY_LANGUAGE: language}
         }
     }
 
@@ -62,18 +62,11 @@ class SplashScreen extends Component {
             REQ_FLAG: "R",
             DEVICE_USER_NM: await DeviceInfo.getCarrier(),
             VERSION: Config.apiVersion,
+            DISPLAY_LANGUAGE: this.props.langId,
         }
         console.log("Config.commonReq ", Config.commonReq);
     }
 
-    async getAuth() {
-        let tokenReq = JSON.stringify({
-            ACTION: "GET_AUTH_CRED",
-        });
-        let result = await ApiRequest.apiRequest.callApi(tokenReq, {});
-        console.log("result", result);
-        Config.AUTH = result;
-    }
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -90,9 +83,8 @@ class SplashScreen extends Component {
         let loginPref = await StorageClass.retrieve(Config.LoginPref);
         let language = await StorageClass.retrieve(Config.Language);
         await this.callToken();
-        this.changeLanguage(language);
-
-        this.redirectScreen(loginPref);
+        await this.changeLanguage(language);
+        await this.redirectScreen(loginPref);
     }
 
     render() {

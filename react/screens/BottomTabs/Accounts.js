@@ -211,7 +211,8 @@ class Accounts extends Component {
             ACTION: account.PARENTPRODUCTCODE === "FD_ACCOUNT" ? "GETTERMDEPACCTDTL" : account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? "GETLOANACCTDTL" : "GETACCTBALDETAIL",
             SOURCE: account.SOURCE,
             RES_FLAG: "B", CURRENCYCODE: "BDT",
-            APPCUSTOMER_ID: account.APPCUSTOMER_ID
+            APPCUSTOMER_ID: account.APPCUSTOMER_ID,
+            ...Config.commonReq,
         }
 
         if (account.PRODUCTTYPE === "SBA") {
@@ -220,18 +221,11 @@ class Accounts extends Component {
             balanceReq = {...balanceReq}
         }
 
-
-        /*if(account.ACCOUNTORCARDNO !== "4541407554001"){
-            return;
-        }*/
-        console.log(account.PARENTPRODUCTCODE+"-",account.ACCOUNTORCARDNO + "->balanceReq", balanceReq);
         let result = await ApiRequest.apiRequest.callApi(balanceReq, {});
-
-        console.log(account.ACCOUNTORCARDNO + "->", result);
 
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
-            await this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.OUTSTANDINGPRINCIPAL : response.BALANCE, accountNo, "");
+            await this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.BALANCE, accountNo, "");
         } else {
             await this.processBalance("", accountNo, "");
         }
@@ -243,7 +237,6 @@ class Accounts extends Component {
         let dataList = this.state.dataList;
         let objectPos = -1;
         let object;
-        let sectionPos = -1;
         let level1Pos = -1;
         let level2Pos = -1;
         for (let l1 = 0; l1 < dataList.length; l1++) {

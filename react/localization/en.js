@@ -30,7 +30,7 @@ export default {
     selectType: "Select Type",
     selectActType: "Select Account Type",
     type_act: "Type of Account *",
-    changeIn:"Change in",
+    changeIn: "Change in",
     actNo: "Account Number",
     actName: "Account Name",
     actNo_here: "Enter account number here",
@@ -93,6 +93,9 @@ export default {
     provideDetails: "Welcome to CityTouch Online Registration process. Please provide below details.",
     account: "Accounts",
     city_pay: "CityPay",
+    qrId: "QR ID",
+    et_qr: "Enter QR ID here",
+    errorQRId:"Please enter QR ID",
     more: "More",
     payments: "Payments",
     transfer: "Transfer",
@@ -169,9 +172,9 @@ export default {
     PINLogin: "PIN Login",
     PinNumber: "Enter Your PIN Number",
     errSelRequest: "Please select request",
-    invalidFatherName:"Invalid Father Name",
-    invalidMotherName:"Invalid Mother Name",
-    invalidDob:"Invalid Date of Birth",
+    invalidFatherName: "Invalid Father Name",
+    invalidMotherName: "Invalid Mother Name",
+    invalidDob: "Invalid Date of Birth",
     Language_M: [
         {label: "English", value: 0},
         {label: "বাংলা", value: 1},
@@ -273,9 +276,9 @@ export default {
     maskingMobile: "Please enter the missing letters of mobile",
     maskingEmail: "Please enter the missing letters of email",
     wrongEmail: "Please enter correct email address",
-    errorLUserID : "Length of user id should be 8 to 12 characters.",
-    errorAUserID : "User id can be character or combination of alphanumeric and special characters.",
-    errorTerm : "Please accept term and conditions",
+    errorLUserID: "Length of user id should be 8 to 12 characters.",
+    errorAUserID: "User id can be character or combination of alphanumeric and special characters.",
+    errorTerm: "Please accept term and conditions",
 
     /*arrays*/
     optionTypeArr: [
@@ -304,23 +307,47 @@ export default {
     ],
 
     transfer_props: [
-        {id:"cityBankAcct",title: "City Bank Account", icon: require("../resources/images/ic_city_bank_account.png")},
-        {id:"otherBankAcct",title: "Other Bank Account", icon: require("../resources/images/contact_icon.png")},
-        {id:"cashByCode",title: "Cash By Code", icon: require("../resources/images/case_by_code.png")},
-        {id:"emailTransfer",title: "Email Transfer", icon: require("../resources/images/email_transfer.png")},
-        {id:"transferToBkash",title: "Transfer To Bkash", icon: require("../resources/images/transfer_to_bkash.png")},
-        {id:"beneficiaryManagement",title: "Beneficiary Management", icon: require("../resources/images/beneficiary_management.png")},
-        {id:"favoriteTransfer",title: "Favorite Transfers", icon: require("../resources/images/ic_facourite_transfer.png")},
-        {id:"transferHistory",title: "Transfer History", icon: require("../resources/images/ic_transfer_istory.png")}
+        {id: "cityBankAcct", title: "City Bank Account", icon: require("../resources/images/ic_city_bank_account.png")},
+        {id: "otherBankAcct", title: "Other Bank Account", icon: require("../resources/images/contact_icon.png")},
+        {id: "cashByCode", title: "Cash By Code", icon: require("../resources/images/case_by_code.png")},
+        {id: "emailTransfer", title: "Email Transfer", icon: require("../resources/images/email_transfer.png")},
+        {id: "transferToBkash", title: "Transfer To Bkash", icon: require("../resources/images/transfer_to_bkash.png")},
+        {
+            id: "beneficiaryManagement",
+            title: "Beneficiary Management",
+            icon: require("../resources/images/beneficiary_management.png")
+        },
+        {
+            id: "favoriteTransfer",
+            title: "Favorite Transfers",
+            icon: require("../resources/images/ic_facourite_transfer.png")
+        },
+        {id: "transferHistory", title: "Transfer History", icon: require("../resources/images/ic_transfer_istory.png")}
     ],
     payments_props: [
-        {id:"MobileRecharge",title: "Mobile Recharge", icon: require("../resources/images/ic_mobile_recharge.png")},
-        {id:"CityCreditCard",title: "City Credit Card", icon: require("../resources/images/ic_city_credit_card.png")},
-        {id:"ValueAddedServices",title: "Value Added Services", icon: require("../resources/images/ic_value_added_services.png")},
-        {id:"VisaInstantPayment",title: "Visa Instant Payment", icon: require("../resources/images/ic_visa_instant_payments.png")},
-        {id:"BeneficiaryManagement",title: "Beneficiary Management", icon: require("../resources/images/beneficiary_management.png")},
-        {id:"FavoritePayments",title: "Favorite Payments", icon: require("../resources/images/ic_facourite_transfer.png")},
-        {id:"PaymentHistory",title: "Payment History", icon: require("../resources/images/ic_transfer_istory.png")},
+        {id: "MobileRecharge", title: "Mobile Recharge", icon: require("../resources/images/ic_mobile_recharge.png")},
+        {id: "CityCreditCard", title: "City Credit Card", icon: require("../resources/images/ic_city_credit_card.png")},
+        {
+            id: "ValueAddedServices",
+            title: "Value Added Services",
+            icon: require("../resources/images/ic_value_added_services.png")
+        },
+        {
+            id: "VisaInstantPayment",
+            title: "Visa Instant Payment",
+            icon: require("../resources/images/ic_visa_instant_payments.png")
+        },
+        {
+            id: "BeneficiaryManagement",
+            title: "Beneficiary Management",
+            icon: require("../resources/images/beneficiary_management.png")
+        },
+        {
+            id: "FavoritePayments",
+            title: "Favorite Payments",
+            icon: require("../resources/images/ic_facourite_transfer.png")
+        },
+        {id: "PaymentHistory", title: "Payment History", icon: require("../resources/images/ic_transfer_istory.png")},
         {}
     ],
 
@@ -499,13 +526,13 @@ export default {
     transfer_history: "Transfer History",
 
     /*beneficiary management message*/
-    add_beneficiary:"Add Beneficiary",
-    delete_beneficiary:"Delete Beneficiary",
-    beneficiary_management:"Beneficiary Managements",
+    add_beneficiary: "Add Beneficiary",
+    delete_beneficiary: "Delete Beneficiary",
+    beneficiary_management: "Beneficiary Managements",
 
-    type_transfer:"Type Of Transfer *",
+    type_transfer: "Type Of Transfer *",
     select_type_transfer: "Select Transfer Type",
-    select_beneficiary_type:"Select Beneficiary Type",
+    select_beneficiary_type: "Select Beneficiary Type",
     transferTypeArr: [
         {key: "0", label: "Transfer Within City Bank", value: 0},
         {key: "1", label: "Transfer Other Bank", value: 1},
@@ -519,31 +546,30 @@ export default {
         {key: "2", label: "Transfer Within City Bank", value: 2},
         {key: "3", label: "Transfer Other Bank", value: 3}
     ],
-    notAvailable:"Not available",
+    notAvailable: "Not available",
     add_beneficiary_wcb: "Add Beneficiary-Within City Bank",
-    nick_name:"Nick Name",
-    account_holder_name:"Account Holder Name",
-    currency : "Currency",
+    nick_name: "Nick Name",
+    account_holder_name: "Account Holder Name",
+    currency: "Currency",
     type_act: "Type Of Account",
     beneficiary_mobile_number: "Beneficiary Mobile Number",
-    beneficiary_Email_Address:"Beneficiary Email Address",
-    et_placeholder:"Please fill up",
-    acc_number:"Account Number",
+    beneficiary_Email_Address: "Beneficiary Email Address",
+    et_placeholder: "Please fill up",
+    acc_number: "Account Number",
     beneficiary_mo_number: "Beneficiary Mobile Number",
-    et_name_number:"Enter name or number",
-
-    /*error message*/
+    et_name_number: "Enter name or number",
+    scanQrCode: "Scan QR Code",
     require_nickname: "Nick Name is Requirered",
     require_accnumber: "Account Number is  Required",
     require_valid_actNumber: "Invalid Account Number",
     require_cardname: "Account Card Name is Required",
-    require_cardnumber:"Account Card number is Required",
+    require_cardnumber: "Account Card number is Required",
     require_bkash: "Bkash Account is required",
     require_name: "Name is required",
     require_bname: "Beneficiary Name is required",
     require_email: "Email Address is required",
 
-    add_beneficiary_wob:"Add Beneficiary-Other Bank",
+    add_beneficiary_wob: "Add Beneficiary-Other Bank",
     acc_card_number: "Account/Card Number",
     acc_card_name: "Account/Card Name",
 
@@ -565,7 +591,7 @@ export default {
         {key: "13", label: "City Bank N A", value: 13},
         {key: "14", label: "Dhaka Bank Ltd", value: 14},
     ],
-    districtTypeArr:[
+    districtTypeArr: [
         {key: "0", label: "BAGERATH", value: 0},
         {key: "1", label: "BANDARBAN", value: 1},
         {key: "2", label: "BARGUNA", value: 2},
@@ -575,14 +601,14 @@ export default {
         {key: "6", label: "CHANDPUR", value: 6},
         {key: "7", label: "COMILLA", value: 7},
     ],
-    type_bank:"Bank Name",
-    select_bank_type:"Select Bank Name",
-    type_district:"District Name",
-    select_type_account:"Select Account Type",
-    select_district_type:"Select District Name",
+    type_bank: "Bank Name",
+    select_bank_type: "Select Bank Name",
+    type_district: "District Name",
+    select_type_account: "Select Account Type",
+    select_district_type: "Select District Name",
     select_branch_type: "Select Branch Name",
     type_Branch: "Branch Name",
-    districtTypeArr:[
+    districtTypeArr: [
         {key: "0", label: "BAGERATH", value: 0},
         {key: "1", label: "BANDARBAN", value: 1},
         {key: "2", label: "BARGUNA", value: 2},
@@ -592,7 +618,7 @@ export default {
         {key: "6", label: "CHANDPUR", value: 6},
         {key: "7", label: "COMILLA", value: 7},
     ],
-    branchTypeArr:[
+    branchTypeArr: [
         {key: "0", label: "kadi", value: 0},
         {key: "1", label: "kalol", value: 1},
         {key: "2", label: "ahemdabad", value: 2},
@@ -602,10 +628,11 @@ export default {
         {key: "6", label: "rajkot", value: 6},
         {key: "7", label: "sitapur", value: 7},
     ],
-    select_brach:"select branch",
-    select_branch_name:"Select Branch Name",
+    select_brach: "select branch",
+    select_branch_name: "Select Branch Name",
 
     notes: "Notes",
+    note: "Note:",
 
     add_beneficiary_transfer: "Add Beneficiary-Transfer to bkash",
     bkash_account: "bkash Account",
@@ -633,9 +660,9 @@ export default {
     nickTypeArr: [
         {key: "0", label: "Ebad Vai", value: 0},
         {key: "1", label: "Masvm", value: 1},
-        {key: "2", label: "Onn bKash", value: 2 }
+        {key: "2", label: "Onn bKash", value: 2}
     ],
-    cardNumber : [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
+    cardNumber: [{key: "0", label: "1234567890123456", value: 1234567890123456}, {
         key: "1",
         label: "4567890123456123",
         value: 4567890123456123
@@ -647,7 +674,7 @@ export default {
 
     /*Cash By Code message*/
     cashbycode: "Cash By Code",
-    select_debit_card:"Select Debit Card",
+    select_debit_card: "Select Debit Card",
     select_card_title: "Select Card  to Generate",
     select_card: "Select Card",
     cash_select_acct: "Debit Card",
@@ -657,7 +684,7 @@ export default {
         {label: "SMS", value: 1},
         {label: "Email", value: 2},
     ],
-    case_code_via:"Case Code Via",
+    case_code_via: "Case Code Via",
 
     /*error message*/
     error_amount: "Total Amount is Required",
@@ -673,14 +700,14 @@ export default {
     ],
     select_from_account: "Select From Account",
     to_account: "To Account",
-    select_acct:"Select From Account",
+    select_acct: "Select From Account",
     vat: "VAT",
 
 
-    fund_select_acct:"Select From Account",
+    fund_select_acct: "Select From Account",
     select_to_acct: "Select To Account",
     to_acct: "To Account",
-    balanceTypeArr:[
+    balanceTypeArr: [
         {key: "0", label: "2000", value: 0},
         {key: "1", label: "5000", value: 1},
         {key: "2", label: "10000", value: 2},
@@ -690,17 +717,17 @@ export default {
     ownAccount: "OWN ACCOUNT",
     cityAccount: "CITY ACCOUNT",
     payment_date: "Payment Date",
-    select_payment_date:"Select Payment Date",
+    select_payment_date: "Select Payment Date",
     Frequency: "Frequency",
     select_payment: "Select Payment Frequency",
     number_of_payment: "Number Of Payment",
-    payment_array : [{key: "0", label: "Monthly", value: 1234567890123456},
-        {key: "1",label: "Quartely",value: 4567890123456123},
-        {key: "1",label: "Halfyearly",value: 4567890123456123},
-        {key: "1",label: "Yearly",value: 4567890123456123}
+    payment_array: [{key: "0", label: "Monthly", value: 1234567890123456},
+        {key: "1", label: "Quartely", value: 4567890123456123},
+        {key: "1", label: "Halfyearly", value: 4567890123456123},
+        {key: "1", label: "Yearly", value: 4567890123456123}
     ],
 
-    error_payment_ammt:"Payment Amount is Required",
+    error_payment_ammt: "Payment Amount is Required",
     error_less_ammt: "Transfer Amount should be greater then or equal to 500.",
     error_payment_date: "Select Payment Date",
     error_numberPayment: "Number of payment is Required",
@@ -720,7 +747,7 @@ export default {
         {label: "RTGS(Instant Transfer)", value: 1},
         {label: "NPSB(Instant Transfer)", value: 2},
     ],
-    transfer_mode :"Transfer Mode",
+    transfer_mode: "Transfer Mode",
 
     /* Favorite Transfer screen message*/
     Donation: "Donation",
@@ -731,24 +758,24 @@ export default {
     /* Email Transfer screen message*/
     send: "SEND",
     waiting: "WAITING",
-    send_message:" You can transfer fund Email Transfer.",
+    send_message: " You can transfer fund Email Transfer.",
     email: "Email",
     email_transfer: "Email Transfer",
     payment_amount: "Payment Amount",
     security_questions: "Security Questions",
     answer: "Answer (case sensitive)",
-    security_pl_holder:"Enter Your Security Question",
-    payment_amount_pl:"Enter Payment Amount Here",
-    answer_pl:"Enter Your Answer",
+    security_pl_holder: "Enter Your Security Question",
+    payment_amount_pl: "Enter Payment Amount Here",
+    answer_pl: "Enter Your Answer",
     beneficiary_type: "Beneficiary",
 
     /*error message*/
-    err_payment_amount:"Payment amount is required",
-    err_security:"Enter Your Security Question",
+    err_payment_amount: "Payment amount is required",
+    err_security: "Enter Your Security Question",
     error_answer: "Enter Your Answer",
 
     update_beneficiary: "Update Beneficiary - Other Bank",
-    select_txt:"Select",
+    select_txt: "Select",
 
     /*Select Beneficiary*/
     select_beneficiary: "Select Beneficiary",
@@ -756,7 +783,7 @@ export default {
     /*Mobile Recharge*/
     operatorType: "Operator",
     select_operator_type: "Select Operator",
-    SelectOperator : "Select Operator",
+    SelectOperator: "Select Operator",
     operatorsTypeArr: [
         {key: "0", label: "grameenphone", value: 0},
         {key: "1", label: "Banglink", value: 1},
@@ -793,20 +820,21 @@ export default {
     cards: "Cards",
     select_card: "Select Cards",
     cardPin: "Card PIN",
-    et_cardPlaceholder:" Enter Card Pin",
+    et_cardPlaceholder: " Enter Card Pin",
     add: "Add",
     security_verification: "CityTouch Security verification",
-    errSecurity:"Can not be blank",
+    errSecurity: "Can not be blank",
     transactionPin: "Transaction PIN",
-    et_TransPlaceholder:"Enter PIN Here",
+    et_TransPlaceholder: "Enter PIN Here",
     errorTransactionPin: "Please enter 4 digit Transaction PIN",
-    transactionTitle:"Enter Transaction PIN",
+    transactionTitle: "Enter Transaction PIN",
 
-
+    /*notes*/
+    scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
 
 
     /*Credit Card Payment*/
-    own_creditCardPayment:"OWN CREDIT CARD PAYMENT",
+    own_creditCardPayment: "OWN CREDIT CARD PAYMENT",
     other_creditCardPayment: "OTHER CREDIT CARD PAYMENT",
     creditCardTitle: "Credit Card Payment",
     creditCard: "Credit Card",
@@ -814,7 +842,7 @@ export default {
     payment_Amount: "Payment Amount",
     payment_narration: "Payment Narration",
     minimum_paymentDue: "Minimum Payment Due",
-    last_outstanding_bal:"Last Outstanding Balance",
+    last_outstanding_bal: "Last Outstanding Balance",
     bdtType_props: [
         {label: "BDT", value: 0},
         {label: "USD", value: 1},
@@ -883,7 +911,7 @@ export default {
 
     /*Credential Management*/
     change_login_password: "Change Login Password",
-    change_transaction_password: "Change Transaction Password",
+    change_transaction_password: "Change Transaction PIN",
     forgot_transaction_password: "Forgot Transaction Password",
     change_mobile_pin: "Change Mobile PIN",
 
