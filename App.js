@@ -61,6 +61,11 @@ import MobileRecharge from "./react/screens/Payments/MobileRecharge";
 import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOtherBank";
 import CityCreditCard from "./react/screens/Payments/CityCreditCard";
 import SecurityVerification from "./react/screens/Trasfer/SecurityVerification";
+import MySettings from "./react/screens/More/MySettings";
+import CredentialManagement from "./react/screens/More/CredentialManagement";
+import AccountServices from "./react/screens/More/AccountServices";
+import CardServices from "./react/screens/More/CardServices";
+import LoanServices from "./react/screens/More/LoanServices";
 
 
 
@@ -198,6 +203,11 @@ function MoreTab() {
             <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeContactDetails" component={ChangeContactDetails} options={{headerShown: false}}/>
             <Stack.Screen name="UploadSupportDoc" component={UploadSupportDoc} options={{headerShown: false}}/>
+            <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
+            <Stack.Screen name="AccountServices" component={AccountServices} options={{headerShown: false}}/>
+            <Stack.Screen name="CardServices" component={CardServices} options={{headerShown: false}}/>
+            <Stack.Screen name="LoanServices" component={LoanServices} options={{headerShown: false}}/>
+            <Stack.Screen name="MySettings" component={MySettings} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -206,6 +216,13 @@ function Root() {
         <Stack.Navigator initialRouteName={"SplashScreen"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
+          {/*  <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
+            <Stack.Screen name="More" component={More} options={{headerShown: false}}/>
+            <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
+            <Stack.Screen name="AccountServices" component={AccountServices} options={{headerShown: false}}/>
+            <Stack.Screen name="CardServices" component={CardServices} options={{headerShown: false}}/>
+            <Stack.Screen name="LoanServices" component={LoanServices} options={{headerShown: false}}/>
+            <Stack.Screen name="MySettings" component={MySettings} options={{headerShown: false}}/>*/}
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>
