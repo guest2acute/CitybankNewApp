@@ -859,7 +859,7 @@ export default {
 
     /*account srvices*/
     fixed_deposit:"Fixed Deposit",
-    monthly_Dps: "Monthly Deposit",
+    monthly_Dps: "Monthly DPS",
     pay_order: "Pay Order",
     positive_pay: "Positive Pay",
     cheque_book_management: "Cheque Book Management",

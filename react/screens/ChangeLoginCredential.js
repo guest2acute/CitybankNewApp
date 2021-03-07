@@ -58,7 +58,13 @@ class ChangeLoginCredential extends Component {
             showMonthPicker: false,
             title:props.route.params.title,
         }
+        console.log("title",props.route.params.title)
+        console.log("password",props.language.change_login_password)
         console.log("check it",props.route.params.title === props.language.change_login_password)
+        console.log("credentialList[0]",props.language.credentialList[0])
+        console.log("credentialList[1]",props.language.credentialList[1])
+
+
     }
 
     renderSeparator = () => {

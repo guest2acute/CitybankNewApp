@@ -153,31 +153,31 @@ export const MoreDetails = (language) => {
                 {
                     id: "Pay Order",
                     title: language.pay_order,
-                    icon: require("../../resources/images/ic_credit_card.png"),
+                    icon: require("../../resources/images/ic_pay_order.png"),
                     redirectScreen: ""
                 },
                 {
                     id: "Positive Pay",
                     title: language.positive_pay,
-                    icon: require("../../resources/images/ic_credit_card.png"),
+                    icon: require("../../resources/images/ic_positive_pay.png"),
                     redirectScreen: ""
                 },
                 {
                     id: "ChequeBookManagement",
                     title: language.cheque_book_management,
-                    icon: require("../../resources/images/ic_credit_card.png"),
+                    icon: require("../../resources/images/ic_cheque_book_management.png"),
                     redirectScreen: ""
                 },
                 {
                     id: "TagAccountCityTouch",
                     title: language.tag_account_cityTouch,
-                    icon: require("../../resources/images/ic_credit_card.png"),
+                    icon: require("../../resources/images/ic_tag_account.png"),
                     redirectScreen: ""
                 },
                 {
                     id: "EditAccountPreview",
                     title: language.edit_account_preview,
-                    icon: require("../../resources/images/ic_credit_card.png"),
+                    icon: require("../../resources/images/ic_account_preview.png"),
                     redirectScreen: ""
                 },
                 {
@@ -192,15 +192,79 @@ export const MoreDetails = (language) => {
             id: "CardServices",
             title: language.card_services,
             icon: require("../../resources/images/ic_credit_card.png"),
-            subCategory: [],
-            redirectScreen: "CardServices"
+            redirectScreen: "CardServices",
+            subCategory: [
+                {
+                    id: "ActiveCreditCard",
+                    title: language.active_credit_card,
+                    icon: require("../../resources/images/ic_card_active.png"),
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "ActiveDebitCard",
+                    title: language.active_debit_card,
+                    icon: require("../../resources/images/ic_debit_card_active.png"),
+                    subCategory: [],
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "BlockCreditCard",
+                    title: language.block_credit_card,
+                    icon: require("../../resources/images/ic_credit_card_block.png"),
+                    subCategory: [],
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "BlockDebitCard",
+                    title: language.block_debit_card,
+                    icon: require("../../resources/images/ic_card_block.png"),
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "CardPINReset",
+                    title: language.card_pin_reset,
+                    icon: require("../../resources/images/ic_pin_code_change.png"),
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "TagCreditCardInCityTouch",
+                    title: language.tag_credit_card,
+                    icon: require("../../resources/images/ic_credit_card.png"),
+                    redirectScreen: "LoanServices"
+                }
+            ],
         },
         {
             id: "LoanServices",
             title: language.loan_services,
             icon: require("../../resources/images/ic_bank_loan.png"),
-            subCategory: [],
-            redirectScreen: "LoanServices"
+            redirectScreen: "LoanServices",
+            subCategory: [
+                {
+                    id: "QuickLoan",
+                    title: language.quick_loan,
+                    icon: require("../../resources/images/ic_credit_card.png"),
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "LoanClosure",
+                    title: language.loan_closure,
+                    icon: require("../../resources/images/ic_loan_closure.png"),
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "RequestMonitor",
+                    title: language.request_monitor,
+                    icon: require("../../resources/images/ic_monitor.png"),
+                    redirectScreen: "LoanServices"
+                },
+                {
+                    id: "EmiCalculator",
+                    title: language.emi_calculator,
+                    icon: require("../../resources/images/ic_emi_calculator.png"),
+                    redirectScreen: "LoanServices"
+                }
+            ],
         },
         {
             id: "credentialManagement",
@@ -266,8 +330,45 @@ export const MoreDetails = (language) => {
             id: "Enquiry",
             title: language.enquiry,
             icon: require("../../resources/images/ic_enquiry_icon.png"),
-            subCategory: [],
-            redirectScreen: ""
+            redirectScreen: "Enquiry",
+            subCategory: [
+                {
+                    id: "Enquiry",
+                    title: language.enquiry,
+                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    redirectScreen: "Enquiry"
+                },
+                {
+                    id: "CustomerDetails",
+                    title: language.customer_details,
+                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    redirectScreen: "CustomerDetails"
+                },
+                {
+                    id: "ScheduleCharges",
+                    title: language.schedule_charges,
+                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    redirectScreen: "ScheduleCharges"
+                },
+                {
+                    id: "Products",
+                    title: language.products,
+                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    redirectScreen: "ScheduleCharges"
+                },
+                {
+                    id: "SubmitQuery",
+                    title: language.submit_query,
+                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    redirectScreen: "SubmitQuery"
+                },
+                {
+                    id: "AtmBranchSearch",
+                    title: language.atm_branch_search,
+                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    redirectScreen: "AtmBranchSearch"
+                },
+            ],
         },
         {
             id: "RateCityTouch",
@@ -283,7 +384,5 @@ export const MoreDetails = (language) => {
             subCategory: [],
             redirectScreen: ""
         },
-
     ];
-
 }
