@@ -54,7 +54,7 @@ export default class ApiRequest {
                 CARD_DETAIL: {
                     ACCT_NO: debitCardNo,
                     CARD_PIN: card_pin,
-                    EXPIRY_DATE: expiry_date.replace(/\//g, '')
+                    EXPIRY_DATE: Utility.reverseString(expiry_date),
                 },
                 AUTH_FLAG: authFlag,
                 ACCT_NO: account_no,
@@ -160,7 +160,7 @@ export default class ApiRequest {
     }
 
 
-    verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response,passType, props) => {
+    verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response,passType,otp_type, props) => {
         return new Promise(async (resolve, reject) => {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
@@ -170,6 +170,7 @@ export default class ApiRequest {
                 REQ_FLAG: "R",
                 PASS_TYPE: passType,
                 REQ_TYPE: "A",
+                OTP_TYPE:otp_type === 0 ? "S" : "E",
                 ACCOUNT_NO: actCardNumber,
                 DEVICE_ID: await Utility.getDeviceID(),
                 ACTIVITY_CD: response.ACTIVITY_CD,
@@ -181,7 +182,7 @@ export default class ApiRequest {
                 verifyReq = {
                     ...verifyReq, CARD_DETAIL: {
                         ACCT_NO: actCardNumber, CARD_PIN: pin,
-                        EXPIRY_DATE: expiryDate
+                        EXPIRY_DATE: Utility.reverseString(expiryDate),
                     }, AUTH_FLAG: "CP"
                 };
             } else {

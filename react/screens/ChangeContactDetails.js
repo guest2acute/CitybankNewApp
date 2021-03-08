@@ -50,6 +50,7 @@ class ChangeContactDetails extends Component {
             errorMobile: "",
             newCredential: "",
             confNewCredential: "",
+            otp_type: 0,
             errorTransPin: "",
             errorExpiry: "",
             errorPin: "",
@@ -62,8 +63,10 @@ class ChangeContactDetails extends Component {
             actNoList: [],
             cardNoList: [],
             selectRes: null,
+            otp_type: 0,
         }
     }
+
 
     renderSeparator = () => {
         return (
@@ -93,7 +96,7 @@ class ChangeContactDetails extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat);
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY");
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");
@@ -166,6 +169,42 @@ class ChangeContactDetails extends Component {
                     }}>{this.state.errorTransPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View> : null}
+
+            {this.selectOtpView(language)}
+        </View>)
+    }
+
+    selectOtpView(language) {
+        return (<View key={"selectOtpView"}>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.otpType}
+                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                </Text>
+
+                <RadioForm
+                    radio_props={this.state.selectRes == null || this.state.selectRes.EMAIL_ID === "" ?
+                        language.otp_props_mobile : language.otp_props}
+                    initial={0}
+                    buttonSize={9}
+                    selectedButtonColor={themeStyle.THEME_COLOR}
+                    formHorizontal={true}
+                    labelHorizontal={true}
+                    borderWidth={1}
+                    buttonColor={themeStyle.GRAY_COLOR}
+                    labelColor={themeStyle.BLACK}
+                    labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                    style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                    animation={true}
+                    onPress={(value) => {
+                        this.setState({otp_type: value});
+                    }}
+                />
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
     }
 
@@ -276,6 +315,7 @@ class ChangeContactDetails extends Component {
                     marginBottom: 10,
                 }}>{this.state.errorPin}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            {this.selectOtpView(language)}
         </View>)
     }
 
@@ -317,6 +357,7 @@ class ChangeContactDetails extends Component {
             ACTION: "GENUPDEMAILMBOTP",
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             SOURCE: selectRes.SOURCE,
+            OTP_TYPE: this.state.otp_type === 0 ? "S" : "E",
             DEVICE_ID: await Utility.getDeviceID(),
             MOBILE_NO: selectRes.MOBILE_NO,
             EMAIL_ID: selectRes.EMAIL_ID,
@@ -329,7 +370,7 @@ class ChangeContactDetails extends Component {
                 CARD_DETAIL: {
                     ACCT_NO: selectRes.ACCOUNT_NO,
                     CARD_PIN: this.state.cardPin,
-                    EXPIRY_DATE: this.state.expiryDate.replace("/", "")
+                    EXPIRY_DATE: Utility.reverseString(this.state.expiryDate)
                 }
             }
             header = {CARD_VERIFY: "Y"};
@@ -882,7 +923,7 @@ const styles = {
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

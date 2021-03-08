@@ -125,7 +125,7 @@ class RegistrationAccount extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat)
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
         switch (event) {
             case "dateSetAction":
                 this.setState({cardExpiry: dateVal, showMonthPicker: false});
@@ -1195,7 +1195,7 @@ class RegistrationAccount extends Component {
         }
 
         let signupResult = await ApiRequest.apiRequest.veryAccountRequest("A", card_details, this.state.signUpResponse,
-            authFlag, this.state.otp_type === 0 ? "S" : this.state.otp_type === 1 ? "E" : "B",
+            authFlag, this.state.otp_type === 0 ? "S" : "E",
             this.state.dob,
             this.state.userId, await Utility.getDeviceID(), this.state.accountNo, this.state.debitPin,
             this.state.cardExpiry, this.state.fatherName,
@@ -1225,7 +1225,7 @@ class RegistrationAccount extends Component {
                 await this.accountVerify(this.state.accountNo, "A", language);
             } else if (conf_mobile === "") {
                 this.setState({errorMobile: language.require_mobile});
-            } else if (conf_email === "") {
+            } else if (signUpResponse.MAIL_ID !== "" && conf_email === "") {
                 this.setState({errorEmail: language.require_email});
             } else if (conf_mobile !== signUpResponse.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, "")) {
                 this.setState({errorMobile: language.invalidMobile});

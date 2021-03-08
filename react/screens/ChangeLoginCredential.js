@@ -21,7 +21,7 @@ import fontStyle from "../resources/FontStyle";
 import ApiRequest from "../config/ApiRequest";
 import MonthPicker from "react-native-month-year-picker";
 import Config from "../config/Config";
-
+import RadioForm from "react-native-simple-radio-button";
 
 
 class ChangeLoginCredential extends Component {
@@ -29,12 +29,12 @@ class ChangeLoginCredential extends Component {
         super(props);
         this.state = {
             isProgress: false,
-            select_credential_type: props.route.params.title === props.language.change_login_password?props.language.credentialList[0]:props.language.credentialList[1],
+            select_credential_type: props.route.params.title === props.language.change_login_password ? props.language.credentialList[0] : props.language.credentialList[1],
             select_actNo: props.language.select_actNo,
             selectType: props.language.selectType,
             selectTypeVal: -1,
             selectCard: props.language.selectCard,
-            selectActCard: props.userDetails.AUTH_FLAG==="TP"?props.language.accountTypeArr[0]:props.language.accountTypeArr[1],
+            selectActCard: props.userDetails.AUTH_FLAG === "TP" ? props.language.accountTypeArr[0] : props.language.accountTypeArr[1],
             accountNo: "",
             cardPin: "",
             modelSelection: "",
@@ -57,13 +57,13 @@ class ChangeLoginCredential extends Component {
             errorExpiry: "",
             dateVal: new Date(),
             showMonthPicker: false,
-            title:props.route.params.title,
+            title: props.route.params.title,
         }
-        console.log("title",props.route.params.title)
-        console.log("password",props.language.change_login_password)
-        console.log("check it",props.route.params.title === props.language.change_login_password)
-        console.log("credentialList[0]",props.language.credentialList[0])
-        console.log("credentialList[1]",props.language.credentialList[1])
+        console.log("title", props.route.params.title)
+        console.log("password", props.language.change_login_password)
+        console.log("check it", props.route.params.title === props.language.change_login_password)
+        console.log("credentialList[0]", props.language.credentialList[0])
+        console.log("credentialList[1]", props.language.credentialList[1])
 
 
     }
@@ -96,7 +96,7 @@ class ChangeLoginCredential extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat);
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY");
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");
@@ -108,6 +108,40 @@ class ChangeLoginCredential extends Component {
             default:
                 this.setState({showMonthPicker: false});
         }
+    }
+
+    selectOtpView(language) {
+        return (<View key={"selectOtpView"}>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.otpType}
+                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                </Text>
+
+                <RadioForm
+                    radio_props={this.state.selectRes == null || this.state.selectRes.EMAIL_ID === "" ?
+                        language.otp_props_mobile : language.otp_props}
+                    initial={0}
+                    buttonSize={9}
+                    selectedButtonColor={themeStyle.THEME_COLOR}
+                    formHorizontal={true}
+                    labelHorizontal={true}
+                    borderWidth={1}
+                    buttonColor={themeStyle.GRAY_COLOR}
+                    labelColor={themeStyle.BLACK}
+                    labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                    style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                    animation={true}
+                    onPress={(value) => {
+                        this.setState({otp_type: value});
+                    }}
+                />
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+        </View>)
     }
 
     accountNoOption(language) {
@@ -169,6 +203,7 @@ class ChangeLoginCredential extends Component {
                     }}>{this.state.errorTransPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View> : null}
+            {this.selectOtpView(language)}
         </View>)
     }
 
@@ -271,6 +306,7 @@ class ChangeLoginCredential extends Component {
                     marginBottom: 10,
                 }}>{this.state.errorCardPin}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            {this.selectOtpView(language)}
         </View>)
     }
 
@@ -447,7 +483,7 @@ class ChangeLoginCredential extends Component {
                         value={this.state.newCredential}
                         multiline={false}
                         numberOfLines={1}
-                        keyboardType={this.state.select_credential_type.value === 0 ?"default":"number-pad"}
+                        keyboardType={this.state.select_credential_type.value === 0 ? "default" : "number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
@@ -455,7 +491,7 @@ class ChangeLoginCredential extends Component {
                         onSubmitEditing={(event) => {
                             this.newCredentialRef.focus();
                         }}
-                        maxLength={this.state.select_credential_type.value === 0 ?12:6}/>
+                        maxLength={this.state.select_credential_type.value === 0 ? 12 : 6}/>
                 </View>
                 {this.state.errorNewCredential !== "" ?
                     <Text style={{
@@ -498,11 +534,11 @@ class ChangeLoginCredential extends Component {
                         value={this.state.confNewCredential}
                         multiline={false}
                         numberOfLines={1}
-                        keyboardType={this.state.select_credential_type.value === 0 ?"default":"number-pad"}
+                        keyboardType={this.state.select_credential_type.value === 0 ? "default" : "number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        maxLength={this.state.select_credential_type.value === 0 ?12:6}/>
+                        maxLength={this.state.select_credential_type.value === 0 ? 12 : 6}/>
                 </View>
                 {this.state.errorConfNewCredential !== "" ?
                     <Text style={{
@@ -529,12 +565,12 @@ class ChangeLoginCredential extends Component {
     async verifyCard() {
         const {select_actNo, expiryDate, transactionPin, cardPin, selectCard, selectActCard, selectRes} = this.state;
         let userDetails = this.props.userDetails;
-        userDetails = {...userDetails,MOBILE_NO:selectRes.MOBILE_NO,EMAIL_ID:selectRes.EMAIL_ID};
+        userDetails = {...userDetails, MOBILE_NO: selectRes.MOBILE_NO, EMAIL_ID: selectRes.EMAIL_ID};
         let pin = this.state.selectActCard.value === 0 ? transactionPin : cardPin;
         let actCardNumber = selectActCard.value === 0 ? select_actNo : selectCard;
         this.setState({isProgress: true});
         await ApiRequest.apiRequest.verifyAccountCard(selectActCard.value === 1,
-            actCardNumber, pin, expiryDate, userDetails,this.state.select_credential_type.value === 0 ? "L" : "P", this.props)
+            actCardNumber, pin, expiryDate, userDetails, this.state.select_credential_type.value === 0 ? "L" : "P", this.state.otp_type, this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({
@@ -647,7 +683,7 @@ class ChangeLoginCredential extends Component {
 
     mainLayout(language) {
         return (<View>
-           {/* <Text style={[CommonStyle.labelStyle, {
+            {/* <Text style={[CommonStyle.labelStyle, {
                 color: themeStyle.THEME_COLOR,
                 marginStart: 10,
                 marginEnd: 10,
@@ -657,7 +693,7 @@ class ChangeLoginCredential extends Component {
                 {language.type_credential}
             </Text>*/}
 
-          {/*  <TouchableOpacity
+            {/*  <TouchableOpacity
                 onPress={() => this.openModal("credentialType", language.select_credential_type, language.credentialList, language)}>
                 <View style={styles.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
@@ -668,27 +704,27 @@ class ChangeLoginCredential extends Component {
                 </View>
             </TouchableOpacity>*/}
 
-                <View key={"accountSelection"}>
-                    <Text style={[CommonStyle.labelStyle, {
-                        color: themeStyle.THEME_COLOR,
-                        marginStart: 10,
-                        marginEnd: 10,
-                        marginTop: 6,
-                        marginBottom: 4
-                    }]}>
-                        {language.type_act}
-                    </Text>
-                    <TouchableOpacity
-                        disabled={true}
-                        onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
-                        <View style={[styles.selectionBg,{height:Utility.setHeight(40)}]}>
-                            <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
-                                {this.state.selectActCard.label}
-                            </Text>
-                           {/* <Image resizeMode={"contain"} style={styles.arrowStyle}
+            <View key={"accountSelection"}>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.type_act}
+                </Text>
+                <TouchableOpacity
+                    disabled={true}
+                    onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
+                    <View style={[styles.selectionBg, {height: Utility.setHeight(40)}]}>
+                        <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
+                            {this.state.selectActCard.label}
+                        </Text>
+                        {/* <Image resizeMode={"contain"} style={styles.arrowStyle}
                                    source={require("../resources/images/ic_arrow_down.png")}/>*/}
-                        </View>
-                    </TouchableOpacity></View>
+                    </View>
+                </TouchableOpacity></View>
         </View>)
 
     }
@@ -816,7 +852,7 @@ const styles = {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

@@ -77,7 +77,7 @@ class RegistrationCard extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-           BackHandler.addEventListener(
+            BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -131,7 +131,7 @@ class RegistrationCard extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat)
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");
@@ -764,7 +764,7 @@ class RegistrationCard extends Component {
                 await this.cardVerify(cardNo, "C", language);
             } else if (conf_mobile === "") {
                 this.setState({errorMobile: language.require_mobile});
-            } else if (conf_email === "") {
+            } else if (signUpResponse.MAIL_ID !== "" && conf_email === "") {
                 this.setState({errorEmail: language.require_email});
             } else if (conf_mobile !== signUpResponse.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, "")) {
                 this.setState({errorMobile: language.invalidMobile});
@@ -860,7 +860,7 @@ class RegistrationCard extends Component {
 
         let signupResult = await ApiRequest.apiRequest.veryAccountRequest("C", "Y",
             this.state.signUpResponse,
-            "CP", this.state.otp_type === 0 ? "S" : this.state.otp_type === 1 ? "E" : "B",
+            "CP", this.state.otp_type === 0 ? "S" : "E",
             "",
             this.state.userId, await Utility.getDeviceID(), this.state.cardNo, this.state.cardPin,
             this.state.cardExpiry, "",
