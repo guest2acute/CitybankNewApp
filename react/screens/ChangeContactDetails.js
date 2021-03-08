@@ -35,6 +35,7 @@ class ChangeContactDetails extends Component {
             selectTypeVal: -1,
             selectCard: props.language.selectCard,
             selectActCard: {key: "-1", label: props.language.select_txt, value: -1},
+            changeIn: "",
             accountNo: "",
             cardPin: "",
             modelSelection: "",
@@ -331,6 +332,7 @@ class ChangeContactDetails extends Component {
         } else if (modelSelection === "accountType") {
             this.setState({
                 selectActCard: item,
+                changeIn: item.key,
                 modalVisible: false,
                 stateVal: 0,
                 expiryDate: "",
@@ -361,6 +363,7 @@ class ChangeContactDetails extends Component {
             DEVICE_ID: await Utility.getDeviceID(),
             MOBILE_NO: selectRes.MOBILE_NO,
             EMAIL_ID: selectRes.EMAIL_ID,
+            UPD_FLAG: this.state.changeIn,
             ...Config.commonReq
         }
         let header = {};

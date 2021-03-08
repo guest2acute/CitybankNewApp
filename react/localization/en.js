@@ -293,8 +293,8 @@ export default {
     ],
 
     changeInArr: [
-        {key: "0", label: "Account", value: 0},
-        {key: "1", label: "Card", value: 1}
+        {key: "A", label: "Account", value: 0},
+        {key: "C", label: "Card", value: 1}
     ],
     otp_props_mobile: [
         {label: "SMS", value: 0},
