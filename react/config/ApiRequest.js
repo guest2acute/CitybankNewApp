@@ -241,6 +241,7 @@ export default class ApiRequest {
                 ACCT_NO:ACCT_NO,
                 UPDATE_BLOCK_STATUS:"Y",
                 ACTIVITY_CD:"",
+                USER_ID:"",
                 AUTH_FLAG:"USERAUTH",
                 REQUEST_CD:"0",
                 BLOCK_STATUS_CHECK:"Y",

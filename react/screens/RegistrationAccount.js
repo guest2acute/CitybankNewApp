@@ -804,7 +804,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_father_name}
-                        onChangeText={text => this.setState({errorFather: "", fatherName: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorFather: "", fatherName: text})}
                         value={this.state.fatherName}
                         multiline={false}
                         numberOfLines={1}
@@ -850,7 +850,7 @@ class RegistrationAccount extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={language.et_mother_name}
-                        onChangeText={text => this.setState({errorMother: "", motherName: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorMother: "", motherName: text})}
                         value={this.state.motherName}
                         multiline={false}
                         numberOfLines={1}
