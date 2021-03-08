@@ -25,14 +25,15 @@ import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
 import ApiRequest from "../config/ApiRequest";
 import Secure from "../config/Secure";
+
 let Aes = NativeModules.Aes;
 
 class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: "Test@123",
-            passwordTxt: "Acute@123",
+            userID: "",
+            passwordTxt: "",
             isProgress: false,
             passwordVisible: false,
             errorTextUid: "",
@@ -41,39 +42,6 @@ class LoginScreen extends Component {
             focusPwd: false,
         };
     }
-
-
-    process(){
-        try {
-            Secure.generateKey(Config.key, '', 5000, 256).then(key => {
-                console.log('Key:', key)
-                Secure.encryptData("Test123", key)
-                    .then(({ cipher, iv }) => {
-                        console.log('Encrypted:', cipher)
-
-                        Secure.decryptData({ cipher, iv }, key)
-                            .then(text => {
-                                console.log('Decrypted:', text)
-                            })
-                            .catch(error => {
-                                console.log(error)
-                            })
-
-                        Aes.hmac256(cipher, key).then(hash => {
-                            console.log('HMAC', hash)
-                        })
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-            })
-        } catch (e) {
-            console.error(e)
-        }
-
-    }
-
-
 
 
     async onSubmit(language) {
@@ -151,14 +119,14 @@ class LoginScreen extends Component {
             result.MESSAGE,
             [
                 {
-                    text:that.props.language.no_txt
+                    text: that.props.language.no_txt
                 },
                 {
-                    text:that.props.language.yes_txt, onPress: () =>
+                    text: that.props.language.yes_txt, onPress: () =>
                         this.props.navigation.navigate("TermConditionScreen",
                             {
                                 showButton: true,
-                                deviceChangeRes:result.RESPONSE[0],
+                                deviceChangeRes: result.RESPONSE[0],
                             })
                 },
             ]
@@ -186,7 +154,7 @@ class LoginScreen extends Component {
                 langId: langCode,
             },
         });
-        Config.commonReq = {...Config.commonReq,DISPLAY_LANGUAGE: langCode}
+        Config.commonReq = {...Config.commonReq, DISPLAY_LANGUAGE: langCode}
     }
 
 
@@ -412,14 +380,16 @@ class LoginScreen extends Component {
                                 }}>{language.open_account}</Text>
                             </TouchableOpacity>
                         </View>
-                        <Image style={{
-                            alignSelf: "center",
-                            marginTop: Utility.setHeight(20),
-                            height: Utility.setHeight(80),
-                            width: Utility.setWidth(80),
-                            marginBottom: Utility.setHeight(20)
-                        }} resizeMode={"contain"}
-                               source={require("../resources/images/qr_login.jpg")}/>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("CityPay")}>
+                            <Image style={{
+                                alignSelf: "center",
+                                marginTop: Utility.setHeight(20),
+                                height: Utility.setHeight(80),
+                                width: Utility.setWidth(80),
+                                marginBottom: Utility.setHeight(20)
+                            }} resizeMode={"contain"}
+                                   source={require("../resources/images/qr_login.jpg")}/>
+                        </TouchableOpacity>
 
                     </View>
                 </ScrollView>
@@ -486,7 +456,7 @@ class LoginScreen extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-           BackHandler.addEventListener(
+            BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );

@@ -1,5 +1,16 @@
 import React, {Component} from "react";
-import {Platform, StatusBar, View, Image, SafeAreaView, TouchableOpacity, Text, TextInput, Alert} from "react-native";
+import {
+    Platform,
+    StatusBar,
+    View,
+    Image,
+    SafeAreaView,
+    TouchableOpacity,
+    Text,
+    TextInput,
+    Alert,
+    BackHandler
+} from "react-native";
 
 import {actions} from "../redux/actions";
 import {connect} from "react-redux";
@@ -43,6 +54,7 @@ class OTPScreen extends Component {
             });
         }
     }
+
 
     async submit(language, navigation) {
         if (this.state.otpVal.length !== 4) {
