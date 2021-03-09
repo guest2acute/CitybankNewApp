@@ -190,36 +190,36 @@ export const MoreDetails = (language) => {
                     redirectScreen: "CreditCardActivation"
                 },
                 {
-                    id: "ActiveDebitCard",
-                    title: language.active_debit_card,
+                    id: "DebitCardActivation",
+                    title: language.debit_card_activation,
                     icon: require("../../resources/images/ic_debit_card_active.png"),
                     subCategory: [],
-                    redirectScreen: "LoanServices"
+                    redirectScreen: "CreditCardActivation"
                 },
                 {
                     id: "BlockCreditCard",
                     title: language.block_credit_card,
                     icon: require("../../resources/images/ic_credit_card_block.png"),
                     subCategory: [],
-                    redirectScreen: "LoanServices"
+                    redirectScreen: "cardBlock"
                 },
                 {
                     id: "BlockDebitCard",
                     title: language.block_debit_card,
                     icon: require("../../resources/images/ic_card_block.png"),
-                    redirectScreen: "LoanServices"
+                    redirectScreen: "cardBlock"
                 },
                 {
                     id: "CardPINReset",
                     title: language.card_pin_reset,
                     icon: require("../../resources/images/ic_pin_code_change.png"),
-                    redirectScreen: "LoanServices"
+                    redirectScreen: "CardPinReset"
                 },
                 {
                     id: "TagCreditCardInCityTouch",
                     title: language.tag_credit_card,
                     icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: "LoanServices"
+                    redirectScreen: "TagCreditCardInCityTouch"
                 }
             ],
         },

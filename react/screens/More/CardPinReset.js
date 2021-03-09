@@ -20,12 +20,12 @@ import MonthPicker from "react-native-month-year-picker";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
 
-class CreditCardActivation extends Component {
+class CardPinReset extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isProgress: false,
-            selectType: props.language.select_type_transfer,
+            selectType: props.language.select_reason,
             selectCard: props.language.select_card_number,
             selectTypeVal: -1,
             selectActCard: props.language.TypeOfTransferArr[0],
@@ -41,7 +41,12 @@ class CreditCardActivation extends Component {
             cardExpiry: "",
             showMonthPicker: false,
             errorExpiry:"",
-
+            pinChangeReason:"",
+            error_pinChangeReason:"",
+            pinVal:"",
+            errorPinVal:"",
+            confirmPinNumber:"",
+            errorConfirmPinNumber:"",
         }
     }
 
@@ -76,22 +81,32 @@ class CreditCardActivation extends Component {
         console.log("modelSelection is this",item)
         if (modelSelection === "creditCardType") {
             this.setState({selectCard: item.label, selectTypeVal: item.value, modalVisible: false})
+        }else if(modelSelection === "cardBlockType"){
+            this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
+
     }
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
             Utility.alert("Please Select Card");
             return;
+
+        }else if(this.state.pinChangeReason === "") {
+            this.setState({error_pinChangeReason: language.error_pinChangeReason});
+            return;
+        }else if(this.state.pinVal === "") {
+            this.setState({errorPinVal: language.error_newPinNumber});
+            return;
         }
-        else if (this.state.cardExpiry === "") {
-            this.setState({errorExpiry: language.errExpiryDate});
+        else if(this.state.confirmPinNumber === "") {
+            this.setState({errorConfirmPinNumber: language.error_confirmPinNumber});
+            return;
         }
         else{
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
-        }
-
+    }
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
         let dateVal = Utility.dateInFormat(newDate, "MM/YY")
@@ -108,9 +123,9 @@ class CreditCardActivation extends Component {
     }
 
 
-    creditCardActivation(language){
+    cardPINReset(language){
         return(
-            <View style={{flex: 1, paddingBottom: 30}}>
+            <View key={"cardPINReset"} style={{flex: 1, paddingBottom: 30}}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
                     marginStart: 10,
@@ -119,6 +134,7 @@ class CreditCardActivation extends Component {
                     marginBottom: 4
                 }]}>
                     {language.credit_card_no}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("creditCardType", language.select_card_number, language.cardTypeArr, language)}>
@@ -133,68 +149,6 @@ class CreditCardActivation extends Component {
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.card_status}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            cardStatus: Utility.userInput(text)
-                        })}
-                        value={this.state.cardStatus}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        editable={false}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.card_state}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            cardState: Utility.userInput(text)
-                        })}
-                        value={this.state.cardState}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        editable={false}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -215,6 +169,37 @@ class CreditCardActivation extends Component {
                             cardHolderName: Utility.userInput(text)
                         })}
                         value={this.state.cardHolderName}
+                        multiline={false}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        editable={false}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.card_status}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            cardStatus: Utility.userInput(text)
+                        })}
+                        value={this.state.cardStatus}
                         multiline={false}
                         onFocus={() => this.setState({focusUid: true})}
                         onBlur={() => this.setState({focusUid: false})}
@@ -257,6 +242,49 @@ class CreditCardActivation extends Component {
                     />
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.pin_change_reason}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.pim_reason_placeholder}
+                        onChangeText={text => this.setState({
+                            error_pinChangeReason: "",
+                            pinChangeReason: Utility.userInput(text)
+                        })}
+                        value={this.state.pinChangeReason}
+                        multiline={false}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.pinValRef.focus();
+                        }}
+                    />
+                </View>
+                {this.state.error_pinChangeReason !==  "" ?
+                    <Text style={{
+                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                    }}>{this.state.error_pinChangeReason}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
                 <View style={{
                     flexDirection: "row",
                     marginStart: 10,
@@ -265,33 +293,38 @@ class CreditCardActivation extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.enterExpiry}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        {language.new_pin_number}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
-                    <TouchableOpacity style={{
-                        flex: 1,
-                        marginLeft: 10
-                    }} onPress={() => this.setState({errorExpiry: "", showMonthPicker: true})}>
-                        <TextInput
-                            selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {
-                                alignItems: "flex-end",
-                                textAlign: 'right',
-                                flex: 1,
-                                marginLeft: 10
-                            }]}
-                            placeholder={language.select_expiry_date}
-                            editable={false}
-                            value={this.state.cardExpiry}
-                            multiline={false}
-                            numberOfLines={1}
-                            contextMenuHidden={true}
-                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}
-                            maxLength={5}/>
-                    </TouchableOpacity>
+                    <TextInput
+                        ref={(ref) => this.pinValRef = ref}
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.newPIn_placeholder}
+                        onChangeText={text => this.setState({
+                            errorPinVal: "",
+                            pinVal: Utility.input(text, "0123456789")
+                        })}
+                        value={this.state.pinVal}
+                        multiline={false}
+                        numberOfLines={1}
+                        keyboardType={"number-pad"}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.confirmPinNumberRef.focus();
+                        }}
+                        maxLength={4}/>
                 </View>
-                {this.state.errorExpiry !== "" ?
+                {this.state.errorPinVal !== "" ?
                     <Text style={{
                         marginLeft: 5,
                         marginRight: 10,
@@ -299,16 +332,61 @@ class CreditCardActivation extends Component {
                         fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
                         alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorExpiry}</Text> : null}
+                    }}>{this.state.errorPinVal}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.confirm_pin_number}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                    </Text>
+                    <TextInput
+                        ref={(ref) => this.confirmPinNumberRef = ref}
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.confirmPin_placeholder}
+                        onChangeText={text => this.setState({
+                            errorConfirmPinNumber: "",
+                            confirmPinNumber: Utility.input(text, "0123456789")
+                        })}
+                        value={this.state.confirmPinNumber}
+                        multiline={false}
+                        numberOfLines={1}
+                        keyboardType={"number-pad"}
+                        contextMenuHidden={true}
+                        secureTextEntry={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={4}/>
+                </View>
+                {this.state.errorConfirmPinNumber !== "" ?
+                    <Text style={{
+                        marginLeft: 5,
+                        marginRight: 10,
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                        alignSelf: "flex-end",
+                    }}>{this.state.errorConfirmPinNumber}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View>
         )
     }
     render() {
         let language = this.props.language;
-        return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+        return (
+            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -336,7 +414,7 @@ class CreditCardActivation extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.creditCardActivation(language)}
+                        {this.cardPINReset(language)}
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
@@ -450,6 +528,9 @@ const styles = {
         alignItems: "center",
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
+    textView:{
+        marginStart: 10, color: themeStyle.THEME_COLOR
+    },
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
@@ -475,4 +556,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(CreditCardActivation);
+export default connect(mapStateToProps)(CardPinReset);

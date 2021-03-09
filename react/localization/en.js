@@ -299,6 +299,9 @@ export default {
     otp_props_mobile: [
         {label: "SMS", value: 0},
     ],
+    otp_props_email: [
+        {label: "EMAIL", value: 1},
+    ],
     otp_props: [
         {label: "SMS", value: 0},
         {label: "Email", value: 1}
@@ -834,6 +837,15 @@ export default {
 
     /*notes*/
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
+    card_block_notes1: "1. if you select stolen or lost option,your card will be",
+    card_block_notes2: "permanently deactivated. To block temporarily you may",
+    card_block_notes3: "chose restricted option",
+    card_block_notes4: "2. call 16243 for a replacement request or to reactivate the card.",
+    tagCreditTitle: "Please provide following information of your City Bank",
+    tagCreditTitle1: "issue Credit Card that you want to tag with your City",
+    tagCreditTitle2: "Touch Digital Banking",
+    tagCreditBottom:"Can We Help?",
+    call: "call: 16234(local)/+880-2-8331040",
 
 
     /*Credit Card Payment*/
@@ -945,9 +957,34 @@ export default {
     ],
 
     /*Debit Card Activation*/
-    debit_card_activation:"Debit Card  Activation",
+    debit_card_activation:"Debit Card Activation",
 
     /*Block Credit Card*/
+    card_block: "Reason For Card Block",
+    select_reason: "Select Reason",
+    cardBlockTypeArr: [
+        {key: "0", label: "Restricted", value: 0},
+        {key: "1", label: "Lost", value: 1},
+        {key: "2", label: "Stolen", value: 2},
+    ],
+
+    /*card pin reset*/
+    pin_change_reason: "PIN Change Reason",
+    new_pin_number: "New PIN Number",
+    confirm_pin_number: "Confirm PIN Number",
+    pim_reason_placeholder: "Enter Reason",
+    newPIn_placeholder:"Enter New Pin",
+    confirmPin_placeholder:"Re-enter New Pin",
+    error_pinChangeReason: "PIN Change Reason is Required",
+    error_newPinNumber: "PIN Number is Required",
+    error_confirmPinNumber: "Confirm PIN Number is Required",
+
+    /*Tag Credit Card in CityTouch*/
+    tagCredit: "Please",
+    enter_Card_Number:  "Enter Card Number",
+    card_Member_Name: "Card Member Name",
+    cardNo_placeholder: "Please Enter Card Number",
+    error_card_number: "Card Number Is Required",
 
 
 
