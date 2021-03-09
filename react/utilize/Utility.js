@@ -217,7 +217,13 @@ export default class Utility {
         return moment(new Date()).format('DD-MM-YYYY-HH-ss');
     }
 
+    static reverseString(str) {
+        let strArr = str.split("/")
+        return strArr[1] + strArr[0];
+    }
+
     static dateInFormat(dateVal, formatType) {
+        console.log("formatType", formatType);
         return moment(dateVal).format(formatType);
     }
 

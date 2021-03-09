@@ -357,7 +357,7 @@ class ChangeTransPin extends Component {
                                     placeholder={language.et_father_name}
                                     onChangeText={text => this.setState({
                                         errorFather: "",
-                                        fatherName: Utility.userInput(text)
+                                        fatherName: text
                                     })}
                                     value={this.state.fatherName}
                                     multiline={false}
@@ -401,7 +401,7 @@ class ChangeTransPin extends Component {
                                     placeholder={language.et_mother_name}
                                     onChangeText={text => this.setState({
                                         errorMother: "",
-                                        motherName: Utility.userInput(text)
+                                        motherName: text
                                     })}
                                     value={this.state.motherName}
                                     multiline={false}

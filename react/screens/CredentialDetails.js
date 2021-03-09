@@ -55,6 +55,7 @@ class CredentialDetails extends Component {
             errCardPin: "",
             showMonthPicker: false,
             otpView: false,
+            otp_type: 0,
             responseForOTP: "",
             otpVal: "",
             isField: false,
@@ -200,139 +201,121 @@ class CredentialDetails extends Component {
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            {/*  <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 10,
-                            marginBottom: 5
-                        }]}>
-                            {language.selectCard} *
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.openModal("cardType", language.selectCard, cardNumber, language)}>
-                            <View style={styles.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectCard === language.selectCard ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectCard}
-                                </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
-                                       source={require("../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity> */}
+            {this.selectOtpView(language)}
         </View>)
     }
 
     creditCardOption(language) {
-        return (<View key={"creditCardOption"}>
-            <View>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.credit_card_no}
-                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.enter_card_no}
-                        onChangeText={text => this.setState({
-                            errCardNo: "",
-                            creditCardNo: Utility.input(text, "0123456789")
-                        })}
-                        value={this.state.creditCardNo}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={16}/>
-                </View>
-                {this.state.errCardNo !== "" ?
-                    <Text style={CommonStyle.errorStyle}>{this.state.errCardNo}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.enterExpiry}
-                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                    </Text>
-                    <TouchableOpacity style={{
-                        flex: 1,
-                        marginLeft: 10
-                    }} onPress={() => this.setState({showMonthPicker: true})}>
+        return (
+            <View key={"creditCardOption"}>
+                <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.credit_card_no}
+                            <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                        </Text>
                         <TextInput
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
                                 alignItems: "flex-end",
                                 textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
                             }]}
-                            placeholder={language.expiryDate}
-                            editable={false}
-                            value={this.state.expiryDate}
+                            placeholder={language.enter_card_no}
+                            onChangeText={text => this.setState({
+                                errCardNo: "",
+                                creditCardNo: Utility.input(text, "0123456789")
+                            })}
+                            value={this.state.creditCardNo}
                             multiline={false}
                             numberOfLines={1}
                             contextMenuHidden={true}
+                            keyboardType={"number-pad"}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}/>
-                    </TouchableOpacity>
+                            autoCorrect={false}
+                            maxLength={16}/>
+                    </View>
+                    {this.state.errCardNo !== "" ?
+                        <Text style={CommonStyle.errorStyle}>{this.state.errCardNo}</Text> : null}
                 </View>
-                {this.state.errExpiryDate !== "" ?
-                    <Text style={CommonStyle.errorStyle}>{this.state.errExpiryDate}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.enterCardPin}
-                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.enterExpiry}
+                            <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                        </Text>
+                        <TouchableOpacity style={{
                             flex: 1,
                             marginLeft: 10
-                        }]}
-                        placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({
-                            errCardPin: "",
-                            cardPin: Utility.input(text, "0123456789")
-                        })}
-                        value={this.state.cardPin}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        secureTextEntry={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={4}/>
+                        }} onPress={() => this.setState({showMonthPicker: true})}>
+                            <TextInput
+                                selectionColor={themeStyle.THEME_COLOR}
+                                style={[CommonStyle.textStyle, {
+                                    alignItems: "flex-end",
+                                    textAlign: 'right',
+                                }]}
+                                placeholder={language.expiryDate}
+                                editable={false}
+                                value={this.state.expiryDate}
+                                multiline={false}
+                                numberOfLines={1}
+                                contextMenuHidden={true}
+                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                autoCorrect={false}/>
+                        </TouchableOpacity>
+                    </View>
+                    {this.state.errExpiryDate !== "" ?
+                        <Text style={CommonStyle.errorStyle}>{this.state.errExpiryDate}</Text> : null}
                 </View>
-                {this.state.errCardPin !== "" ?
-                    <Text style={CommonStyle.errorStyle}>{this.state.errCardPin}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.enterCardPin}
+                            <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                        </Text>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={language.enterPinHere}
+                            onChangeText={text => this.setState({
+                                errCardPin: "",
+                                cardPin: Utility.input(text, "0123456789")
+                            })}
+                            value={this.state.cardPin}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            secureTextEntry={true}
+                            keyboardType={"number-pad"}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            maxLength={4}/>
+                    </View>
+                    {this.state.errCardPin !== "" ?
+                        <Text style={CommonStyle.errorStyle}>{this.state.errCardPin}</Text> : null}
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-        </View>)
+                {this.selectOtpView(language)}
+
+            </View>)
     }
 
     onSelectItem(item) {
@@ -426,7 +409,7 @@ class CredentialDetails extends Component {
         this.setState({isProgress: true});
         let actNo = isCard ? this.state.creditCardNo : this.state.accountNo;
 
-        await VerifyAccountCard(isCard, actNo, this.state.cardPin, this.state.expiryDate, this.props).then(async response => {
+        await VerifyAccountCard(isCard, actNo, this.state.cardPin, this.state.expiryDate,this.state.otp_type, this.props).then(async response => {
             console.log("VerifyAccountCard", response);
             let result = response.RESPONSE[0];
             if (this.state.selectTypeVal > 0 && result.USER_ID !== this.state.responseUserId.USER_ID) {
@@ -434,7 +417,7 @@ class CredentialDetails extends Component {
                 Utility.alert(isCard ? language.errCardMatch : language.errAccountMatch);
                 return;
             }
-            await this.resetPwd(response.AUTH_TOKEN,result.USER_ID, actNo, isCard);
+            await this.resetPwd(response.AUTH_TOKEN, result.USER_ID, actNo, isCard);
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -459,29 +442,63 @@ class CredentialDetails extends Component {
         });
     }
 
-    async resetPwd(authToken,responseUid, actNo, isCard) {
+    async resetPwd(authToken, responseUid, actNo, isCard) {
         let language = this.props.language;
         this.setState({isProgress: true});
-        await VerifyResetPwd(isCard,authToken, responseUid, actNo,
+        await VerifyResetPwd(isCard, authToken, responseUid, actNo,
             this.state.selectTypeVal === 0 ? "U" : "P", this.state.transactionPin, this.props).then(result => {
             console.log("VerifyResetPwd", JSON.stringify(result));
             this.setState({isProgress: false});
-            if (isCard) {
-                if (this.state.selectTypeVal === 0) {
-                    this.resetAll();
-                    Utility.alert(result.MESSAGE);
-                } else {
-                    this.setState({isField: true, responseForOTP: result.RESPONSE[0]});
-                }
-            } else {
-                let response = result.RESPONSE[0];
-                this.setState({otpView: true, responseForOTP: result.RESPONSE[0]});
-            }
+            /*   if (isCard) {
+                   if (this.state.selectTypeVal === 0) {
+                       this.resetAll();
+                       Utility.alert(result.MESSAGE);
+                   } else {
+                       this.setState({isField: true, responseForOTP: result.RESPONSE[0]});
+                   }
+               } else {*/
+            let response = result.RESPONSE[0];
+            this.setState({otpView: true, responseForOTP: result.RESPONSE[0]});
+            //}
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
         });
 
+    }
+
+
+    selectOtpView(language) {
+        return (<View key={"selectOtpView"}>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.otpType}
+                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                </Text>
+
+                <RadioForm
+                    radio_props={language.otp_props}
+                    initial={0}
+                    buttonSize={9}
+                    selectedButtonColor={themeStyle.THEME_COLOR}
+                    formHorizontal={true}
+                    labelHorizontal={true}
+                    borderWidth={1}
+                    buttonColor={themeStyle.GRAY_COLOR}
+                    labelColor={themeStyle.BLACK}
+                    labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                    style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                    animation={true}
+                    onPress={(value) => {
+                        this.setState({otp_type: value});
+                    }}
+                />
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+        </View>)
     }
 
     async getUserDetails(language) {
@@ -610,7 +627,7 @@ class CredentialDetails extends Component {
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, Config.ExpiryDateFormat)
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
         switch (event) {
             case "dateSetAction":
                 console.log("event", "in");
@@ -990,7 +1007,7 @@ const styles = {
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

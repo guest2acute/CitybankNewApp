@@ -225,14 +225,14 @@ class Accounts extends Component {
 
         if (result.STATUS === "0") {
             let response = result.RESPONSE[0];
-            await this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.BALANCE, accountNo, "");
+            this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.BALANCE, accountNo, "");
         } else {
-            await this.processBalance("", accountNo, "");
+            this.processBalance("", accountNo, "");
         }
     }
 
 
-    async processBalance(balance, accountNo, message) {
+     processBalance(balance, accountNo, message) {
         balance = balance===""?this.props.language.notAvailable:balance;
         let dataList = this.state.dataList;
         let objectPos = -1;

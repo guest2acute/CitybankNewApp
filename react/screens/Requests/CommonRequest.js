@@ -31,11 +31,12 @@ export const GetUserAuthByUid = async (cityTouchUserId, props) => {
 }
 
 
-export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, props) => {
+export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, otp_type, props) => {
     let request = {
         ACCT_NO: actNo,
         ACTION: isCard ? "VERIFYCARDGETUID" : "GETUSERALLEXISTS",
         REG_WITH: isCard ? "C" : "A",
+        OTP_TYPE: otp_type === 0 ? "S" : "E",
         ...Config.commonReq
     }
 
@@ -45,7 +46,7 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, prop
             CARD_DETAIL: {
                 ACCT_NO: actNo,
                 CARD_PIN: cardPin,
-                EXPIRY_DATE: expiryDate.replace("/", ""),
+                EXPIRY_DATE: Utility.reverseString(expiryDate),
             }
         }
     }
@@ -298,7 +299,7 @@ export const MoreDetails = (language) => {
             title: language.change_contact_details,
             icon: require("../../resources/images/contact_icon.png"),
             subCategory: [],
-            redirectScreen: "ChangeLoginCredential"
+            redirectScreen: "ChangeContactDetails"
         },
         {
             id: "otpLockUnlock",
