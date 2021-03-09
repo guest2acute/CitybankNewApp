@@ -22,6 +22,7 @@ import ApiRequest from "../config/ApiRequest";
 import MonthPicker from "react-native-month-year-picker";
 import Config from "../config/Config";
 import RadioForm from "react-native-simple-radio-button";
+import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
 class ChangeLoginCredential extends Component {
@@ -392,6 +393,7 @@ class ChangeLoginCredential extends Component {
                 "hardwareBackPress",
                 this.backAction
             );
+            await this.startReadSMS();
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
@@ -399,9 +401,22 @@ class ChangeLoginCredential extends Component {
         await this.getAccount();
     }
 
+    startReadSMS = async () => {
+        console.log("Great!! you have received new sms:");
+        const hasPermission = await ReadSms.requestReadSMSPermission();
+        if(hasPermission) {
+            await ReadSms.startReadSMS((status, sms, error) => {
+                if (status === "success") {
+                    console.log("Great!! you have received new sms:", sms);
+                }
+            });
+        }
+    }
+
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+            ReadSms.stopReadSMS();
         }
     }
 

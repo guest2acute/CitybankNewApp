@@ -26,6 +26,7 @@ import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import {GetUserAuthByUid, VerifyAccountCard} from "./Requests/CommonRequest"
 import {VerifyResetPwd} from "./Requests/CredentialRequest"
+import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
 class CredentialDetails extends Component {
@@ -98,7 +99,7 @@ class CredentialDetails extends Component {
         return true;
     }
 
-    componentDidMount() {
+   async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -110,13 +111,27 @@ class CredentialDetails extends Component {
                 "hardwareBackPress",
                 this.backAction
             );
+            await this.startReadSMS();
+        }
+    }
+
+    startReadSMS = async () => {
+        console.log("Great!! you have received new sms:");
+        const hasPermission = await ReadSms.requestReadSMSPermission();
+        if(hasPermission) {
+            await ReadSms.startReadSMS((status, sms, error) => {
+                if (status === "success") {
+                    console.log("Great!! you have received new sms:", sms);
+                }
+            });
         }
     }
 
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener(
-                "hardwareBackPress", this.backAction)
+                "hardwareBackPress", this.backAction);
+            ReadSms.stopReadSMS();
         }
     }
 

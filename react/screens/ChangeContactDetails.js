@@ -22,6 +22,7 @@ import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
 import MonthPicker from "react-native-month-year-picker";
 import ApiRequest from "../config/ApiRequest";
+import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
 class ChangeContactDetails extends Component {
@@ -474,6 +475,7 @@ class ChangeContactDetails extends Component {
                 "hardwareBackPress",
                 this.backAction
             );
+            await this.startReadSMS();
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
@@ -486,9 +488,22 @@ class ChangeContactDetails extends Component {
         return true;
     }
 
+    startReadSMS = async () => {
+        console.log("Great!! you have received new sms:");
+        const hasPermission = await ReadSms.requestReadSMSPermission();
+        if(hasPermission) {
+            await ReadSms.startReadSMS((status, sms, error) => {
+                if (status === "success") {
+                    console.log("Great!! you have received new sms:", sms);
+                }
+            });
+        }
+    }
+
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+            ReadSms.stopReadSMS();
         }
     }
 

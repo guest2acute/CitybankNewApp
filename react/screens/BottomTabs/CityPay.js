@@ -8,7 +8,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    BackHandler
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
@@ -45,13 +46,13 @@ class CityPay extends Component {
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
-                    <TouchableOpacity
+                    {this.props.userDetails === "" ? <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> : null}
                     <Text style={CommonStyle.title}>{language.city_pay}</Text>
                 </View>
                 <View style={{
@@ -160,11 +161,33 @@ class CityPay extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
-        // bottom tab management
-        this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.city_pay
-        });
+        if (this.props.userDetails !== "") {
+            // bottom tab management
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.city_pay
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
+    }
+
+
+    backAction = () => {
+        if (this.props.userDetails === "") {
+            this.props.navigation.goBack();
+        } else {
+            Utility.exitApp(this.props.language);
+        }
+        return true;
     }
 }
 
@@ -203,6 +226,7 @@ let styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

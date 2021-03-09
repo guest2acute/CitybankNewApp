@@ -27,6 +27,8 @@ import moment from "moment";
 import MonthPicker from "react-native-month-year-picker";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
+import * as ReadSms from 'react-native-read-sms/ReadSms';
+
 
 
 class RegistrationAccount extends Component {
@@ -89,7 +91,7 @@ class RegistrationAccount extends Component {
     }
 
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -100,13 +102,27 @@ class RegistrationAccount extends Component {
                 "hardwareBackPress",
                 this.backAction
             );
+            await this.startReadSMS();
         }
 
+    }
+
+    startReadSMS = async () => {
+        console.log("Great!! you have received new sms:");
+        const hasPermission = await ReadSms.requestReadSMSPermission();
+        if(hasPermission) {
+            await ReadSms.startReadSMS((status, sms, error) => {
+                if (status === "success") {
+                    console.log("Great!! you have received new sms:", sms);
+                }
+            });
+        }
     }
 
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+            ReadSms.stopReadSMS();
         }
     }
 
@@ -554,8 +570,8 @@ class RegistrationAccount extends Component {
                 actName: response.CUST_NAME,
                 placeMobile: response.MASK_MOBILE_NO,
                 placeEmail: response.MASK_MAIL_ID,
-              /*  conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
-                conf_email: response.MAIL_ID,*/
+                /*  conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
+                  conf_email: response.MAIL_ID,*/
                 signUpResponse: response,
                 hasDebitCard: response.DEBIT_CARD.length > 0
             });
@@ -770,8 +786,8 @@ class RegistrationAccount extends Component {
                 else
                     this.setState({errorTransDate: "", transDate: currentDate})
             });
-            console.log("date is this",this.state.dateVal)
-            console.log("dob",this.state.dob)
+            console.log("date is this", this.state.dateVal)
+            console.log("dob", this.state.dob)
         } else {
             this.setState({show: false});
         }
@@ -1315,7 +1331,7 @@ class RegistrationAccount extends Component {
         const {signUpResponse} = this.state;
 
         this.setState({isProgress: true});
-        await ApiRequest.apiRequest.blockProcess(this.state.accountNo,signUpResponse, description, this.props)
+        await ApiRequest.apiRequest.blockProcess(this.state.accountNo, signUpResponse, description, this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
