@@ -17,7 +17,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import {GETACCTBALDETAIL, AddBeneficiary} from '../Requests/RequestBenificeryCityBank';
+import {GETACCTBALDETAIL, AddBeneficiary} from '../Requests/RequestBeneficiary';
 
 class BeneficiaryWithCityBank extends Component {
     constructor(props) {
@@ -69,8 +69,6 @@ class BeneficiaryWithCityBank extends Component {
             }
         } else if (stageVal === 1) {
             this.beneficiaryAdd();
-        } else {
-            Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
 
@@ -81,7 +79,7 @@ class BeneficiaryWithCityBank extends Component {
             console.log("response", response);
             this.setState({
                 isProgress: false,
-            }, () => this.props.navigation.navigate("SecurityVerification", {REQUEST_CD: response.REQUEST_CD}));
+            }, () => this.props.navigation.navigate("SecurityVerification", {REQUEST_CD: response.REQUEST_CD,transType:"I",actNo:this.state.accountNo}));
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);

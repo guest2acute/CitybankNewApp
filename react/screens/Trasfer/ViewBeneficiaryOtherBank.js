@@ -17,7 +17,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-/*import {GETACCTBALDETAIL} from '../Requests/RequestBenificeryCityBank';*/
+
 
 class ViewBeneficiaryOtherBank extends Component {
     constructor(props) {

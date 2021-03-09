@@ -40,7 +40,6 @@ export const AddBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EM
             ACTION: "ADDBENF",
             USER_ID: userDetails.USER_ID,
             BENF_TYPE: "I",
-            AUTH_FLAG:userDetails.AUTH_FLAG,
             DEVICE: Platform.OS,
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             ...Config.commonReq,
@@ -72,9 +71,83 @@ export const AddBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EM
             console.log("error", error);
             return reject(error);
         });
-
     });
+}
 
+export const GetBeneBank = async (userDetails, props, requestType) => {
+    let request = {
+        ACTION: "GETBENFBANK",
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        REQ_TYPE: "BANK",
+        MOD_TRAN: "ALL",
+        USER_ID: userDetails.USER_ID,
+        ...Config.commonReq
+    }
 
+    console.log("request", request);
+
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result)
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
+export const ADDBENFVERIFY = async (userDetails,REQUEST_CD, props, transType, actNo, authFlag, cPin, tPin) => {
+    let request = {
+        ACCT_NO: actNo,
+        ACTION: "ADDBENFVERIFY",
+        TRN_TYPE: transType,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        REQUEST_CD: REQUEST_CD,
+        USER_ID: userDetails.USER_ID,
+        AUTH_FLAG: authFlag,
+        ...Config.commonReq
+    }
+
+    if (authFlag === "CP") {
+        request = {
+            ...request, CARD_DETAIL: {
+                ACCT_NO: actNo,
+                CARD_PIN: cPin,
+            }
+        }
+    } else {
+        request = {
+            ...request, TRANSACTION_PIN: tPin
+        }
+    }
+
+    console.log("request", request);
+
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {"CARD_VERIFY": authFlag === "CP" ? "Y" : "N"}).then(result => {
+            console.log("responseVal", result)
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
 }
 

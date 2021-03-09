@@ -20,11 +20,16 @@ import fontStyle from "../../resources/FontStyle";
 import Secure from "../../config/Secure";
 import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
+import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 
+let transType = "", actNo = "",REQUEST_CD="";
 
 class SecurityVerification extends Component {
     constructor(props) {
         super(props);
+        transType = props.route.params.transType;
+        actNo = props.route.params.actNo;
+        REQUEST_CD = props.route.params.REQUEST_CD;
         this.state = {
             isProgress: false,
             selectCardType: props.language.select_card,
@@ -38,7 +43,7 @@ class SecurityVerification extends Component {
             transactionPin: "",
             errorTransactionPin: "",
             authFlag: props.userDetails.AUTH_FLAG,
-            cardNoList:[]
+            cardNoList: []
         }
     }
 
@@ -100,24 +105,44 @@ class SecurityVerification extends Component {
         }
     }
 
-    submit(language, navigation) {
+    async submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        console.log("authFlag", this.state.authFlag)
-        if (this.state.authFlag === "CP") {
-            if (this.state.selectTypeVal === -1) {
+        const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
+        console.log("authFlag", authFlag);
+        if (authFlag === "CP") {
+            if (selectTypeVal === -1) {
                 Utility.alert(language.errorSelectCard);
                 return;
-            } else if (this.state.cardPin === "") {
+            } else if (cardPin === "") {
                 this.setState({errorCardPin: language.errSecurity})
                 return;
+            } else {
+                await this.processVerification();
             }
         } else if (this.state.authFlag === "TP") {
             if (this.state.transactionPin === "") {
                 this.setState({
                     errorTransactionPin: language.errorTransactionPin
                 })
+            } else {
+                await this.processVerification();
             }
         }
+    }
+
+
+    async processVerification() {
+        const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
+        await ADDBENFVERIFY(
+            this.props.userDetails,REQUEST_CD, this.props, transType, authFlag === "CP" ? selectTypeVal : actNo, authFlag, cardPin, transactionPin)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
     }
 
     cPinView(language) {
@@ -350,7 +375,7 @@ class SecurityVerification extends Component {
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => index+""}
+                                      data={this.state.modalData} keyExtractor={(item, index) => index + ""}
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -380,10 +405,11 @@ class SecurityVerification extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
-        if(this.props.userDetails.AUTH_FLAG === "CP"){
+        if (this.props.userDetails.AUTH_FLAG === "CP") {
             await this.getAccount();
         }
     }
+
     backEvent() {
         this.props.navigation.goBack();
     }
@@ -414,7 +440,7 @@ const styles = {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
