@@ -468,7 +468,7 @@ class BeneficiaryWithCityBank extends Component {
         }
 
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.more
+            tabBarLabel: this.props.language.transfer
         });
     }
 }

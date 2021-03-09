@@ -17,37 +17,38 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import RadioForm from "react-native-simple-radio-button";
+import {AddBeneficiary, GETBANKDETAILS} from "../Requests/RequestBeneficiary";
+
 
 class BeneficiaryOtherBank extends Component {
     constructor(props) {
         super(props);
+        console.log("props.userDetails.AUTH_FLAG", props.userDetails.AUTH_FLAG)
         this.state = {
             nickname: "",
             account_card_name: "",
             accountNo: "",
-            mobile_number:"",
+            mobile_number: "",
             emailTxt: "",
             errorEmail: "",
-            error_nickname:"",
-            error_accountNo:"",
-            error_cardname:"",
-            focusUid: false,
-            focusPwd: false,
+            error_nickname: "",
+            error_accountNo: "",
+            error_cardName: "",
             isProgress: false,
             selectType: props.language.select_type_account,
             selectBankType: props.language.select_bank_type,
+            bankTypeArr: [],
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
-           // selectTypeAccount: props.language.select_type_account,
             selectTypeVal: -1,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
+            authFlag: props.userDetails.AUTH_FLAG,
             updateTitle: props.route.params.title
         }
-        console.log("updated title is",props.route.params.title)
+        console.log("updated title is", props.route.params.title)
     }
 
     openModal(option, title, data, language) {
@@ -66,14 +67,11 @@ class BeneficiaryOtherBank extends Component {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }
-          else if (modelSelection === "bankType") {
+        } else if (modelSelection === "bankType") {
             this.setState({selectBankType: item.label, selectTypeVal: item.value, modalVisible: false})
-          }
-        else if (modelSelection === "district_type") {
+        } else if (modelSelection === "district_type") {
             this.setState({selectDistrictType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }
-        else if (modelSelection === "branch_type") {
+        } else if (modelSelection === "branch_type") {
             this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
@@ -84,7 +82,7 @@ class BeneficiaryOtherBank extends Component {
         this.setState({nickname: text, error_nickname: ""})
     }
 
-    accountchange(text){
+    accountchange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
         this.setState({accountNo: text, error_accountNo: ""})
@@ -94,35 +92,42 @@ class BeneficiaryOtherBank extends Component {
         if (this.state.nickname === "") {
             this.setState({error_nickname: language.require_nickname});
             return;
-        }
-        else if(this.state.accountNo===""){
-            this.setState({error_accountNo:language.require_cardnumber})
+        } else if (this.state.accountNo === "") {
+            this.setState({error_accountNo: language.require_cardnumber})
             return;
-        }
-        else if(this.state.account_card_name===""){
-            this.setState({error_cardname:language.require_cardname})
+        } else if (this.state.account_card_name === "") {
+            this.setState({error_cardName: language.require_cardname})
             return;
-        }else if(this.state.selectTypeVal === -1) {
-            Utility.alert("Please Select Account Type");
+        } else if (this.state.selectBankType === language.select_bank_type) {
+            Utility.alert(language.error_select_bank_name);
             return;
-        }
-        else if (this.state.selectBankType === "Select Bank Name") {
-            Utility.alert("Please Select Bank Name");
+        } else if (this.state.selectDistrictType === language.select_district_type) {
+            Utility.alert(language.error_select_district_name);
             return;
-        }
-        else if (this.state.selectDistrictType === "Select District Name") {
-            Utility.alert("Please Select District Name");
-            return;
-        }
-        else if (this.state.selectBranchType === "Select Branch Name") {
-            Utility.alert("Please Select Branch Name");
-            return;
-        }
-        else if (this.state.selectTypeVal === 2) {
+        } else if (this.state.selectBranchType === language.select_branch_type) {
+            Utility.alert(language.error_select_branch_name);
             return;
         }
         this.props.navigation.navigate("ViewBeneficiaryOtherBank");
         //Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+    }
+
+    beneficiaryAdd(language) {
+        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
+        this.setState({isProgress: true});
+        AddBeneficiary(accountDetails, this.props.userDetails, nickname, mobile_number, emailTxt, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () => this.props.navigation.navigate("SecurityVerification", {
+                REQUEST_CD: response.REQUEST_CD,
+                transType: "I",
+                actNo: this.state.accountNo
+            }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     accountNoOption(language) {
@@ -150,120 +155,100 @@ class BeneficiaryOtherBank extends Component {
                     })}
                     value={this.state.nickname}
                     multiline={false}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     numberOfLines={1}
                     contextMenuHidden={true}
-                    editable={this.state.updateTitle==="Update Beneficiary - Other Bank"?false:true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
+                    returnKeyType={"next"}
+                    onSubmitEditing={(event) => {
+                        this.actNoRef.focus();
+                    }}
                 />
             </View>
-                {this.state.error_nickname !==  "" ?
-                    <Text style={{
+            {this.state.error_nickname !== "" ?
+                <Text style={{
                     marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_nickname}</Text> : null}
+                    fontFamily: fontStyle.RobotoRegular,
+                }}>{this.state.error_nickname}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{flex: 1}}>
-                    <Text style={[CommonStyle.labelStyle, {
-                        color: themeStyle.THEME_COLOR,
-                        marginStart: 10,
-                        marginEnd: 10,
-                        marginTop: 6,
-                    }]}>
-                        {language.acc_type}
-                    </Text>
-                    <TouchableOpacity disabled={this.state.updateTitle==="Update Beneficiary - Other Bank"?true:false}
-                        onPress={() => this.openModal("type", language.selectActType, language.accountTypeArr, language)}>
-                        <View style={styles.selectionBg}>
-                            <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.selectType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                flex: 1
-                            }]}>
-                                {this.state.selectType}
-                            </Text>
-                            <Image resizeMode={"contain"} style={styles.arrowStyle}
-                                   source={require("../../resources/images/ic_arrow_down.png")}/>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
                 <Text style={[CommonStyle.textStyle]}>
-                    {language.acc_card_number}
+                    {this.state.authFlag === "CP" ? language.card_number : language.acc_number}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
+                    ref={(ref) => this.actNoRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({
                         error_accountNo: "",
-                        accountNo: Utility.userInput(text)
+                        accountNo: Utility.input(text, "0123456789")
                     })}
                     value={this.state.accountNo}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
                     returnKeyType={"next"}
-                    editable={this.state.updateTitle==="Update Beneficiary - Other Bank"?false:true}
                     onSubmitEditing={(event) => {
-                        this.cardnameRef.focus();
+                        this.cardNameRef.focus();
                     }}
                     maxLength={13}/>
             </View>
-            {this.state.error_accountNo !==  "" ?
+            {this.state.error_accountNo !== "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
                 }}>{this.state.error_accountNo}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.acc_card_name}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                    </Text>
-                    <TextInput
-                        ref={(ref) => this.cardnameRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.et_placeholder}
-                        onChangeText={text => this.setState({
-                            error_cardname: "",
-                            account_card_name: Utility.userInput(text)
-                        })}
-                        value={this.state.account_card_name}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        editable={this.state.updateTitle==="Update Beneficiary - Other Bank"?false:true}
-                        autoCorrect={false}
-                    />
-                </View>
-                {this.state.error_cardname !==  "" ?
-                    <Text style={{
-                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_cardname}</Text> : null}
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {this.state.authFlag === "CP" ? language.cardName : language.actName}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TextInput
+                    ref={(ref) => this.cardNameRef = ref}
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
+                    placeholder={language.et_placeholder}
+                    onChangeText={text => this.setState({
+                        error_cardName: "",
+                        account_card_name: Utility.userInput(text)
+                    })}
+                    value={this.state.account_card_name}
+                    multiline={false}
+
+                    numberOfLines={1}
+                    contextMenuHidden={true}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    autoCorrect={false}
+                />
+            </View>
+            {this.state.error_cardName !== "" ?
+                <Text style={{
+                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                    fontFamily: fontStyle.RobotoRegular,
+                }}>{this.state.error_cardName}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{flex: 1}}>
                 {<Text style={[CommonStyle.labelStyle, {
@@ -291,56 +276,58 @@ class BeneficiaryOtherBank extends Component {
                     </View>
                 </TouchableOpacity>
             </View>
-            <View style={{flex: 1}}>
-                <Text style={[CommonStyle.labelStyle, {
-                    color: themeStyle.THEME_COLOR,
-                    marginStart: 10,
-                    marginEnd: 10,
-                    marginTop: 6,
-                    marginBottom: 4
-                }]}>
-                    {language.type_district}
-                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                </Text>
-                <TouchableOpacity
-                    onPress={() => this.openModal("district_type", language.select_district_type, language.districtTypeArr, language)}>
-                    <View style={styles.selectionBg}>
-                        <Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                            flex: 1
-                        }]}>
-                            {this.state.selectDistrictType}
-                        </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
-                               source={require("../../resources/images/ic_arrow_down.png")}/>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View style={{flex: 1}}>
-                <Text style={[CommonStyle.labelStyle, {
-                    color: themeStyle.THEME_COLOR,
-                    marginStart: 10,
-                    marginEnd: 10,
-                    marginTop: 6,
-                    marginBottom: 4
-                }]}>
-                    {language.type_Branch}
-                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                </Text>
-                <TouchableOpacity
-                    onPress={() => this.openModal("branch_type", language.select_branch_name, language.branchTypeArr, language)}>
-                    <View style={styles.selectionBg}>
-                        <Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                            flex: 1
-                        }]}>
-                            {this.state.selectBranchType}
-                        </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
-                               source={require("../../resources/images/ic_arrow_down.png")}/>
-                    </View>
-                </TouchableOpacity>
-            </View>
+            {this.state.authFlag === "TP" ? <View>
+                <View style={{flex: 1}}>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.THEME_COLOR,
+                        marginStart: 10,
+                        marginEnd: 10,
+                        marginTop: 6,
+                        marginBottom: 4
+                    }]}>
+                        {language.type_district}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => this.openModal("district_type", language.select_district_type, language.districtTypeArr, language)}>
+                        <View style={styles.selectionBg}>
+                            <Text style={[CommonStyle.midTextStyle, {
+                                color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                flex: 1
+                            }]}>
+                                {this.state.selectDistrictType}
+                            </Text>
+                            <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                   source={require("../../resources/images/ic_arrow_down.png")}/>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View style={{flex: 1}}>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.THEME_COLOR,
+                        marginStart: 10,
+                        marginEnd: 10,
+                        marginTop: 6,
+                        marginBottom: 4
+                    }]}>
+                        {language.type_Branch}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => this.openModal("branch_type", language.select_branch_name, language.branchTypeArr, language)}>
+                        <View style={styles.selectionBg}>
+                            <Text style={[CommonStyle.midTextStyle, {
+                                color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                flex: 1
+                            }]}>
+                                {this.state.selectBranchType}
+                            </Text>
+                            <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                   source={require("../../resources/images/ic_arrow_down.png")}/>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -353,15 +340,15 @@ class BeneficiaryOtherBank extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.beneficiary_mobile_number}
                     </Text>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
-                    <Image style={{
-                        height: Utility.setHeight(20),
-                        width: Utility.setWidth(20),
-                        marginLeft: Utility.setWidth(10),
-                        marginRight: Utility.setWidth(10),
-                    }} resizeMode={"contain"}
-                           source={require("../../resources/images/ic_beneficiary.png")}/>
-                </TouchableOpacity>
+                    {/* <TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
+                        <Image style={{
+                            height: Utility.setHeight(20),
+                            width: Utility.setWidth(20),
+                            marginLeft: Utility.setWidth(10),
+                            marginRight: Utility.setWidth(10),
+                        }} resizeMode={"contain"}
+                               source={require("../../resources/images/ic_beneficiary.png")}/>
+                    </TouchableOpacity>*/}
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
@@ -443,16 +430,24 @@ class BeneficiaryOtherBank extends Component {
                 <Text style={styles.textView}>per day and BDT 2 lacs in 5 transacations</Text>
                 <Text style={styles.textView}>5. For NPSB transfer,while adding DBBL beneficiary, complete</Text>
                 <Text style={styles.textView}>13-digit account number will be required. in case of adding</Text>
-                <Text style={styles.textView}>DBBL credit  card,the digit 100001 need to be added</Text>
+                <Text style={styles.textView}>DBBL credit card,the digit 100001 need to be added</Text>
                 <Text style={styles.textView}>before the 13-digit card number.</Text>
             </View>
         </View>)
     }
 
     render() {
-        let language = this.props.language;
+        let
+            language = this.props.language;
+
         return (
-            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+
+            <View style={{
+                flex: 1
+                ,
+                backgroundColor: themeStyle.BG_COLOR
+            }
+            }>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -565,7 +560,7 @@ class BeneficiaryOtherBank extends Component {
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -575,57 +570,76 @@ class BeneficiaryOtherBank extends Component {
         }
 
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.more
+            tabBarLabel: this.props.language.transfer
+        });
+
+        await this.getBankName();
+    }
+
+    async getBankName() {
+        await GETBANKDETAILS(this.props.userDetails, this.props, "BANK").then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            })
+            this.setState({bankTypeArr: response})
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
         });
     }
 }
 
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    textView:{
-        marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
+const styles =
+    {
+        arrowStyle: {
+            tintColor: themeStyle.BLACK,
+            width: Utility.setWidth(35),
+            height: Utility.setHeight(30)
+        }
+        ,
+        selectionBg: {
+            paddingStart: 10,
+            paddingBottom: 4,
+            paddingTop: 4,
+            paddingEnd: 10,
+            flexDirection: "row",
+            backgroundColor: themeStyle.SELECTION_BG,
+            alignItems: "center"
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
+        centeredView: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: 'rgba(0,0,0,0.5)',
+        },
+        textView: {
+            marginStart: 10,
+            color: themeStyle.THEME_COLOR
+        },
+        modalView: {
+            width: Utility.getDeviceWidth() - 30,
+            overflow: "hidden",
+            borderRadius: 10,
+            maxHeight: Utility.getDeviceHeight() - 100,
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset:
+                {
+                    width: 0,
+                    height: 2
+                }, shadowOpacity: 0.25,
+            shadowRadius: 3.84, elevation: 5
+        }
     }
-}
 
 const mapStateToProps = (state) => {
-    return {
-        langId: state.accountReducer.langId,
-        language: state.accountReducer.language,
-    };
-};
+        return {
+            userDetails: state.accountReducer.userDetails,
+            langId: state.accountReducer.langId,
+            language: state.accountReducer.language,
+        };
+    }
+;
 
 export default connect(mapStateToProps)(BeneficiaryOtherBank);

@@ -74,11 +74,11 @@ export const AddBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EM
     });
 }
 
-export const GetBeneBank = async (userDetails, props, requestType) => {
+export const GETBANKDETAILS = async (userDetails, props, requestType) => {
     let request = {
         ACTION: "GETBENFBANK",
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
-        REQ_TYPE: "BANK",
+        REQ_TYPE: requestType,
         MOD_TRAN: "ALL",
         USER_ID: userDetails.USER_ID,
         ...Config.commonReq
@@ -88,10 +88,10 @@ export const GetBeneBank = async (userDetails, props, requestType) => {
 
     return new Promise(async (resolve, reject) => {
         await ApiRequest.apiRequest.callApi(request, {}).then(result => {
-            console.log("responseVal", result)
+            console.log("responseVal", result);
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve(result);
+                return resolve(result.RESPONSE);
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 console.log("errorResponse", JSON.stringify(result));

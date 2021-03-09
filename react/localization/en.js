@@ -376,7 +376,7 @@ export default {
 
     acc_no: "Enter Account Number",
     card_no: "Enter Card Number",
-    acc_name: "Account Name",
+
     donot_have_act: "Don't have bank account yet?",
 
     creditcard_name: "Enter Credit Card Name",
@@ -571,12 +571,8 @@ export default {
     require_name: "Name is required",
     require_bname: "Beneficiary Name is required",
     require_email: "Email Address is required",
-
     add_beneficiary_wob: "Add Beneficiary-Other Bank",
-    acc_card_number: "Account/Card Number",
-    acc_card_name: "Account/Card Name",
 
-    acc_type: "Account Type",
     bankTypeArr: [
         {key: "0", label: "AB Bank Limited", value: 0},
         {key: "1", label: "Agrani Bank Ltd.", value: 1},
@@ -610,6 +606,9 @@ export default {
     select_type_account: "Select Account Type",
     select_district_type: "Select District Name",
     select_branch_type: "Select Branch Name",
+    error_select_bank_name: "Please Select Bank Name",
+    error_select_district_name: "Please Select District Name",
+    error_select_branch_name: "Please Select Branch Name",
     type_Branch: "Branch Name",
     districtTypeArr: [
         {key: "0", label: "BAGERATH", value: 0},
