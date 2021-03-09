@@ -135,10 +135,10 @@ class CreditCardActivation extends Component {
                             marginTop: 6,
                             marginBottom: 4
                         }]}>
-                            {language.type_transfer}
+                            {language.credit_card_no}
                         </Text>
                         <TouchableOpacity
-                            onPress={() => this.openModal("type", language.select_beneficiary_type, language.transferTypeArr, language)}>
+                            onPress={() => this.openModal("type", language.select_card_number, language.transferTypeArr, language)}>
                             <View style={styles.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.selectType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
