@@ -26,6 +26,7 @@ import MonthPicker from "react-native-month-year-picker";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
 import moment from "moment";
+import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
 class RegistrationCard extends Component {
@@ -70,7 +71,7 @@ class RegistrationCard extends Component {
         }
     }
 
-    componentDidMount() {
+   async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -81,13 +82,27 @@ class RegistrationCard extends Component {
                 "hardwareBackPress",
                 this.backAction
             );
+            await this.startReadSMS();
         }
 
+    }
+
+    startReadSMS = async () => {
+        console.log("Great!! you have received new sms:");
+        const hasPermission = await ReadSms.requestReadSMSPermission();
+        if(hasPermission) {
+            await ReadSms.startReadSMS((status, sms, error) => {
+                if (status === "success") {
+                    console.log("Great!! you have received new sms:", sms);
+                }
+            });
+        }
     }
 
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+            ReadSms.stopReadSMS();
         }
     }
 

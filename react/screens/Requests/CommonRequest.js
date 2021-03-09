@@ -1,6 +1,8 @@
 import Utility from "../../utilize/Utility";
 import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
+import * as ReadSms from "react-native-read-sms/ReadSms";
+
 
 export const GetUserAuthByUid = async (cityTouchUserId, props) => {
     let request = {

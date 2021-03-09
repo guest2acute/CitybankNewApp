@@ -1,5 +1,16 @@
 import React, {Component} from "react";
-import {Platform, StatusBar, View, Image, SafeAreaView, TouchableOpacity, Text, TextInput, Alert} from "react-native";
+import {
+    Platform,
+    StatusBar,
+    View,
+    Image,
+    SafeAreaView,
+    TouchableOpacity,
+    Text,
+    TextInput,
+    Alert,
+    BackHandler
+} from "react-native";
 
 import {actions} from "../redux/actions";
 import {connect} from "react-redux";
@@ -15,6 +26,7 @@ import fontStyle from "../resources/FontStyle";
 import FontSize from "../resources/ManageFontSize";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
+import * as ReadSms from "react-native-read-sms/ReadSms";
 
 /**
  * splash page
@@ -45,9 +57,29 @@ class OTPVerification extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            await this.startReadSMS();
         }
 
     }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            ReadSms.stopReadSMS();
+        }
+    }
+
+    startReadSMS = async () => {
+        console.log("Great!! you have received new sms:");
+        const hasPermission = await ReadSms.requestReadSMSPermission();
+        if(hasPermission) {
+            await ReadSms.startReadSMS((status, sms, error) => {
+                if (status === "success") {
+                    console.log("Great!! you have received new sms:", sms);
+                }
+            });
+        }
+    }
+
 
     async submit(language, navigation) {
         if (this.state.stageVal === 0) {

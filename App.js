@@ -66,7 +66,6 @@ import AccountServices from "./react/screens/More/AccountServices";
 import CardServices from "./react/screens/More/CardServices";
 import LoanServices from "./react/screens/More/LoanServices";
 import OTPVerification from "./react/screens/OTPVerification";
-import OTPScreen from "./react/screens/OTPScreen";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
@@ -210,13 +209,13 @@ function Root() {
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>
             <Stack.Screen name="TermConditionScreen" component={TermConditionScreen} options={{headerShown: false}}/>
             <Stack.Screen name="WebScreen" component={WebScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown: false}}/>
             <Stack.Screen name="OTPVerification" component={OTPVerification} options={{headerShown: false}}/>
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationAccount" component={RegistrationAccount} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationCard" component={RegistrationCard} options={{headerShown: false}}/>
             <Stack.Screen name="LoginConfigureProfile" component={LoginConfigureProfile} options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
+            <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
