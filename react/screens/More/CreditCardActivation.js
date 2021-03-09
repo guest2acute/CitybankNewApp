@@ -15,7 +15,8 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-
+import moment from "moment";
+import MonthPicker from "react-native-month-year-picker";
 
 class CreditCardActivation extends Component {
     constructor(props) {
@@ -23,13 +24,20 @@ class CreditCardActivation extends Component {
         this.state = {
             isProgress: false,
             selectType: props.language.select_type_transfer,
+            selectCard: props.language.select_card_number,
             selectTypeVal: -1,
             selectActCard: props.language.TypeOfTransferArr[0],
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            title:props.route.params.title
+            title:props.route.params.title,
+            cardStatus:"",
+            cardState:"",
+            cardHolderName:"",
+            cardType:"",
+            cardExpiry: "",
+            showMonthPicker: false,
         }
     }
 
@@ -62,8 +70,8 @@ class CreditCardActivation extends Component {
     onSelectItem(item) {
         const {modelSelection} = this.state;
         console.log("modelSelection is this",item)
-        if (modelSelection === "type") {
-            this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
+        if (modelSelection === "creditCardType") {
+            this.setState({selectCard: item.label, selectTypeVal: item.value, modalVisible: false})
         }
 
 
@@ -98,6 +106,209 @@ class CreditCardActivation extends Component {
         }
         }
 
+    onValueChange = (event, newDate) => {
+        console.log("event", event + "-" + newDate);
+        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
+        switch (event) {
+            case "dateSetAction":
+                this.setState({cardExpiry: dateVal, showMonthPicker: false});
+                break;
+            case "neutralAction":
+                break;
+            case "dismissedAction":
+            default:
+                this.setState({showMonthPicker: false});
+        }
+    }
+
+
+    creditCardActivation(language){
+        return(
+            <View style={{flex: 1, paddingBottom: 30}}>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.credit_card_no}
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("creditCardType", language.select_card_number, language.cardTypeArr, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectCard === language.select_card_number ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectCard}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.card_status}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            cardStatus: Utility.userInput(text)
+                        })}
+                        value={this.state.cardStatus}
+                        multiline={false}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        editable={false}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.card_state}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            cardState: Utility.userInput(text)
+                        })}
+                        value={this.state.cardState}
+                        multiline={false}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        editable={false}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.card_holder_name}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            cardHolderName: Utility.userInput(text)
+                        })}
+                        value={this.state.cardHolderName}
+                        multiline={false}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        editable={false}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.card_type}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            cardType: Utility.userInput(text)
+                        })}
+                        value={this.state.cardType}
+                        multiline={false}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        editable={false}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.enterExpiry}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TouchableOpacity style={{
+                        flex: 1,
+                        marginLeft: 10
+                    }} onPress={() => this.setState({errorExpiry: "", showMonthPicker: true})}>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={language.select_expiry_date}
+                            editable={false}
+                            value={this.state.cardExpiry}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            maxLength={5}/>
+                    </TouchableOpacity>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            </View>
+        )
+    }
     render() {
         let language = this.props.language;
         return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
@@ -128,28 +339,7 @@ class CreditCardActivation extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.credit_card_no}
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.openModal("type", language.select_card_number, language.transferTypeArr, language)}>
-                            <View style={styles.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
+                        {this.creditCardActivation(language)}
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
@@ -173,7 +363,7 @@ class CreditCardActivation extends Component {
                             <View style={{width: Utility.setWidth(20)}}/>
 
                             <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.submit(language, this.props.navigation)}>
+                                              onPress={() => this.onSubmit(language, this.props.navigation)}>
                                 <View style={{
                                     alignItems: "center",
                                     justifyContent: "center",
@@ -182,14 +372,20 @@ class CreditCardActivation extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : language.next}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-                        </Text>
                     </View>
                 </ScrollView>
+                {this.state.showMonthPicker ? <MonthPicker
+                    onChange={this.onValueChange}
+                    value={new Date()}
+                    minimumDate={new Date()}
+                    maximumDate={new Date(new Date().getFullYear() + 10, 12)}
+                    locale="en"
+                    mode="number"
+                /> : null}
                 <Modal
                     animationType="none"
                     transparent={true}

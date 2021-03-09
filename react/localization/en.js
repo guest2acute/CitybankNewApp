@@ -930,6 +930,7 @@ export default {
     /*Credit Card Activation*/
     creditCard_title: "Credit Card Activation",
     select_card_number: "Select Card Number",
+    select_expiry_date:"Select Expiry Date",
     selected_card:"Select Card",
     credit_card_no:"Credit Card Number",
     card_status: "Card Status",
