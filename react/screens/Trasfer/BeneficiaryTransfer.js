@@ -66,13 +66,14 @@ class BeneficiaryTransfer extends Component {
 
 
     accountNoOption(language) {
-        return (<View>
+        return (
+            <View>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
                 <Text style={[CommonStyle.textStyle]}>
-                    {language.nick_name}
+                    {language.pin_change_reason}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
