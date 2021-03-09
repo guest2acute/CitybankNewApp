@@ -183,10 +183,10 @@ export const MoreDetails = (language) => {
             redirectScreen: "CardServices",
             subCategory: [
                 {
-                    id: "ActiveCreditCard",
-                    title: language.active_credit_card,
+                    id: "CreditCardActivation",
+                    title: language.creditCard_title,
                     icon: require("../../resources/images/ic_card_active.png"),
-                    redirectScreen: "LoanServices"
+                    redirectScreen: "CreditCardActivation"
                 },
                 {
                     id: "ActiveDebitCard",
@@ -321,40 +321,40 @@ export const MoreDetails = (language) => {
             redirectScreen: "Enquiry",
             subCategory: [
                 {
-                    id: "Enquiry",
-                    title: language.enquiry,
-                    icon: require("../../resources/images/ic_shopping_cart.png"),
-                    redirectScreen: "Enquiry"
-                },
-                {
                     id: "CustomerDetails",
                     title: language.customer_details,
-                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    icon: require("../../resources/images/ic_profile.png"),
                     redirectScreen: "CustomerDetails"
                 },
                 {
                     id: "ScheduleCharges",
                     title: language.schedule_charges,
-                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    icon: require("../../resources/images/ic_products.png"),
                     redirectScreen: "ScheduleCharges"
                 },
                 {
                     id: "Products",
                     title: language.products,
-                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    icon: require("../../resources/images/ic_products.png"),
                     redirectScreen: "ScheduleCharges"
                 },
                 {
                     id: "SubmitQuery",
                     title: language.submit_query,
-                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    icon: require("../../resources/images/ic_product_services.png"),
                     redirectScreen: "SubmitQuery"
                 },
                 {
                     id: "AtmBranchSearch",
                     title: language.atm_branch_search,
-                    icon: require("../../resources/images/ic_shopping_cart.png"),
+                    icon: require("../../resources/images/case_by_code.png"),
                     redirectScreen: "AtmBranchSearch"
+                },
+                {
+                    id: "ContactCallCenter",
+                    title: language.contact_call_center,
+                    icon: require("../../resources/images/ic_contact_call_center.png"),
+                    redirectScreen: "ContactCallCenter"
                 },
             ],
         },

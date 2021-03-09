@@ -19,7 +19,8 @@ import {MoreDetails} from "../Requests/CommonRequest";
  */
 let imeiNo = "";
 
-class CredentialManagement extends Component {
+class Enquiry extends Component {
+
     constructor(props) {
         super(props);
         let language = props.language;
@@ -28,6 +29,7 @@ class CredentialManagement extends Component {
             title:props.route.params.title,
         }
     }
+
     /**
      * redirect to landing screen
      */
@@ -59,8 +61,6 @@ class CredentialManagement extends Component {
 
     moveScreen(item) {
         console.log("redirectScreen",item.redirectScreen)
-        this.props.navigation.navigate(item.redirectScreen,{title:item.title});
-
     }
 
     async redirectProfile() {
@@ -81,7 +81,7 @@ class CredentialManagement extends Component {
                     marginBottom: 17,
                     paddingLeft: 10,
                     paddingRight: 10,
-                    alignItems: "center"
+                    alignItems: "center",
                 }}>
                     <Image style={{
                         height: Utility.setHeight(20),
@@ -102,9 +102,12 @@ class CredentialManagement extends Component {
                     }} resizeMode={"contain"}
                            source={require("../../resources/images/arrow_right_ios.png")}/>
                 </View>
+
             </TouchableOpacity>
         )
     }
+
+
 
     bottomLine() {
         return (<View style={{
@@ -113,13 +116,16 @@ class CredentialManagement extends Component {
             marginRight: 10,
             backgroundColor: "#D3D1D2"
         }}/>)
+
     }
+
 
     render() {
         let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
+
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
@@ -146,8 +152,8 @@ class CredentialManagement extends Component {
                 </View>
                 <View>
                     <FlatList scrollEnabled={true}
-                        data={this.state.data}
                               style={{flexGrow:1}}
+                        data={this.state.data}
                               renderItem={this._renderItem}
                               ItemSeparatorComponent={() => this.bottomLine()}
                               ListFooterComponent={this.bottomLine()}
@@ -172,7 +178,7 @@ class CredentialManagement extends Component {
                     <TouchableOpacity
                         /* style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}*/
                         disabled={this.state.isProgress}
-                        onPress={() => this.onSubmit(this.props.language)}>
+                        onPress={() => this.props.navigation.goBack(null)}>
                         <Text style={{
                             color: "#fff",
                             fontSize: FontSize.getSize(14),
@@ -186,6 +192,7 @@ class CredentialManagement extends Component {
         );
     }
 }
+
 
 const styles = {
     viewStyles: {
@@ -216,5 +223,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(CredentialManagement);
+export default connect(mapStateToProps)(Enquiry);
 

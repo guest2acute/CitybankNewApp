@@ -770,6 +770,8 @@ class RegistrationAccount extends Component {
                 else
                     this.setState({errorTransDate: "", transDate: currentDate})
             });
+            console.log("date is this",this.state.dateVal)
+            console.log("dob",this.state.dob)
         } else {
             this.setState({show: false});
         }
@@ -897,8 +899,9 @@ class RegistrationAccount extends Component {
                                 alignItems: "flex-end",
                                 textAlign: 'right',
                             }]}
+                            //onChangeText={text => this.setState({text})}
                             placeholder={"DD-MMM-YYYY"}
-                            value={"11-NOV-1983"}
+                            value={this.state.dob}
                             editable={false}
                             multiline={false}
                             numberOfLines={1}

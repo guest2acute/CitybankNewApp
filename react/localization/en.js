@@ -924,6 +924,27 @@ export default {
     atm_branch_search: "Atm & Branch Search",
     contact_call_center: "Contact Call Center",
 
+    /*Credit Card Activation*/
+    creditCard_title: "Credit Card Activation",
+    credit_card_no:"Credit Card Number",
+    card_status: "Card Status",
+    card_state: "Card State",
+    card_holder_name: "Card Holder Name",
+    card_type: "Card Type",
+    expiry_date: "Expiry Date",
+    cardTypeArr: [
+        {key: "0", label: "376948*****9669/Alo Credit Card", value: 0},
+        {key: "1", label: "474867****0655/AMEX/AGORA", value: 1},
+        {key: "2", label: "376948*****9669/AMEX", value: 2},
+    ],
+
+    /*Debit Card Activation*/
+    debit_card_activation:"Debit Card  Activation",
+
+    /*Block Credit Card*/
+
+
+
 
 
 
