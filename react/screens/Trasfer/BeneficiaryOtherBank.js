@@ -258,7 +258,7 @@ class BeneficiaryOtherBank extends Component {
                     onSubmitEditing={(event) => {
                         this.cardNameRef.focus();
                     }}
-                    maxLength={13}/>
+                    maxLength={this.state.selectTypeVal === 1 ? 16:13}/>
             </View>
             {this.state.error_accountNo !== "" ?
                 <Text style={{

@@ -1,7 +1,7 @@
 import Utility from "../../utilize/Utility";
 import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
-import * as ReadSms from "react-native-read-sms/ReadSms";
+
 
 
 export const GetUserAuthByUid = async (cityTouchUserId, props) => {
@@ -102,6 +102,7 @@ export const MoreDetails = (language) => {
                     id: "PINCode",
                     title: language.pin_code,
                     icon: require("../../resources/images/ic_pin_code.png"),
+                    redirectScreen: ""
                 },
                 {
                     id: "UserId",
@@ -157,7 +158,19 @@ export const MoreDetails = (language) => {
                     id: "ChequeBookManagement",
                     title: language.cheque_book_management,
                     icon: require("../../resources/images/ic_cheque_book_management.png"),
-                    redirectScreen: ""
+                    redirectScreen: "",
+                    childCategory: [{
+                        id: "Positive Pay",
+                        title: language.positive_pay,
+                        icon: require("../../resources/images/ic_positive_pay.png"),
+                        redirectScreen: ""
+                    }, {
+                        id: "Positive Pay",
+                        title: language.positive_pay,
+                        icon: require("../../resources/images/ic_positive_pay.png"),
+                        redirectScreen: ""
+
+                    }]
                 },
                 {
                     id: "TagAccountCityTouch",
@@ -182,82 +195,74 @@ export const MoreDetails = (language) => {
         {
             id: "CardServices",
             title: language.card_services,
-            icon: require("../../resources/images/ic_credit_card.png"),
+            icon: require
+            ("../../resources/images/ic_credit_card.png"),
             redirectScreen: "CardServices",
-            subCategory: [
-                {
-                    id: "CreditCardActivation",
-                    title: language.creditCard_title,
-                    icon: require("../../resources/images/ic_card_active.png"),
-                    redirectScreen: "CreditCardActivation"
-                },
-                {
-                    id: "DebitCardActivation",
-                    title: language.debit_card_activation,
-                    icon: require("../../resources/images/ic_debit_card_active.png"),
-                    subCategory: [],
-                    redirectScreen: "CreditCardActivation"
-                },
-                {
-                    id: "BlockCreditCard",
-                    title: language.block_credit_card,
-                    icon: require("../../resources/images/ic_credit_card_block.png"),
-                    subCategory: [],
-                    redirectScreen: "cardBlock"
-                },
-                {
-                    id: "BlockDebitCard",
-                    title: language.block_debit_card,
-                    icon: require("../../resources/images/ic_card_block.png"),
-                    redirectScreen: "cardBlock"
-                },
-                {
-                    id: "CardPINReset",
-                    title: language.card_pin_reset,
-                    icon: require("../../resources/images/ic_pin_code_change.png"),
-                    redirectScreen: "CardPinReset"
-                },
-                {
-                    id: "TagCreditCardInCityTouch",
-                    title: language.tag_credit_card,
-                    icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: "TagCreditCardInCityTouch"
-                }
-            ],
+            subCategory: [{
+                id: "CreditCardActivation",
+                title: language.creditCard_title,
+                icon: require("../../resources/images/ic_card_active.png"),
+                redirectScreen: "CreditCardActivation"
+            }, {
+                id: "DebitCardActivation",
+                title: language.debit_card_activation,
+                icon: require("../../resources/images/ic_debit_card_active.png"),
+                redirectScreen: "CreditCardActivation"
+            }, {
+                id: "BlockCreditCard",
+                title: language.block_credit_card,
+                icon: require("../../resources/images/ic_credit_card_block.png"),
+                redirectScreen: "cardBlock"
+            }, {
+                id: "BlockDebitCard",
+                title: language.block_debit_card,
+                icon: require("../../resources/images/ic_card_block.png"),
+                redirectScreen: "cardBlock"
+            }, {
+                id: "CardPINReset",
+                title: language.card_pin_reset,
+                icon: require("../../resources/images/ic_pin_code_change.png"),
+                redirectScreen: "CardPinReset"
+            }, {
+                id: "TagCreditCardInCityTouch",
+                title: language.tag_credit_card,
+                icon: require("../../resources/images/ic_credit_card.png"),
+                redirectScreen: "TagCreditCardInCityTouch"
+            }],
         },
         {
             id: "LoanServices",
             title: language.loan_services,
             icon: require("../../resources/images/ic_bank_loan.png"),
             redirectScreen: "LoanServices",
-            subCategory: [
-                {
-                    id: "QuickLoan",
-                    title: language.quick_loan,
-                    icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: "LoanServices"
-                },
-                {
-                    id: "LoanClosure",
-                    title: language.loan_closure,
-                    icon: require("../../resources/images/ic_loan_closure.png"),
-                    redirectScreen: "LoanServices"
-                },
-                {
-                    id: "RequestMonitor",
-                    title: language.request_monitor,
-                    icon: require("../../resources/images/ic_monitor.png"),
-                    redirectScreen: "LoanServices"
-                },
-                {
-                    id: "EmiCalculator",
-                    title: language.emi_calculator,
-                    icon: require("../../resources/images/ic_emi_calculator.png"),
-                    redirectScreen: "LoanServices"
-                }
-            ],
-        },
-        {
+            subCategory:
+                [
+                    {
+                        id: "QuickLoan",
+                        title: language.quick_loan,
+                        icon: require("../../resources/images/ic_credit_card.png"),
+                        redirectScreen: "LoanServices"
+                    },
+                    {
+                        id: "LoanClosure",
+                        title: language.loan_closure,
+                        icon: require("../../resources/images/ic_loan_closure.png"),
+                        redirectScreen: "LoanServices"
+                    },
+                    {
+                        id: "RequestMonitor",
+                        title: language.request_monitor,
+                        icon: require("../../resources/images/ic_monitor.png"),
+                        redirectScreen: "LoanServices"
+                    },
+                    {
+                        id: "EmiCalculator",
+                        title: language.emi_calculator,
+                        icon: require("../../resources/images/ic_emi_calculator.png"),
+                        redirectScreen: "LoanServices"
+                    }
+                ],
+        }, {
             id: "credentialManagement",
             title: language.credential_management,
             icon: require("../../resources/images/ic_credential_management.png"),
@@ -374,6 +379,5 @@ export const MoreDetails = (language) => {
             icon: require("../../resources/images/ic_documents.png"),
             subCategory: [],
             redirectScreen: ""
-        },
-    ];
+        }]
 }
