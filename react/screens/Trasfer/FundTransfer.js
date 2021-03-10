@@ -34,7 +34,6 @@ class FundTransfer extends Component {
             errorEmail: "",
             error_nickname:"",
             error_accountNo:"",
-            errorbkashname:"",
             focusUid: false,
             focusPwd: false,
             isProgress: false,
@@ -52,8 +51,8 @@ class FundTransfer extends Component {
             modalData: [],
             otp_type: 0,
             availableBalance:"",
-            transferamt:"",
-            error_transferamt:"",
+            transferAmount:"",
+            error_transferAmount:"",
             servicescharge:"",
             error_servicescharge:"",
             grandtotal:"",
@@ -137,17 +136,17 @@ class FundTransfer extends Component {
     }
 
     async onSubmit(language, navigation) {
-        if(this.state.selectAcctType==="Select From Account"){
+        if(this.state.selectAcctType===language.selectAccountType){
             Utility.alert("Please Select From Account");
             return;
-        }else if (this.state.selectToAcctType === "Select To Account") {
+        }else if (this.state.selectToAcctType === language.select_to_acct) {
             Utility.alert("Please Select To Account");
             return;
-        }else if(this.state.transferamt===""){
-            this.setState({error_transferamt:language.error_payment_ammt})
+        }else if(this.state.transferAmount===""){
+            this.setState({error_transferAmount:language.error_payment_ammt})
             return;
-        }else if(this.state.transferamt <=  500){
-            this.setState({error_transferamt:language.error_less_ammt})
+        }else if(this.state.transferAmount <=  500){
+            this.setState({error_transferAmount:language.error_less_ammt})
             return;
         }else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})
@@ -295,7 +294,7 @@ class FundTransfer extends Component {
                         {language.to_account}
                     </Text>
                     <TextInput
-                        ref={(ref) => this.transferamtRef = ref}
+                        ref={(ref) => this.transferAmountRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                         placeholder={""}
@@ -372,7 +371,7 @@ class FundTransfer extends Component {
                     autoCorrect={false}
                     returnKeyType={"next"}
                     onSubmitEditing={(event) => {
-                        this.transferamtRef.focus();
+                        this.transferAmountRef.focus();
                     }}
                     editable={false}
                     maxLength={13}/>
@@ -401,15 +400,15 @@ class FundTransfer extends Component {
                     {language.transfer_amount}
                 </Text>
                 <TextInput
-                    ref={(ref) => this.transferamtRef = ref}
+                    ref={(ref) => this.transferAmountRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_transferamt: "",
-                        transferamt: Utility.userInput(text)
+                        error_transferAmount: "",
+                        transferAmount: Utility.userInput(text)
                     })}
-                    value={this.state.transferamt}
+                    value={this.state.transferAmount}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -420,11 +419,11 @@ class FundTransfer extends Component {
                     autoCorrect={false}
                     maxLength={13}/>
             </View>
-            {this.state.error_transferamt !==  "" ?
+            {this.state.error_transferAmount !==  "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_transferamt}</Text> : null}
+                }}>{this.state.error_transferAmount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -716,7 +715,7 @@ class FundTransfer extends Component {
                             {language.number_of_payment}
                         </Text>
                         <TextInput
-                            ref={(ref) => this.transferamtRef = ref}
+                            ref={(ref) => this.transferAmountRef = ref}
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                             placeholder={language.et_placeholder}
@@ -751,24 +750,22 @@ class FundTransfer extends Component {
 
             <View style={{ marginTop: 10,}}>
                 <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>1. There is no found transfer restriction between your </Text>
-                <Text style={styles.textView}>own account for account transaction.</Text>
-                <Text style={styles.textView}>2.Credit card transfer limit:minimum transferable</Text>
-                <Text style={styles.textView}>amount is BDT 500 and up to 50% of total available</Text>
-                <Text style={styles.textView}>BDT limit.</Text>
-                <Text style={styles.textView}>3.Processing fee +VAT will be applicable</Text>
-                <Text style={styles.textView}>4. Consecutive transaction in the same account will</Text>
-                <Text style={styles.textView}>take 10 minutes of interval.  </Text>
+                <Text style={styles.textView}>{language.fund_transfer_note1}</Text>
+                <Text style={styles.textView}>{language.fund_transfer_note2}</Text>
+                <Text style={styles.textView}>{language.fund_transfer_note3}</Text>
+                <Text style={styles.textView}>{language.fund_transfer_note4}</Text>
+                <Text style={styles.textView}>{language.fund_transfer_note5}</Text>
+                <Text style={styles.textView}>{language.fund_transfer_note6}</Text>
+                <Text style={styles.textView}>{language.fund_transfer_note7}</Text>
+                <Text style={styles.textView}>{language.fund_transfer_note8}</Text>
             </View>
         </View>)
     }
 
     async changeCard(cardCode) {
-        console.log("cardcode is this",cardCode)
         this.setState({
             stateVal:cardCode
         })
-        console.log("statevalue is this", this.state.stateVal);
     }
 
 

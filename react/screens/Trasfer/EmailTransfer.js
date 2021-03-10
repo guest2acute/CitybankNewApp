@@ -78,11 +78,9 @@ class EmailTransfer extends Component {
     }
 
     async changeCard(cardCode) {
-        console.log("cardcode is this",cardCode)
         this.setState({
             stateVal:cardCode
         })
-        console.log("statevalue is this", this.state.stateVal);
     }
 
     sendOption(language){

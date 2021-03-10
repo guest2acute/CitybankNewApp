@@ -60,22 +60,13 @@ class Beneficiary extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
         if (modelSelection === "type") {
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
-
-
-        /* else if (modelSelection === "accountType") {
-             this.setState({selectActCard: item, modalVisible: false})
-         } else if (modelSelection === "cardType") {
-             this.setState({selectCard: item.label, modalVisible: false})
-         }*/
     }
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        console.log("selecttype value is this",this.state.selectTypeVal);
         if (this.state.selectTypeVal === -1) {
             Utility.alert("Please Select Beneficiary Type");
             return;

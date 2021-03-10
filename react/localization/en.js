@@ -835,6 +835,34 @@ export default {
     transactionTitle: "Enter Transaction PIN",
 
     /*notes*/
+    fund_transfer_note1: "1. There is no found transfer restriction between your",
+    fund_transfer_note2: "own account for account transaction.",
+    fund_transfer_note3: "2.Credit card transfer limit:minimum transferable.",
+    fund_transfer_note4: "amount is BDT 500 and up to 50% of total available.",
+    fund_transfer_note5: "BDT limit.",
+    fund_transfer_note6: "3.Processing fee +VAT will be applicable",
+    fund_transfer_note7: "4. Consecutive transaction in the same account will",
+    fund_transfer_note8: "take 10 minutes of interval.",
+
+    other_bankAccount_note1:"1. Maximum transaction limit from CityTouch is BDT 5 lacs per day.",
+    other_bankAccount_note2:"2. BEFTN: transfer request placed before 2:00PM will be executed on the.",
+    other_bankAccount_note3:"same day and transfer request placed after",
+    other_bankAccount_note4:"2:PM will be executed on the next working day after 10.00 AM.",
+    other_bankAccount_note5:"3. RTGS Available from 10:30 to 03:00 PM for instant.",
+    other_bankAccount_note6:"transfer of 1 to 5 lacs within working day.Fee BDT 100 (VAT Inclusive)",
+    other_bankAccount_note7:"4. NPSB: Transfer limit is BDT 5 lacs in 10 transcation per day",
+    other_bankAccount_note8:"and maximum BDT 1 lacs per transaction",
+    other_bankAccount_note9:"5. Credit card master limit: minimum transferable amount is",
+    other_bankAccount_note10:"BDT is 500 and up to 50% of total available BDT limit.",
+    other_bankAccount_note11:"other_bankAccount_note10",
+    other_bankAccount_note12:"7.consecutive transaction in the same account will take 10 minutes of interval",
+
+    email_transfer_note1: "1. An email transfer transaction will be valid for next 10 days.",
+    email_transfer_note2: "2. Maximum transferable amount:BDT in 5 lacs per day",
+    email_transfer_note3: "3. Generated transfer could be canceled anytime from \"Waiting\" Tab before withdrawing by the beneficiary.",
+    email_transfer_note4: "Beneficiary has to answer the security questions. case sensitive.",
+
+
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
     card_block_notes1: "1. if you select stolen or lost option,your card will be",
     card_block_notes2: "permanently deactivated. To block temporarily you may",
