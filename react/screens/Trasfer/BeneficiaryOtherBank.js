@@ -41,6 +41,9 @@ class BeneficiaryOtherBank extends Component {
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
             selectTypeVal: -1,
+            selectBankVal:-1,
+            selectBranchVal:-1,
+            selectDistrictVal:-1,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
@@ -68,11 +71,11 @@ class BeneficiaryOtherBank extends Component {
         if (modelSelection === "type") {
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
         } else if (modelSelection === "bankType") {
-            this.setState({selectBankType: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({selectBankType: item.label, selectBankVal: item.value, modalVisible: false})
         } else if (modelSelection === "district_type") {
-            this.setState({selectDistrictType: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({selectDistrictType: item.label, selectDistrictVal: item.value, modalVisible: false})
         } else if (modelSelection === "branch_type") {
-            this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({selectBranchType: item.label, selectBranchVal: item.value, modalVisible: false})
         }
     }
 
@@ -263,7 +266,7 @@ class BeneficiaryOtherBank extends Component {
                 </Text>
                 }
                 <TouchableOpacity
-                    onPress={() => this.openModal("bankType", language.select_bank_type, language.bankTypeArr, language)}>
+                    onPress={() => this.openModal("bankType", language.select_bank_type, this.state.bankTypeArr, language)}>
                     <View style={styles.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBankType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -538,7 +541,7 @@ class BeneficiaryOtherBank extends Component {
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => item.key}
+                                      data={this.state.modalData} keyExtractor={(item, index) => index+""}
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -581,8 +584,13 @@ class BeneficiaryOtherBank extends Component {
             console.log("response", response);
             this.setState({
                 isProgress: false,
-            })
-            this.setState({bankTypeArr: response})
+            });
+            let bankArr = [];
+            response.map((bank) => {
+                bankArr.push({label: bank.BANK_NM, value: bank.BANK_CD});
+            });
+
+            this.setState({bankTypeArr: bankArr});
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
