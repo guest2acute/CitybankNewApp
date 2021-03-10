@@ -86,7 +86,7 @@ class RegistrationAccount extends Component {
             showMonthPicker: false,
             signUpResponse: "",
             errorDCardNo: "",
-            debitCardNo: ""
+            debitCardNo: "371599006146189"
         }
     }
 

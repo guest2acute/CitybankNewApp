@@ -33,20 +33,20 @@ class CardPinReset extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            title:props.route.params.title,
-            cardStatus:"",
-            cardState:"",
-            cardHolderName:"",
-            cardType:"",
+            title: props.route.params.title,
+            cardStatus: "",
+            cardState: "",
+            cardHolderName: "",
+            cardType: "",
             cardExpiry: "",
             showMonthPicker: false,
-            errorExpiry:"",
-            pinChangeReason:"",
-            error_pinChangeReason:"",
-            pinVal:"",
-            errorPinVal:"",
-            confirmPinNumber:"",
-            errorConfirmPinNumber:"",
+            errorExpiry: "",
+            pinChangeReason: "",
+            error_pinChangeReason: "",
+            pinVal: "",
+            errorPinVal: "",
+            confirmPinNumber: "",
+            errorConfirmPinNumber: "",
         }
     }
 
@@ -78,10 +78,10 @@ class CardPinReset extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
+        console.log("modelSelection is this", item)
         if (modelSelection === "creditCardType") {
             this.setState({selectCard: item.label, selectTypeVal: item.value, modalVisible: false})
-        }else if(modelSelection === "cardBlockType"){
+        } else if (modelSelection === "cardBlockType") {
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
 
@@ -89,24 +89,22 @@ class CardPinReset extends Component {
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert("Please Select Card");
+            Utility.alert(language.errorSelectCard);
             return;
-
-        }else if(this.state.pinChangeReason === "") {
+        } else if (this.state.pinChangeReason === "") {
             this.setState({error_pinChangeReason: language.error_pinChangeReason});
             return;
-        }else if(this.state.pinVal === "") {
+        } else if (this.state.pinVal === "") {
             this.setState({errorPinVal: language.error_newPinNumber});
             return;
-        }
-        else if(this.state.confirmPinNumber === "") {
+        } else if (this.state.confirmPinNumber === "") {
             this.setState({errorConfirmPinNumber: language.error_confirmPinNumber});
             return;
-        }
-        else{
+        } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
+
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
         let dateVal = Utility.dateInFormat(newDate, "MM/YY")
@@ -123,8 +121,8 @@ class CardPinReset extends Component {
     }
 
 
-    cardPINReset(language){
-        return(
+    cardPINReset(language) {
+        return (
             <View key={"cardPINReset"} style={{flex: 1, paddingBottom: 30}}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
@@ -278,7 +276,7 @@ class CardPinReset extends Component {
                         }}
                     />
                 </View>
-                {this.state.error_pinChangeReason !==  "" ?
+                {this.state.error_pinChangeReason !== "" ?
                     <Text style={{
                         marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
@@ -383,6 +381,7 @@ class CardPinReset extends Component {
             </View>
         )
     }
+
     render() {
         let language = this.props.language;
         return (
@@ -528,14 +527,14 @@ const styles = {
         alignItems: "center",
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
-    textView:{
+    textView: {
         marginStart: 10, color: themeStyle.THEME_COLOR
     },
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

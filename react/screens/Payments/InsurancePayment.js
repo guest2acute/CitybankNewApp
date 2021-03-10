@@ -61,7 +61,6 @@ class InsurancePayment extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
         if (modelSelection === "nickType") {
             this.setState({selectNicknameType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
@@ -69,25 +68,22 @@ class InsurancePayment extends Component {
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        console.log("selecttype value is this",this.state.selectTypeVal);
         if (this.state.selectTypeVal === -1) {
-            Utility.alert("Please Select Beneficiary Type");
+            Utility.alert(language.error_select_beneficiary_type);
             return;
         }
         else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate("BeneficiaryWithCityBank");
+            this.props.navigation.navigate(language.beneficiaryWithCityBank);
             return;
         } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary});
+            this.props.navigation.navigate(language.beneficiaryOtherBank, {title: this.props.language.add_beneficiary});
             return;
-            console.log("11111")
         } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("TransferWithBkash");
+            this.props.navigation.navigate(language.transferWithBkash);
             return;
-            console.log("22222")
         }
         else{
-            this.props.navigation.navigate("BeneficiaryTransfer")
+            this.props.navigation.navigate(language.beneficiaryTransfer)
         }
         }
 

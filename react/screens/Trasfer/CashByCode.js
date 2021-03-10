@@ -30,7 +30,6 @@ class CashByCode extends Component {
             errorEmail: "",
             error_nickname:"",
             error_accountNo:"",
-            errorbkashname:"",
             focusUid: false,
             focusPwd: false,
             isProgress: false,
@@ -45,20 +44,13 @@ class CashByCode extends Component {
             modalTitle: "",
             modalData: [],
             otp_type: 0,
-            availablebalance:"",
-            error_availablebal:"",
+            availableBalance:"",
+            error_availableBal:"",
             amount:"",
             error_amount:"",
-            servicescharge:"",
-            error_servicescharge:"",
-            grandtotal:"",
-            error_grandtotal:"",
             remarks:"",
             error_remarks:"",
             errorMobile:"",
-
-
-
 }
     }
 
@@ -163,10 +155,10 @@ class CashByCode extends Component {
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_availablebal: "",
-                        availablebalance: Utility.userInput(text)
+                        error_availableBal: "",
+                        availableBalance: Utility.userInput(text)
                     })}
-                    value={this.state.availablebalance}
+                    value={this.state.availableBalance}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -182,11 +174,11 @@ class CashByCode extends Component {
                     maxLength={13}/>
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
-            {this.state.error_availablebal !==  "" ?
+            {this.state.error_availableBal !==  "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_availablebal}</Text> : null}
+                }}>{this.state.error_availableBal}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -217,7 +209,7 @@ class CashByCode extends Component {
                     autoCorrect={false}
                     returnKeyType={"next"}
                     onSubmitEditing={(event) => {
-                        this.serviceschargeRef.focus();
+                        this.mobileNumberRef.focus();
                     }}
                     maxLength={13}/>
                 <Text style={{paddingLeft:5}}>BDT</Text>
@@ -249,7 +241,7 @@ class CashByCode extends Component {
                                source={require("../../resources/images/ic_beneficiary.png")}/>
                     </TouchableOpacity>
                     <TextInput
-                        ref={(ref) => this.serviceschargeRef = ref}
+                        ref={(ref) => this.mobileNumberRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",

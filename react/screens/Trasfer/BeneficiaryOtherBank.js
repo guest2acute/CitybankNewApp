@@ -470,21 +470,21 @@ class BeneficiaryOtherBank extends Component {
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{}}>
                 <Text style={styles.textView}>{language.notes}:</Text>
-                <Text style={styles.textView}>1. Beneficiary banks/branches should be capable to process</Text>
-                <Text style={styles.textView}>RTGS/NPSB/BEFTN transaction.</Text>
-                <Text style={styles.textView}>2. BEFTN(Ragular Transfer): Transaction Process before</Text>
-                <Text style={styles.textView}>10:30 PM,any amount up to 5 lacs. Transfer Processed</Text>
-                <Text style={styles.textView}>through BEFTN whould be credited by next working day.the amount</Text>
-                <Text style={styles.textView}>3. RTGS (instant transfer): Transactions processed before</Text>
-                <Text style={styles.textView}>10:30 PM,any amount up to 5 lacs </Text>
-                <Text style={styles.textView}>must be between 1 lac to 5 lacs</Text>
-                <Text style={styles.textView}>4. NPSB (instant transfer). transfer can be processd</Text>
-                <Text style={styles.textView}>anytime. Transaction limit is BDT 2 lacs in 5 transaction </Text>
-                <Text style={styles.textView}>per day and BDT 2 lacs in 5 transacations</Text>
-                <Text style={styles.textView}>5. For NPSB transfer,while adding DBBL beneficiary, complete</Text>
-                <Text style={styles.textView}>13-digit account number will be required. in case of adding</Text>
-                <Text style={styles.textView}>DBBL credit card,the digit 100001 need to be added</Text>
-                <Text style={styles.textView}>before the 13-digit card number.</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note1}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note2}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note3}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note4}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note5}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note6}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note7}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note8}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note9}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note10}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note11}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note12}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note13}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note14}</Text>
+                <Text style={styles.textView}>{language.beneficiary_otherBank_note15}</Text>
             </View>
         </View>)
     }

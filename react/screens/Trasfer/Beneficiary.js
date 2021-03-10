@@ -60,42 +60,29 @@ class Beneficiary extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
         if (modelSelection === "type") {
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
-
-
-        /* else if (modelSelection === "accountType") {
-             this.setState({selectActCard: item, modalVisible: false})
-         } else if (modelSelection === "cardType") {
-             this.setState({selectCard: item.label, modalVisible: false})
-         }*/
     }
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        console.log("selecttype value is this",this.state.selectTypeVal);
         if (this.state.selectTypeVal === -1) {
-            Utility.alert("Please Select Beneficiary Type");
+            Utility.alert(language.error_select_beneficiary_type);
             return;
-        }
-        else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate("BeneficiaryWithCityBank");
+        } else if (this.state.selectTypeVal === 0) {
+            this.props.navigation.navigate(language.beneficiaryWithCityBank);
             return;
         } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary});
+            this.props.navigation.navigate(language.beneficiaryOtherBank, {title: this.props.language.add_beneficiary_wob});
             return;
-            console.log("11111")
         } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("TransferWithBkash");
+            this.props.navigation.navigate(language.transferToBkash);
             return;
-            console.log("22222")
+        } else {
+            this.props.navigation.navigate(language.beneficiaryTransfer)
         }
-        else{
-            this.props.navigation.navigate("BeneficiaryTransfer")
-        }
-        }
+    }
 
     render() {
         let language = this.props.language;
@@ -185,7 +172,11 @@ class Beneficiary extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
+                        <Text style={{
+                            marginStart: 10,
+                            marginTop: 20,
+                            color: themeStyle.THEME_COLOR
+                        }}>*{language.mark_field_mandatory}
                         </Text>
                     </View>
                 </ScrollView>
@@ -260,7 +251,7 @@ const styles = {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

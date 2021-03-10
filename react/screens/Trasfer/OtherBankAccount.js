@@ -114,8 +114,6 @@ class OtherBankAccount extends Component {
     }
 
      alertToNavigate(){
-        console.log("update beneficiary ======>",this.props.language.update_beneficiary)
-
                   Alert.alert(
                      "",
                      "Please update this beneficiary information",
@@ -139,11 +137,11 @@ class OtherBankAccount extends Component {
     }
 
     async onSubmit(language, navigation) {
-        if (this.state.selectAcctType === "Select Account") {
-            Utility.alert("Please Select From Account");
+        if (this.state.selectAcctType === language.bkash_select_acct) {
+            Utility.alert(language.error_select_from_type);
             return;
-        } else if (this.state.selectNicknameType === "Select Nickname") {
-            Utility.alert("Please Select Nickname");
+        } else if (this.state.selectNicknameType === language.selectNickType) {
+            Utility.alert(language.error_select_nickname);
             return;
         } else if (this.state.transferAmount === "") {
             this.setState({errorTransferAmount: language.errtransferammt})
@@ -872,21 +870,18 @@ class OtherBankAccount extends Component {
 
             <View style={{marginTop: 10,}}>
                 <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>1. Maximum transcation limit from Citytouch is BDT 5 lacs per day.</Text>
-                <Text style={styles.textView}>2. BEFTN: transfer request placed before 2:00PM will be excuted on the
-                    .</Text>
-                <Text style={styles.textView}>same day and transfer request placed after </Text>
-                <Text style={styles.textView}>2:PM will be executed on the next working day after 10.00 AM.</Text>
-                <Text style={styles.textView}>3. RTGS Available from 10:30 to 03:00 PM for instant .</Text>
-                <Text style={styles.textView}>transfer of 1 to 5 lacs within working day.Fee BDT 100 (VAT
-                    Inclusive)</Text>
-                <Text style={styles.textView}>4. NPSB: Transfer limit is BDT 5 lacs in 10 transcation per day </Text>
-                <Text style={styles.textView}>and maximum BDT 1 lacs per transaction</Text>
-                <Text style={styles.textView}>5. Credit card master limit: minimum transferable amount is </Text>
-                <Text style={styles.textView}>BDT is 500 and up to 50% of total available BDT limit. </Text>
-                <Text style={styles.textView}>6.Processing fee +VAT will be Applicable. </Text>
-                <Text style={styles.textView}>7.Concecutive transaction in the same account will take 10 minutes of
-                    interval </Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note1}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note2}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note3}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note4}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note5}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note6}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note7} </Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note8}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note9}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note10}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note11}</Text>
+                <Text style={styles.textView}>{language.other_bankAccount_note12}</Text>
             </View>
         </View>)
     }

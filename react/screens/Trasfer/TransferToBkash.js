@@ -102,13 +102,12 @@ class TransferToBkash extends Component {
     }
 
     async onSubmit(language, navigation) {
-
-        if (this.state.selectNicknameType === "Select Nickname") {
-            Utility.alert("Please Select Nickname");
+        if (this.state.selectNicknameType === language.select_nickname) {
+            Utility.alert(language.error_select_nickname);
             return;
         }
-        else if(this.state.selectAcctType==="Select Account"){
-            Utility.alert("Please Select From Account");
+        else if(this.state.selectAcctType===language.bkash_select_acct){
+            Utility.alert(language.error_select_from_type);
             return;
         }
         else if(this.state.transferamt===""){
@@ -468,16 +467,16 @@ class TransferToBkash extends Component {
 
             <View style={{ marginTop: 10,}}>
                 <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>1. Transfer and transaction limit for a single bkash account.</Text>
-                <Text style={styles.textView}>5 transaction per day and 25 per month.</Text>
-                <Text style={styles.textView}>Transfer amount is BDT 50 to BDT 30000 per day and BDT 2</Text>
-                <Text style={styles.textView}>lacs per month.</Text>
-                <Text style={styles.textView}>2. CityToch to bkash transfer limit: Up to BDT 60000 per day.</Text>
-                <Text style={styles.textView}>3. Credit card transfer limit: minimum transferble amount is </Text>
-                <Text style={styles.textView}> BDT 500 and up to 50% of total available BDT limit.  </Text>
-                <Text style={styles.textView}>4. Processing fee +VAT will be applicable</Text>
-                <Text style={styles.textView}>5. consecutive transfer in the same bkash account require</Text>
-                <Text style={styles.textView}>minimum 10 minitues interval. </Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note1}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note2}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note3}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note4}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note5}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note6}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note7}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note8}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note9}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note10}</Text>
             </View>
         </View>)
     }

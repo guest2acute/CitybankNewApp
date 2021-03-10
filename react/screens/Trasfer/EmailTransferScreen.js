@@ -107,12 +107,12 @@ class EmailTransferScreen extends Component {
     }
 
     async onSubmit(language, navigation) {
-        if (this.state.selectBeneficiaryType === "Select Beneficiary Type") {
-            Utility.alert("Please Select Beneficiary Type");
+        if (this.state.selectBeneficiaryType === language.select_beneficiary_type) {
+            Utility.alert(language.error_select_beneficiary_type);
             return;
         }
-        else if(this.state.selectAcctType==="Select Account"){
-            Utility.alert("Please Select From Account");
+        else if(this.state.selectAcctType===language.bkash_select_acct){
+            Utility.alert(language.error_select_from_type);
             return;
         }
         else if(this.state.paymentAmount===""){
@@ -132,7 +132,6 @@ class EmailTransferScreen extends Component {
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
     setTitle= (item) => {
-        console.log("item is this",item)
         this.setState({title: item.name,email:item.email})
     }
 
@@ -452,10 +451,10 @@ class EmailTransferScreen extends Component {
 
             <View style={{ marginTop: 10,}}>
                 <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>1. An email transfer transaction will be valid for next 10 days.</Text>
-                <Text style={styles.textView}>2. Maximum transferable amount:BDT in 5 lacs per day</Text>
-                <Text style={styles.textView}>3. Generated transfer could be canceled anytime from "Waiting" Tab before withdrawing by the beneficiary.</Text>
-                <Text style={styles.textView}>Beneficiary has to answer the security questions. case sensitive.</Text>
+                <Text style={styles.textView}>{language.email_transfer_note1}</Text>
+                <Text style={styles.textView}>{language.email_transfer_note2}</Text>
+                <Text style={styles.textView}>{language.email_transfer_note3}</Text>
+                <Text style={styles.textView}>{language.email_transfer_note4}</Text>
             </View>
         </View>)
     }

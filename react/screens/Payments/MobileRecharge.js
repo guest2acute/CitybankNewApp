@@ -35,14 +35,14 @@ class MobileRecharge extends Component {
             modalTitle: "",
             modalData: [],
             mobileNumber: "",
-            availablebalance:"",
-            error_availablebal:"",
+            availableBalance:"",
+            error_availableBal:"",
             transfer_amount:"",
-            error_transferamt:"",
-            servicescharge:"",
-            grandtotal:"",
-            error_grandtotal:"",
-            transferamt:"",
+            error_transferAmount:"",
+            servicesCharge:"",
+            grandTotal:"",
+            error_grandTotal:"",
+            transferAmount:"",
 
         }
     }
@@ -92,24 +92,23 @@ class MobileRecharge extends Component {
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        console.log("selecttype value is this", this.state.selectTypeVal);
         if (this.state.SelectOperator === language.SelectOperator) {
-            Utility.alert("Please Select Operator");
+            Utility.alert(language.error_select_operator);
             return;
         }else if (this.state.SelectName === language.selectNickType) {
-            Utility.alert("Please Select Nick Name");
+            Utility.alert(language.error_select_nickname);
             return;
         }  else if (this.state.SelectFromAccount === language.selectAccountType) {
-            Utility.alert("Please Select From Account");
+            Utility.alert(language.error_select_from_type);
             return;
-        }else if (this.state.transferamt === "") {
-            this.setState({error_transferamt: language.errPaymentAmount})
+        }else if (this.state.transferAmount === "") {
+            this.setState({error_transferAmount: language.errPaymentAmount})
             return;
         }
     }
 
     getListViewItem = (item) => {
-        this.setState({transferamt: item.label})
+        this.setState({transferAmount: item.label})
     }
 
     mobileRecharge(language) {
@@ -217,10 +216,10 @@ class MobileRecharge extends Component {
                         }]}
                         placeholder={"00.00"}
                         onChangeText={text => this.setState({
-                            error_availablebal: "",
-                            availablebalance: Utility.userInput(text)
+                            error_availableBal: "",
+                            availableBalance: Utility.userInput(text)
                         })}
-                        value={this.state.availablebalance}
+                        value={this.state.availableBalance}
                         multiline={false}
                         numberOfLines={1}
                         onFocus={() => this.setState({focusUid: true})}
@@ -231,16 +230,16 @@ class MobileRecharge extends Component {
                         autoCorrect={false}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
-                            this.transferamtRef.focus();
+                            this.transferAmountRef.focus();
                         }}
                         maxLength={13}/>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                {this.state.error_availablebal !== "" ?
+                {this.state.error_availableBal !== "" ?
                     <Text style={{
                         marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_availablebal}</Text> : null}
+                    }}>{this.state.error_availableBal}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <FlatList horizontal={true}
@@ -271,7 +270,7 @@ class MobileRecharge extends Component {
                         {language.totalAmount}
                     </Text>
                     <TextInput
-                        ref={(ref) => this.transferamtRef = ref}
+                        ref={(ref) => this.transferAmountRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -281,10 +280,10 @@ class MobileRecharge extends Component {
                         }]}
                         placeholder={"00.00"}
                         onChangeText={text => this.setState({
-                            error_transferamt: "",
-                            transferamt: Utility.userInput(text)
+                            error_transferAmount: "",
+                            transferAmount: Utility.userInput(text)
                         })}
-                        value={this.state.transferamt}
+                        value={this.state.transferAmount}
                         multiline={false}
                         numberOfLines={1}
                         onFocus={() => this.setState({focusUid: true})}
@@ -295,16 +294,16 @@ class MobileRecharge extends Component {
                         autoCorrect={false}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
-                            this.serviceschargeRef.focus();
+                            this.servicesChargeRef.focus();
                         }}
                         maxLength={13}/>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                  {this.state.error_transferamt !== "" ?
+                  {this.state.error_transferAmount !== "" ?
                     <Text style={{
                         marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_transferamt}</Text> : null}
+                    }}>{this.state.error_transferAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
 
@@ -316,7 +315,7 @@ class MobileRecharge extends Component {
                         {language.totalServicesCharge}
                     </Text>
                     <TextInput
-                        ref={(ref) => this.serviceschargeRef = ref}
+                        ref={(ref) => this.servicesChargeRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -327,9 +326,9 @@ class MobileRecharge extends Component {
                         placeholder={"00.00"}
                         onChangeText={text => this.setState({
                             error_servicescharge: "",
-                            servicescharge: Utility.userInput(text)
+                            servicesCharge: Utility.userInput(text)
                         })}
-                        value={this.state.servicescharge}
+                        value={this.state.servicesCharge}
                         multiline={false}
                         numberOfLines={1}
                         onFocus={() => this.setState({focusUid: true})}
@@ -370,10 +369,10 @@ class MobileRecharge extends Component {
                         }]}
                         placeholder={"00.00"}
                         onChangeText={text => this.setState({
-                            error_grandtotal: "",
-                            grandtotal: Utility.userInput(text)
+                            error_grandTotal: "",
+                            grandTotal: Utility.userInput(text)
                         })}
-                        value={this.state.grandtotal}
+                        value={this.state.grandTotal}
                         multiline={false}
                         numberOfLines={1}
                         onFocus={() => this.setState({focusUid: true})}
@@ -389,11 +388,11 @@ class MobileRecharge extends Component {
                         maxLength={13}/>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                {this.state.error_grandtotal !== "" ?
+                {this.state.error_grandTotal !== "" ?
                     <Text style={{
                         marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_grandtotal}</Text> : null}
+                    }}>{this.state.error_grandTotal}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             </View>
@@ -480,16 +479,16 @@ class MobileRecharge extends Component {
                         </Text>
                         <View style={{marginTop: 10,}}>
                             <Text style={styles.textView}>{language.notes}</Text>
-                            <Text style={styles.textView}>1. Minimum recharge amount for postpaid connection</Text>
-                            <Text style={styles.textView}> Tk.50/- and for prepaid Tk. 10/-.</Text>
-                            <Text style={styles.textView}>2. Maximum recharge amount for postpaid connection</Text>
-                            <Text style={styles.textView}> Tk.10000/- and for prepaid Tk. 1000/-.</Text>
-                            <Text style={styles.textView}>3. only prepaid recharge is acceptable in Teletalk numbers.</Text>
-                            <Text style={styles.textView}>4. Consecutive recharge in the same number require.</Text>
-                            <Text style={styles.textView}>minimum 15 minites interval.</Text>
-                            <Text style={styles.textView}>if your recharge amount is equivalent to any trigger/bundle</Text>
-                            <Text style={styles.textView}>pack amount, a data/minute/bundle pack will be activated </Text>
-                            <Text style={styles.textView}>on your mobile.please visit operator website to know more.</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note1}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note2}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note3}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note4}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note5}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note6}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note7}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note8}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note8}</Text>
+                            <Text style={styles.textView}>{language.mobile_recharge_note9}</Text>
                         </View>
 
                         {/*=====================================================================================*/}

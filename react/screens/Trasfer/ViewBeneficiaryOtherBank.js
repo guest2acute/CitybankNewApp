@@ -40,10 +40,8 @@ class ViewBeneficiaryOtherBank extends Component {
 
 
     async onSubmit(language, navigation) {
-        console.log("submit called function is this")
-        this.props.navigation.navigate("CitytouchSecurityVerification");
+        this.props.navigation.navigate("SecurityVerification");
     }
-
 
     accountNoOption(language) {
         return (<View>
