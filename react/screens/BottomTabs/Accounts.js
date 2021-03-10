@@ -8,7 +8,7 @@ import {
     ScrollView,
     UIManager,
     TouchableOpacity,
-    Platform, SafeAreaView, StatusBar, ActivityIndicator,BackHandler
+    Platform, SafeAreaView, StatusBar, ActivityIndicator, BackHandler
 } from 'react-native';
 
 import NestedListView, {NestedRow} from 'react-native-nested-listview'
@@ -22,7 +22,6 @@ import ApiRequest from "../../config/ApiRequest";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import themesStyle from "../../resources/theme.style";
 import Config from "../../config/Config";
-
 
 
 class Accounts extends Component {
@@ -42,7 +41,7 @@ class Accounts extends Component {
                 StatusBar.setBarStyle("light-content");
             });
 
-           BackHandler.addEventListener(
+            BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -58,7 +57,7 @@ class Accounts extends Component {
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener(
-                "hardwareBackPress",  this.backAction)
+                "hardwareBackPress", this.backAction)
         }
     }
 
@@ -221,19 +220,22 @@ class Accounts extends Component {
             balanceReq = {...balanceReq}
         }
 
-        let result = await ApiRequest.apiRequest.callApi(balanceReq, {});
+        ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
+            if (result.STATUS === "0") {
+                let response = result.RESPONSE[0];
+                this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.BALANCE, accountNo, "");
+            } else {
+                this.processBalance("", accountNo, "");
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+        });
 
-        if (result.STATUS === "0") {
-            let response = result.RESPONSE[0];
-            this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.BALANCE, accountNo, "");
-        } else {
-            this.processBalance("", accountNo, "");
-        }
     }
 
-
-     processBalance(balance, accountNo, message) {
-        balance = balance===""?this.props.language.notAvailable:balance;
+    processBalance(balance, accountNo, message) {
+        balance = balance === "" ? this.props.language.notAvailable : balance;
         let dataList = this.state.dataList;
         let objectPos = -1;
         let object;
@@ -256,7 +258,7 @@ class Accounts extends Component {
         }
 
         let level3Arr = dataList[level1Pos].items[level2Pos].items;
-        object = {...object, BALANCE:balance};
+        object = {...object, BALANCE: balance};
         level3Arr[objectPos] = object;
         dataList[level1Pos].items[level2Pos] = {...dataList[level1Pos].items[level2Pos], items: level3Arr};
         dataList[level1Pos] = {...dataList[level1Pos], items: dataList[level1Pos].items};

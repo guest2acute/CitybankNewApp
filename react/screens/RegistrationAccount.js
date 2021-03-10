@@ -36,14 +36,14 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "",
+            accountNo: "2251546262001",
             disableButton: false,
             actName: "",
             placeMobile: "",
             placeEmail: "",
-            conf_mobile: "",
+            conf_mobile: "01919820480",
             errorMobile: "",
-            conf_email: "",
+            conf_email: "monirujjaman001@gmail.com",
             cardExpiry: "",
             hasDebitCard: true,
             errorEmail: "",
@@ -1376,7 +1376,7 @@ class RegistrationAccount extends Component {
                                 marginLeft: 10,
                                 marginRight: 10
                             }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
-                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.debitCardUI(language) : this.state.stateVal === 2 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
+                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 2 ? this.debitCardUI(language) : this.state.stateVal === 1 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
                             <View style={{
                                 flexDirection: "row",
                                 marginStart: Utility.setWidth(10),

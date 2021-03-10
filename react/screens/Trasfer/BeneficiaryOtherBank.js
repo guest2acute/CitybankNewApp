@@ -22,7 +22,6 @@ import {AddBeneficiary, GETBANKDETAILS} from "../Requests/RequestBeneficiary";
 class BeneficiaryOtherBank extends Component {
     constructor(props) {
         super(props);
-        console.log("props.userDetails.AUTH_FLAG", props.userDetails.AUTH_FLAG)
         this.state = {
             nickname: "",
             account_card_name: "",
@@ -42,14 +41,13 @@ class BeneficiaryOtherBank extends Component {
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
             selectTypeVal: -1,
-            selectBankVal: -1,
-            selectBranchVal: -1,
-            selectDistrictVal: -1,
+            selectBankVal: null,
+            selectBranchVal: null,
+            selectDistrictVal: null,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            authFlag: "TP",// props.userDetails.AUTH_FLAG,
             updateTitle: props.route.params.title
         }
         console.log("updated title is", props.route.params.title)
@@ -70,23 +68,30 @@ class BeneficiaryOtherBank extends Component {
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
-            this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({
+                selectType: item.label, selectTypeVal: item.value,
+                modalVisible: false, account_card_name: "",
+                accountNo: "", error_accountNo: "", error_cardName: ""
+            })
         } else if (modelSelection === "bankType") {
             this.setState({
-                selectBankType: item.label, selectBankVal: item.value,
+                selectBankType: item.label, selectBankVal: item.details,
                 modalVisible: false
             }, async () => {
                 await this.getDistrictName();
             })
         } else if (modelSelection === "district_type") {
             this.setState({
-                selectDistrictType: item.label, selectDistrictVal: item.value,
+                selectDistrictType: item.label, selectDistrictVal: item.details,
                 modalVisible: false
             }, async () => {
                 await this.getBranchName()
             })
         } else if (modelSelection === "branch_type") {
-            this.setState({selectBranchType: item.label, selectBranchVal: item.value, modalVisible: false})
+            this.setState({
+                selectBranchType: item.label, selectBranchVal: item.details,
+                modalVisible: false
+            })
         }
     }
 
@@ -106,24 +111,37 @@ class BeneficiaryOtherBank extends Component {
         if (this.state.nickname === "") {
             this.setState({error_nickname: language.require_nickname});
             return;
+        } else if (this.state.selectTypeVal === -1) {
+            Utility.alert(language.select_type_account);
+            return
         } else if (this.state.accountNo === "") {
-            this.setState({error_accountNo: language.require_cardnumber})
+            this.setState({error_accountNo: this.state.selectTypeVal === 1 ? language.require_cardnumber : language.require_actnumber})
             return;
         } else if (this.state.account_card_name === "") {
-            this.setState({error_cardName: language.require_cardname})
+            this.setState({error_cardName: this.state.selectTypeVal === 1 ? language.require_cardname : language.require_actName});
             return;
         } else if (this.state.selectBankType === language.select_bank_type) {
             Utility.alert(language.error_select_bank_name);
             return;
-        } else if (this.state.selectDistrictType === language.select_district_type) {
+        } else if (this.state.selectTypeVal === 0 && this.state.selectDistrictType === language.select_district_type) {
             Utility.alert(language.error_select_district_name);
             return;
-        } else if (this.state.selectBranchType === language.select_branch_type) {
+        } else if (this.state.selectTypeVal === 0 && this.state.selectBranchType === language.select_branch_type) {
             Utility.alert(language.error_select_branch_name);
             return;
         }
-        this.props.navigation.navigate("ViewBeneficiaryOtherBank");
-        //Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+        let object = {
+            nickname: this.state.nickname,
+            accountNo: this.state.accountNo,
+            account_card_name: this.state.account_card_name,
+            bankDetails: this.state.selectBankVal,
+            districtDetails: this.state.selectTypeVal === 0 ? this.state.selectDistrictVal : "",
+            branchDetails: this.state.selectTypeVal === 0 ? this.state.selectBranchVal : "",
+            mobile_number: this.state.mobile_number,
+            emailTxt: this.state.emailTxt,
+        }
+        this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object});
+
     }
 
     beneficiaryAdd(language) {
@@ -186,12 +204,33 @@ class BeneficiaryOtherBank extends Component {
                 }}>{this.state.error_nickname}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
+            <Text style={[CommonStyle.labelStyle, {
+                color: themeStyle.THEME_COLOR,
+                marginStart: 10,
+                marginEnd: 10,
+                marginTop: 6,
+                marginBottom: 4
+            }]}>
+                {language.type_act}
+            </Text>
+
+            <TouchableOpacity
+                onPress={() => this.openModal("type", language.selectActType, language.changeInArr, language)}>
+                <View style={[styles.selectionBg, {height: Utility.setHeight(40)}]}>
+                    <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
+                        {this.state.selectType}
+                    </Text>
+                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                           source={require("../../resources/images/ic_arrow_down.png")}/>
+                </View>
+            </TouchableOpacity>
+
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
                 <Text style={[CommonStyle.textStyle]}>
-                    {this.state.authFlag === "CP" ? language.card_number : language.acc_number}
+                    {this.state.selectTypeVal === 1 ? language.card_number : language.acc_number}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
@@ -232,7 +271,7 @@ class BeneficiaryOtherBank extends Component {
                 marginEnd: 10,
             }}>
                 <Text style={[CommonStyle.textStyle]}>
-                    {this.state.authFlag === "CP" ? language.cardName : language.actName}
+                    {this.state.selectTypeVal === 1 ? language.cardHolderName : language.actHolderName}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
@@ -277,7 +316,7 @@ class BeneficiaryOtherBank extends Component {
                 </Text>
                 }
                 <TouchableOpacity
-                                  onPress={() => this.openModal("bankType", language.select_bank_type, this.state.bankTypeArr, language)}>
+                    onPress={() => this.openModal("bankType", language.select_bank_type, this.state.bankTypeArr, language)}>
                     <View style={styles.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBankType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -290,7 +329,7 @@ class BeneficiaryOtherBank extends Component {
                     </View>
                 </TouchableOpacity>
             </View>
-            {this.state.authFlag === "TP" ? <View>
+            {this.state.selectTypeVal !== 1 ? <View>
                 <View style={{flex: 1}}>
                     <Text style={[CommonStyle.labelStyle, {
                         color: themeStyle.THEME_COLOR,
@@ -302,8 +341,8 @@ class BeneficiaryOtherBank extends Component {
                         {language.type_district}
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
-                    <TouchableOpacity disabled={this.state.selectBankVal === -1}
-                        onPress={() => this.openModal("district_type", language.select_district_type, this.state.districtTypeArr, language)}>
+                    <TouchableOpacity disabled={this.state.selectBankVal === null}
+                                      onPress={() => this.openModal("district_type", language.select_district_type, this.state.districtTypeArr, language)}>
                         <View style={styles.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -327,8 +366,8 @@ class BeneficiaryOtherBank extends Component {
                         {language.type_Branch}
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
-                    <TouchableOpacity disabled={this.state.selectDistrictVal === -1}
-                        onPress={() => this.openModal("branch_type", language.select_branch_name, this.state.branchTypeArr, language)}>
+                    <TouchableOpacity disabled={this.state.selectDistrictVal === null}
+                                      onPress={() => this.openModal("branch_type", language.select_branch_name, this.state.branchTypeArr, language)}>
                         <View style={styles.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -451,17 +490,12 @@ class BeneficiaryOtherBank extends Component {
     }
 
     render() {
-        let
-            language = this.props.language;
-
+        let language = this.props.language;
         return (
-
             <View style={{
-                flex: 1
-                ,
+                flex: 1,
                 backgroundColor: themeStyle.BG_COLOR
-            }
-            }>
+            }}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -589,6 +623,9 @@ class BeneficiaryOtherBank extends Component {
     }
 
     async getBankName() {
+        this.setState({
+            isProgress: true
+        });
         await GETBANKDETAILS(this.props.userDetails, this.props, "BANK").then(response => {
             console.log("response", response);
             this.setState({
@@ -602,8 +639,11 @@ class BeneficiaryOtherBank extends Component {
     }
 
     async getDistrictName() {
+        this.setState({
+            isProgress: true
+        });
         let userDetails = this.props.userDetails;
-        userDetails = {...userDetails, BANK_CD: this.state.selectBankVal};
+        userDetails = {...userDetails, BANK_CD: this.state.selectBankVal.BANK_CD};
         await GETBANKDETAILS(userDetails, this.props, "DIST").then(response => {
             console.log("response", response);
             this.setState({
@@ -617,8 +657,15 @@ class BeneficiaryOtherBank extends Component {
     }
 
     async getBranchName() {
+        this.setState({
+            isProgress: true
+        });
         let userDetails = this.props.userDetails;
-        userDetails = {...userDetails, BANK_CD: this.state.selectBankVal, DIST_CD: this.state.selectDistrictVal};
+        userDetails = {
+            ...userDetails,
+            BANK_CD: this.state.selectBankVal.BANK_CD,
+            DIST_CD: this.state.selectDistrictVal.DIST_CD
+        };
         await GETBANKDETAILS(userDetails, this.props, "BRANCH").then(response => {
             console.log("response", response);
             this.setState({

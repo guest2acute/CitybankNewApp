@@ -100,11 +100,11 @@ export const GETBANKDETAILS = async (userDetails, props, requestType) => {
                 let itemArr = [];
                 result.RESPONSE.map((item) => {
                     if (requestType === "DIST")
-                        itemArr.push({label: item.DIST_NM, value: item.DIST_CD,item:item});
+                        itemArr.push({label: item.DIST_NM, value: item.DIST_CD,details:item});
                     else if (requestType === "BRANCH")
-                        itemArr.push({label: item.BRANCH_NM, value: item.BRANCH_CD,item:item});
+                        itemArr.push({label: item.BRANCH_NM, value: item.BRANCH_CD,details:item});
                     else
-                        itemArr.push({label: item.BANK_NM, value: item.BANK_CD,item:item});
+                        itemArr.push({label: item.BANK_NM, value: item.BANK_CD,details:item});
                 });
                 return resolve(itemArr);
             } else {

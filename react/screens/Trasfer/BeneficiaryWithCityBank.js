@@ -148,6 +148,7 @@ class BeneficiaryWithCityBank extends Component {
                     fontFamily: fontStyle.RobotoRegular,
                 }}>{this.state.error_nickname}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,

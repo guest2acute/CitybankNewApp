@@ -22,42 +22,25 @@ import Utility from "../../utilize/Utility";
 class ViewBeneficiaryOtherBank extends Component {
     constructor(props) {
         super(props);
+        let details = props.route.params.details;
         this.state = {
             isProgress: false,
-            nickname: "",
-            account_holder_name: "",
+            nickname: details.nickname,
+            account_holder_name: details.account_card_name,
             currency: "",
-            accountNo: "2251657635001",
+            accountNo: details.accountNo,
             type_act: "",
-            mobile_number: "",
-            emailTxt: "",
-            errorEmail: "",
-            error_nickname: "",
-            error_accountNo: "",
-            focusUid: false,
-            focusPwd: false,
-            isMainForm: true,
-            bankName:"",
-            districtName:"",
-            branch_name:"",
+            mobile_number: details.mobile_number,
+            emailTxt: details.emailTxt,
+            bankName: "",
+            districtName: "",
+            branch_name: ""
         }
     }
 
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-
-        this.setState({nickname: text, error_nickname: ""})
-    }
-
-    accountchange(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({accountNo: text, error_accountNo: ""})
-    }
 
     async onSubmit(language, navigation) {
-       console.log("submit called function is this")
+        console.log("submit called function is this")
         this.props.navigation.navigate("CitytouchSecurityVerification");
     }
 
@@ -80,30 +63,16 @@ class ViewBeneficiaryOtherBank extends Component {
                         marginLeft: 10
                     }]}
                     placeholder={""}
-                    onChangeText={text => this.setState({
-                        error_nickname: "",
-                        nickname: Utility.userInput(text)
-                    })}
                     value={this.state.nickname}
                     multiline={false}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
+
                     numberOfLines={1}
                     editable={false}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
-                    returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
-                        this.accountNoRef.focus();
-                    }}
                 />
             </View>
-            {this.state.error_nickname !== "" ?
-                <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_nickname}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -149,27 +118,16 @@ class ViewBeneficiaryOtherBank extends Component {
                         marginLeft: 10
                     }]}
                     placeholder={language.et_placeholder}
-                    onChangeText={text => this.accountchange(text)}
                     value={this.state.accountNo}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
                     editable={false}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
-                    onSubmitEditing={(event) => {
-                        this.setState({isProgress: true}, () => this.getActDetails());
-                    }}
                     maxLength={13}/>
             </View>
-            {this.state.error_accountNo !== "" ?
-                <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_accountNo}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -223,8 +181,6 @@ class ViewBeneficiaryOtherBank extends Component {
                     value={this.state.bankName}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
@@ -255,8 +211,6 @@ class ViewBeneficiaryOtherBank extends Component {
                     value={this.state.districtName}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
@@ -287,8 +241,6 @@ class ViewBeneficiaryOtherBank extends Component {
                     value={this.state.branch_name}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
@@ -325,7 +277,7 @@ class ViewBeneficiaryOtherBank extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={this.state.isMainForm?"01********":""}
+                        placeholder={""}
                         onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
                         value={this.state.mobile_number}
                         multiline={false}
@@ -363,7 +315,7 @@ class ViewBeneficiaryOtherBank extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={this.state.isMainForm?"a********@gmail.com":""}
+                        placeholder={""}
                         onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
                         value={this.state.emailTxt}
                         multiline={false}
@@ -373,16 +325,6 @@ class ViewBeneficiaryOtherBank extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorEmail !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorEmail}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -390,7 +332,6 @@ class ViewBeneficiaryOtherBank extends Component {
     }
 
     render() {
-        console.log("nickname", this.state.error_nickname)
         let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
@@ -506,7 +447,7 @@ const styles = {
         overflow: "hidden",
         borderRadius: 10,
         alignItems: "center",
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
