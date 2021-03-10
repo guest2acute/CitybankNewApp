@@ -1046,21 +1046,5 @@ export default {
     cardNo_placeholder: "Please Enter Card Number",
     error_card_number: "Card Number Is Required",
 
-    /*redirect screen name*/
-    beneficiaryWithCityBank:"BeneficiaryWithCityBank",
-    beneficiaryOtherBank: "BeneficiaryOtherBank",
-    transferToBkash: "BeneficiaryTransfer",
-    beneficiaryTransfer: "BeneficiaryTransfer",
-    transferWithBkash: "TransferWithBkash",
-    beneficiary: "Beneficiary",
-    cityTouchSecurityVerification: "CitytouchSecurityVerification",
-
-
-
-
-
-
-
-
 }
 

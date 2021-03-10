@@ -73,17 +73,17 @@ class InsurancePayment extends Component {
             return;
         }
         else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate(language.beneficiaryWithCityBank);
+            this.props.navigation.navigate("BeneficiaryWithCityBank");
             return;
         } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate(language.beneficiaryOtherBank, {title: this.props.language.add_beneficiary});
+            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary});
             return;
         } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate(language.transferWithBkash);
+            this.props.navigation.navigate("TransferWithBkash");
             return;
         }
         else{
-            this.props.navigation.navigate(language.beneficiaryTransfer)
+            this.props.navigation.navigate("BeneficiaryTransfer")
         }
         }
 

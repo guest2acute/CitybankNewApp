@@ -71,16 +71,16 @@ class Beneficiary extends Component {
             Utility.alert(language.error_select_beneficiary_type);
             return;
         } else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate(language.beneficiaryWithCityBank);
+            this.props.navigation.navigate("BeneficiaryWithCityBank");
             return;
         } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate(language.beneficiaryOtherBank, {title: this.props.language.add_beneficiary_wob});
+            this.props.navigation.navigate("beneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
             return;
         } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate(language.transferToBkash);
+            this.props.navigation.navigate("BeneficiaryTransfer");
             return;
         } else {
-            this.props.navigation.navigate(language.beneficiaryTransfer)
+            this.props.navigation.navigate("BeneficiaryTransfer")
         }
     }
 
