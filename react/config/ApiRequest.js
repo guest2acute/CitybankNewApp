@@ -137,13 +137,18 @@ export default class ApiRequest {
                 AUTH_FLAG: AUTH_FLAG,
                 REQ_FLAG: reqFlag,
                 REQ_TYPE: REQ_TYPE,
-                ACTIVITY_CD: response.ACTIVITY_CD,
-                USER_ID: response.USER_ID?response.USER_ID:"",
-                MOBILE_NO: response.MOBILE_NO?response.MOBILE_NO:"",
-                REQUEST_CD: response.REQUEST_CD?response.REQUEST_CD:"",
+                MOBILE_NO: response.MOBILE_NO ? response.MOBILE_NO : "",
+                REQUEST_CD: response.REQUEST_CD ? response.REQUEST_CD : "",
                 DEVICE_ID: await Utility.getDeviceID(),
                 ACTION: action, ...Config.commonReq
             };
+
+            if (action === "REGUSERVERIFY") {
+                otpVerifyRequest={...otpVerifyRequest, ACTIVATION_CD: response.ACTIVATION_CD}
+            }
+            else{
+                otpVerifyRequest={...otpVerifyRequest, ACTIVITY_CD: response.ACTIVITY_CD, USER_ID: response.USER_ID ? response.USER_ID : "",}
+            }
 
             console.log("otpVerifyRequest", otpVerifyRequest);
             let result = await ApiRequest.apiRequest.callApi(otpVerifyRequest, {});
@@ -160,17 +165,17 @@ export default class ApiRequest {
     }
 
 
-    verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response,passType,otp_type, props) => {
+    verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response, passType, otp_type, props) => {
         return new Promise(async (resolve, reject) => {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
-                MOBILE_NO:response.MOBILE_NO,
+                MOBILE_NO: response.MOBILE_NO,
                 EMAIL_ID: response.EMAIL_ID,
                 USER_ID: response.USER_ID,
                 REQ_FLAG: "R",
                 PASS_TYPE: passType,
                 REQ_TYPE: "A",
-                OTP_TYPE:otp_type === 0 ? "S" : "E",
+                OTP_TYPE: otp_type === 0 ? "S" : "E",
                 ACCOUNT_NO: actCardNumber,
                 DEVICE_ID: await Utility.getDeviceID(),
                 ACTIVITY_CD: response.ACTIVITY_CD,
@@ -189,7 +194,7 @@ export default class ApiRequest {
                 verifyReq = {...verifyReq, TRANSACTION_PIN: pin, AUTH_FLAG: "TP"};
             }
             console.log("verifyReq", verifyReq);
-            let result = await ApiRequest.apiRequest.callApi(verifyReq,  {"CARD_VERIFY": isCard ? "Y" : "N"});
+            let result = await ApiRequest.apiRequest.callApi(verifyReq, {"CARD_VERIFY": isCard ? "Y" : "N"});
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
                 return resolve(result.RESPONSE[0]);
@@ -201,7 +206,7 @@ export default class ApiRequest {
 
     }
 
-    changeCredential = async (isCard, credential, response,passType, props) => {
+    changeCredential = async (isCard, credential, response, passType, props) => {
         return new Promise(async (resolve, reject) => {
             let changeReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
@@ -231,21 +236,21 @@ export default class ApiRequest {
     }
 
 
-    blockProcess = async (ACCT_NO,response,description,props) => {
+    blockProcess = async (ACCT_NO, response, description, props) => {
         return new Promise(async (resolve, reject) => {
             let blockReq = {
                 ACTION: "BLOCK_CP_PROCESS",
-                BLOCK_PROCESS_TYPE:"UPDATE_BLOCK_STATUS",
-                ACTUAL_ACTION:"USER_REG_REQ",
-                BLOCK_ACTIVITY_DECRIPTION:description,
-                ACCT_NO:ACCT_NO,
-                UPDATE_BLOCK_STATUS:"Y",
-                ACTIVITY_CD:"",
-                USER_ID:"",
-                AUTH_FLAG:"USERAUTH",
-                REQUEST_CD:"0",
-                BLOCK_STATUS_CHECK:"Y",
-                BLOCK_AUTH_STATUS:"N",
+                BLOCK_PROCESS_TYPE: "UPDATE_BLOCK_STATUS",
+                ACTUAL_ACTION: "USER_REG_REQ",
+                BLOCK_ACTIVITY_DECRIPTION: description,
+                ACCT_NO: ACCT_NO,
+                UPDATE_BLOCK_STATUS: "Y",
+                ACTIVITY_CD: "",
+                USER_ID: "",
+                AUTH_FLAG: "USERAUTH",
+                REQUEST_CD: "0",
+                BLOCK_STATUS_CHECK: "Y",
+                BLOCK_AUTH_STATUS: "N",
                 ...Config.commonReq
             }
 

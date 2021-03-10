@@ -84,6 +84,12 @@ export const GETBANKDETAILS = async (userDetails, props, requestType) => {
         ...Config.commonReq
     }
 
+    if (requestType === "DIST") {
+        request = {...request, BANK_CD: userDetails.BANK_CD};
+    } else if (requestType === "BRANCH") {
+        request = {...request, BANK_CD: userDetails.BANK_CD, DIST_CD: userDetails.DIST_CD};
+    }
+
     console.log("request", request);
 
     return new Promise(async (resolve, reject) => {
@@ -91,7 +97,16 @@ export const GETBANKDETAILS = async (userDetails, props, requestType) => {
             console.log("responseVal", result);
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve(result.RESPONSE);
+                let itemArr = [];
+                result.RESPONSE.map((item) => {
+                    if (requestType === "DIST")
+                        itemArr.push({label: item.DIST_NM, value: item.DIST_CD,item:item});
+                    else if (requestType === "BRANCH")
+                        itemArr.push({label: item.BRANCH_NM, value: item.BRANCH_CD,item:item});
+                    else
+                        itemArr.push({label: item.BANK_NM, value: item.BANK_CD,item:item});
+                });
+                return resolve(itemArr);
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 console.log("errorResponse", JSON.stringify(result));
@@ -105,7 +120,7 @@ export const GETBANKDETAILS = async (userDetails, props, requestType) => {
     });
 }
 
-export const ADDBENFVERIFY = async (userDetails,REQUEST_CD, props, transType, actNo, authFlag, cPin, tPin) => {
+export const ADDBENFVERIFY = async (userDetails, REQUEST_CD, props, transType, actNo, authFlag, cPin, tPin) => {
     let request = {
         ACCT_NO: actNo,
         ACTION: "ADDBENFVERIFY",
