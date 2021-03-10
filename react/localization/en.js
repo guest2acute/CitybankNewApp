@@ -569,6 +569,7 @@ export default {
     require_nickname: "Nick Name is Requirered",
     require_accnumber: "Account Number is  Required",
     require_valid_actNumber: "Invalid Account Number",
+    invalid_cardNumber: "Invalid Card Number",
     require_cardname: "Card Holder Name is Required",
     require_actName: "Account Holder Name is Required",
     require_actnumber: "Card number is Required",
