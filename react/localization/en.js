@@ -435,7 +435,6 @@ export default {
     fd: "Fixed Deposit",
     fundsTransfer: "Fund Transfer",
     cheque: "Cheque Details",
-    cards: "Card\nDetails",
     other_services: "Other Services",
 
     loan: "loan",

@@ -435,7 +435,6 @@ export default {
   fd: "নির্দিষ্ট পরিমান",
   fundsTransfer: "তহবিল স্থানান্তর",
   cheque: "বিশদ পরীক্ষা করুন",
-  cards: "Card\nDetails",
   other_services: "অন্যান্য সেবা",
 
   loan: "loanণ",
@@ -578,17 +577,6 @@ export default {
   require_bname: "উপকারকারীর নাম প্রয়োজন",
   require_email: "ইমেল ঠিকানা প্রয়োজন",
   add_beneficiary_wob: "সুবিধাভোগী-অন্যান্য ব্যাংক যুক্ত করুন",
-
-  districtTypeArr: [
-    {key: "0", label: "ব্যাগারথ", value: 0},
-    {key: "1", label: "বান্দরবান", value: 1},
-    {key: "2", label: "বরগুনা", value: 2},
-    {key: "3", label: "বারিশাল", value: 3},
-    {key: "4", label: "ভোলা", value: 4},
-    {key: "5", label: "বোগ্রা", value: 5},
-    {key: "6", label: "চাঁদপুর", value: 6},
-    {key: "7", label: "COMILLA", value: 7},
-  ],
   type_bank: "ব্যাংকের নাম",
   select_bank_type: "ব্যাঙ্কের নাম নির্বাচন করুন",
   type_district: "জেলার নাম",
