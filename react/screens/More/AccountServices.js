@@ -4,7 +4,6 @@ import {Platform, StatusBar, View, Image, Text, TouchableOpacity, SafeAreaView, 
 import {actions} from "../../redux/actions";
 import {connect} from "react-redux";
 import Config from "../../config/Config";
-
 import themeStyle from "../../resources/theme.style";
 import Utility from "../../utilize/Utility";
 import CommonStyle from "../../resources/CommonStyle";
@@ -12,7 +11,6 @@ import fontStyle from "../../resources/FontStyle";
 import FontSize from "../../resources/ManageFontSize";
 import StorageClass from "../../utilize/StorageClass";
 import {MoreDetails} from "../Requests/CommonRequest";
-
 
 /**
  * splash page

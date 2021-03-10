@@ -25,8 +25,8 @@ class CardServices extends Component {
         super(props);
         let language = props.language;
         this.state = {
-            data:props.route.params.subCategory,
-            title:props.route.params.title,
+            data: props.route.params.subCategory,
+            title: props.route.params.title,
         }
     }
 
@@ -60,8 +60,7 @@ class CardServices extends Component {
     }
 
     moveScreen(item) {
-        console.log("redirectScreen",item.redirectScreen)
-        this.props.navigation.navigate(item.redirectScreen,{title:item.title});
+        this.props.navigation.navigate(item.redirectScreen, {title: item.title});
     }
 
     async redirectProfile() {
@@ -146,13 +145,13 @@ class CardServices extends Component {
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                    <FlatList scrollEnabled={true}
-                        data={this.state.data}
-                              renderItem={this._renderItem}
-                              ItemSeparatorComponent={() => this.bottomLine()}
-                              ListFooterComponent={this.bottomLine()}
-                              keyExtractor={(item, index) => index + ""}
-                    />
+                <FlatList scrollEnabled={true}
+                          data={this.state.data}
+                          renderItem={this._renderItem}
+                          ItemSeparatorComponent={() => this.bottomLine()}
+                          ListFooterComponent={this.bottomLine()}
+                          keyExtractor={(item, index) => index + ""}
+                />
             </View>
         );
     }

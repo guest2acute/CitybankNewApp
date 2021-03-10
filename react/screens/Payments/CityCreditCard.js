@@ -53,15 +53,12 @@ class CityCreditCard extends Component {
 
 
     async changeCard(cardCode) {
-        console.log("cardcode is this", cardCode)
         this.setState({
             stateVal: cardCode
         })
-        console.log("statevalue is this", this.state.stateVal);
     }
 
     openModal(option, title, data, language) {
-        console.log("openmodal")
         if (data.length > 0) {
             this.setState({
                 modelSelection: option,
@@ -75,8 +72,7 @@ class CityCreditCard extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this", item)
-        if (modelSelection === "type") {
+    if (modelSelection === "type") {
             this.setState({selectCreditCardType: item.label, selectTypeVal: item.value, modalVisible: false})
         } else if (modelSelection === "accountType") {
             this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
@@ -90,10 +86,10 @@ class CityCreditCard extends Component {
     submit(language, navigation) {
         if(this.state.stateVal === 0) {
             if (this.state.selectCreditCardType === language.selectCreditCard) {
-                Utility.alert("Please Select Credit Card");
+                Utility.alert(language.error_select_credit_card);
                 return;
             }else if (this.state.selectAcctType === language.bkash_select_acct) {
-                Utility.alert("Please Select From Account");
+                Utility.alert(language.error_select_from_type);
                 return;
             } else if (this.state.paymentAmount === "") {
                 this.setState({errorPaymentAmount: language.err_payment_amount})
@@ -101,10 +97,10 @@ class CityCreditCard extends Component {
             }
         }else if(this.state.stateVal === 1){
               if(this.state.selectNicknameType === language.select_nickname) {
-                Utility.alert("Please Select Nick Name");
+                Utility.alert(language.error_select_nickname);
                 return;
             }else if (this.state.selectAcctType === language.bkash_select_acct) {
-                  Utility.alert("Please Select From Account");
+                  Utility.alert(language.error_select_from_type);
                   return;
               }else if (this.state.paymentAmount === "") {
                   this.setState({errorPaymentAmount: language.err_payment_amount})

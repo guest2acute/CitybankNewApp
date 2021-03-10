@@ -73,22 +73,20 @@ class cardBlock extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
         if (modelSelection === "creditCardType") {
             this.setState({selectCard: item.label, selectTypeVal: item.value, modalVisible: false})
         }else if(modelSelection === "cardBlockType"){
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
-
     }
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert("Please Select Card");
+            Utility.alert(language.errorSelectCard);
             return;
         }
         else if (this.state.selectType === language.select_reason) {
-            Utility.alert("Please Select Reason");
+            Utility.alert(language.error_select_reason);
             return;
         }
         else{

@@ -36,14 +36,14 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "",
+            accountNo: "2251546262001",
             disableButton: false,
             actName: "",
             placeMobile: "",
             placeEmail: "",
-            conf_mobile: "",
+            conf_mobile: "01919820480",
             errorMobile: "",
-            conf_email: "",
+            conf_email: "monirujjaman001@gmail.com",
             cardExpiry: "",
             hasDebitCard: true,
             errorEmail: "",
@@ -86,7 +86,7 @@ class RegistrationAccount extends Component {
             showMonthPicker: false,
             signUpResponse: "",
             errorDCardNo: "",
-            debitCardNo: ""
+            debitCardNo: "371599006146189"
         }
     }
 

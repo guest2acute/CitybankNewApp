@@ -114,8 +114,6 @@ class OtherBankAccount extends Component {
     }
 
      alertToNavigate(){
-        console.log("update beneficiary ======>",this.props.language.update_beneficiary)
-
                   Alert.alert(
                      "",
                      "Please update this beneficiary information",
@@ -140,10 +138,10 @@ class OtherBankAccount extends Component {
 
     async onSubmit(language, navigation) {
         if (this.state.selectAcctType === language.bkash_select_acct) {
-            Utility.alert("Please Select From Account");
+            Utility.alert(language.error_select_from_type);
             return;
         } else if (this.state.selectNicknameType === language.selectNickType) {
-            Utility.alert("Please Select Nickname");
+            Utility.alert(language.error_select_nickname);
             return;
         } else if (this.state.transferAmount === "") {
             this.setState({errorTransferAmount: language.errtransferammt})

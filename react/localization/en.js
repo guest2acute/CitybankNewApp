@@ -36,7 +36,6 @@ export default {
     actNo_here: "Enter account number here",
     errorActNo: "Please enter account number",
     selectCard: "Select Card",
-    errorSelectCard: "Please select card",
     transactionPin: "Transaction PIN",
     loginPin: "Login PIN",
     setLoginPIn: "Set Login PIN",
@@ -595,6 +594,13 @@ export default {
     error_select_bank_name: "Please Select Bank Name",
     error_select_district_name: "Please Select District Name",
     error_select_branch_name: "Please Select Branch Name",
+    error_select_beneficiary_type: "Please Select Beneficiary Type",
+    error_select_from_type: "Please Select From Account",
+    error_select_credit_card: "Please Select Credit Card",
+    error_select_nickname: "Please Select Nickname",
+    error_select_operator: "Please Select Operator",
+    errorSelectCard: "Please select card",
+    error_select_reason: "Please Select Reason",
     type_Branch: "Branch Name",
     districtTypeArr: [
         {key: "0", label: "BAGERATH", value: 0},
@@ -840,10 +846,50 @@ export default {
     other_bankAccount_note11:"other_bankAccount_note10",
     other_bankAccount_note12:"7.consecutive transaction in the same account will take 10 minutes of interval",
 
+    beneficiary_otherBank_note1: "1. Beneficiary banks/branches should be capable to process",
+    beneficiary_otherBank_note2: "RTGS/NPSB/BEFTN transaction.",
+    beneficiary_otherBank_note3: "2. BEFTN(Ragular Transfer): Transaction Process before",
+    beneficiary_otherBank_note4: "10:30 PM,any amount up to 5 lacs. Transfer Processed",
+    beneficiary_otherBank_note5: "through BEFTN whould be credited by next working day.the amount",
+    beneficiary_otherBank_note6: "3. RTGS (instant transfer): Transactions processed before",
+    beneficiary_otherBank_note7: "10:30 PM,any amount up to 5 lacs ",
+    beneficiary_otherBank_note8: "must be between 1 lac to 5 lacs",
+    beneficiary_otherBank_note9: "4. NPSB (instant transfer). transfer can be processed",
+    beneficiary_otherBank_note10: "anytime. Transaction limit is BDT 2 lacs in 5 transaction",
+    beneficiary_otherBank_note11: "per day and BDT 2 lacs in 5 transaction",
+    beneficiary_otherBank_note12: "5. For NPSB transfer,while adding DBBL beneficiary, complete",
+    beneficiary_otherBank_note13: "13-digit account number will be required. in case of adding",
+    beneficiary_otherBank_note14: "DBBL credit card,the digit 100001 need to be added",
+    beneficiary_otherBank_note15: "before the 13-digit card number.",
+
+
+
+    transferTo_bkash_note1: "1. Transfer and transaction limit for a single bkash account.",
+    transferTo_bkash_note2: "5 transaction per day and 25 per month.",
+    transferTo_bkash_note3: "Transfer amount is BDT 50 to BDT 30000 per day and BDT 2",
+    transferTo_bkash_note4: "lacs per month.",
+    transferTo_bkash_note5: "2. CityToch to bkash transfer limit: Up to BDT 60000 per day.",
+    transferTo_bkash_note6: "3. Credit card transfer limit: minimum transferble amount is",
+    transferTo_bkash_note7: "BDT 500 and up to 50% of total available BDT limit.",
+    transferTo_bkash_note8: "4. Processing fee +VAT will be applicable",
+    transferTo_bkash_note9: "5. consecutive transfer in the same bkash account require",
+    transferTo_bkash_note10: "minimum 10 minitues interval.",
+
+
     email_transfer_note1: "1. An email transfer transaction will be valid for next 10 days.",
     email_transfer_note2: "2. Maximum transferable amount:BDT in 5 lacs per day",
     email_transfer_note3: "3. Generated transfer could be canceled anytime from \"Waiting\" Tab before withdrawing by the beneficiary.",
     email_transfer_note4: "Beneficiary has to answer the security questions. case sensitive.",
+
+    mobile_recharge_note1:"1. Minimum recharge amount for postpaid connection",
+    mobile_recharge_note2:"Tk.50/- and for prepaid Tk. 10/-.",
+    mobile_recharge_note3:"2. Maximum recharge amount for postpaid connection",
+    mobile_recharge_note4:"Tk.10000/- and for prepaid Tk. 1000/-.",
+    mobile_recharge_note5:"3. only prepaid recharge is acceptable in Teletalk numbers.",
+    mobile_recharge_note6:"4. Consecutive recharge in the same number require.",
+    mobile_recharge_note7:"minimum 15 minites interval.",
+    mobile_recharge_note8:"if your recharge amount is equivalent to any trigger/bundle",
+    mobile_recharge_note9:"pack amount, a data/minute/bundle pack will be activated",
 
 
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
@@ -995,6 +1041,15 @@ export default {
     card_Member_Name: "Card Member Name",
     cardNo_placeholder: "Please Enter Card Number",
     error_card_number: "Card Number Is Required",
+
+    /*redirect screen name*/
+    beneficiaryWithCityBank:"BeneficiaryWithCityBank",
+    beneficiaryOtherBank: "BeneficiaryOtherBank",
+    transferToBkash: "BeneficiaryTransfer",
+    beneficiaryTransfer: "BeneficiaryTransfer",
+    transferWithBkash: "TransferWithBkash",
+    beneficiary: "Beneficiary",
+    cityTouchSecurityVerification: "CitytouchSecurityVerification",
 
 
 

@@ -39,10 +39,10 @@ class FavTransferBkash extends Component {
             otp_type: 0,
             availableBalance:"",
             error_Balance:"",
-            transferamt:"",
+            transferAmount:"",
             errorTransferAmount:"",
             servicesCharge:"",
-            error_servicescharge:"",
+            error_servicesCharge:"",
             grandTotal:"",
             remarks:"",
             error_remarks:""
@@ -72,15 +72,15 @@ class FavTransferBkash extends Component {
     }
 
     async onSubmit(language, navigation) {
-        if (this.state.selectNicknameType === "Select Nickname") {
-            Utility.alert("Please Select Nickname");
+        if (this.state.selectNicknameType === language.selectNickType) {
+            Utility.alert(language.error_select_nickname);
             return;
         }
-        else if(this.state.selectAcctType==="Select Account"){
-            Utility.alert("Please Select From Account");
+        else if(this.state.selectAcctType===language.bkash_select_acct){
+            Utility.alert(language.error_select_from_type);
             return;
         }
-        else if(this.state.transferamt===""){
+        else if(this.state.transferAmount===""){
             this.setState({errorTransferAmount:language.errtransferammt})
             return;
         }else if(this.state.remarks === "") {
@@ -240,7 +240,7 @@ class FavTransferBkash extends Component {
                     autoCorrect={false}
                     returnKeyType={"next"}
                     onSubmitEditing={(event) => {
-                        this.transferamtRef.focus();
+                        this.transferAmountRef.focus();
                     }}
                     maxLength={13}/>
                 <Text style={{paddingLeft:5}}>BDT</Text>
@@ -260,15 +260,15 @@ class FavTransferBkash extends Component {
                     {language.transfer_amount}
                 </Text>
                 <TextInput
-                    ref={(ref) => this.transferamtRef = ref}
+                    ref={(ref) => this.transferAmountRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
                         errorTransferAmount: "",
-                        transferamt: Utility.userInput(text)
+                        transferAmount: Utility.userInput(text)
                     })}
-                    value={this.state.transferamt}
+                    value={this.state.transferAmount}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -306,7 +306,7 @@ class FavTransferBkash extends Component {
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_servicescharge: "",
+                        error_servicesCharge: "",
                         servicesCharge: Utility.userInput(text)
                     })}
                     value={this.state.servicesCharge}
@@ -325,11 +325,11 @@ class FavTransferBkash extends Component {
                     maxLength={13}/>
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
-            {this.state.error_servicescharge !==  "" ?
+            {this.state.error_servicesCharge !==  "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_servicescharge}</Text> : null}
+                }}>{this.state.error_servicesCharge}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -436,15 +436,16 @@ class FavTransferBkash extends Component {
             </Text>
             <View style={{ marginTop: 10,}}>
                 <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>1. Transfer and transaction limit for a single bkash account.</Text>
-                <Text style={styles.textView}>5 transaction per day and 25 per month.</Text>
-                <Text style={styles.textView}>Transfer amount is BDT 50 to BDT 30000 per day and BDT 2 lacs per month.</Text>
-                <Text style={styles.textView}>2. CityToch to bkash transfer limit: Up to </Text>
-                <Text style={styles.textView}> BDT 60000 per day.</Text>
-                <Text style={styles.textView}>3. Credit card transfer limit: minimum transferble amount is BDT 500 and up to 50% of total available BDT limit.</Text>
-                <Text style={styles.textView}>4. Processing fee +VAT will be applicable</Text>
-                <Text style={styles.textView}>5. consecutive transfer in the same bkash account require minimum 10 minitues interval.</Text>
-                <Text style={styles.textView}> </Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note1}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note2}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note3}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note4}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note5} </Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note6}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note7}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note8}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note9}</Text>
+                <Text style={styles.textView}>{language.transferTo_bkash_note10}</Text>
             </View>
         </View>)
     }

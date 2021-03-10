@@ -33,14 +33,14 @@ class CreditCardActivation extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            title:props.route.params.title,
-            cardStatus:"",
-            cardState:"",
-            cardHolderName:"",
-            cardType:"",
+            title: props.route.params.title,
+            cardStatus: "",
+            cardState: "",
+            cardHolderName: "",
+            cardType: "",
             cardExpiry: "",
             showMonthPicker: false,
-            errorExpiry:"",
+            errorExpiry: "",
 
         }
     }
@@ -73,7 +73,7 @@ class CreditCardActivation extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        console.log("modelSelection is this",item)
+        console.log("modelSelection is this", item)
         if (modelSelection === "creditCardType") {
             this.setState({selectCard: item.label, selectTypeVal: item.value, modalVisible: false})
         }
@@ -81,16 +81,14 @@ class CreditCardActivation extends Component {
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert("Please Select Card");
+            Utility.alert(language.errorSelectCard);
             return;
-        }
-        else if (this.state.cardExpiry === "") {
+        } else if (this.state.cardExpiry === "") {
             this.setState({errorExpiry: language.errExpiryDate});
-        }
-        else{
+        } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
-        }
+    }
 
     onValueChange = (event, newDate) => {
         console.log("event", event + "-" + newDate);
@@ -108,8 +106,8 @@ class CreditCardActivation extends Component {
     }
 
 
-    creditCardActivation(language){
-        return(
+    creditCardActivation(language) {
+        return (
             <View style={{flex: 1, paddingBottom: 30}}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
@@ -306,6 +304,7 @@ class CreditCardActivation extends Component {
             </View>
         )
     }
+
     render() {
         let language = this.props.language;
         return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
@@ -454,7 +453,7 @@ const styles = {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

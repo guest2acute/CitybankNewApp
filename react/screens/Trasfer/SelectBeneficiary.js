@@ -36,10 +36,10 @@ class SelectBeneficiary extends Component {
     moveScreen(item) {
         switch (item.id) {
             case "add":
-                this.props.navigation.navigate("Beneficiary");
+                this.props.navigation.navigate(language.beneficiary);
                 break;
             case "delete":
-                this.props.navigation.navigate("Beneficiary");
+                this.props.navigation.navigate(language.beneficiary);
                 break;
         }
     }

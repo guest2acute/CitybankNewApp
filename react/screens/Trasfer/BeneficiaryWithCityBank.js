@@ -382,7 +382,6 @@ class BeneficiaryWithCityBank extends Component {
     }
 
     render() {
-        console.log("nickname", this.state.error_nickname)
         let language = this.props.language;
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>

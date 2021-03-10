@@ -102,12 +102,9 @@ class Enquiry extends Component {
                     }} resizeMode={"contain"}
                            source={require("../../resources/images/arrow_right_ios.png")}/>
                 </View>
-
             </TouchableOpacity>
         )
     }
-
-
 
     bottomLine() {
         return (<View style={{
@@ -116,9 +113,7 @@ class Enquiry extends Component {
             marginRight: 10,
             backgroundColor: "#D3D1D2"
         }}/>)
-
     }
-
 
     render() {
         let language = this.props.language;

@@ -58,7 +58,6 @@ class CredentialManagement extends Component {
     }
 
     moveScreen(item) {
-        console.log("redirectScreen",item.redirectScreen)
         this.props.navigation.navigate(item.redirectScreen,{title:item.title});
 
     }

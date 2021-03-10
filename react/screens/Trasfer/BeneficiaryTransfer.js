@@ -73,7 +73,7 @@ class BeneficiaryTransfer extends Component {
                 marginEnd: 10,
             }}>
                 <Text style={[CommonStyle.textStyle]}>
-                    {language.pin_change_reason}
+                    {language.nick_name}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput

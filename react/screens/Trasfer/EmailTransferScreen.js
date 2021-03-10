@@ -108,11 +108,11 @@ class EmailTransferScreen extends Component {
 
     async onSubmit(language, navigation) {
         if (this.state.selectBeneficiaryType === language.select_beneficiary_type) {
-            Utility.alert("Please Select Beneficiary Type");
+            Utility.alert(language.error_select_beneficiary_type);
             return;
         }
         else if(this.state.selectAcctType===language.bkash_select_acct){
-            Utility.alert("Please Select From Account");
+            Utility.alert(language.error_select_from_type);
             return;
         }
         else if(this.state.paymentAmount===""){

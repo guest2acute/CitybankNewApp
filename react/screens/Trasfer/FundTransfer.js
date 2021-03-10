@@ -53,8 +53,8 @@ class FundTransfer extends Component {
             availableBalance:"",
             transferAmount:"",
             error_transferAmount:"",
-            servicescharge:"",
-            error_servicescharge:"",
+            servicesCharge:"",
+            error_servicesCharge:"",
             grandtotal:"",
             error_grandtotal:"",
             remarks:"",
@@ -434,15 +434,15 @@ class FundTransfer extends Component {
                     {language.services_charge}
                 </Text>
                 <TextInput
-                    ref={(ref) => this.serviceschargeRef = ref}
+                    ref={(ref) => this.servicesChargeRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_servicescharge: "",
-                        servicescharge: Utility.userInput(text)
+                        error_servicesCharge: "",
+                        servicesCharge: Utility.userInput(text)
                     })}
-                    value={this.state.servicescharge}
+                    value={this.state.servicesCharge}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -458,11 +458,11 @@ class FundTransfer extends Component {
                     editable={false}
                     maxLength={13}/>
             </View>
-            {this.state.error_servicescharge !==  "" ?
+            {this.state.error_servicesCharge !==  "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_servicescharge}</Text> : null}
+                }}>{this.state.error_servicesCharge}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -473,7 +473,7 @@ class FundTransfer extends Component {
                     {language.vat}
                 </Text>
                 <TextInput
-                    ref={(ref) => this.serviceschargeRef = ref}
+                    ref={(ref) => this.servicesChargeRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
