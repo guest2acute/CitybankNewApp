@@ -576,23 +576,6 @@ export default {
     require_email: "Email Address is required",
     add_beneficiary_wob: "Add Beneficiary-Other Bank",
 
-    bankTypeArr: [
-        {key: "0", label: "AB Bank Limited", value: 0},
-        {key: "1", label: "Agrani Bank Ltd.", value: 1},
-        {key: "2", label: "AI-arafah Islami Bank Ltd.", value: 2},
-        {key: "3", label: "Bangladesh Bank", value: 3},
-        {key: "4", label: "Bangladesh Commerce Bank Ltd.", value: 4},
-        {key: "5", label: "Bangladesh Development Bank Ltd.", value: 5},
-        {key: "6", label: "Bangladesh Krishi Bank", value: 6},
-        {key: "7", label: "Bangladesh Samabaya Bank Ltd.", value: 7},
-        {key: "8", label: "Bank Ai-Falah Ltd.", value: 8},
-        {key: "9", label: "Bank Asia Ltd.", value: 9},
-        {key: "10", label: "Basic Bank Ltd.", value: 10},
-        {key: "11", label: "Brac Bank Ltd.", value: 11},
-        {key: "12", label: "COMMUNITY BANK BANGLADESH LTD.", value: 12},
-        {key: "13", label: "City Bank N A", value: 13},
-        {key: "14", label: "Dhaka Bank Ltd", value: 14},
-    ],
     districtTypeArr: [
         {key: "0", label: "BAGERATH", value: 0},
         {key: "1", label: "BANDARBAN", value: 1},
