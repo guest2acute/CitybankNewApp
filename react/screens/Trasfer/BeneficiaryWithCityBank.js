@@ -75,11 +75,15 @@ class BeneficiaryWithCityBank extends Component {
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, this.props.userDetails, nickname, mobile_number, emailTxt, this.props).then(response => {
+        AddBeneficiary(accountDetails,"I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
-            }, () => this.props.navigation.navigate("SecurityVerification", {REQUEST_CD: response.REQUEST_CD,transType:"I",actNo:this.state.accountNo}));
+            }, () => this.props.navigation.navigate("SecurityVerification", {
+                REQUEST_CD: response.REQUEST_CD,
+                transType: "I",
+                actNo: this.state.accountNo
+            }));
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -499,7 +503,7 @@ const styles = {
         overflow: "hidden",
         borderRadius: 10,
         alignItems: "center",
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

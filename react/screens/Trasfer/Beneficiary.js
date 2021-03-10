@@ -69,16 +69,12 @@ class Beneficiary extends Component {
         let otpMsg = "", successMsg = "";
         if (this.state.selectTypeVal === -1) {
             Utility.alert(language.error_select_beneficiary_type);
-            return;
         } else if (this.state.selectTypeVal === 0) {
             this.props.navigation.navigate("BeneficiaryWithCityBank");
-            return;
         } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("beneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
-            return;
+            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
         } else if (this.state.selectTypeVal === 2) {
             this.props.navigation.navigate("BeneficiaryTransfer");
-            return;
         } else {
             this.props.navigation.navigate("BeneficiaryTransfer")
         }

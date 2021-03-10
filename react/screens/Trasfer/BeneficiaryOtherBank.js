@@ -17,7 +17,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import {AddBeneficiary, GETBANKDETAILS} from "../Requests/RequestBeneficiary";
+import {AddBeneficiary, GETACCTBALDETAIL, GETBANKDETAILS} from "../Requests/RequestBeneficiary";
 
 class BeneficiaryOtherBank extends Component {
     constructor(props) {
@@ -65,27 +65,46 @@ class BeneficiaryOtherBank extends Component {
         }
     }
 
+    resetData(item, props) {
+        this.setState({
+            selectType: item.label,
+            selectTypeVal: item.value,
+            modalVisible: false,
+            account_card_name: "",
+            accountNo: "2251930916001",
+            error_accountNo: "",
+            error_cardName: "",
+            error_cardName: "",
+            districtTypeArr: [],
+            branchTypeArr: [],
+            selectBankType: props.language.select_bank_type,
+            selectDistrictType: props.language.select_district_type,
+            selectBranchType: props.language.select_branch_type,
+            selectBankVal: null,
+            selectBranchVal: null,
+            selectDistrictVal: null,
+        }, async () => await this.getBankName())
+    }
+
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
-            this.setState({
-                selectType: item.label, selectTypeVal: item.value,
-                modalVisible: false, account_card_name: "",
-                accountNo: "", error_accountNo: "", error_cardName: ""
-            })
+            this.resetData(item, this.props);
         } else if (modelSelection === "bankType") {
             this.setState({
                 selectBankType: item.label, selectBankVal: item.details,
                 modalVisible: false
             }, async () => {
-                await this.getDistrictName();
+                if (this.state.selectTypeVal === 0)
+                    await this.getDistrictName();
             })
         } else if (modelSelection === "district_type") {
             this.setState({
                 selectDistrictType: item.label, selectDistrictVal: item.details,
                 modalVisible: false
             }, async () => {
-                await this.getBranchName()
+                if (this.state.selectTypeVal === 0)
+                    await this.getBranchName()
             })
         } else if (modelSelection === "branch_type") {
             this.setState({
@@ -114,8 +133,11 @@ class BeneficiaryOtherBank extends Component {
         } else if (this.state.selectTypeVal === -1) {
             Utility.alert(language.select_type_account);
             return
-        } else if (this.state.accountNo === "") {
-            this.setState({error_accountNo: this.state.selectTypeVal === 1 ? language.require_cardnumber : language.require_actnumber})
+        } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length !== 13) {
+            this.setState({error_accountNo: language.require_valid_actNumber})
+            return;
+        } else if (this.state.selectTypeVal === 1 && this.state.accountNo.length < 15) {
+            this.setState({error_accountNo: language.invalid_cardNumber})
             return;
         } else if (this.state.account_card_name === "") {
             this.setState({error_cardName: this.state.selectTypeVal === 1 ? language.require_cardname : language.require_actName});
@@ -130,7 +152,15 @@ class BeneficiaryOtherBank extends Component {
             Utility.alert(language.error_select_branch_name);
             return;
         }
+        this.getActDetails(language);
+
+    }
+
+    getActDetails(language) {
+        this.setState({isProgress: true});
         let object = {
+            selectType: this.state.selectType,
+            selectTypeVal: this.state.selectTypeVal,
             nickname: this.state.nickname,
             accountNo: this.state.accountNo,
             account_card_name: this.state.account_card_name,
@@ -140,26 +170,9 @@ class BeneficiaryOtherBank extends Component {
             mobile_number: this.state.mobile_number,
             emailTxt: this.state.emailTxt,
         }
+
+        console.log("object", object);
         this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object});
-
-    }
-
-    beneficiaryAdd(language) {
-        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
-        this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, this.props.userDetails, nickname, mobile_number, emailTxt, this.props).then(response => {
-            console.log("response", response);
-            this.setState({
-                isProgress: false,
-            }, () => this.props.navigation.navigate("SecurityVerification", {
-                REQUEST_CD: response.REQUEST_CD,
-                transType: "I",
-                actNo: this.state.accountNo
-            }));
-        }).catch(error => {
-            this.setState({isProgress: false});
-            console.log("error", error);
-        });
     }
 
     accountNoOption(language) {
@@ -258,7 +271,7 @@ class BeneficiaryOtherBank extends Component {
                     onSubmitEditing={(event) => {
                         this.cardNameRef.focus();
                     }}
-                    maxLength={this.state.selectTypeVal === 1 ? 16:13}/>
+                    maxLength={this.state.selectTypeVal === 1 ? 16 : 13}/>
             </View>
             {this.state.error_accountNo !== "" ?
                 <Text style={{
@@ -286,11 +299,10 @@ class BeneficiaryOtherBank extends Component {
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({
                         error_cardName: "",
-                        account_card_name: Utility.userInput(text)
+                        account_card_name: text
                     })}
                     value={this.state.account_card_name}
                     multiline={false}
-
                     numberOfLines={1}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
@@ -315,8 +327,8 @@ class BeneficiaryOtherBank extends Component {
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 }
-                <TouchableOpacity
-                    onPress={() => this.openModal("bankType", language.select_bank_type, this.state.bankTypeArr, language)}>
+                <TouchableOpacity disabled={this.state.selectTypeVal === -1}
+                                  onPress={() => this.openModal("bankType", language.select_bank_type, this.state.bankTypeArr, language)}>
                     <View style={styles.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBankType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -619,14 +631,13 @@ class BeneficiaryOtherBank extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
-        await this.getBankName();
     }
 
     async getBankName() {
         this.setState({
             isProgress: true
         });
-        await GETBANKDETAILS(this.props.userDetails, this.props, "BANK").then(response => {
+        await GETBANKDETAILS(this.props.userDetails, this.props, "BANK", this.state.selectTypeVal === 1).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -644,7 +655,7 @@ class BeneficiaryOtherBank extends Component {
         });
         let userDetails = this.props.userDetails;
         userDetails = {...userDetails, BANK_CD: this.state.selectBankVal.BANK_CD};
-        await GETBANKDETAILS(userDetails, this.props, "DIST").then(response => {
+        await GETBANKDETAILS(userDetails, this.props, "DIST", false).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -666,7 +677,7 @@ class BeneficiaryOtherBank extends Component {
             BANK_CD: this.state.selectBankVal.BANK_CD,
             DIST_CD: this.state.selectDistrictVal.DIST_CD
         };
-        await GETBANKDETAILS(userDetails, this.props, "BRANCH").then(response => {
+        await GETBANKDETAILS(userDetails, this.props, "BRANCH", false).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,

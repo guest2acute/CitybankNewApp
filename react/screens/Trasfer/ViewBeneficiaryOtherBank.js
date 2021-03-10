@@ -17,30 +17,57 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
+import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 
+let details = "";
 
 class ViewBeneficiaryOtherBank extends Component {
     constructor(props) {
         super(props);
-        let details = props.route.params.details;
+        details = props.route.params.details;
         this.state = {
             isProgress: false,
             nickname: details.nickname,
             account_holder_name: details.account_card_name,
-            currency: "",
             accountNo: details.accountNo,
-            type_act: "",
+            type_act: details.selectType,
             mobile_number: details.mobile_number,
             emailTxt: details.emailTxt,
-            bankName: "",
-            districtName: "",
-            branch_name: ""
+            bankName: details.bankDetails.BANK_NM,
+            districtName: details.districtDetails.DIST_NM,
+            branch_name: details.branchDetails.BRANCH_NM,
+            selectTypeVal: details.selectTypeVal,
         }
     }
 
-
     async onSubmit(language, navigation) {
-        this.props.navigation.navigate("SecurityVerification");
+        this.beneficiaryAdd(language, navigation);
+    }
+
+    beneficiaryAdd(language, navigation) {
+        const {accountNo, nickname, mobile_number, emailTxt, selectTypeVal, account_holder_name} = this.state;
+        this.setState({isProgress: true});
+        let accountDetails = {
+            ACCOUNT: accountNo,
+            ADDRESS: "",
+            CONTACTNUMBER: "",
+            ACCOUNTNAME: account_holder_name
+        }
+
+        AddBeneficiary(accountDetails,"O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () =>
+                this.props.navigation.navigate("SecurityVerification", {
+                    REQUEST_CD: response.REQUEST_CD,
+                    transType: "O",
+                    actNo: this.state.accountNo
+                }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     accountNoOption(language) {
@@ -63,7 +90,6 @@ class ViewBeneficiaryOtherBank extends Component {
                     placeholder={""}
                     value={this.state.nickname}
                     multiline={false}
-
                     numberOfLines={1}
                     editable={false}
                     contextMenuHidden={true}
@@ -124,7 +150,7 @@ class ViewBeneficiaryOtherBank extends Component {
                     editable={false}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
-                    maxLength={13}/>
+                />
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -182,70 +208,70 @@ class ViewBeneficiaryOtherBank extends Component {
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
-                    editable={false}
-                    maxLength={13}/>
+                    editable={false}/>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.district_type}
-                </Text>
-                <TextInput
-                    ref={(ref) => this.grandTotalRef = ref}
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        flex: 1,
-                        marginLeft: 10
-                    }]}
-                    placeholder={""}
-                    onChangeText={text => this.setState({
-                        districtName: Utility.userInput(text)
-                    })}
-                    value={this.state.districtName}
-                    multiline={false}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    editable={false}
-                    maxLength={13}/>
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.branch_name}
-                </Text>
-                <TextInput
-                    ref={(ref) => this.grandTotalRef = ref}
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        flex: 1,
-                        marginLeft: 10
-                    }]}
-                    placeholder={""}
-                    onChangeText={text => this.setState({
-                        branch_name: Utility.userInput(text)
-                    })}
-                    value={this.state.branch_name}
-                    multiline={false}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    editable={false}
-                    maxLength={13}/>
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            {this.state.selectTypeVal === 0 ? <View>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.district_type}
+                    </Text>
+                    <TextInput
+                        ref={(ref) => this.grandTotalRef = ref}
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            districtName: Utility.userInput(text)
+                        })}
+                        value={this.state.districtName}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        editable={false}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.branch_name}
+                    </Text>
+                    <TextInput
+                        ref={(ref) => this.grandTotalRef = ref}
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            branch_name: Utility.userInput(text)
+                        })}
+                        value={this.state.branch_name}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        editable={false}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/></View> : null}
 
             <View>
                 <View style={{
@@ -289,7 +315,7 @@ class ViewBeneficiaryOtherBank extends Component {
                         onSubmitEditing={(event) => {
                             this.emailRef.focus();
                         }}
-                        maxLength={14}/>
+                    />
                 </View>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -459,6 +485,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

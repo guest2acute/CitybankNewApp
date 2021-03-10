@@ -34,12 +34,13 @@ export const GETACCTBALDETAIL = (accountNo, props) => {
 }
 
 
-export const AddBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID, props) => {
+export const AddBeneficiary = (accountRes,beneType, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID,ifscCode, props) => {
+    console.log("accountRes",accountRes);
     return new Promise(async (resolve, reject) => {
         let request = {
             ACTION: "ADDBENF",
             USER_ID: userDetails.USER_ID,
-            BENF_TYPE: "I",
+            BENF_TYPE: beneType,
             DEVICE: Platform.OS,
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             ...Config.commonReq,
@@ -51,7 +52,7 @@ export const AddBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EM
                 TO_CONTACT_NO: accountRes.CONTACTNUMBER,
                 TO_MOBILE_NO: MOBILE_NO,
                 TO_EMAIL_ID: EMAIL_ID,
-                TO_IFSCODE: "",
+                TO_IFSCODE: ifscCode,
                 TO_ACCT_NM: accountRes.ACCOUNTNAME
             }]
         }
@@ -74,12 +75,12 @@ export const AddBeneficiary = (accountRes, userDetails, NICK_NAME, MOBILE_NO, EM
     });
 }
 
-export const GETBANKDETAILS = async (userDetails, props, requestType) => {
+export const GETBANKDETAILS = async (userDetails, props, requestType,isCard) => {
     let request = {
         ACTION: "GETBENFBANK",
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         REQ_TYPE: requestType,
-        MOD_TRAN: "ALL",
+        MOD_TRAN: isCard?"NPSB":"ALL",
         USER_ID: userDetails.USER_ID,
         ...Config.commonReq
     }
