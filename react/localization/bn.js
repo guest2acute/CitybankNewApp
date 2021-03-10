@@ -991,25 +991,25 @@ export default {
   change_mobile_pin: "Change Mobile PIN",
 
   /*Enquiry screen*/
-  enquiry: "Enquiry",
-  customer_details: "Customer Details",
-  schedule_charges :"Schedule of Changes",
-  products:"Products",
-  submit_query: "Submit Query",
-  atm_branch_search: "Atm & Branch Search",
-  contact_call_center: "Contact Call Center",
+  enquiry: "অনুসন্ধান",
+  customer_details: "গ্রাহক বিবরণ",
+  schedule_charges :"পরিবর্তনের তফসিল",
+  products:"পণ্য",
+  submit_query: "প্রশ্ন জমা",
+  atm_branch_search: "এটিএম এবং শাখা অনুসন্ধান",
+  contact_call_center: "কল সেন্টার যোগাযোগ করুন",
 
   /*Credit Card Activation*/
-  creditCard_title: "Credit Card Activation",
-  select_card_number: "Select Card Number",
-  select_expiry_date:"Select Expiry Date",
-  selected_card:"Select Card",
-  credit_card_no:"Credit Card Number",
-  card_status: "Card Status",
-  card_state: "Card State",
-  card_holder_name: "Card Holder Name",
-  card_type: "Card Type",
-  expiry_date: "Expiry Date",
+  creditCard_title: "ক্রেডিট কার্ড অ্যাক্টিভেশন",
+  select_card_number: "কার্ড নম্বর নির্বাচন করুন",
+  select_expiry_date:"মেয়াদ শেষ হওয়ার তারিখটি নির্বাচন করুন",
+  selected_card:"কার্ড নির্বাচন করুন",
+  credit_card_no:"ক্রেডিট কার্ড নম্বর",
+  card_status: "কার্ডের স্থিতি",
+  card_state: "কার্ডের রাজ্য",
+  card_holder_name: "কার্ডধারীর নাম",
+  card_type: "কার্ড এর ধরন",
+  expiry_date: "সমাপ্তির তারিখ",
   cardTypeArr: [
     {key: "0", label: "376948*****9669/Alo Credit Card", value: 0},
     {key: "1", label: "474867****0655/AMEX/AGORA", value: 1},
@@ -1017,34 +1017,34 @@ export default {
   ],
 
   /*Debit Card Activation*/
-  debit_card_activation:"Debit Card Activation",
+  debit_card_activation:"ডেবিট কার্ড অ্যাক্টিভেশন",
 
   /*Block Credit Card*/
-  card_block: "Reason For Card Block",
-  select_reason: "Select Reason",
+  card_block: "কার্ড ব্লকের কারণ",
+  select_reason: "কারণ নির্বাচন করুন",
   cardBlockTypeArr: [
-    {key: "0", label: "Restricted", value: 0},
-    {key: "1", label: "Lost", value: 1},
-    {key: "2", label: "Stolen", value: 2},
+    {key: "0", label: "সীমাবদ্ধ", value: 0},
+    {key: "1", label: "নিখোঁজ", value: 1},
+    {key: "2", label: "চুরি", value: 2},
   ],
 
   /*card pin reset*/
-  pin_change_reason: "PIN Change Reason",
-  new_pin_number: "New PIN Number",
-  confirm_pin_number: "Confirm PIN Number",
-  pim_reason_placeholder: "Enter Reason",
-  newPIn_placeholder:"Enter New Pin",
-  confirmPin_placeholder:"Re-enter New Pin",
-  error_pinChangeReason: "PIN Change Reason is Required",
-  error_newPinNumber: "PIN Number is Required",
-  error_confirmPinNumber: "Confirm PIN Number is Required",
+  pin_change_reason: "পিন পরিবর্তনের কারণ",
+  new_pin_number: "নতুন পিন নম্বর",
+  confirm_pin_number: "পিন নম্বর নিশ্চিত করুন",
+  pim_reason_placeholder: "কারণ প্রবেশ করুন",
+  newPIn_placeholder:"নতুন পিন প্রবেশ করুন",
+  confirmPin_placeholder:"নতুন পিনটিতে পুনরায় প্রবেশ করুন",
+  error_pinChangeReason: "পিন পরিবর্তনের কারণ প্রয়োজনীয়",
+  error_newPinNumber: "পিন নম্বর প্রয়োজন",
+  error_confirmPinNumber: "পিন নম্বর নিশ্চিত করুন",
 
   /*Tag Credit Card in CityTouch*/
-  tagCredit: "Please",
-  enter_Card_Number:  "Enter Card Number",
-  card_Member_Name: "Card Member Name",
-  cardNo_placeholder: "Please Enter Card Number",
-  error_card_number: "Card Number Is Required",
+  tagCredit: "অনুগ্রহ",
+  enter_Card_Number: "কার্ড নম্বর প্রবেশ করান",
+  card_Member_Name: "কার্ড সদস্যের নাম",
+  cardNo_placeholder: "দয়া করে কার্ড নম্বর দিন",
+  error_card_number: "কার্ড নম্বর প্রয়োজন",
 
 }
 
