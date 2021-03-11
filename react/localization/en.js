@@ -864,6 +864,33 @@ export default {
     mobile_recharge_note8:"if your recharge amount is equivalent to any trigger/bundle",
     mobile_recharge_note9:"pack amount, a data/minute/bundle pack will be activated",
 
+    fixed_deposit_note1:"1. You can View the details of this FDR after 1(one)",
+    fixed_deposit_note2:"working day of your request a CityTouch.",
+    fixed_deposit_note3:"2. if  you select auto renewal options No for  fixed",
+    fixed_deposit_note4:"Deposit- General then the entire amount will be transferred to",
+    fixed_deposit_note5:"your respected account automatically after maturity",
+    fixed_deposit_note6:"3. fixed Deposit beneficiary name would be same as ",
+    fixed_deposit_note7:"respective account name.",
+    fixed_deposit_note8:"4. Nominee of this fixed deposit (FD) would be same as",
+    fixed_deposit_note9:"respective current/saving account.To change existing ",
+    fixed_deposit_note10:"nomination,please visit your nearest branch.",
+    fixed_deposit_note11:"FD opening date would be same as your instruction ",
+    fixed_deposit_note12:"placement date at CityTouch.You can view the details of ",
+    fixed_deposit_note13:"this FDR after 1 (one) working day from CityTouch or Branch. ",
+
+    monthly_deposit_note1:"1. Nominee of this DPS will be same as respective ",
+    monthly_deposit_note2:"current/saving account.To change nominee of your ",
+    monthly_deposit_note3:"current/saving account please visit any of our Branches.",
+    monthly_deposit_note4:"2. DPS beneficiary name would be same as respective account name",
+    monthly_deposit_note5:"3. monthly DPS installment to be automatically realized",
+    monthly_deposit_note6:"from your respective current/saving account.",
+    monthly_deposit_note7:"4. you can view the details of this DPS after 1(one)",
+    monthly_deposit_note8:"working day of your request at CityTouch.",
+    monthly_deposit_note9:"5. If the monthly instalment remains unpaid for 4(four)",
+    monthly_deposit_note10:"consecutive months DPS will be closed automatically",
+
+
+
 
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
     card_block_notes1: "1. if you select stolen or lost option,your card will be",
@@ -1015,6 +1042,48 @@ export default {
     cardNo_placeholder: "Please Enter Card Number",
     error_card_number: "Card Number Is Required",
 
+
+    /*CheckBook Management*/
+    cheque_leaf_status: "Check Leaf Status",
+    Cheque_stop_request: "Cheque Stop Request",
+    cheque_book_request:"Cheque Book Request",
+    cheque_book_request_status: "Cheque Book Request Status",
+
+    /*Fixed Deposite*/
+    fixed_deposit: "Fixed Deposit",
+    account_title: "Account Title",
+    depositTypeArr: [
+        {key: "0", label: "Fixed Deposit-General", value: 0},
+        {key: "1", label: "Double Money FD Account", value: 1},
+        {key: "2", label: "Monthly Interest Paying FD", value: 2}
+    ],TenureTypeArr: [
+        {key: "0", label: "Month(s)", value: 0},
+        {key: "1", label: "Pays", value: 1},
+    ],
+    select_tenure_type: "Select Tenure Type",
+    tenure: "Tenure(Period)",
+    select_tenure_period: "Select Tenure(Period)",
+    auto_renewal: "Auto Renewal",
+    auto_renewal_Type: [{label:"Yes",value:0},{label: "No",value: 1}],
+    renewTitle: "Renew",
+    renew: [{label:"Principle Only",value:0},{label:"Both Principle & interest",value:1}],
+    interestRate: "Interest Rate",
+    deposit_advice_branch:"Deposit Advice Collection Branch",
+    select_branch: "Select Branch",
+    maturity_Date: "Maturity Date",
+    Confirm:"Confirm",
+    credit_interest_to: "Credit Interest To",
+    selectTenureType: "Select Tenure Type",
+    selectTenurePeriod: "Select Tenure",
+    error_amount: "Amount is Required",
+    branch:"branch",
+    installment_start_date:"Installment Start Date",
+    select_installment: "Select Installment Start Date",
+    month:"Month",
+    select_month: "Select Month",
+    amount_per_installment: "Amount Per Installment",
+    errorSelect_installment:"Select Installment Start Date",
+    errorSelect_month:"Select Month"
 
 }
 

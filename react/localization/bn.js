@@ -883,6 +883,30 @@ export default {
   mobile_recharge_note8:"আপনার রিচার্জের পরিমাণ যদি কোনও ট্রিগার / বান্ডেলের সমতুল্য হয়",
   mobile_recharge_note9:"প্যাক পরিমাণ, একটি ডেটা / মিনিট / বান্ডেল প্যাক সক্রিয় করা হবে",
 
+  fixed_deposit_note1:"1. আপনি 1 (এক) এর পরে এই FDR এর বিশদটি দেখতে পারেন",
+  fixed_deposit_note2:"আপনার অনুরোধের সিটিটিচ কার্যদিবসের দিন।",
+  fixed_deposit_note3:"2. আপনি যদি স্বয়ংক্রিয় পুনর্নবীকরণ বিকল্পগুলি স্থির জন্য বেছে নেন",
+  fixed_deposit_note4:"আমানত- সাধারণ তখন সম্পূর্ণ পরিমাণে স্থানান্তরিত হবে",
+  fixed_deposit_note5:"পরিপক্ক হওয়ার পরে স্বয়ংক্রিয়ভাবে আপনার সম্মানিত অ্যাকাউন্ট",
+  fixed_deposit_note6:"৩. স্থির আমানত সুবিধাভোগীর নাম একই হবে ",
+  fixed_deposit_note7:"সম্পর্কিত অ্যাকাউন্টের নাম।",
+  fixed_deposit_note8:"৪) এই ফিক্সড ডিপোজিটের (এফডি) মনোনীত প্রার্থী একই হবে",
+  fixed_deposit_note9:"সম্পর্কিত বর্তমান / সংরক্ষণের অ্যাকাউন্ট। বিদ্যমান পরিবর্তন করতে",
+  fixed_deposit_note10:"মনোনয়ন, দয়া করে আপনার নিকটতম শাখা দেখুন।",
+  fixed_deposit_note11:"এফডি খোলার তারিখ আপনার নির্দেশের মতো হবে",
+  fixed_deposit_note12:"সিটিটিচ.-এ স্থান নির্ধারণের তারিখ আপনি বিশদটি দেখতে পারেন",
+  fixed_deposit_note13:"এই এফডিআর সিটিটিচ বা শাখা থেকে 1 (এক) কার্যদিবসের পরে। ",
+
+  monthly_deposit_note1:"১. এই ডিপিএসের মনোনীত ব্যক্তি স্ব স্ব হিসাবে একই থাকবেন ",
+  monthly_deposit_note2:"কারেন্ট / সেভিং অ্যাকাউন্ট.আপনার মনোনীতকে পরিবর্তন করতে",
+  monthly_deposit_note3:"কারেন্ট / সেভিং অ্যাকাউন্ট দয়া করে আমাদের যে কোনও শাখা দেখুন।",
+  monthly_deposit_note4:"২. ডিপিএস উপকারকারীর নাম সংশ্লিষ্ট অ্যাকাউন্টের নামের মতো হবে",
+  monthly_deposit_note5:"৩. মাসিক ডিপিএস কিস্তি স্বয়ংক্রিয়ভাবে উপলব্ধি করতে হবে",
+  monthly_deposit_note6:"আপনার নিজের বর্তমান / সঞ্চয়ী অ্যাকাউন্ট থেকে।",
+  monthly_deposit_note7:"৪. আপনি এই ডিপিএসের বিবরণটি 1 (এক) এর পরে দেখতে পারেন",
+  monthly_deposit_note8:"সিটিটিচ এ আপনার অনুরোধের কার্যদিবসের দিন।",
+  monthly_deposit_note9:"৫. যদি মাসিক কিস্তি ৪ (চার) এর জন্য পরিশোধ না করে থাকে",
+  monthly_deposit_note10:"টানা মাসের ডিপিএস স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে",
 
   scanQrNote: "- বণিক কাউন্টারে প্রদর্শিত কিউআর কোডটি স্ক্যান করুন।",
   card_block_notes1: "1. আপনি যদি চুরি বা হারিয়ে যাওয়া বিকল্প নির্বাচন করেন তবে আপনার কার্ডটি হবে",
@@ -1033,6 +1057,41 @@ export default {
   card_Member_Name: "কার্ড সদস্যের নাম",
   cardNo_placeholder: "দয়া করে কার্ড নম্বর দিন",
   error_card_number: "কার্ড নম্বর প্রয়োজন",
+
+    /*CheckBook Management*/
+    cheque_leaf_status: "পাতার স্থিতি পরীক্ষা করুন",
+    Cheque_stop_request: "স্টপ অনুরোধ পরীক্ষা করুন",
+    cheque_book_request:"বুক অনুরোধ পরীক্ষা করুন",
+    cheque_book_request_status: "বুক অনুরোধের স্থিতি পরীক্ষা করুন",
+
+  /*Fixed Deposite*/
+  fixed_deposit: "নির্দিষ্ট পরিমান",
+  account_title: "অ্যাকাউন্টের শিরোনাম",
+  depositTypeArr: [
+    {key: "0", label: "ফিক্সড ডিপোজিট-জেনারেল", value: 0},
+    {key: "1", label: "ডাবল মানি এফডি অ্যাকাউন্ট", value: 1},
+    {key: "2", label: "মাসিক সুদ পরিশোধের এফডি", value: 2}
+  ],TenureTypeArr: [
+    {key: "0", label: "মাস (গুলি)", value: 0},
+    {key: "1", label: "প্রদান করে", value: 1},
+  ],
+  select_tenure_type: "মেয়াদ প্রকার নির্বাচন করুন",
+  tenure: "মেয়াদ (সময়কাল)",
+  select_tenure_period: "সময়কাল (সময়কাল) নির্বাচন করুন",
+  auto_renewal: "স্বয়ংক্রিয় পুনর্নবীকরণ",
+  auto_renewal_Type: [{label:"হ্যাঁ",value:0},{label: "না",value: 1}],
+  renewTitle: "Renew",
+  renew: [{label:"মূলনীতি",value:0},{label:"মূল এবং আগ্রহ উভয়ই",value:1}],
+  interestRate: "সুদের হার",
+  deposit_advice_branch:"আমানত সংগ্রহের শাখা জমা দিন",
+  select_branch: "শাখা নির্বাচন করুন",
+  maturity_Date: "পরিপক্কতার তারিখ",
+  Confirm:"কনফার্ম",
+  credit_interest_to: "Creditণ সুদ",
+  selectTenureType: "মেয়াদ প্রকার নির্বাচন করুন",
+  selectTenurePeriod: "মেয়াদ নির্বাচন করুন",
+  error_amount: "পরিমাণ প্রয়োজন",
+
 
 }
 
