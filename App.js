@@ -53,21 +53,16 @@ import Favorite from "./react/screens/Trasfer/Favorite";
 import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
-import BeneficiaryMobileNumber from "./react/screens/Trasfer/BeneficiaryMobileNumber";
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
 import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOtherBank";
 import CityCreditCard from "./react/screens/Payments/CityCreditCard";
 import SecurityVerification from "./react/screens/Trasfer/SecurityVerification";
 
-import MySettings from "./react/screens/More/MySettings";
-import CredentialManagement from "./react/screens/More/CredentialManagement";
-import AccountServices from "./react/screens/More/AccountServices";
-import CardServices from "./react/screens/More/CardServices";
-import LoanServices from "./react/screens/More/LoanServices";
+import SubCategories from "./react/screens/More/SubCategories";
+
 import OTPVerification from "./react/screens/OTPVerification";
 
-import Enquiry from "./react/screens/More/Enquiry";
 import CreditCardActivation from "./react/screens/More/CreditCardActivation";
 import cardBlock from "./react/screens/More/cardBlock";
 import CardPinReset from "./react/screens/More/CardPinReset";
@@ -198,12 +193,7 @@ function MoreTab() {
             <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeContactDetails" component={ChangeContactDetails} options={{headerShown: false}}/>
             <Stack.Screen name="UploadSupportDoc" component={UploadSupportDoc} options={{headerShown: false}}/>
-            <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
-            <Stack.Screen name="AccountServices" component={AccountServices} options={{headerShown: false}}/>
-            <Stack.Screen name="CardServices" component={CardServices} options={{headerShown: false}}/>
-            <Stack.Screen name="LoanServices" component={LoanServices} options={{headerShown: false}}/>
-            <Stack.Screen name="MySettings" component={MySettings} options={{headerShown: false}}/>
-            <Stack.Screen name="Enquiry" component={Enquiry} options={{headerShown: false}}/>
+            <Stack.Screen name="SubCategories" component={SubCategories} options={{headerShown: false}}/>
             <Stack.Screen name="CreditCardActivation" component={CreditCardActivation} options={{headerShown: false}}/>
             <Stack.Screen name="cardBlock" component={cardBlock} options={{headerShown: false}}/>
             <Stack.Screen name="CardPinReset" component={CardPinReset} options={{headerShown: false}}/>

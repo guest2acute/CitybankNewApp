@@ -18,6 +18,7 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 import {AddBeneficiary, GETACCTBALDETAIL, GETBANKDETAILS} from "../Requests/RequestBeneficiary";
+import luhn from "luhn";
 
 class BeneficiaryOtherBank extends Component {
     constructor(props) {
@@ -136,7 +137,7 @@ class BeneficiaryOtherBank extends Component {
         } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length !== 13) {
             this.setState({error_accountNo: language.require_valid_actNumber})
             return;
-        } else if (this.state.selectTypeVal === 1 && this.state.accountNo.length < 15) {
+        } else if (this.state.selectTypeVal === 1 && this.state.accountNo.length < 15 && !luhn.validate(this.state.accountNo)) {
             this.setState({error_accountNo: language.invalid_cardNumber})
             return;
         } else if (this.state.account_card_name === "") {
