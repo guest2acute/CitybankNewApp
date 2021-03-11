@@ -3,7 +3,6 @@ import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
 
 
-
 export const GetUserAuthByUid = async (cityTouchUserId, props) => {
     let request = {
         DEVICE_ID: await Utility.getDeviceID(),
@@ -71,12 +70,42 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, otp_
             return reject(error);
         });
     });
+}
+
+
+export const blockProcess = async (ACCT_NO, description, props,authFlag) => {
+    return new Promise(async (resolve, reject) => {
+        let blockReq = {
+            ACTION: "BLOCK_CP_PROCESS",
+            BLOCK_PROCESS_TYPE: "UPDATE_BLOCK_STATUS",
+            ACTUAL_ACTION: "USER_REG_REQ",
+            BLOCK_ACTIVITY_DECRIPTION: description,
+            ACCT_NO: ACCT_NO,
+            UPDATE_BLOCK_STATUS: "Y",
+            ACTIVITY_CD: "",
+            USER_ID: "",
+            AUTH_FLAG: authFlag,
+            REQUEST_CD: "0",
+            BLOCK_STATUS_CHECK: "Y",
+            BLOCK_AUTH_STATUS: "N",
+            ...Config.commonReq
+        }
+
+        console.log("blockReq", blockReq);
+        let result = await ApiRequest.apiRequest.callApi(blockReq, {});
+        if (result.STATUS === "0") {
+            console.log("successResponse", JSON.stringify(result));
+            return resolve(result);
+        } else {
+            Utility.errorManage(result.STATUS, result.MESSAGE, props);
+            return reject(result.STATUS);
+        }
+    });
 
 }
 
 
 export const MoreDetails = (language) => {
-    console.log("moredetails", language.personalise_profile)
     return [
         {
             id: "profile",
@@ -380,3 +409,51 @@ export const MoreDetails = (language) => {
             redirectScreen: ""
         }]
 }
+
+//luhan algorithm
+export const validateCard = (cardNumber) => {
+    let trimmed = String(cardNumber).replace(/[\s]/g, "")
+        , length = trimmed.length
+        , odd = false
+        , total = 0
+        , calc
+        , calc2;
+
+    if (!/^[0-9]+$/.test(trimmed)) {
+        return false;
+    }
+
+    for (let i = length; i > 0; i--) {
+        calc = parseInt(trimmed.charAt(i - 1));
+        if (!odd) {
+            total += calc;
+        } else {
+            calc2 = calc * 2;
+
+            switch (calc2) {
+                case 10:
+                    calc2 = 1;
+                    break;
+                case 12:
+                    calc2 = 3;
+                    break;
+                case 14:
+                    calc2 = 5;
+                    break;
+                case 16:
+                    calc2 = 7;
+                    break;
+                case 18:
+                    calc2 = 9;
+                    break;
+            }
+            total += calc2;
+        }
+        odd = !odd;
+    }
+
+    return (total !== 0 && (total % 10) === 0);
+}
+
+
+

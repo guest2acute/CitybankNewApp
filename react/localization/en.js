@@ -1015,5 +1015,6 @@ export default {
     cardNo_placeholder: "Please Enter Card Number",
     error_card_number: "Card Number Is Required",
 
+
 }
 
