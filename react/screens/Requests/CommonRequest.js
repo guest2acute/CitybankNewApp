@@ -140,7 +140,7 @@ export const MoreDetails = (language) => {
                     id: "Monthly Deposit",
                     title: language.monthly_Dps,
                     icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: "monthlyDPS"
+                    redirectScreen: "MonthlyDPS"
                 },
                 {
                     id: "Pay Order",

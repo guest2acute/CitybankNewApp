@@ -19,6 +19,7 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 import {GETACCTBALDETAIL, AddBeneficiary} from '../Requests/RequestBeneficiary';
 
+
 class BeneficiaryWithCityBank extends Component {
     constructor(props) {
         super(props);

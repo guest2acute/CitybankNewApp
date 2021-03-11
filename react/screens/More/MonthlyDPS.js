@@ -15,6 +15,10 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
+import FontSize from "../../resources/ManageFontSize";
+import fontStyle from "../../resources/FontStyle";
 
 
 class MonthlyDPS extends Component {
@@ -22,13 +26,27 @@ class MonthlyDPS extends Component {
         super(props);
         this.state = {
             isProgress: false,
-            selectType: props.language.select_type_transfer,
+            selectAccountNumberType: props.language.select_actNo,
+            selectAccountType: props.language.select_type_account,
+            selectBranchType: props.language.select_branch,
+            selectInstallmentType: props.language.select_installment,
+            selectMonthType: props.language.select_month,
             selectTypeVal: -1,
             selectActCard: props.language.TypeOfTransferArr[0],
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
-            modalData: []
+            modalData: [],
+            title:props.route.params.title,
+            accountTitle:"",
+            show: false,
+            mode: "date",
+            dateVal: new Date(),
+            interestRate:"",
+            emailTxt:"",
+            amount:"",
+            errorAmount:"",
+            monthArray:[]
         }
     }
 
@@ -61,24 +79,60 @@ class MonthlyDPS extends Component {
     onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
-            this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({selectAccountNumberType: item.label, selectTypeVal: item.value, modalVisible: false})
+        }else if (modelSelection === "accountType") {
+            this.setState({selectAccountType: item.label, selectTypeVal: item.value, modalVisible: false})
+        }else if (modelSelection === "branchType") {
+            this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.error_select_beneficiary_type);
-        } else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate("BeneficiaryWithCityBank");
-        } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
-        } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("BeneficiaryTransfer");
+        if (this.state.selectAccountNumberType === language.select_actNo) {
+            Utility.alert(language.select_actNo);
+        } else if (this.state.selectAccountType === language.select_type_account) {
+            Utility.alert(language.selectActType);
+        } else if (this.state.selectBranchType === language.select_branch) {
+            Utility.alert(language.error_select_branch_name);
+        } else if (this.state.selectInstallmentType === language.select_installment) {
+            Utility.alert(language.errorSelect_installment);
+        }else if (this.state.selectMonthType === language.select_month) {
+            Utility.alert(language.errorSelect_month);
+        }else if (this.state.amount === "") {
+            this.setState({errorAmount:language.error_amount})
+            return;
         } else {
-            this.props.navigation.navigate("BeneficiaryTransfer")
+            Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
+
+    monthShow(){
+        let data=[]
+        /*data.map((item,index)=>{
+            index++;
+        })*/
+        for (let i = 0; i < 121; i++) {
+            console.log(i)
+            this.state.monthArray.push(i)
+        }
+    }
+
+    showDatepicker = (id) => {
+        console.log("click");
+        this.setState({errorpaymentdate:"",currentSelection: id, show: true, mode: "date"});
+    };
+
+    onChange = (event, selectedDate) => {
+        if (event.type !== "dismissed" && selectedDate !== undefined) {
+            console.log("selectedDate-", selectedDate);
+            let currentDate = selectedDate === "" ? new Date() : selectedDate;
+            currentDate = moment(currentDate).format("DD-MMM-YYYY");
+            this.setState({dateVal: selectedDate, paymentdate: currentDate, show: false});
+        } else {
+            this.setState({show: false});
+        }
+    };
 
     monthlyDPS(language){
         return(
@@ -106,6 +160,262 @@ class MonthlyDPS extends Component {
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.account_title}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            accountTitle: Utility.userInput(text)
+                        })}
+                        value={this.state.accountTitle}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        editable={false}
+                        maxLength={13}/>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.avail_balance}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            availableBalance: Utility.userInput(text)
+                        })}
+                        value={this.state.availableBalance}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        editable={false}
+                        maxLength={13}/>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.type_act}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("accountType", language.select_type_account, language.depositTypeArr, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectAccountType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectAccountType}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.branch}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("branchType", language.select_branch, language.cardNumber, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectBranchType === language.select_branch ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectBranchType}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.installment_start_date}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TouchableOpacity onPress={() => this.showDatepicker(0)} >
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectInstallmentType === language.select_installment ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectInstallmentType}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.select_month}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.monthShow()}
+                >
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectMonthType === language.select_month ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectMonthType}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.amount_per_installment}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        placeholder={language.et_placeholder}
+                        onChangeText={text => this.setState({
+                            errorAmount: "",
+                            amount: Utility.userInput(text)
+                        })}
+                        value={this.state.amount}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={13}/>
+                </View>
+                {this.state.errorAmount !==  "" ?
+                    <Text style={{
+                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                    }}>{this.state.errorAmount}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.interestRate}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        placeholder={""}
+                        onChangeText={text => this.setState({
+                            interestRate: Utility.userInput(text)
+                        })}
+                        value={this.state.interestRate}
+                        multiline={false}
+                        numberOfLines={1}
+                        onFocus={() => this.setState({focusUid: true})}
+                        onBlur={() => this.setState({focusUid: false})}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        editable={false}
+                        maxLength={13}/>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: 10,
+                    height: Utility.setHeight(50),
+                    alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.emailAddress}
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={"a********@gmail.com"}
+                        onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
+                        value={this.state.emailTxt}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        editable={false}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}/>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <Text style={{
+                    marginStart: 10,
+                    marginTop: 10,
+                    color: themeStyle.THEME_COLOR,
+                    marginBottom:10
+                }}>*{language.mark_field_mandatory}
+                </Text>
+                <Text style={styles.textView}>{language.notes}:</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note1}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note2}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note3}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note4}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note5}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note6}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note7}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note8}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note9}</Text>
+                <Text style={styles.textView}>{language.monthly_deposit_note10}</Text>
             </View>
         )
     }
@@ -121,7 +431,7 @@ class MonthlyDPS extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.add_beneficiary}</Text>
+                    <Text style={CommonStyle.title}>{this.state.title}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
@@ -139,6 +449,42 @@ class MonthlyDPS extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {this.monthlyDPS(language)}
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: Utility.setWidth(10),
+                        marginRight: Utility.setWidth(10),
+                        marginTop: Utility.setHeight(20)
+                    }}>
+                        <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <View style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                borderWidth: 1,
+                                borderColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={{width: Utility.setWidth(20)}}/>
+
+                        <TouchableOpacity style={{flex: 1}}
+                                          onPress={() => this.submit(language, this.props.navigation)}>
+                            <View style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                backgroundColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.Confirm}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
                 <Modal
                     animationType="none"
@@ -180,6 +526,16 @@ class MonthlyDPS extends Component {
                         </View>
                     </View>
                 </Modal>
+                {this.state.show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={this.state.dateVal}
+                        mode={this.state.mode}
+                        is24Hour={false}
+                        display="default"
+                        onChange={this.onChange}
+                    />
+                )}
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
@@ -206,6 +562,10 @@ const styles = {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    textView: {
+        marginStart: 10,
+        color: themeStyle.THEME_COLOR
     },
     modalView: {
         width: Utility.getDeviceWidth() - 30,

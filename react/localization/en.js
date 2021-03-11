@@ -878,6 +878,17 @@ export default {
     fixed_deposit_note12:"placement date at CityTouch.You can view the details of ",
     fixed_deposit_note13:"this FDR after 1 (one) working day from CityTouch or Branch. ",
 
+    monthly_deposit_note1:"1. Nominee of this DPS will be same as respective ",
+    monthly_deposit_note2:"current/saving account.To change nominee of your ",
+    monthly_deposit_note3:"current/saving account please visit any of our Branches.",
+    monthly_deposit_note4:"2. DPS beneficiary name would be same as respective account name",
+    monthly_deposit_note5:"3. monthly DPS installment to be automatically realized",
+    monthly_deposit_note6:"from your respective current/saving account.",
+    monthly_deposit_note7:"4. you can view the details of this DPS after 1(one)",
+    monthly_deposit_note8:"working day of your request at CityTouch.",
+    monthly_deposit_note9:"5. If the monthly instalment remains unpaid for 4(four)",
+    monthly_deposit_note10:"consecutive months DPS will be closed automatically",
+
 
 
 
@@ -1064,6 +1075,14 @@ export default {
     selectTenureType: "Select Tenure Type",
     selectTenurePeriod: "Select Tenure",
     error_amount: "Amount is Required",
+    branch:"branch",
+    installment_start_date:"Installment Start Date",
+    select_installment: "Select Installment Start Date",
+    month:"Month",
+    select_month: "Select Month",
+    amount_per_installment: "Amount Per Installment",
+    errorSelect_installment:"Select Installment Start Date",
+    errorSelect_month:"Select Month"
 
 
 }

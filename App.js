@@ -9,7 +9,6 @@
 import React from "react";
 import {createStackNavigator, CardStyleInterpolators} from "@react-navigation/stack";
 import {CommonActions, NavigationContainer} from "@react-navigation/native";
-
 import SplashScreen from "./react/screens/SplashScreen";
 import {Provider} from "react-redux";
 import configureStore from "./react/redux/store/configureStore";
@@ -53,20 +52,13 @@ import Favorite from "./react/screens/Trasfer/Favorite";
 import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
-import BeneficiaryMobileNumber from "./react/screens/Trasfer/BeneficiaryMobileNumber";
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
 import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOtherBank";
 import CityCreditCard from "./react/screens/Payments/CityCreditCard";
 import SecurityVerification from "./react/screens/Trasfer/SecurityVerification";
-
-
-import CredentialManagement from "./react/screens/More/CredentialManagement";
-import AccountServices from "./react/screens/More/AccountServices";
-import LoanServices from "./react/screens/More/LoanServices";
+import SubCategories from "./react/screens/More/SubCategories";
 import OTPVerification from "./react/screens/OTPVerification";
-
-
 import CreditCardActivation from "./react/screens/More/CreditCardActivation";
 import cardBlock from "./react/screens/More/cardBlock";
 import CardPinReset from "./react/screens/More/CardPinReset";
@@ -74,7 +66,6 @@ import TagCreditCardInCityTouch from "./react/screens/More/TagCreditCardInCityTo
 import ChequeBookManagement from "./react/screens/More/ChequeBookManagement";
 import FixedDeposit from "./react/screens/More/FixedDeposit";
 import MonthlyDPS from "./react/screens/More/MonthlyDPS";
-
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
@@ -200,9 +191,6 @@ function MoreTab() {
             <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeContactDetails" component={ChangeContactDetails} options={{headerShown: false}}/>
             <Stack.Screen name="UploadSupportDoc" component={UploadSupportDoc} options={{headerShown: false}}/>
-            <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
-            <Stack.Screen name="AccountServices" component={AccountServices} options={{headerShown: false}}/>
-            <Stack.Screen name="LoanServices" component={LoanServices} options={{headerShown: false}}/>
             <Stack.Screen name="CreditCardActivation" component={CreditCardActivation} options={{headerShown: false}}/>
             <Stack.Screen name="cardBlock" component={cardBlock} options={{headerShown: false}}/>
             <Stack.Screen name="CardPinReset" component={CardPinReset} options={{headerShown: false}}/>
