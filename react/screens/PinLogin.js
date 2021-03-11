@@ -139,7 +139,7 @@ class PinLogin extends Component {
                 langId: langCode,
             },
         });
-        Config.commonReq = {...Config.commonReq,DISPLAY_LANGUAGE: langCode}
+        Config.commonReq = {...Config.commonReq, DISPLAY_LANGUAGE: langCode}
     }
 
     async onSubmit(language) {
@@ -183,9 +183,9 @@ class PinLogin extends Component {
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             await this.processLoginResponse(result, userName);
-        }else if (result.STATUS === "71") {
+        } else if (result.STATUS === "71") {
             this.deviceChange(result);
-        }  else {
+        } else {
             Utility.alert(result.MESSAGE);
         }
     }
@@ -197,14 +197,14 @@ class PinLogin extends Component {
             result.MESSAGE,
             [
                 {
-                    text:that.props.language.no_txt
+                    text: that.props.language.no_txt
                 },
                 {
-                    text:that.props.language.yes_txt, onPress: () =>
+                    text: that.props.language.yes_txt, onPress: () =>
                         this.props.navigation.navigate("TermConditionScreen",
                             {
                                 showButton: true,
-                                deviceChangeRes:result.RESPONSE[0],
+                                deviceChangeRes: result.RESPONSE[0],
                             })
                 },
             ]
@@ -467,11 +467,12 @@ class PinLogin extends Component {
         };
         return (<View>
             <View style={{alignItems: "center", justifyContent: "center", marginTop: Utility.setHeight(150)}}>
-                <Text style={[CommonStyle.midTextStyle, {
-                    color: themeStyle.PLACEHOLDER_COLOR,
+                <Text style={{
                     textAlign: "center",
-                    fontSize: FontSize.getSize(18)
-                }]}>{language.PinNumber}
+                    fontFamily: fontStyle.RobotoMedium,
+                    color: themeStyle.GRAY_COLOR,
+                    fontSize: FontSize.getSize(17)
+                }}>{language.PinNumber}
                 </Text>
             </View>
 
@@ -481,22 +482,11 @@ class PinLogin extends Component {
                     alignItems: "center",
                     justifyContent: "space-around",
                     flexDirection: "row",
-                    marginTop: Utility.setHeight(40)
+                    marginTop: Utility.setHeight(10)
                 }}>
                     <TextInput
                         ref={(ref) => this.one = ref}
-                        style={[{...oneStyle}, {
-                            fontFamily: fontStyle.RobotoMedium,
-                            fontSize: FontSize.getSize(20),
-                            height: Utility.setHeight(45),
-                            backgroundColor: '#e8e8e8',
-                            borderColor: '#e8e8e8',
-                            borderRadius: 5,
-                            borderWidth: 2,
-                            alignSelf: "center",
-                            padding: 10,
-                            textAlign: "center"
-                        }]}
+                        style={[{...oneStyle}, styles.pinInputBox]}
                         secureTextEntry={true}
                         autoFocus={true}
                         //style={[styles.textInput, { ...oneStyle }]}
@@ -517,18 +507,7 @@ class PinLogin extends Component {
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('two') : null
                         )}
-                        style={[{...twoStyle}, {
-                            fontFamily: fontStyle.RobotoMedium,
-                            fontSize: FontSize.getSize(20),
-                            height: Utility.setHeight(45),
-                            backgroundColor: '#e8e8e8',
-                            borderColor: '#e8e8e8',
-                            borderRadius: 5,
-                            borderWidth: 2,
-                            alignSelf: "center",
-                            padding: 10,
-                            textAlign: "center"
-                        }]}
+                        style={[{...twoStyle}, styles.pinInputBox]}
                         secureTextEntry={true}
                         autoCorrect={false}
                         autoCapitalize='none'
@@ -548,18 +527,7 @@ class PinLogin extends Component {
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('three') : null
                         )}
-                        style={[{...threeStyle}, {
-                            fontFamily: fontStyle.RobotoMedium,
-                            fontSize: FontSize.getSize(20),
-                            height: Utility.setHeight(45),
-                            backgroundColor: '#e8e8e8',
-                            borderColor: '#e8e8e8',
-                            borderRadius: 5,
-                            borderWidth: 2,
-                            alignSelf: "center",
-                            padding: 10,
-                            textAlign: "center"
-                        }]}
+                        style={[{...threeStyle}, styles.pinInputBox]}
                         secureTextEntry={true}
                         autoCorrect={false}
                         autoCapitalize='none'
@@ -578,18 +546,7 @@ class PinLogin extends Component {
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('four') : null
                         )}
-                        style={[{...fourStyle}, {
-                            fontFamily: fontStyle.RobotoMedium,
-                            fontSize: FontSize.getSize(20),
-                            height: Utility.setHeight(45),
-                            backgroundColor: '#e8e8e8',
-                            borderColor: '#e8e8e8',
-                            borderRadius: 5,
-                            borderWidth: 2,
-                            alignSelf: "center",
-                            padding: 10,
-                            textAlign: "center"
-                        }]}
+                        style={[{...fourStyle}, styles.pinInputBox]}
                         secureTextEntry={true}
                         autoCorrect={false}
                         autoCapitalize='none'
@@ -608,18 +565,7 @@ class PinLogin extends Component {
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('five') : null
                         )}
-                        style={[{...fiveStyle}, {
-                            fontFamily: fontStyle.RobotoMedium,
-                            fontSize: FontSize.getSize(20),
-                            height: Utility.setHeight(45),
-                            borderRadius: 5,
-                            backgroundColor: '#e8e8e8',
-                            borderColor: '#e8e8e8',
-                            borderWidth: 2,
-                            alignSelf: "center",
-                            padding: 10,
-                            textAlign: "center"
-                        }]}
+                        style={[{...fiveStyle}, styles.pinInputBox]}
                         secureTextEntry={true}
                         autoCorrect={false}
                         autoCapitalize='none'
@@ -638,18 +584,7 @@ class PinLogin extends Component {
                         onKeyPress={({nativeEvent}) => (
                             nativeEvent.key === 'Backspace' ? this.backspace('six') : null
                         )}
-                        style={[{...sixStyle}, {
-                            fontFamily: fontStyle.RobotoMedium,
-                            fontSize: FontSize.getSize(20),
-                            height: Utility.setHeight(45),
-                            backgroundColor: '#e8e8e8',
-                            borderColor: '#e8e8e8',
-                            borderRadius: 5,
-                            elevation: 1,
-                            alignSelf: "center",
-                            padding: 10,
-                            textAlign: "center"
-                        }]}
+                        style={[{...sixStyle}, styles.pinInputBox]}
                         secureTextEntry={true}
                         autoCorrect={false}
                         autoCapitalize='none'
@@ -661,11 +596,13 @@ class PinLogin extends Component {
                         onChangeText={(text) => {
                             this.handleChangeTextSix(text);
                         }}
+                        returnKeyType={"done"}
+                        onSubmitEditing={async (event) => {
+                            await this.onSubmit(this.props.language);
+                        }}
                         value={this.state.six}
                     />
-
                 </View>
-
             </View>
             {this.state.errorPIN !== "" ?
                 <Text style={{
@@ -685,9 +622,9 @@ class PinLogin extends Component {
     loginButtonView(language, isPin) {
         return (<View>
             <View style={{
-                marginTop: isPin ? Utility.setHeight(50) : Utility.setHeight(20),
+                marginTop: Utility.setHeight(20),
                 backgroundColor: themeStyle.THEME_COLOR,
-                height: Utility.setHeight(44),
+                height: Utility.setHeight(55),
                 borderRadius: Utility.setHeight(42),
                 justifyContent: "center",
                 alignSelf: "center",
@@ -714,10 +651,10 @@ class PinLogin extends Component {
             </View>
 
             <View style={{
-                marginTop: 20,
+                marginTop: Utility.setHeight(10),
                 marginHorizontal: 10,
                 backgroundColor: themeStyle.THEME_COLOR,
-                height: 40,
+                height: Utility.setHeight(40),
                 borderRadius: 5,
                 justifyContent: "center",
                 shadowColor: themeStyle.RED_COLOR,
@@ -778,6 +715,18 @@ class PinLogin extends Component {
                     </View>
                 </View>
                 {this.state.loginPref === "0" ? this.passwordView(language) : this.state.loginPref === "1" ? this.pinView(language) : this.state.loginPref === "2" ? this.fingerView(language) : null}
+
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("CityPay")}>
+                    <Image style={{
+                        alignSelf: "center",
+                        marginTop: Utility.setHeight(20),
+                        height: Utility.setHeight(70),
+                        width: Utility.setWidth(70),
+                        marginBottom: Utility.setHeight(20)
+                    }} resizeMode={"contain"}
+                           source={require("../resources/images/qr_login.jpg")}/>
+                </TouchableOpacity>
+
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         );
@@ -807,6 +756,21 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         height: 30
     },
+
+    pinInputBox: {
+        fontFamily: fontStyle.RobotoMedium,
+        fontSize: FontSize.getSize(20),
+        height: Utility.setHeight(45),
+        width: Utility.setWidth(42),
+
+        backgroundColor: '#F0EFF4',
+        borderColor: '#F0EFF4',
+        borderRadius: 5,
+        borderWidth: 1,
+        alignSelf: "center",
+        padding: 10,
+        textAlign: "center"
+    }
 });
 
 const mapStateToProps = (state) => {

@@ -384,8 +384,8 @@ class LoginScreen extends Component {
                             <Image style={{
                                 alignSelf: "center",
                                 marginTop: Utility.setHeight(20),
-                                height: Utility.setHeight(80),
-                                width: Utility.setWidth(80),
+                                height: Utility.setHeight(70),
+                                width: Utility.setWidth(70),
                                 marginBottom: Utility.setHeight(20)
                             }} resizeMode={"contain"}
                                    source={require("../resources/images/qr_login.jpg")}/>

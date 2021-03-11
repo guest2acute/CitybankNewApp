@@ -60,18 +60,20 @@ import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOth
 import CityCreditCard from "./react/screens/Payments/CityCreditCard";
 import SecurityVerification from "./react/screens/Trasfer/SecurityVerification";
 
-import MySettings from "./react/screens/More/MySettings";
+
 import CredentialManagement from "./react/screens/More/CredentialManagement";
 import AccountServices from "./react/screens/More/AccountServices";
-import CardServices from "./react/screens/More/CardServices";
 import LoanServices from "./react/screens/More/LoanServices";
 import OTPVerification from "./react/screens/OTPVerification";
 
-import Enquiry from "./react/screens/More/Enquiry";
+
 import CreditCardActivation from "./react/screens/More/CreditCardActivation";
 import cardBlock from "./react/screens/More/cardBlock";
 import CardPinReset from "./react/screens/More/CardPinReset";
 import TagCreditCardInCityTouch from "./react/screens/More/TagCreditCardInCityTouch";
+import ChequeBookManagement from "./react/screens/More/ChequeBookManagement";
+import FixedDeposit from "./react/screens/More/FixedDeposit";
+import MonthlyDPS from "./react/screens/More/MonthlyDPS";
 
 
 const store = configureStore(window.__State__);
@@ -200,14 +202,15 @@ function MoreTab() {
             <Stack.Screen name="UploadSupportDoc" component={UploadSupportDoc} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialManagement" component={CredentialManagement} options={{headerShown: false}}/>
             <Stack.Screen name="AccountServices" component={AccountServices} options={{headerShown: false}}/>
-            <Stack.Screen name="CardServices" component={CardServices} options={{headerShown: false}}/>
             <Stack.Screen name="LoanServices" component={LoanServices} options={{headerShown: false}}/>
-            <Stack.Screen name="MySettings" component={MySettings} options={{headerShown: false}}/>
-            <Stack.Screen name="Enquiry" component={Enquiry} options={{headerShown: false}}/>
             <Stack.Screen name="CreditCardActivation" component={CreditCardActivation} options={{headerShown: false}}/>
             <Stack.Screen name="cardBlock" component={cardBlock} options={{headerShown: false}}/>
             <Stack.Screen name="CardPinReset" component={CardPinReset} options={{headerShown: false}}/>
             <Stack.Screen name="TagCreditCardInCityTouch" component={TagCreditCardInCityTouch} options={{headerShown: false}}/>
+            <Stack.Screen name="ChequeBookManagement" component={ChequeBookManagement} options={{headerShown: false}}/>
+            <Stack.Screen name="FixedDeposit" component={FixedDeposit} options={{headerShown: false}}/>
+            <Stack.Screen name="MonthlyDPS" component={MonthlyDPS} options={{headerShown: false}}/>
+            <Stack.Screen name="SubCategories" component={SubCategories} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

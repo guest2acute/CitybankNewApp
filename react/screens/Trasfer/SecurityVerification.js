@@ -17,8 +17,6 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
-import Secure from "../../config/Secure";
-import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
 import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 

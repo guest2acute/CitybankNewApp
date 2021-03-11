@@ -14,19 +14,17 @@ import StorageClass from "../../utilize/StorageClass";
 import {MoreDetails} from "../Requests/CommonRequest";
 
 
-/**
- * splash page
- */
-let imeiNo = "";
 
-class MySettings extends Component {
+let subCategory = "";
+
+class SubCategories extends Component {
 
     constructor(props) {
         super(props);
-        let language = props.language;
+        subCategory = this.props.route.params.subCategory;
+        console.log("subCategory",subCategory);
         this.state = {
-            data:props.route.params.subCategory,
-            title:props.route.params.title,
+            title: props.route.params.title,
         }
     }
 
@@ -42,34 +40,15 @@ class MySettings extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
-
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-
-        if (this.props.userDetails.AUTH_FLAG === "TP") {
-            let {data} = this.state;
-            let obj = {
-                id: "changeTransPin",
-                title: this.props.language.change_transaction_pin,
-                icon: require("../../resources/images/ic_credential_management.png")
-            }
-            let dataArr = [...data, obj]
-            this.setState({data: dataArr});
-        }
+        this.setState({data: subCategory});
     }
 
     moveScreen(item) {
-        console.log("redirectScreen",item.redirectScreen)
-    }
-
-    async redirectProfile() {
-        let loginPref = await StorageClass.retrieve(Config.LoginPref);
-        console.log("profile", loginPref);
-        if (loginPref === null || loginPref === "") {
-            loginPref = "0";
-        }
-        this.props.navigation.navigate("Profile", {loginPref: loginPref});
+        console.log("redirectScreen", item.redirectScreen+"-"+item.title);
+        this.props.navigation.navigate(item.redirectScreen,{title:item.title,childCategory:item.childCategory?item.childCategory:""});
     }
 
     _renderItem = ({item, index}) => {
@@ -145,13 +124,13 @@ class MySettings extends Component {
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                    <FlatList scrollEnabled={true}
-                        data={this.state.data}
-                              renderItem={this._renderItem}
-                              ItemSeparatorComponent={() => this.bottomLine()}
-                              ListFooterComponent={this.bottomLine()}
-                              keyExtractor={(item, index) => index + ""}
-                    />
+                <FlatList scrollEnabled={true}
+                          data={this.state.data}
+                          renderItem={this._renderItem}
+                          ItemSeparatorComponent={() => this.bottomLine()}
+                          ListFooterComponent={this.bottomLine()}
+                          keyExtractor={(item, index) => index + ""}
+                />
             </View>
         );
     }
@@ -187,5 +166,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(MySettings);
+export default connect(mapStateToProps)(SubCategories);
 

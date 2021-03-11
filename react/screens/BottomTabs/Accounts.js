@@ -23,6 +23,7 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import themesStyle from "../../resources/theme.style";
 import Config from "../../config/Config";
 
+let balanceArr = [];
 
 class Accounts extends Component {
     constructor(props) {
@@ -102,7 +103,7 @@ class Accounts extends Component {
     level3(account) {
         return (
             <View key={"level3"}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("AccountDetails")}>
+                <TouchableOpacity disabled={true} onPress={() => this.props.navigation.navigate("AccountDetails")}>
                     <View style={{
                         backgroundColor: themeStyle.WHITE,
                         marginLeft: 10,
@@ -143,7 +144,6 @@ class Accounts extends Component {
             ...Config.commonReq,
         }
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
-
         if (result.STATUS === "0") {
             await this.processSummary(result.RESPONSE);
         } else {
@@ -172,7 +172,6 @@ class Accounts extends Component {
                 });
             }
             await level2Arr.map((level2) => {
-
                 let level3Arr = level2.ACCT_LIST;
                 if (level3Arr.length > 1) {
                     level3Arr = level3Arr.sort(function (a, b) {
@@ -187,15 +186,30 @@ class Accounts extends Component {
                         items: level3Arr
                     };
                     actArr = [...actArr, ...level3Arr];
+                    let headerName = level2.PARENTPRODUCTNAME;
+                    let index = headerName.indexOf("(#TOTAL#)");
+                    if (index !== 1) {
+                        headerName = headerName.substring(0, index) + " (" + level3Arr.length + ")";
+                        level2Obj = {...level2Obj, title: headerName}
+                    }
                     items.push(level2Obj);
                 }
             });
 
-            if (items.length > 0)
+            if (items.length > 0) {
+                let headerName = level1.HEADER_NAME;
+                let index = headerName.indexOf("(#TOTAL#)");
+                if (index !== 1) {
+                    headerName = headerName.substring(0, index) + " (" + items.length + ")";
+                    level1Obj = {...level1Obj, title: headerName}
+                }
                 mainArray.push({...level1Obj, items});
+            }
+
         });
 
         this.setState({isProgress: false, dataList: mainArray}, async () => {
+            console.log("actArr", actArr.length);
             actArr.map((account) => {
                 this.getBalance(account);
             });
@@ -203,10 +217,9 @@ class Accounts extends Component {
     }
 
     async getBalance(account) {
-
         let accountNo = account.ACCOUNTORCARDNO;
         let balanceReq = {
-            ACCT_NO: account.ACCOUNTORCARDNO,
+            ACCT_NO: accountNo,
             ACTION: account.PARENTPRODUCTCODE === "FD_ACCOUNT" ? "GETTERMDEPACCTDTL" : account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? "GETLOANACCTDTL" : "GETACCTBALDETAIL",
             SOURCE: account.SOURCE,
             RES_FLAG: "B", CURRENCYCODE: "BDT",
@@ -220,10 +233,13 @@ class Accounts extends Component {
             balanceReq = {...balanceReq}
         }
 
-        ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
+        await ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
             if (result.STATUS === "0") {
-                let response = result.RESPONSE[0];
-                this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response.TOTALOUTSTANDING : response.BALANCE, accountNo, "");
+                if(accountNo === "4541407554008") 
+                    console.log("responseArr", result);
+                let response = result.RESPONSE.filter((e) => e.ACCOUNTNUMBER === accountNo || e.ACCOUNT === accountNo);
+                if (response.length > 0)
+                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].BALANCE, accountNo, "");
             } else {
                 this.processBalance("", accountNo, "");
             }
@@ -288,7 +304,7 @@ class Accounts extends Component {
                         }}
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
-                    <Text style={styles.title}>{language.goodEvening}</Text>
+                    <Text style={styles.title}>{language.goodEvening + this.props.userDetails.CUSTOMER_NM}</Text>
                 </View>
 
                 {this.state.dataList !== null ? <NestedListView

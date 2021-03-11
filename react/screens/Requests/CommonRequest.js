@@ -96,7 +96,7 @@ export const MoreDetails = (language) => {
             id: "Settings",
             title: language.settings,
             icon: require("../../resources/images/ic_settings.png"),
-            redirectScreen: "MySettings",
+            redirectScreen: "SubCategories",
             subCategory: [
                 {
                     id: "PINCode",
@@ -128,7 +128,7 @@ export const MoreDetails = (language) => {
             id: "AccountServices",
             title: language.account_services,
             icon: require("../../resources/images/ic_account_services.png"),
-            redirectScreen: "AccountServices",
+            redirectScreen: "SubCategories",
             subCategory: [
                 {
                     id: "FixedDeposit",
@@ -205,9 +205,8 @@ export const MoreDetails = (language) => {
         {
             id: "CardServices",
             title: language.card_services,
-            icon: require
-            ("../../resources/images/ic_credit_card.png"),
-            redirectScreen: "CardServices",
+            icon: require("../../resources/images/ic_credit_card.png"),
+            redirectScreen: "SubCategories",
             subCategory: [{
                 id: "CreditCardActivation",
                 title: language.creditCard_title,
@@ -244,39 +243,39 @@ export const MoreDetails = (language) => {
             id: "LoanServices",
             title: language.loan_services,
             icon: require("../../resources/images/ic_bank_loan.png"),
-            redirectScreen: "LoanServices",
+            redirectScreen: "SubCategories",
             subCategory:
                 [
                     {
                         id: "QuickLoan",
                         title: language.quick_loan,
                         icon: require("../../resources/images/ic_credit_card.png"),
-                        redirectScreen: "LoanServices"
+                        redirectScreen: ""
                     },
                     {
                         id: "LoanClosure",
                         title: language.loan_closure,
                         icon: require("../../resources/images/ic_loan_closure.png"),
-                        redirectScreen: "LoanServices"
+                        redirectScreen: ""
                     },
                     {
                         id: "RequestMonitor",
                         title: language.request_monitor,
                         icon: require("../../resources/images/ic_monitor.png"),
-                        redirectScreen: "LoanServices"
+                        redirectScreen: ""
                     },
                     {
                         id: "EmiCalculator",
                         title: language.emi_calculator,
                         icon: require("../../resources/images/ic_emi_calculator.png"),
-                        redirectScreen: "LoanServices"
+                        redirectScreen: ""
                     }
                 ],
         }, {
             id: "credentialManagement",
             title: language.credential_management,
             icon: require("../../resources/images/ic_credential_management.png"),
-            redirectScreen: "CredentialManagement",
+            redirectScreen: "SubCategories",
             subCategory: [
                 {
                     id: "changeLoginPassword",
@@ -336,43 +335,43 @@ export const MoreDetails = (language) => {
             id: "Enquiry",
             title: language.enquiry,
             icon: require("../../resources/images/ic_enquiry_icon.png"),
-            redirectScreen: "Enquiry",
+            redirectScreen: "SubCategories",
             subCategory: [
                 {
                     id: "CustomerDetails",
                     title: language.customer_details,
                     icon: require("../../resources/images/ic_profile.png"),
-                    redirectScreen: "CustomerDetails"
+                    redirectScreen: ""
                 },
                 {
                     id: "ScheduleCharges",
                     title: language.schedule_charges,
                     icon: require("../../resources/images/ic_products.png"),
-                    redirectScreen: "ScheduleCharges"
+                    redirectScreen: ""
                 },
                 {
                     id: "Products",
                     title: language.products,
                     icon: require("../../resources/images/ic_products.png"),
-                    redirectScreen: "ScheduleCharges"
+                    redirectScreen: ""
                 },
                 {
                     id: "SubmitQuery",
                     title: language.submit_query,
                     icon: require("../../resources/images/ic_product_services.png"),
-                    redirectScreen: "SubmitQuery"
+                    redirectScreen: ""
                 },
                 {
                     id: "AtmBranchSearch",
                     title: language.atm_branch_search,
                     icon: require("../../resources/images/case_by_code.png"),
-                    redirectScreen: "AtmBranchSearch"
+                    redirectScreen: ""
                 },
                 {
                     id: "ContactCallCenter",
                     title: language.contact_call_center,
                     icon: require("../../resources/images/ic_contact_call_center.png"),
-                    redirectScreen: "ContactCallCenter"
+                    redirectScreen: ""
                 },
             ],
         },

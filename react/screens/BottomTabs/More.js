@@ -25,7 +25,7 @@ class More extends Component {
         super(props);
         let language = props.language;
         this.state = {
-            data:MoreDetails(language)
+            data: []
         }
     }
 
@@ -45,44 +45,18 @@ class More extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+        this.setState({data: MoreDetails(this.props.language)});
+    }
 
-        if (this.props.userDetails.AUTH_FLAG === "TP") {
-            let {data} = this.state;
-            let obj = {
-                id: "changeTransPin",
-                title: this.props.language.change_transaction_pin,
-                icon: require("../../resources/images/ic_credential_management.png")
-            }
-            let dataArr = [...data, obj]
-            this.setState({data: dataArr});
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.langId !== this.props.langId) {
+            this.setState({data: MoreDetails(this.props.language)});
         }
     }
 
     moveScreen(item) {
-        console.log("redirectScreen",item.redirectScreen)
-        this.props.navigation.navigate(item.redirectScreen,{title:item.title,subCategory:item.subCategory});
-        //this.props.navigation.navigate("Favorite",{title:this.props.language.favorite_payment})
-
-        /*        switch (item.id) {
-            case "profile":
-                this.redirectProfile();
-                break;
-            case "changeTransPin":
-                this.props.navigation.navigate("ChangeTransPin");
-                break;
-            case "changePassword":
-                this.props.navigation.navigate("ChangePassword");
-                break;
-            case "change_Credential":
-                this.props.navigation.navigate("ChangeLoginCredential",{subCategory:item.subcategory});
-                break;
-            case "changeContact":
-                this.props.navigation.navigate("ChangeContactDetails");
-                break;
-            case "UploadDoc":
-                this.props.navigation.navigate("UploadSupportDoc");
-                break;
-        }*/
+        console.log("redirectScreen", item.redirectScreen)
+        this.props.navigation.navigate(item.redirectScreen, {title: item.title, subCategory: item.subCategory});
     }
 
     async redirectProfile() {
@@ -129,7 +103,6 @@ class More extends Component {
     }
 
     bottomLine() {
-
         return (<View style={{
             height: 1,
             marginLeft: 10,
@@ -163,13 +136,13 @@ class More extends Component {
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                    <FlatList scrollEnabled={true}
-                        data={this.state.data}
-                              renderItem={this._renderItem}
-                              ItemSeparatorComponent={() => this.bottomLine()}
-                              ListFooterComponent={this.bottomLine()}
-                              keyExtractor={(item, index) => index + ""}
-                    />
+                <FlatList scrollEnabled={true}
+                          data={this.state.data}
+                          renderItem={this._renderItem}
+                          ItemSeparatorComponent={() => this.bottomLine()}
+                          ListFooterComponent={this.bottomLine()}
+                          keyExtractor={(item, index) => index + ""}
+                />
             </View>
         );
     }
