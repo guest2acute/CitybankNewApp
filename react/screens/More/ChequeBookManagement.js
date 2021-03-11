@@ -19,15 +19,17 @@ import {MoreDetails} from "../Requests/CommonRequest";
  */
 let imeiNo = "";
 
-class CredentialManagement extends Component {
+class ChequeBookManagement extends Component {
+
     constructor(props) {
         super(props);
         let language = props.language;
         this.state = {
-            data:props.route.params.subCategory,
+            data:props.route.params.childCategory,
             title:props.route.params.title,
         }
     }
+
     /**
      * redirect to landing screen
      */
@@ -58,8 +60,7 @@ class CredentialManagement extends Component {
     }
 
     moveScreen(item) {
-        this.props.navigation.navigate(item.redirectScreen,{title:item.title});
-
+        console.log("redirectScreen",item.redirectScreen)
     }
 
     async redirectProfile() {
@@ -112,6 +113,7 @@ class CredentialManagement extends Component {
             marginRight: 10,
             backgroundColor: "#D3D1D2"
         }}/>)
+
     }
 
     render() {
@@ -146,7 +148,6 @@ class CredentialManagement extends Component {
                 <View>
                     <FlatList scrollEnabled={true}
                         data={this.state.data}
-                              style={{flexGrow:1}}
                               renderItem={this._renderItem}
                               ItemSeparatorComponent={() => this.bottomLine()}
                               ListFooterComponent={this.bottomLine()}
@@ -186,6 +187,7 @@ class CredentialManagement extends Component {
     }
 }
 
+
 const styles = {
     viewStyles: {
         flex: 1,
@@ -215,5 +217,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(CredentialManagement);
+export default connect(mapStateToProps)(ChequeBookManagement);
 

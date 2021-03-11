@@ -1034,5 +1034,11 @@ export default {
   cardNo_placeholder: "দয়া করে কার্ড নম্বর দিন",
   error_card_number: "কার্ড নম্বর প্রয়োজন",
 
+    /*CheckBook Management*/
+    cheque_leaf_status: "পাতার স্থিতি পরীক্ষা করুন",
+    Cheque_stop_request: "স্টপ অনুরোধ পরীক্ষা করুন",
+    cheque_book_request:"বুক অনুরোধ পরীক্ষা করুন",
+    cheque_book_request_status: "বুক অনুরোধের স্থিতি পরীক্ষা করুন",
+
 }
 

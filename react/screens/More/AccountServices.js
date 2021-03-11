@@ -58,7 +58,8 @@ class AccountServices extends Component {
     }
 
     moveScreen(item) {
-        console.log("redirectScreen",item.redirectScreen)
+        console.log("redirectScreen array",item)
+        this.props.navigation.navigate(item.redirectScreen,{title:item.title,subCategory:item.subCategory})
     }
 
     async redirectProfile() {

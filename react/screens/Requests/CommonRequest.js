@@ -134,13 +134,13 @@ export const MoreDetails = (language) => {
                     id: "FixedDeposit",
                     title: language.fixed_deposit,
                     icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: ""
+                    redirectScreen: "FixedDeposit"
                 },
                 {
                     id: "Monthly Deposit",
                     title: language.monthly_Dps,
                     icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: ""
+                    redirectScreen: "monthlyDPS"
                 },
                 {
                     id: "Pay Order",
@@ -158,19 +158,29 @@ export const MoreDetails = (language) => {
                     id: "ChequeBookManagement",
                     title: language.cheque_book_management,
                     icon: require("../../resources/images/ic_cheque_book_management.png"),
-                    redirectScreen: "",
+                    redirectScreen: "ChequeBookManagement",
                     childCategory: [{
-                        id: "Positive Pay",
-                        title: language.positive_pay,
+                        id: "ChequeLeafStatus",
+                        title: language.cheque_leaf_status,
                         icon: require("../../resources/images/ic_positive_pay.png"),
                         redirectScreen: ""
-                    }, {
-                        id: "Positive Pay",
-                        title: language.positive_pay,
+                    },{
+                        id: "ChequeStopRequest",
+                        title: language.Cheque_stop_request,
                         icon: require("../../resources/images/ic_positive_pay.png"),
                         redirectScreen: ""
-
-                    }]
+                    },{
+                        id: "ChequeBookRequest",
+                        title: language.cheque_book_request,
+                        icon: require("../../resources/images/ic_positive_pay.png"),
+                        redirectScreen: ""
+                    },{
+                        id: "ChequeBookRequestStatus",
+                        title: language.cheque_book_request_status,
+                        icon: require("../../resources/images/ic_positive_pay.png"),
+                        redirectScreen: ""
+                    },
+                    ]
                 },
                 {
                     id: "TagAccountCityTouch",
