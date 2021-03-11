@@ -29,7 +29,6 @@ class Profile extends Component {
             confirmTransactionPin: "",
             alias: "",
             customerName: "",
-            errorCName: "",
             mobileNo: "",
             emailTxt: "",
             loginPin: "",
@@ -38,9 +37,6 @@ class Profile extends Component {
             errorConfLoginPIN: "",
             errorTransPIN: "",
             errorConfTransPIN: "",
-            errorMobileNo: "",
-            errorEmail: "",
-           // loginPrefVal: props.route.params.loginPref,
             biometryType: null,
             prefOption: true
         }
@@ -73,7 +69,7 @@ class Profile extends Component {
     };
 
     accountNoOption(language) {
-        return (<View>
+        return (<View key={"accountNoOption"}>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
@@ -118,8 +114,6 @@ class Profile extends Component {
                             marginLeft: 10
                         }]}
                         editable={false}
-                        placeholder={language.customerName}
-                        onChangeText={text => this.setState({customerName: Utility.userInput(text)})}
                         value={this.state.customerName}
                         multiline={false}
                         numberOfLines={1}
@@ -127,16 +121,6 @@ class Profile extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorCName !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorCName}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -156,27 +140,14 @@ class Profile extends Component {
                             marginLeft: 10
                         }]}
                         editable={false}
-                        placeholder={language.mobileNo}
-                        onChangeText={text => this.setState({mobileNo: Utility.input(text, "0123456789")})}
                         value={this.state.mobileNo}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={13}/>
                 </View>
-                {this.state.errorMobileNo !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorMobileNo}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -199,60 +170,17 @@ class Profile extends Component {
                             marginLeft: 10
                         }]}
                         editable={false}
-                        placeholder={language.email_txt}
-                        onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
                         value={this.state.emailTxt}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>
                 </View>
-                {this.state.errorEmail !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorEmail}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            {/* <View style={{
-                flexDirection: "row", alignItems: "center", marginTop: 15
-            }}>
-                <Text style={[CommonStyle.textStyle, {marginRight: 15, marginStart: 10}]}>
-                    {language.Login_W}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                </Text>
-                <RadioForm
-                    radio_props={this.state.prefOption ? language.Login_M : language.LoginWithoutBio}
-                    initial={parseInt(this.state.loginPrefVal)}
-                    buttonSize={8}
-                    selectedButtonColor={themeStyle.THEME_COLOR}
-                    formHorizontal={true}
-                    labelHorizontal={true}
-                    borderWidth={1}
-                    buttonColor={themeStyle.GRAY_COLOR}
-                    labelColor={themeStyle.BLACK}
-                    labelStyle={[CommonStyle.textStyle, {marginEnd: 8, marginStart: -7, marginTop: -1}]}
-                    style={{marginTop: 8}}
-                    animation={true}
-                    onPress={(value) => {
-                        this.setState({loginPrefVal: value.toString()});
-                    }}
-                />
-            </View>*/}
         </View>)
     }
-
-    /* async onSubmit(language, navigation) {
-         await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
-         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
-     }*/
 
 
     async onSubmit(language, navigation) {

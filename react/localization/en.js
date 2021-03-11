@@ -100,7 +100,7 @@ export default {
     more: "More",
     payments: "Payments",
     transfer: "Transfer",
-    goodEvening: "Good Evening, MD. GOLAM MOSTAFA",
+    goodEvening: "Good Evening, ",
     avail_balance: "Available Balance",
     view_balance: "View Balance",
     fatherName: "Father Name",

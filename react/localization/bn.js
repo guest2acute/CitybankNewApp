@@ -100,7 +100,7 @@ export default {
   more: "আরও",
   payments: "অর্থ প্রদান",
   transfer: "স্থানান্তর",
-  goodEvening: "শুভ সন্ধ্যা, এমডি। গোলাম মোস্তফা",
+  goodEvening: "শুভ সন্ধ্যা, ",
   avail_balance: "পর্যাপ্ত টাকা",
   view_balance: "ভারসাম্য দেখুন",
   fatherName: "বাবার নাম",
