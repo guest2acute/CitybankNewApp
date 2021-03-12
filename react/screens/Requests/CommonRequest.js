@@ -146,7 +146,7 @@ export const MoreDetails = (language) => {
                     id: "Pay Order",
                     title: language.pay_order,
                     icon: require("../../resources/images/ic_pay_order.png"),
-                    redirectScreen: ""
+                    redirectScreen: "PayOrder"
                 },
                 {
                     id: "Positive Pay",

@@ -889,7 +889,13 @@ export default {
     monthly_deposit_note9:"5. If the monthly instalment remains unpaid for 4(four)",
     monthly_deposit_note10:"consecutive months DPS will be closed automatically",
 
-
+    pay_order_notes1: "1. Pay order will be processed solely as per your provided information.",
+    pay_order_notes1: "2. your pay order to be ready to collect from desired branch",
+    pay_order_notes1: "by next available working day.",
+    pay_order_notes1: "3. To cancel a pay order,please visit the pay order issued ",
+    pay_order_notes1: "Branch",
+    pay_order_notes1: "4. The bank shall not be liable or responsible for any ",
+    pay_order_notes1: "incorrect/incomplete information provide by you",
 
 
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
@@ -1082,7 +1088,14 @@ export default {
     select_month: "Select Month",
     amount_per_installment: "Amount Per Installment",
     errorSelect_installment:"Select Installment Start Date",
-    errorSelect_month:"Select Month"
+    errorSelect_month:"Select Month",
+
+    /*pay order screen*/
+    delivery_location: "Delivery Location",
+    select_delivery_location: "Select Delivery Location",
+    deliveryTypeArr:[{key:0,label:"Branch",value:0}],
+    beneficiary_name:"Beneficiary Name"
+
 
 
 }
