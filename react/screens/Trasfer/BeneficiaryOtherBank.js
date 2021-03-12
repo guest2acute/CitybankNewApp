@@ -18,7 +18,7 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 import {AddBeneficiary, GETACCTBALDETAIL, GETBANKDETAILS} from "../Requests/RequestBeneficiary";
-import luhn from "luhn";
+import {validateCard} from "../Requests/CommonRequest";
 
 class BeneficiaryOtherBank extends Component {
     constructor(props) {
@@ -72,7 +72,7 @@ class BeneficiaryOtherBank extends Component {
             selectTypeVal: item.value,
             modalVisible: false,
             account_card_name: "",
-            accountNo: "2251930916001",
+            accountNo: "371599109150690",
             error_accountNo: "",
             error_cardName: "",
             error_cardName: "",
@@ -137,7 +137,7 @@ class BeneficiaryOtherBank extends Component {
         } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length !== 13) {
             this.setState({error_accountNo: language.require_valid_actNumber})
             return;
-        } else if (this.state.selectTypeVal === 1 && this.state.accountNo.length < 15 && !luhn.validate(this.state.accountNo)) {
+        } else if (this.state.selectTypeVal === 1 && (this.state.accountNo.length < 15 || !validateCard(this.state.accountNo))) {
             this.setState({error_accountNo: language.invalid_cardNumber})
             return;
         } else if (this.state.account_card_name === "") {

@@ -28,6 +28,7 @@ import MonthPicker from "react-native-month-year-picker";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
 import * as ReadSms from 'react-native-read-sms/ReadSms';
+import {blockProcess} from "./Requests/CommonRequest";
 
 
 
@@ -36,14 +37,14 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "2251546262001",
+            accountNo: "",
             disableButton: false,
             actName: "",
             placeMobile: "",
             placeEmail: "",
-            conf_mobile: "01919820480",
+            conf_mobile: "",
             errorMobile: "",
-            conf_email: "monirujjaman001@gmail.com",
+            conf_email: "",
             cardExpiry: "",
             hasDebitCard: true,
             errorEmail: "",
@@ -86,7 +87,7 @@ class RegistrationAccount extends Component {
             showMonthPicker: false,
             signUpResponse: "",
             errorDCardNo: "",
-            debitCardNo: "371599006146189"
+            debitCardNo: ""
         }
     }
 
@@ -162,7 +163,6 @@ class RegistrationAccount extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false, stateVal: 4});
-
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -1320,18 +1320,14 @@ class RegistrationAccount extends Component {
             } else if (this.state.password === "") {
                 this.setState({errorpassword: language.errorpassword})
             } else {
-                await this.processSignup(language)
+                await this.processSignup(language);
             }
-
         }
-
     }
 
     async blockUser(description) {
-        const {signUpResponse} = this.state;
-
         this.setState({isProgress: true});
-        await ApiRequest.apiRequest.blockProcess(this.state.accountNo, signUpResponse, description, this.props)
+        await blockProcess(this.state.accountNo, description, this.props,"USERAUTH")
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -1341,7 +1337,6 @@ class RegistrationAccount extends Component {
                 console.log("error", error);
             });
     }
-
 
     render() {
         let language = this.props.language;

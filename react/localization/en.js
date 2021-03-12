@@ -1048,6 +1048,7 @@ export default {
     cardNo_placeholder: "Please Enter Card Number",
     error_card_number: "Card Number Is Required",
 
+
     /*CheckBook Management*/
     cheque_leaf_status: "Check Leaf Status",
     Cheque_stop_request: "Cheque Stop Request",
@@ -1095,7 +1096,6 @@ export default {
     select_delivery_location: "Select Delivery Location",
     deliveryTypeArr:[{key:0,label:"Branch",value:0}],
     beneficiary_name:"Beneficiary Name"
-
 
 
 }

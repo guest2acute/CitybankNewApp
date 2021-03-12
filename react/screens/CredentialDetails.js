@@ -24,8 +24,8 @@ import Config from "../config/Config";
 import {StackActions} from "@react-navigation/native";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
-import {GetUserAuthByUid, VerifyAccountCard} from "./Requests/CommonRequest"
-import {VerifyResetPwd} from "./Requests/CredentialRequest"
+import {blockProcess, GetUserAuthByUid, validateCard, VerifyAccountCard} from "./Requests/CommonRequest"
+import {VerifyResetPwd, GETUSERDTLALLKEYS} from "./Requests/CredentialRequest"
 import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
@@ -64,7 +64,8 @@ class CredentialDetails extends Component {
             newP: "",
             errorNewP: "",
             errorConfNewP: "",
-            confNewP: ""
+            confNewP: "",
+            userResponse: []
         }
     }
 
@@ -99,7 +100,7 @@ class CredentialDetails extends Component {
         return true;
     }
 
-   async componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -118,7 +119,7 @@ class CredentialDetails extends Component {
     startReadSMS = async () => {
         console.log("Great!! you have received new sms:");
         const hasPermission = await ReadSms.requestReadSMSPermission();
-        if(hasPermission) {
+        if (hasPermission) {
             await ReadSms.startReadSMS((status, sms, error) => {
                 if (status === "success") {
                     console.log("Great!! you have received new sms:", sms);
@@ -406,7 +407,7 @@ class CredentialDetails extends Component {
                 return;
             }
         } else if (this.state.selectActCard.value === 1) {
-            if (this.state.creditCardNo.length === 0) {
+            if (this.state.creditCardNo.length < 15 || !validateCard(this.state.creditCardNo)) {
                 this.setState({errCardNo: language.errCardNo});
                 return;
             } else if (this.state.expiryDate === "") {
@@ -417,26 +418,49 @@ class CredentialDetails extends Component {
                 return;
             }
         }
-        await this.processAccount(this.state.selectActCard.value === 1);
+        await this.processAccount(this.state.selectActCard.value === 1, language);
+    }
+
+    async blockUser(description) {
+        this.setState({isProgress: true});
+        await blockProcess(this.state.accountNo, description,
+            this.props, this.state.selectActCard.value === 1 ? "CP" : "USERDTL")
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                Utility.alert(description);
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
     }
 
     async processAccount(isCard, language) {
-        this.setState({isProgress: true});
         let actNo = isCard ? this.state.creditCardNo : this.state.accountNo;
-
-        await VerifyAccountCard(isCard, actNo, this.state.cardPin, this.state.expiryDate,this.state.otp_type, this.props).then(async response => {
-            console.log("VerifyAccountCard", response);
-            let result = response.RESPONSE[0];
-            if (this.state.selectTypeVal > 0 && result.USER_ID !== this.state.responseUserId.USER_ID) {
+        if (this.state.selectTypeVal === 0) {
+            this.setState({isProgress: true});
+            await VerifyAccountCard(isCard, actNo, this.state.cardPin, this.state.expiryDate,
+                this.state.otp_type, this.props).then(async response => {
+                console.log("VerifyAccountCard", response);
+                let result = response.RESPONSE[0];
+                if (this.state.selectTypeVal > 0 && result.USER_ID !== this.state.responseUserId.USER_ID) {
+                    this.setState({isProgress: false});
+                    Utility.alert(isCard ? language.errCardMatch : language.errAccountMatch);
+                    return;
+                }
+                await this.resetPwd(response.AUTH_TOKEN, result.USER_ID,null, actNo, isCard);
+            }).catch(error => {
                 this.setState({isProgress: false});
-                Utility.alert(isCard ? language.errCardMatch : language.errAccountMatch);
-                return;
-            }
-            await this.resetPwd(response.AUTH_TOKEN, result.USER_ID, actNo, isCard);
-        }).catch(error => {
-            this.setState({isProgress: false});
-            console.log("error", error);
-        });
+                console.log("error", error);
+            });
+        } else {
+            let index = this.state.userResponse.findIndex(item => item.ACCOUNT_NO === actNo);
+            if (index === -1)
+                await this.blockUser(this.state.selectActCard.value === 1 ? language.invalid_cardNumber : language.require_valid_actNumber);
+            else
+                await this.resetPwd("", this.state.responseUserId.USER_ID,this.state.userResponse[index], actNo, isCard);
+        }
+
     }
 
     resetAll() {
@@ -457,24 +481,18 @@ class CredentialDetails extends Component {
         });
     }
 
-    async resetPwd(authToken, responseUid, actNo, isCard) {
+    async resetPwd(authToken, responseUid,actResult, actNo, isCard) {
         let language = this.props.language;
         this.setState({isProgress: true});
+
         await VerifyResetPwd(isCard, authToken, responseUid, actNo,
-            this.state.selectTypeVal === 0 ? "U" : "P", this.state.transactionPin, this.props).then(result => {
+            this.state.selectTypeVal === 0 ? "U" : "P", this.state.transactionPin, this.state.cardPin,
+            this.state.expiryDate, this.props, actResult,this.state.otp_type).then(result => {
             console.log("VerifyResetPwd", JSON.stringify(result));
             this.setState({isProgress: false});
-            /*   if (isCard) {
-                   if (this.state.selectTypeVal === 0) {
-                       this.resetAll();
-                       Utility.alert(result.MESSAGE);
-                   } else {
-                       this.setState({isField: true, responseForOTP: result.RESPONSE[0]});
-                   }
-               } else {*/
             let response = result.RESPONSE[0];
             this.setState({otpView: true, responseForOTP: result.RESPONSE[0]});
-            //}
+
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -517,16 +535,17 @@ class CredentialDetails extends Component {
     }
 
     async getUserDetails(language) {
-        const {cityTouchUserId} = this.state;
+        const {cityTouchUserId, selectTypeVal} = this.state;
         this.setState({isProgress: true});
-
         await GetUserAuthByUid(cityTouchUserId, this.props).then(result => {
             console.log("getUserDetails", JSON.stringify(result));
             this.setState({
                 isProgress: false, responseUserId: result,
                 selectActCard: result.AUTH_TYPE === "TP" ? language.accountTypeArr[0] : language.accountTypeArr[1]
             }, async () => {
-                //await this.processAccount(this.state.selectActCard.value === 1, language);
+                if (selectTypeVal > 0)
+                    await this.getCustomerDetails(language, result.CUSTOMER_DTL_LIST);
+
             });
         }).catch(error => {
             this.setState({isProgress: false});
@@ -534,6 +553,20 @@ class CredentialDetails extends Component {
         });
 
     }
+
+    async getCustomerDetails(language, CUSTOMER_DTL_LIST) {
+        this.setState({isProgress: true});
+
+        await GETUSERDTLALLKEYS(CUSTOMER_DTL_LIST, this.props).then(result => {
+            console.log("getCustomerDetails", JSON.stringify(result));
+            this.setState({isProgress: false, userResponse: result.RESPONSE[0].CARD_DTL});
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+
+    }
+
 
     otpLayout(language) {
         let otpMsg = "";
