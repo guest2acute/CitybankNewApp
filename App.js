@@ -66,6 +66,8 @@ import TagCreditCardInCityTouch from "./react/screens/More/TagCreditCardInCityTo
 import ChequeBookManagement from "./react/screens/More/ChequeBookManagement";
 import FixedDeposit from "./react/screens/More/FixedDeposit";
 import MonthlyDPS from "./react/screens/More/MonthlyDPS";
+import PayOrder from "./react/screens/More/PayOrder";
+import BeneficiaryOtherCard from "./react/screens/Trasfer/BeneficiaryOtherCard";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
@@ -155,6 +157,7 @@ function TransferTab() {
             <Stack.Screen name="SelectBeneficiary" component={SelectBeneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="ViewBeneficiaryOtherBank" component={ViewBeneficiaryOtherBank} options={{headerShown: false}}/>
             <Stack.Screen name="SecurityVerification" component={SecurityVerification} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryOtherCard" component={BeneficiaryOtherCard} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -199,6 +202,7 @@ function MoreTab() {
             <Stack.Screen name="FixedDeposit" component={FixedDeposit} options={{headerShown: false}}/>
             <Stack.Screen name="MonthlyDPS" component={MonthlyDPS} options={{headerShown: false}}/>
             <Stack.Screen name="SubCategories" component={SubCategories} options={{headerShown: false}}/>
+            <Stack.Screen name="PayOrder" component={PayOrder} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

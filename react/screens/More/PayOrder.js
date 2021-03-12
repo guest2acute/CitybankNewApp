@@ -327,16 +327,13 @@ class PayOrder extends Component {
                 }}>*{language.mark_field_mandatory}
                 </Text>
                 <Text style={styles.textView}>{language.notes}:</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note1}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note2}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note3}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note4}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note5}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note6}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note7}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note8}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note9}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note10}</Text>
+                <Text style={styles.textView}>{language.pay_order_notes1}</Text>
+                <Text style={styles.textView}>{language.pay_order_notes2}</Text>
+                <Text style={styles.textView}>{language.pay_order_notes3}</Text>
+                <Text style={styles.textView}>{language.pay_order_notes4}</Text>
+                <Text style={styles.textView}>{language.pay_order_notes5}</Text>
+                <Text style={styles.textView}>{language.pay_order_notes6}</Text>
+                <Text style={styles.textView}>{language.pay_order_notes7}</Text>
             </View>
         )
     }
@@ -375,7 +372,8 @@ class PayOrder extends Component {
                         flexDirection: "row",
                         marginStart: Utility.setWidth(10),
                         marginRight: Utility.setWidth(10),
-                        marginTop: Utility.setHeight(20)
+                        marginTop: Utility.setHeight(10),
+                        marginBottom: Utility.setHeight(10)
                     }}>
                         <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
                             <View style={{

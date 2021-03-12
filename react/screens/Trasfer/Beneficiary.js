@@ -67,6 +67,7 @@ class Beneficiary extends Component {
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
+        console.log("selectTypeVal is this",this.state.selectTypeVal)
         if (this.state.selectTypeVal === -1) {
             Utility.alert(language.error_select_beneficiary_type);
         } else if (this.state.selectTypeVal === 0) {
@@ -75,7 +76,12 @@ class Beneficiary extends Component {
             this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
         } else if (this.state.selectTypeVal === 2) {
             this.props.navigation.navigate("BeneficiaryTransfer");
-        } else {
+        }else if (this.state.selectTypeVal === 4) {
+            this.props.navigation.navigate("BeneficiaryOtherCard", {title:this.props.language.beneficiary_other_card_title});
+        }else if (this.state.selectTypeVal === 5) {
+            this.props.navigation.navigate("BeneficiaryOtherCard",{title:this.props.language.beneficiary_bank_card_title});
+        }
+        else {
             this.props.navigation.navigate("BeneficiaryTransfer")
         }
     }
