@@ -1091,7 +1091,27 @@ export default {
   selectTenureType: "মেয়াদ প্রকার নির্বাচন করুন",
   selectTenurePeriod: "মেয়াদ নির্বাচন করুন",
   error_amount: "পরিমাণ প্রয়োজন",
+  branch:"শাখা",
+  installment_start_date:"কিস্তি শুরুর তারিখ",
+  select_installment: "কিস্তি শুরুর তারিখটি নির্বাচন করুন",
+  month:"মাস",
+  select_month: "মাস নির্বাচন করুন",
+  amount_per_installment: "প্রতি কিস্তির পরিমাণ",
+  errorSelect_installment:"কিস্তি শুরুর তারিখটি নির্বাচন করুন",
+  errorSelect_month:"মাস নির্বাচন করুন",
 
+  /*pay order screen*/
+  delivery_location: "ডেলিভারির ঠিকানা",
+  select_delivery_location: "বিতরণ অবস্থান নির্বাচন করুন",
+  deliveryTypeArr:[{key:0,label:"শাখা",value:0}],
+  beneficiary_name:"সুবিধা প্রাপ্ত নাম",
+  pay_order_type: "পে অর্ডার সংগ্রহ শাখা",
+
+  /*BeneficiaryOtherCard screen*/
+  beneficiary_other_card_title: "অন্যান্য ক্রেডিট কার্ড - সুবিধাভোগী যোগ করুন",
+  beneficiary_bank_card_title: "সিটি ব্যাংক ক্রেডিট কার্ড-সুবিধাভোগী যুক্ত করুন",
+  selectDeliveryLocation: "বিতরণ অবস্থান নির্বাচন করুন",
+  error_beneficiaryName:"দয়া করে আপনার বৈধ সুবিধাভোগীর নাম লিখুন"
 
 }
 
