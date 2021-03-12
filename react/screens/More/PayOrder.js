@@ -34,12 +34,15 @@ class PayOrder extends Component {
             title:props.route.params.title,
             selectAccountNumberType: props.language.select_actNo,
             selectDeliveryLocationType: props.language.select_delivery_location,
+            selectBranchType: props.language.select_branch,
             availableBalance:"",
             beneficiaryName:"",
             error_beneficiaryName:"",
             servicesCharge:"",
             vat:"",
             grandTotal:"",
+            amount:"",
+            errorAmount:""
         }
     }
 
@@ -75,21 +78,25 @@ class PayOrder extends Component {
             this.setState({selectAccountNumberType: item.label, selectTypeVal: item.value, modalVisible: false})
         } else if (modelSelection === "deliveryType") {
             this.setState({selectDeliveryLocationType: item.label, selectTypeVal: item.value, modalVisible: false})
+        }else if (modelSelection === "branchType") {
+            this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
-        if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.error_select_beneficiary_type);
-        } else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate("BeneficiaryWithCityBank");
-        } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
-        } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("BeneficiaryTransfer");
+        if (this.state.selectAccountNumberType === language.select_actNo) {
+            Utility.alert(language.select_actNo);
+        } else if (this.state.selectDeliveryLocationType === language.select_delivery_location) {
+            Utility.alert(language.selectDeliveryLocation);
+        }else if (this.state.amount === "") {
+            this.setState({errorAmount:language.error_amount})
+            return;
+        }else if (this.state.beneficiaryName === "") {
+            this.setState({error_beneficiaryName:language.error_beneficiaryName})
+            return;
         } else {
-            this.props.navigation.navigate("BeneficiaryTransfer")
+            Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
 
@@ -168,6 +175,30 @@ class PayOrder extends Component {
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.pay_order_type}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("branchType", language.select_branch, language.cardNumber, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectBranchType === language.select_branch ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectBranchType}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -263,7 +294,6 @@ class PayOrder extends Component {
                         autoCorrect={false}
                         editable={false}
                         maxLength={13}/>
-                    <Text style={{paddingLeft:5}}>BDT</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
@@ -303,7 +333,7 @@ class PayOrder extends Component {
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
-                        placeholder={""}
+                        placeholder={"0.00"}
                         onChangeText={text => this.setState({
                             grandTotal: Utility.userInput(text)
                         })}
@@ -316,6 +346,7 @@ class PayOrder extends Component {
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        editable={false}
                         maxLength={13}/>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>

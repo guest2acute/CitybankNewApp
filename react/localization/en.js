@@ -1099,10 +1099,13 @@ export default {
     select_delivery_location: "Select Delivery Location",
     deliveryTypeArr:[{key:0,label:"Branch",value:0}],
     beneficiary_name:"Beneficiary Name",
+    pay_order_type: "Pay Order Collection Branch",
 
     /*BeneficiaryOtherCard screen*/
     beneficiary_other_card_title: "Other Credit Card -Add Beneficiary",
     beneficiary_bank_card_title: "City Bank Credit Card -Add Beneficiary",
+    selectDeliveryLocation: "Select Delivery Locations",
+    error_beneficiaryName:"Please enter your valid beneficiary name"
 
 }
 
