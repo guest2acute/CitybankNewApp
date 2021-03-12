@@ -28,7 +28,7 @@ class BeneficiaryWithCityBank extends Component {
             nickname: "",
             account_holder_name: "",
             currency: "",
-            accountNo: "2251657635001",
+            accountNo: "",
             type_act: "",
             mobile_number: "",
             emailTxt: "",

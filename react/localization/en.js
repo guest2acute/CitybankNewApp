@@ -540,15 +540,17 @@ export default {
     select_type_transfer: "Select Transfer Type",
     select_beneficiary_type: "Select Beneficiary Type",
     transferTypeArr: [
-        {key: "0", label: "Transfer Within City Bank", value: 0},
-        {key: "1", label: "Transfer Other Bank", value: 1},
-        {key: "2", label: "Email Transfer", value: 2},
-        {key: "3", label: "Transfer to bkash", value: 3}
+        {key: "0", label: "Transfer Within City Bank", value: 0,screenName:"BeneficiaryWithCityBank"},
+        {key: "1", label: "Transfer Other Bank", value: 1,screenName:"BeneficiaryWithCityBank"},
+        {key: "2", label: "Email Transfer", value: 2,screenName:"EmailTransfer"},
+        {key: "3", label: "MFS Fund Transfer", value: 3,screenName:"BeneficiaryTransfer"},
+        {key: "4", label: "Other Credit Card", value: 4,screenName:"BeneficiaryOtherCard"},
+        {key: "5", label: "City Bank Credit Card", value: 5,screenName:"BeneficiaryBankCard"},
     ],
 
     TypeOfTransferArr: [
         {key: "0", label: "Transfer Within City Bank", value: 0},
-        {key: "1", label: "Transfer Other Bank", value: 1},
+        {key: "1", label: "Transfer Other Bank", value: 1,},
         {key: "2", label: "Transfer Within City Bank", value: 2},
         {key: "3", label: "Transfer Other Bank", value: 3}
     ],

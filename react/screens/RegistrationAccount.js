@@ -31,7 +31,6 @@ import * as ReadSms from 'react-native-read-sms/ReadSms';
 import {blockProcess} from "./Requests/CommonRequest";
 
 
-
 class RegistrationAccount extends Component {
 
     constructor(props) {
@@ -111,7 +110,7 @@ class RegistrationAccount extends Component {
     startReadSMS = async () => {
         console.log("Great!! you have received new sms:");
         const hasPermission = await ReadSms.requestReadSMSPermission();
-        if(hasPermission) {
+        if (hasPermission) {
             await ReadSms.startReadSMS((status, sms, error) => {
                 if (status === "success") {
                     console.log("Great!! you have received new sms:", sms);
@@ -731,7 +730,8 @@ class RegistrationAccount extends Component {
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
                                 {language.email}
-                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                                <Text
+                                    style={{color: themeStyle.THEME_COLOR}}>{this.state.placeEmail !== "" ? "*" : ""}</Text>
                             </Text>
                             <TextInput
                                 ref={(ref) => this.emailref = ref}
@@ -777,7 +777,7 @@ class RegistrationAccount extends Component {
 
     onChange = (event, selectedDate) => {
         if (event.type !== "dismissed" && selectedDate !== undefined) {
-            console.log("selectedDate-", selectedDate);
+            console.log(this.state.currentSelection+"=selectedDate-", selectedDate);
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
             this.setState({dateVal: selectedDate, dob: currentDate, show: false}, () => {
@@ -1236,7 +1236,7 @@ class RegistrationAccount extends Component {
     }
 
     async submit(language, navigation) {
-        const {stateVal, conf_mobile, conf_email, signUpResponse} = this.state;
+        const {stateVal, conf_mobile, conf_email, signUpResponse,hasDebitCard} = this.state;
         if (stateVal === 0) {
             if (this.state.accountNo.length !== 13) {
                 this.setState({errorAccount_no: language.errActNo});
@@ -1251,13 +1251,9 @@ class RegistrationAccount extends Component {
             } else if (conf_email !== signUpResponse.MAIL_ID) {
                 this.setState({errorEmail: language.invalidEmail});
             } else {
-                if (signUpResponse.DEBIT_CARD.length > 0) {
-                    this.setState({stateVal: stateVal + 1});
-                } else {
-                    this.setState({stateVal: stateVal + 2});
-                }
+                this.setState({stateVal: stateVal + 1});
             }
-        } else if (stateVal === 1) {
+        } else if (stateVal === 1 && hasDebitCard) {
             if (this.state.debitCardNo === "") {
                 this.setState({errorDCardNo: language.errDebitCard});
             } else if (this.state.cardExpiry === "") {
@@ -1275,7 +1271,7 @@ class RegistrationAccount extends Component {
                 }
                 await this.signupRequest();
             }
-        } else if (stateVal === 2) {
+        } else if (stateVal === 1 && !hasDebitCard) {
             if (this.state.fatherName === "") {
                 this.setState({errorFather: language.et_father_name});
             } else if (this.state.motherName === "") {
@@ -1305,14 +1301,14 @@ class RegistrationAccount extends Component {
                 await this.signupRequest();
             }
 
-        } else if (stateVal === 3) {
+        } else if (stateVal === 2) {
             if (this.state.otpVal.length !== 4) {
                 Utility.alert(language.errOTP);
                 return;
             }
             await this.getOTP();
 
-        } else if (stateVal === 4) {
+        } else if (stateVal === 3) {
             if (this.state.transPin === "") {
                 this.setState({errorTransPin: language.errTransPin});
             } else if (this.state.loginPin === "") {
@@ -1327,7 +1323,8 @@ class RegistrationAccount extends Component {
 
     async blockUser(description) {
         this.setState({isProgress: true});
-        await blockProcess(this.state.accountNo, description, this.props,"USERAUTH")
+        console.log("sgg",this.state.userId)
+        await blockProcess(this.state.accountNo,"",description, this.props, "USERAUTH")
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -1371,7 +1368,7 @@ class RegistrationAccount extends Component {
                                 marginLeft: 10,
                                 marginRight: 10
                             }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
-                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 2 ? this.debitCardUI(language) : this.state.stateVal === 1 ? this.userPersonal(language) : this.state.stateVal === 3 ? this.otpEnter(language) : this.passwordSet(language)}
+                            {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.state.hasDebitCard ? this.debitCardUI(language) : this.userPersonal(language) : this.state.stateVal === 2 ? this.otpEnter(language) : this.passwordSet(language)}
                             <View style={{
                                 flexDirection: "row",
                                 marginStart: Utility.setWidth(10),
@@ -1424,9 +1421,10 @@ class RegistrationAccount extends Component {
                 {this.state.show && (
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={this.state.dateVal}
+                        value={new Date()}
                         mode={this.state.mode}
                         is24Hour={false}
+                        maximumDate={new Date()}
                         display="default"
                         onChange={this.onChange}
                     />

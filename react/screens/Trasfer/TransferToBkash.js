@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
 import {
-    I18nManager,
     Modal,
     SafeAreaView,
     ScrollView,
@@ -39,7 +38,6 @@ class TransferToBkash extends Component {
             selectAcctType: props.language.bkash_select_acct,
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
-           // selectTypeAccount: props.language.select_type_account,
             selectTypeVal: -1,
             modelSelection: "",
             modalVisible: false,
@@ -56,8 +54,6 @@ class TransferToBkash extends Component {
             error_grandtotal:"",
             remarks:"",
             error_remarks:""
-
-
         }
     }
 
