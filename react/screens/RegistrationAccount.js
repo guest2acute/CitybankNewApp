@@ -30,7 +30,6 @@ import {BusyIndicator} from "../resources/busy-indicator";
 import * as ReadSms from 'react-native-read-sms/ReadSms';
 import {blockProcess} from "./Requests/CommonRequest";
 
-
 class RegistrationAccount extends Component {
 
     constructor(props) {
@@ -104,7 +103,6 @@ class RegistrationAccount extends Component {
             );
             await this.startReadSMS();
         }
-
     }
 
     startReadSMS = async () => {
@@ -1427,6 +1425,7 @@ class RegistrationAccount extends Component {
                         maximumDate={new Date()}
                         display="default"
                         onChange={this.onChange}
+
                     />
                 )}
                 <BusyIndicator visible={this.state.isProgress}/>

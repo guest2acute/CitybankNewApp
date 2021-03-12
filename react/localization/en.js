@@ -540,12 +540,12 @@ export default {
     select_type_transfer: "Select Transfer Type",
     select_beneficiary_type: "Select Beneficiary Type",
     transferTypeArr: [
-        {key: "0", label: "Transfer Within City Bank", value: 0,screenName:"BeneficiaryWithCityBank"},
-        {key: "1", label: "Transfer Other Bank", value: 1,screenName:"BeneficiaryWithCityBank"},
-        {key: "2", label: "Email Transfer", value: 2,screenName:"EmailTransfer"},
-        {key: "3", label: "MFS Fund Transfer", value: 3,screenName:"BeneficiaryTransfer"},
-        {key: "4", label: "Other Credit Card", value: 4,screenName:"BeneficiaryOtherCard"},
-        {key: "5", label: "City Bank Credit Card", value: 5,screenName:"BeneficiaryBankCard"},
+        {key: "0", label: "Transfer Within City Bank", value: 0},
+        {key: "1", label: "Transfer Other Bank", value: 1},
+        {key: "2", label: "Email Transfer", value: 2},
+        {key: "3", label: "MFS Fund Transfer", value: 3},
+        {key:"4",label: "Other Credit Card",value: 4},
+        {key:"5",label: "City Bank Credit Card",value: 5},
     ],
 
     TypeOfTransferArr: [
@@ -892,12 +892,12 @@ export default {
     monthly_deposit_note10:"consecutive months DPS will be closed automatically",
 
     pay_order_notes1: "1. Pay order will be processed solely as per your provided information.",
-    pay_order_notes1: "2. your pay order to be ready to collect from desired branch",
-    pay_order_notes1: "by next available working day.",
-    pay_order_notes1: "3. To cancel a pay order,please visit the pay order issued ",
-    pay_order_notes1: "Branch",
-    pay_order_notes1: "4. The bank shall not be liable or responsible for any ",
-    pay_order_notes1: "incorrect/incomplete information provide by you",
+    pay_order_notes2: "2. your pay order to be ready to collect from desired branch",
+    pay_order_notes3: "by next available working day.",
+    pay_order_notes4: "3. To cancel a pay order,please visit the pay order issued ",
+    pay_order_notes5: "Branch",
+    pay_order_notes6: "4. The bank shall not be liable or responsible for any ",
+    pay_order_notes7: "incorrect/incomplete information provide by you",
 
 
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
@@ -1097,8 +1097,14 @@ export default {
     delivery_location: "Delivery Location",
     select_delivery_location: "Select Delivery Location",
     deliveryTypeArr:[{key:0,label:"Branch",value:0}],
-    beneficiary_name:"Beneficiary Name"
+    beneficiary_name:"Beneficiary Name",
+    pay_order_type: "Pay Order Collection Branch",
 
+    /*BeneficiaryOtherCard screen*/
+    beneficiary_other_card_title: "Other Credit Card -Add Beneficiary",
+    beneficiary_bank_card_title: "City Bank Credit Card -Add Beneficiary",
+    selectDeliveryLocation: "Select Delivery Locations",
+    error_beneficiaryName:"Please enter your valid beneficiary name"
 
 }
 
