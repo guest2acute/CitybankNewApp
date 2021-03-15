@@ -251,11 +251,9 @@ class ChangeLoginCredential extends Component {
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
-                        secureTextEntry={true}
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={5}/></TouchableOpacity>
+                        autoCorrect={false}/></TouchableOpacity>
             </View>
             {this.state.errorExpiry !== "" ?
                 <Text style={{
@@ -372,7 +370,7 @@ class ChangeLoginCredential extends Component {
             selectActCard.value === 0 ? "TP" : "CP", "CHANGEPWD",
             "O", this.props)
             .then((response) => {
-                console.log(response);
+                console.log("otp response",response);
                 this.setState({isProgress: false, stateVal: 2});
 
             }, (error) => {
@@ -541,7 +539,7 @@ class ChangeLoginCredential extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        placeholder={this.state.select_credential_type.value === 0 ? language.et_confirm_pwd_txt : language.et_confirm_pin_txt}
+                        placeholder={language.please_enter}
                         onChangeText={text => this.setState({
                             errorConfNewCredential: "",
                             confNewCredential: this.state.select_credential_type.value === 0 ? Utility.userInput(text) : Utility.input(text, "0123456789")
@@ -587,7 +585,7 @@ class ChangeLoginCredential extends Component {
         await ApiRequest.apiRequest.verifyAccountCard(selectActCard.value === 1,
             actCardNumber, pin, expiryDate, userDetails, this.state.select_credential_type.value === 0 ? "L" : "P", this.state.otp_type, this.props)
             .then((response) => {
-                console.log(response);
+                console.log("response is this ",response);
                 this.setState({
                     isProgress: false,
                     selectRes: {...selectRes, REQUEST_CD: response.REQUEST_CD.toString()},

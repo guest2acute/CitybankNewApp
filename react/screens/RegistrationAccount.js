@@ -205,7 +205,6 @@ class RegistrationAccount extends Component {
             overflow: "hidden",
             borderWidth: 2
         }}>
-
             <View>
                 <View style={{
                     flexDirection: "row",
@@ -570,7 +569,7 @@ class RegistrationAccount extends Component {
                 /*  conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
                   conf_email: response.MAIL_ID,*/
                 signUpResponse: response,
-                hasDebitCard: response.DEBIT_CARD.length > 0
+                hasDebitCard: response.DEBIT_CARD.length > 0 || response.PREPAID_CARD.length > 0 || response.CREDIT_CARD.length > 0
             });
         }, (error) => {
             this.setState({isProgress: false});

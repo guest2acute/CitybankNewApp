@@ -23,6 +23,7 @@ import ApiRequest from "../config/ApiRequest";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Config from "../config/Config";
+import RadioForm from "react-native-simple-radio-button";
 
 
 class ChangeTransPin extends Component {
@@ -47,12 +48,14 @@ class ChangeTransPin extends Component {
             dob: "",
             errorDob: "",
             pinVal: "",
+            otp_type: 0,
             errorPinVal: "",
             ConfirmPinVal: "",
             errorConfirmPinVal: "",
             actNoList: [],
             verifyRes: "",
             otpVal: ""
+
         }
     }
 
@@ -61,7 +64,7 @@ class ChangeTransPin extends Component {
         return true;
     }
 
-     backBtn() {
+    backBtn() {
         const {stage} = this.state;
         if (stage > 0) {
             this.setState({
@@ -467,6 +470,36 @@ class ChangeTransPin extends Component {
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
+                        <View style={{
+                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            marginEnd: 10
+                        }}>
+                            <Text style={[CommonStyle.textStyle]}>
+                                {language.otpType}
+                                <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                            </Text>
+
+                            <RadioForm
+                                radio_props={this.state.selectRes == null || this.state.selectRes.EMAIL_ID === "" ?
+                                    language.otp_props_mobile : language.otp_props}
+                                initial={0}
+                                buttonSize={9}
+                                selectedButtonColor={themeStyle.THEME_COLOR}
+                                formHorizontal={true}
+                                labelHorizontal={true}
+                                borderWidth={1}
+                                buttonColor={themeStyle.GRAY_COLOR}
+                                labelColor={themeStyle.BLACK}
+                                labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                                style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                                animation={true}
+                                onPress={(value) => {
+                                    this.setState({otp_type: value});
+                                }}
+                            />
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
                     </View> : null}
             </View>)
     }
@@ -478,6 +511,7 @@ class ChangeTransPin extends Component {
             this.setState({
                 select_actNo: item.ACCOUNT_NO,
                 selectTypeVal: parseInt(item.ACCOUNT_NO),
+                selectRes: item,
                 modalVisible: false
             })
         }
@@ -509,7 +543,7 @@ class ChangeTransPin extends Component {
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
             AUTH_FLAG: userDetails.AUTH_FLAG,
-            MOBILE_NO:userDetails.MOBILE_NO,
+            MOBILE_NO: userDetails.MOBILE_NO,
             ACCT_NO: this.state.select_actNo,
             NEW_PIN: this.state.pinVal,
             REQ_FLAG: "R",
@@ -627,6 +661,7 @@ class ChangeTransPin extends Component {
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             FATHER_NM: this.state.fatherName,
             DEVICE_ID: await Utility.getDeviceID(),
+            OTP_TYPE: this.state.otp_type === 0 ? "S" : "E",
             ...Config.commonReq
         }
         console.log("actRequest", verifyReq);
@@ -773,7 +808,7 @@ const
         modalView: {
             width: Utility.getDeviceWidth() - 30,
             overflow: "hidden",
-            maxHeight:Utility.getDeviceHeight()-100,
+            maxHeight: Utility.getDeviceHeight() - 100,
             borderRadius: 10,
             alignItems: "center",
             shadowColor: "#000",

@@ -134,105 +134,121 @@ class LoginConfigureProfile extends Component {
                 />
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.set_transaction_pin}
-                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                    </Text>
-                    <TextInput
-                        ref={(ref) => this.transPinRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({
-                            errorTransPIN: "",
-                            transactionPin: Utility.input(text, "0123456789")
-                        })}
-                        value={this.state.transactionPin}
-                        multiline={false}
-                        numberOfLines={1}
-                        keyboardType={"number-pad"}
-                        contextMenuHidden={true}
-                        secureTextEntry={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.cTransPinRef.focus();
-                        }}
-                        maxLength={4}/>
+            {console.log("AUTH_FLAG", this.props.userDetails.AUTH_FLAG)}
+            {this.props.userDetails.AUTH_FLAG === "TP" && this.props.userDetails.TXN_PASS_REG_FLAG === "N" ?
+                <View>
+                    <View>
+                        <View>
+                            <View style={{
+                                flexDirection: "row",
+                                height: Utility.setHeight(50),
+                                marginStart: 10,
+                                alignItems: "center",
+                                marginEnd: 10,
+                            }}>
+                                <Text style={[CommonStyle.textStyle]}>
+                                    {language.set_transaction_pin}
+                                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                                </Text>
+                                <TextInput
+                                    ref={(ref) => this.transPinRef = ref}
+                                    selectionColor={themeStyle.THEME_COLOR}
+                                    style={[CommonStyle.textStyle, {
+                                        alignItems: "flex-end",
+                                        textAlign: 'right',
+                                        flex: 1,
+                                        marginLeft: 10
+                                    }]}
+                                    placeholder={language.enterPinHere}
+                                    onChangeText={text => this.setState({
+                                        errorTransPIN: "",
+                                        transactionPin: Utility.input(text, "0123456789")
+                                    })}
+                                    value={this.state.transactionPin}
+                                    multiline={false}
+                                    numberOfLines={1}
+                                    keyboardType={"number-pad"}
+                                    contextMenuHidden={true}
+                                    secureTextEntry={true}
+                                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                    autoCorrect={false}
+                                    returnKeyType={"next"}
+                                    onSubmitEditing={(event) => {
+                                        this.cTransPinRef.focus();
+                                    }}
+                                    maxLength={4}/>
+                            </View>
+                            {this.state.errorTransPIN !== "" ?
+                                <Text style={{
+                                    marginLeft: 5,
+                                    marginRight: 10,
+                                    color: themeStyle.THEME_COLOR,
+                                    fontSize: FontSize.getSize(11),
+                                    fontFamily: fontStyle.RobotoRegular,
+                                    alignSelf: "flex-end",
+                                    marginBottom: 10,
+                                }}>{this.state.errorTransPIN}</Text> : null}
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                    </View>
+
+                    <View>
+                        <View>
+                            <View style={{
+                                flexDirection: "row",
+                                height: Utility.setHeight(50),
+                                marginStart: 10,
+                                alignItems: "center",
+                                marginEnd: 10,
+                            }}>
+                                <Text style={[CommonStyle.textStyle]}>
+                                    {language.Confirm_Pin}
+                                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                                </Text>
+                                <TextInput
+                                    ref={(ref) => this.cTransPinRef = ref}
+                                    selectionColor={themeStyle.THEME_COLOR}
+                                    style={[CommonStyle.textStyle, {
+                                        alignItems: "flex-end",
+                                        textAlign: 'right',
+                                        flex: 1,
+                                        marginLeft: 10
+                                    }]}
+                                    placeholder={language.enterPinHere}
+                                    onChangeText={text => this.setState({
+                                        errorConfTransPIN: "",
+                                        confirmTransactionPin: Utility.input(text, "0123456789")
+                                    })}
+                                    value={this.state.confirmTransactionPin}
+                                    multiline={false}
+                                    numberOfLines={1}
+                                    contextMenuHidden={true}
+                                    keyboardType={"number-pad"}
+                                    secureTextEntry={true}
+                                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                    autoCorrect={false}
+                                    returnKeyType={"next"}
+                                    secureTextEntry={true}
+                                    onSubmitEditing={(event) => {
+                                        this.loginPinRef.focus();
+                                    }}
+                                    maxLength={4}/>
+                            </View>
+                            {this.state.errorConfTransPIN !== "" ?
+                                <Text style={{
+                                    marginLeft: 5,
+                                    marginRight: 10,
+                                    color: themeStyle.THEME_COLOR,
+                                    fontSize: FontSize.getSize(11),
+                                    fontFamily: fontStyle.RobotoRegular,
+                                    alignSelf: "flex-end",
+                                    marginBottom: 10,
+                                }}>{this.state.errorConfTransPIN}</Text> : null}
+                        </View>
+                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                    </View>
                 </View>
-                {this.state.errorTransPIN !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorTransPIN}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.Confirm_Pin}
-                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                    </Text>
-                    <TextInput
-                        ref={(ref) => this.cTransPinRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.enterPinHere}
-                        onChangeText={text => this.setState({
-                            errorConfTransPIN: "",
-                            confirmTransactionPin: Utility.input(text, "0123456789")
-                        })}
-                        value={this.state.confirmTransactionPin}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        secureTextEntry={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        secureTextEntry={true}
-                        onSubmitEditing={(event) => {
-                            this.loginPinRef.focus();
-                        }}
-                        maxLength={4}/>
-                </View>
-                {this.state.errorConfTransPIN !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfTransPIN}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                : null}
             <View>
                 <View style={{
                     flexDirection: "row",
@@ -365,17 +381,25 @@ class LoginConfigureProfile extends Component {
         console.log("loginPrefVal", loginPrefVal);
         console.log("loginPin", loginPin.length);
 
-        if (transactionPin.length !== 4) {
-            this.setState({errorTransPIN: language.digits4TransPin});
-        } else if (transactionPin !== confirmTransactionPin) {
-            this.setState({errorConfTransPIN: language.errConfirmTransPin});
+        if (this.state.loginPin !== conf_loginPin) {
+            this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
         } else if ((loginPrefVal === "1" || loginPin !== "") && loginPin.length !== 6) {
             this.setState({errorLoginPIN: language.digits6LoginPin});
-        } else if (this.state.loginPin !== conf_loginPin) {
-            this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
         } else {
             await this.updateUserRequest(navigation);
         }
+
+        /* if (transactionPin.length !== 4) {
+             this.setState({errorTransPIN: language.digits4TransPin});
+         } else if (this.state.loginPin !== conf_loginPin) {
+             this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
+         } else if (transactionPin !== confirmTransactionPin) {
+             this.setState({errorConfTransPIN: language.errConfirmTransPin});
+         } else if ((loginPrefVal === "1" || loginPin !== "") && loginPin.length !== 6) {
+             this.setState({errorLoginPIN: language.digits6LoginPin});
+         } else {
+             await this.updateUserRequest(navigation);
+         }*/
     }
 
 
@@ -400,7 +424,7 @@ class LoginConfigureProfile extends Component {
                 langId: langCode,
             },
         });
-        Config.commonReq = {...Config.commonReq,DISPLAY_LANGUAGE: langCode}
+        Config.commonReq = {...Config.commonReq, DISPLAY_LANGUAGE: langCode}
     }
 
     render() {
@@ -490,7 +514,7 @@ class LoginConfigureProfile extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-           BackHandler.addEventListener(
+            BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
@@ -535,7 +559,7 @@ const styles = {
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

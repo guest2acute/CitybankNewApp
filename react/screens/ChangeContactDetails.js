@@ -66,6 +66,7 @@ class ChangeContactDetails extends Component {
             cardNoList: [],
             selectRes: null,
             otp_type: 0,
+            requestData:null
         }
     }
 
@@ -351,6 +352,7 @@ class ChangeContactDetails extends Component {
         let userDetails = this.props.userDetails;
         this.setState({isProgress: true});
         let otpRequest = {
+            ACCT_NO: selectRes.ACCOUNT_NO,
             APPCUSTOMER_ID: selectRes.APPCUSTOMER_ID,
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
@@ -421,14 +423,10 @@ class ChangeContactDetails extends Component {
                 }
             }
         } else if (stateVal === 1) {
-            if (userDetails.AUTH_FLAG === "TP") {
-                if (this.state.otpVal.length !== 4) {
-                    Utility.alert(language.errOTP);
-                } else {
-                    await this.verifyOtp();
-                }
+            if (this.state.otpVal.length !== 4) {
+                Utility.alert(language.errOTP);
             } else {
-                await this.processChange(language, navigation);
+                await this.verifyOtp();
             }
         } else if (stateVal === 2) {
             await this.processChange(language, navigation);
@@ -454,9 +452,8 @@ class ChangeContactDetails extends Component {
             userDetails.AUTH_FLAG, "GENUPDEMAILMBOTPVERIFY",
             select_contact_type.value === 0 ? "UPD_MOBILE" : "UPD_EMAIL", this.props)
             .then((response) => {
-                console.log(response);
-                this.setState({isProgress: false, stateVal: 2});
-
+                console.log("hello",response);
+                this.setState({isProgress: false, stateVal: 2,requestData:response.RESPONSE[0].REQ_DATA});
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -491,7 +488,7 @@ class ChangeContactDetails extends Component {
     startReadSMS = async () => {
         console.log("Great!! you have received new sms:");
         const hasPermission = await ReadSms.requestReadSMSPermission();
-        if(hasPermission) {
+        if (hasPermission) {
             await ReadSms.startReadSMS((status, sms, error) => {
                 if (status === "success") {
                     console.log("Great!! you have received new sms:", sms);
@@ -535,12 +532,14 @@ class ChangeContactDetails extends Component {
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             SOURCE: selectRes.SOURCE,
             DEVICE_ID: await Utility.getDeviceID(),
-            ...Config.commonReq
+            ...Config.commonReq,
+            REQ_DATA: this.state.requestData,
+
         }
         if (select_contact_type.value === 0) {
             changeRequest = {
                 ...changeRequest, ACTION: "UPDATEMOBILENO",
-                REQ_TYPE: "UPD_MOBILE", OLDMOBILENO: "8801719365359", NEWMOBILENO: newCredential
+                REQ_TYPE: "UPD_MOBILE", NEWMOBILENO: newCredential
             };
         } else {
             changeRequest = {
@@ -548,6 +547,7 @@ class ChangeContactDetails extends Component {
                 OLDEMAILID: selectRes.EMAIL_ID, NEWEMAILID: newCredential
             };
         }
+
 
         this.setState({isProgress: true});
         console.log("result", changeRequest);
@@ -704,10 +704,7 @@ class ChangeContactDetails extends Component {
     }
 
     processStage(language) {
-        if (this.props.userDetails.AUTH_FLAG === "TP")
-            return this.state.stateVal === 0 ? this.accountNoOption(language) : this.state.stateVal === 1 ? this.otpEnter(language) : this.passwordSet(language);
-        else
-            return this.state.stateVal === 0 ? this.creditCardOption(language) : this.passwordSet(language);
+        return this.state.stateVal === 0 ? this.props.userDetails.AUTH_FLAG === "TP" ? this.accountNoOption(language) : this.creditCardOption(language) : this.state.stateVal === 1 ? this.otpEnter(language) : this.passwordSet(language);
     }
 
     otpEnter(language) {
