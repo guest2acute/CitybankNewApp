@@ -159,7 +159,7 @@ class RegistrationAccount extends Component {
             hasDebitCard ? "CP" : "TP", "REGUSERVERIFY", "O", this.props)
             .then((response) => {
                 console.log(response);
-                this.setState({isProgress: false, stateVal: 4});
+                this.setState({isProgress: false, stateVal: 3});
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -1226,7 +1226,7 @@ class RegistrationAccount extends Component {
                 ACTIVATION_CD: response.ACTIVATION_CD,
                 CUSTOMER_ID: response.CUSTOMER_ID
             }
-            this.setState({signUpResponse: signUpResponse, stateVal: 3})
+            this.setState({signUpResponse: signUpResponse, stateVal: 2})
         } else {
             Utility.errorManage(signupResult.STATUS, signupResult.MESSAGE, this.props);
         }
@@ -1364,7 +1364,7 @@ class RegistrationAccount extends Component {
                                 marginTop: 15,
                                 marginLeft: 10,
                                 marginRight: 10
-                            }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : language.provideDetails}</Text>}
+                            }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : this.state.stateVal === 2 ?"":language.provideDetails}</Text>}
                             {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.state.hasDebitCard ? this.debitCardUI(language) : this.userPersonal(language) : this.state.stateVal === 2 ? this.otpEnter(language) : this.passwordSet(language)}
                             <View style={{
                                 flexDirection: "row",
