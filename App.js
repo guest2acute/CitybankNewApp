@@ -40,7 +40,7 @@ import BeneficiaryManagement from "./react/screens/Trasfer/BeneficiaryManagement
 import Beneficiary from "./react/screens/Trasfer/Beneficiary";
 import BeneficiaryWithCityBank from "./react/screens/Trasfer/BeneficiaryWithCityBank";
 import BeneficiaryOtherBank from "./react/screens/Trasfer/BeneficiaryOtherBank";
-import BeneficiaryTransfer from "./react/screens/Trasfer/BeneficiaryTransfer";
+import BeneficiaryTransferbKash from "./react/screens/Trasfer/BeneficiaryTransferbKash";
 import TransferWithBkash from "./react/screens/Trasfer/TransferWithBkash";
 import TransferCategory from "./react/screens/TransferCategory";
 import TransferHistory from "./react/screens/TransferHistory";
@@ -142,7 +142,7 @@ function TransferTab() {
             <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryWithCityBank" component={BeneficiaryWithCityBank} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryOtherBank" component={BeneficiaryOtherBank} options={{headerShown: false}}/>
-            <Stack.Screen name="BeneficiaryTransfer" component={BeneficiaryTransfer} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryTransferbKash" component={BeneficiaryTransferbKash} options={{headerShown: false}}/>
             <Stack.Screen name="TransferWithBkash" component={TransferWithBkash} options={{headerShown: false}}/>
             <Stack.Screen name="TransferCategory" component={TransferCategory} options={{headerShown: false}}/>
             <Stack.Screen name="TransferHistory" component={TransferHistory} options={{headerShown: false}}/>

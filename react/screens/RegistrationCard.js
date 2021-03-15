@@ -51,7 +51,7 @@ class RegistrationCard extends Component {
             isTerm: false,
             debitPin: "",
             errorPin: "",
-            cardExpiry: "",
+
             errorExpiry: "",
             password: "",
             loginPin: "",
@@ -690,7 +690,6 @@ class RegistrationCard extends Component {
                                 marginLeft: 10
                             }]}
                             placeholder={language.enterCardExpiry}
-                            // onChangeText={text => this.setState({errorExpiry:"",cardExpiry: Utility.input(text, "0123456789")})}
                             editable={false}
                             value={this.state.expiryDate}
                             multiline={false}
@@ -878,7 +877,7 @@ class RegistrationCard extends Component {
             "CP", this.state.otp_type === 0 ? "S" : "E",
             "",
             this.state.userId, await Utility.getDeviceID(), this.state.cardNo, this.state.cardPin,
-            this.state.cardExpiry, "",
+            this.state.expiryDate, "",
             "", this.state.cardNo);
 
         this.setState({isProgress: false});

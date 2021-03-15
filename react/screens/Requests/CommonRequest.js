@@ -73,9 +73,11 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, otp_
 }
 
 
-export const blockProcess = async (ACCT_NO, description, props,authFlag) => {
+export const blockProcess = async (ACCT_NO, userId, description, props, authFlag,actualAction) => {
+    console.log("userId", userId);
     return new Promise(async (resolve, reject) => {
         let blockReq = {
+            USER_ID: userId ? userId : "",
             ACTION: "BLOCK_CP_PROCESS",
             BLOCK_PROCESS_TYPE: "UPDATE_BLOCK_STATUS",
             ACTUAL_ACTION: "USER_REG_REQ",
@@ -83,7 +85,6 @@ export const blockProcess = async (ACCT_NO, description, props,authFlag) => {
             ACCT_NO: ACCT_NO,
             UPDATE_BLOCK_STATUS: "Y",
             ACTIVITY_CD: "",
-            USER_ID: "",
             AUTH_FLAG: authFlag,
             REQUEST_CD: "0",
             BLOCK_STATUS_CHECK: "Y",
@@ -181,7 +182,7 @@ export const MoreDetails = (language) => {
                     id: "Positive Pay",
                     title: language.positive_pay,
                     icon: require("../../resources/images/ic_positive_pay.png"),
-                    redirectScreen: ""
+                    redirectScreen: "PositivePay"
                 },
                 {
                     id: "ChequeBookManagement",
@@ -193,17 +194,17 @@ export const MoreDetails = (language) => {
                         title: language.cheque_leaf_status,
                         icon: require("../../resources/images/ic_positive_pay.png"),
                         redirectScreen: ""
-                    },{
+                    }, {
                         id: "ChequeStopRequest",
                         title: language.Cheque_stop_request,
                         icon: require("../../resources/images/ic_positive_pay.png"),
                         redirectScreen: ""
-                    },{
+                    }, {
                         id: "ChequeBookRequest",
                         title: language.cheque_book_request,
                         icon: require("../../resources/images/ic_positive_pay.png"),
                         redirectScreen: ""
-                    },{
+                    }, {
                         id: "ChequeBookRequestStatus",
                         title: language.cheque_book_request_status,
                         icon: require("../../resources/images/ic_positive_pay.png"),
@@ -215,7 +216,7 @@ export const MoreDetails = (language) => {
                     id: "TagAccountCityTouch",
                     title: language.tag_account_cityTouch,
                     icon: require("../../resources/images/ic_tag_account.png"),
-                    redirectScreen: ""
+                    redirectScreen: "TagCreditCardInCityTouch"
                 },
                 {
                     id: "EditAccountPreview",
@@ -227,7 +228,7 @@ export const MoreDetails = (language) => {
                     id: "RequestMonitor",
                     title: language.request_monitor,
                     icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: ""
+                    redirectScreen: "RequestMonitor"
                 },
             ],
         },

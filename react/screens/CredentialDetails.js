@@ -423,8 +423,8 @@ class CredentialDetails extends Component {
 
     async blockUser(description) {
         this.setState({isProgress: true});
-        await blockProcess(this.state.accountNo, description,
-            this.props, this.state.selectActCard.value === 1 ? "CP" : "USERDTL")
+        await blockProcess(this.state.accountNo, this.state.responseUserId.USER_ID, description,
+            this.props, this.state.selectActCard.value === 1 ? "CP" : "USERDTL", this.state.selectActCard.value === 1 ? "VERIFYCARDGETUID" : "GETUSERALLEXISTS",)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -448,7 +448,7 @@ class CredentialDetails extends Component {
                     Utility.alert(isCard ? language.errCardMatch : language.errAccountMatch);
                     return;
                 }
-                await this.resetPwd(response.AUTH_TOKEN, result.USER_ID,null, actNo, isCard);
+                await this.resetPwd(response.AUTH_TOKEN, result.USER_ID, null, actNo, isCard);
             }).catch(error => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -458,7 +458,7 @@ class CredentialDetails extends Component {
             if (index === -1)
                 await this.blockUser(this.state.selectActCard.value === 1 ? language.invalid_cardNumber : language.require_valid_actNumber);
             else
-                await this.resetPwd("", this.state.responseUserId.USER_ID,this.state.userResponse[index], actNo, isCard);
+                await this.resetPwd("", this.state.responseUserId.USER_ID, this.state.userResponse[index], actNo, isCard);
         }
 
     }
@@ -481,13 +481,13 @@ class CredentialDetails extends Component {
         });
     }
 
-    async resetPwd(authToken, responseUid,actResult, actNo, isCard) {
+    async resetPwd(authToken, responseUid, actResult, actNo, isCard) {
         let language = this.props.language;
         this.setState({isProgress: true});
 
         await VerifyResetPwd(isCard, authToken, responseUid, actNo,
             this.state.selectTypeVal === 0 ? "U" : "P", this.state.transactionPin, this.state.cardPin,
-            this.state.expiryDate, this.props, actResult,this.state.otp_type).then(result => {
+            this.state.expiryDate, this.props, actResult, this.state.otp_type).then(result => {
             console.log("VerifyResetPwd", JSON.stringify(result));
             this.setState({isProgress: false});
             let response = result.RESPONSE[0];

@@ -543,15 +543,14 @@ export default {
         {key: "0", label: "Transfer Within City Bank", value: 0},
         {key: "1", label: "Transfer Other Bank", value: 1},
         {key: "2", label: "Email Transfer", value: 2},
-        {key: "3", label: "Transfer to bkash", value: 3},
+        {key: "3", label: "MFS Fund Transfer", value: 3},
         {key:"4",label: "Other Credit Card",value: 4},
-        {key:"5",label: "Bank Credit Card",value: 5},
-
+        {key:"5",label: "City Bank Credit Card",value: 5},
     ],
 
     TypeOfTransferArr: [
         {key: "0", label: "Transfer Within City Bank", value: 0},
-        {key: "1", label: "Transfer Other Bank", value: 1},
+        {key: "1", label: "Transfer Other Bank", value: 1,},
         {key: "2", label: "Transfer Within City Bank", value: 2},
         {key: "3", label: "Transfer Other Bank", value: 3}
     ],
@@ -900,6 +899,16 @@ export default {
     pay_order_notes6: "4. The bank shall not be liable or responsible for any ",
     pay_order_notes7: "incorrect/incomplete information provide by you",
 
+    click_her:"click here to read positive pay instruction by ",
+    click_her1:"Bangladesh Bank",
+
+    positivePay_note1:"1. As per Bangladesh Bank Positive pay instruction is",
+    positivePay_note2:"required for all interbank clearing cheques for personal",
+    positivePay_note3:"account Tk.5 lacs & above and for other account Tk.1 lac & above.",
+    positivePay_note4:"2. CityTouch only shows you the unclear cheque.",
+    positivePay_note5:"3. in case of mismatch in cheque details. bank may call",
+    positivePay_note6:" you to agree to the physical cheque information.",
+
 
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
     card_block_notes1: "1. if you select stolen or lost option,your card will be",
@@ -1105,7 +1114,18 @@ export default {
     beneficiary_other_card_title: "Other Credit Card -Add Beneficiary",
     beneficiary_bank_card_title: "City Bank Credit Card -Add Beneficiary",
     selectDeliveryLocation: "Select Delivery Locations",
-    error_beneficiaryName:"Please enter your valid beneficiary name"
+    error_beneficiaryName:"Please enter your valid beneficiary name",
+
+    /*Positive Pay Screen design*/
+    cheque_date:"Cheque Date",
+    select_cheque_date:"Select Cheque Date",
+    cheque_book_number: "Check Book Number",
+    unused_checkLeaf_number: "Unused Cheque Leaf Number",
+    select_chequebook_number: "Select Cheque Book Number",
+    select_unused_cheque_number: "Select Unused Cheque Leaf Number",
+
+    /* Request Monitor*/
+    request_type: "RE"
 
 }
 

@@ -17,9 +17,8 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import RadioForm from "react-native-simple-radio-button";
 
-class BeneficiaryTransfer extends Component {
+class BeneficiaryTransferbKash extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -303,4 +302,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(BeneficiaryTransfer);
+export default connect(mapStateToProps)(BeneficiaryTransferbKash);

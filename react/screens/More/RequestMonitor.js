@@ -17,7 +17,7 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 
 
-class Beneficiary extends Component {
+class RequestMonitor extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +28,8 @@ class Beneficiary extends Component {
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
-            modalData: []
+            modalData: [],
+            title:props.route.params.title
         }
     }
 
@@ -85,9 +86,45 @@ class Beneficiary extends Component {
         }
     }
 
+    requestMonitor(language){
+        return(
+            <View key={"requestMonitor"} style={{flex: 1, paddingBottom: 30}}>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.type_transfer}
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("type", language.select_beneficiary_type, language.transferTypeArr, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectType}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+                <Text style={{
+                    marginStart: 10,
+                    marginTop: 20,
+                    color: themeStyle.THEME_COLOR
+                }}>*{language.mark_field_mandatory}
+                </Text>
+            </View>
+        )
+    }
+
     render() {
         let language = this.props.language;
-        return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+        return (
+            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -97,7 +134,7 @@ class Beneficiary extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.add_beneficiary}</Text>
+                    <Text style={CommonStyle.title}>{this.state.title}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
@@ -114,72 +151,44 @@ class Beneficiary extends Component {
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{flex: 1, paddingBottom: 30}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.type_transfer}
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.openModal("type", language.select_beneficiary_type, language.transferTypeArr, language)}>
-                            <View style={styles.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
+                    {this.requestMonitor(language)}
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: Utility.setWidth(10),
+                        marginRight: Utility.setWidth(10),
+                        marginTop: Utility.setHeight(20)
+                    }}>
+                        <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <View style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                borderWidth: 1,
+                                borderColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
                             </View>
                         </TouchableOpacity>
-                        <View style={{
-                            flexDirection: "row",
-                            marginStart: Utility.setWidth(10),
-                            marginRight: Utility.setWidth(10),
-                            marginTop: Utility.setHeight(20)
-                        }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
-                                <View style={{
-                                    flex: 1,
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: Utility.setHeight(46),
-                                    borderRadius: Utility.setHeight(23),
-                                    borderWidth: 1,
-                                    borderColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <View style={{width: Utility.setWidth(20)}}/>
+                        <View style={{width: Utility.setWidth(20)}}/>
 
-                            <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.submit(language, this.props.navigation)}>
-                                <View style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    height: Utility.setHeight(46),
-                                    borderRadius: Utility.setHeight(23),
-                                    backgroundColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={{
-                            marginStart: 10,
-                            marginTop: 20,
-                            color: themeStyle.THEME_COLOR
-                        }}>*{language.mark_field_mandatory}
-                        </Text>
+                        <TouchableOpacity style={{flex: 1}}
+                                          onPress={() => this.submit(language, this.props.navigation)}>
+                            <View style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                backgroundColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
+
                 </ScrollView>
                 <Modal
                     animationType="none"
@@ -273,4 +282,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Beneficiary);
+export default connect(mapStateToProps)(RequestMonitor);
