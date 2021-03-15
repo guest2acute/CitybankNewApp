@@ -77,7 +77,7 @@ class Beneficiary extends Component {
         } else if (this.state.selectTypeVal === 2) {
             this.props.navigation.navigate("EmailTransfer");
         } else if (this.state.selectTypeVal === 3) {
-            this.props.navigation.navigate("BeneficiaryTransfer");
+            this.props.navigation.navigate("BeneficiaryTransferMFS",{title:this.props.language.add_beneficiary_mfs});
         }else if (this.state.selectTypeVal === 4) {
             this.props.navigation.navigate("BeneficiaryOtherCard", {title:this.props.language.beneficiary_other_card_title});
         }else if (this.state.selectTypeVal === 5) {

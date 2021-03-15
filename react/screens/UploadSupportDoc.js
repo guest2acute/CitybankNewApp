@@ -210,12 +210,11 @@ class UploadSupportDoc extends Component {
                         placeholder={language.documentNo}
                         onChangeText={text => this.setState({
                             errorDocumentNo: "",
-                            documentNo: Utility.input(text, "0123456789")
+                            documentNo: Utility.userInput(text)
                         })}
                         value={this.state.documentNo}
                         multiline={false}
                         numberOfLines={1}
-                        keyboardType={"number-pad"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}/>

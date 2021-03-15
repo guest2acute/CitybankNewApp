@@ -34,13 +34,13 @@ class RegistrationCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cardNo: "376948112527300",
+            cardNo: "",
             cardName: "",
-            conf_mobile: "8801944111222",
-            cardPin: "0000",
+            conf_mobile: "",
+            cardPin: "",
             errorMobile: "",
             error_conf_mobile: "",
-            conf_email: "showlader08@gmail.com",
+            conf_email: "",
             errorEmail: "",
             errorCard_No: "",
             errorUserId: "",

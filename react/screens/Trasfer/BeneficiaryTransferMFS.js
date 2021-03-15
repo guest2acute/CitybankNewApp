@@ -17,20 +17,20 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
+import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 
-class BeneficiaryTransferbKash extends Component {
+class BeneficiaryTransferMFS extends Component {
     constructor(props) {
         super(props);
         this.state = {
             nickname: "",
             accountNo: "",
-            mobile_number:"",
+            mobile_number: "",
             emailTxt: "",
             errorEmail: "",
-            error_nickname:"",
-            error_accountNo:"",
-            focusUid: false,
-            focusPwd: false,
+            error_nickname: "",
+            error_accountNo: "",
+            isMainScreen: true
         }
     }
 
@@ -40,8 +40,9 @@ class BeneficiaryTransferbKash extends Component {
 
         this.setState({nickname: text, error_nickname: ""})
     }
-    accountchange(text){
-        console.log("acccount change",text)
+
+    accountchange(text) {
+        console.log("acccount change", text)
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
         this.setState({accountNo: text, error_accountNo: ""})
@@ -50,76 +51,73 @@ class BeneficiaryTransferbKash extends Component {
     async onSubmit(language, navigation) {
         if (this.state.nickname === "") {
             this.setState({error_nickname: language.require_nickname});
-            return;
+        } else if (this.state.accountNo.length !== 13) {
+            this.setState({error_accountNo: language.require_accnumber})
+        } else if (this.state.isMainScreen) {
+            this.setState({isMainScreen: false});
+        } else {
+            this.beneficiaryAdd();
         }
-        else if(this.state.accountNo.length!==13){
-            this.setState({error_accountNo:language.require_accnumber})
-            return;
-        }
-        console.log("account number",this.state.error_accountNo)
-        /*else if (this.state.userid.length < 8) {
-            this.setState({error_nickname: language.require_length_user_id});
-        }*/
-        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
 
     accountNoOption(language) {
         return (
             <View>
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.nick_name}
-                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                </Text>
-                <TextInput
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        flex: 1,
-                        marginLeft: 10
-                    }]}
-                    placeholder={language.please_enter}
-                    onChangeText={text => this.setState({
-                        error_nickname: "",
-                        nickname: Utility.userInput(text)
-                    })}
-                    //onChangeText={text => this.(text)}
-                    //onChangeText={text => this.setState({nickname: text})}
-                    value={this.state.nickname}
-                    multiline={false}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
-                        this.accountNoRef.focus();
-                    }}
-                />
-            </View >
-                {this.state.error_nickname !==  "" ?
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.nick_name}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>{this.state.isMainScreen ? "*" : ""}</Text>
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={this.state.isMainScreen ? language.please_enter : ""}
+                        onChangeText={text => this.setState({
+                            error_nickname: "",
+                            nickname: Utility.userInput(text)
+                        })}
+                        value={this.state.nickname}
+                        multiline={false}
+                        editable={this.state.isMainScreen}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.accountNoRef.focus();
+                        }}
+                    />
+                </View>
+                {this.state.error_nickname !== "" ?
                     <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
                     }}>{this.state.error_nickname}</Text> : null}
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",justifyContent:"space-between",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.bkash_account}
-                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                </Text>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row",
+                    height: Utility.setHeight(50),
+                    marginStart: 10,
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.bkash_account}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>{this.state.isMainScreen ? "*" : ""}</Text>
+                    </Text>
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
+                    {/*<TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
                     <Image style={{
                         height: Utility.setHeight(20),
                         width: Utility.setWidth(20),
@@ -129,40 +127,68 @@ class BeneficiaryTransferbKash extends Component {
                         //alignSelf:"flex-end"
                     }} resizeMode={"contain"}
                            source={require("../../resources/images/ic_beneficiary.png")}/>
-                </TouchableOpacity>
-                <TextInput
-                    ref={(ref) => this.accountNoRef = ref}
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {marginLeft:10}]}
-                    placeholder={language.bkash_account}
-                    onChangeText={text => this.accountchange(text)}
-                    value={this.state.accountNo}
-                    multiline={false}
-                    numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
-                    contextMenuHidden={true}
-                    keyboardType={"number-pad"}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    maxLength={13}/>
-            </View>
-            {this.state.error_accountNo !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_accountNo}</Text> : null}
+                </TouchableOpacity>*/}
+                    <TextInput
+                        ref={(ref) => this.accountNoRef = ref}
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {marginLeft: 10}]}
+                        placeholder={this.state.isMainScreen ? language.bkash_account : ""}
+                        onChangeText={text => this.accountchange(text)}
+                        value={this.state.accountNo}
+                        multiline={false}
+                        editable={this.state.isMainScreen}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={13}/>
+                </View>
+                {this.state.error_accountNo !== "" ?
+                    <Text style={{
+                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
+                        fontFamily: fontStyle.RobotoRegular,
+                    }}>{this.state.error_accountNo}</Text> : null}
 
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-            </Text>
-            <Text style={styles.textView}>{language.notes}:</Text>
-            <Text style={{marginStart: 10,  color: themeStyle.THEME_COLOR}}>Only bkash Customer Account can be added</Text>
-
-
-        </View>)
+                {this.state.isMainScreen ? <View><Text style={{
+                    marginStart: 10,
+                    marginTop: 20,
+                    color: themeStyle.THEME_COLOR
+                }}>*{language.mark_field_mandatory}
+                </Text>
+                    <Text style={styles.textView}>{language.notes}:</Text>
+                    <Text style={{marginStart: 10, color: themeStyle.THEME_COLOR}}>Only bkash Customer Account can be
+                        added</Text></View> : null}
+            </View>)
     }
+
+   /* beneficiaryAdd(language, navigation) {
+        const {selectTypeVal} = this.state;
+        this.setState({isProgress: true});
+        let accountDetails = {
+            ACCOUNT: accountNo,
+            ADDRESS: "",
+            CONTACTNUMBER: "",
+            ACCOUNTNAME: account_holder_name
+        }
+
+        AddBeneficiary(accountDetails,"O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () =>
+                this.props.navigation.navigate("SecurityVerification", {
+                    REQUEST_CD: response.REQUEST_CD,
+                    transType: "O",
+                    actNo: this.state.accountNo
+                }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }*/
 
     render() {
         let language = this.props.language;
@@ -185,7 +211,7 @@ class BeneficiaryTransferbKash extends Component {
                                           position: "absolute",
                                           right: Utility.setWidth(10),
                                       }}
-                                     >
+                    >
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -228,7 +254,7 @@ class BeneficiaryTransferbKash extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : this.state.isMainScreen ? language.next : language.confirm}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -279,7 +305,7 @@ const styles = {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
         borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
+        maxHeight: Utility.getDeviceHeight() - 100,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -290,7 +316,7 @@ const styles = {
         shadowRadius: 3.84,
         elevation: 5
     },
-    textView:{
+    textView: {
         marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR
     }
 }
@@ -302,4 +328,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(BeneficiaryTransferbKash);
+export default connect(mapStateToProps)(BeneficiaryTransferMFS);

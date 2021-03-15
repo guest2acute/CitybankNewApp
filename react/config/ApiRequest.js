@@ -154,7 +154,7 @@ export default class ApiRequest {
             let result = await ApiRequest.apiRequest.callApi(otpVerifyRequest, {});
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve("success");
+                return resolve(result);
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 return reject(result.STATUS);
@@ -176,7 +176,7 @@ export default class ApiRequest {
                 PASS_TYPE: passType,
                 REQ_TYPE: "A",
                 OTP_TYPE: otp_type === 0 ? "S" : "E",
-                ACCOUNT_NO: actCardNumber,
+                ACCT_NO: actCardNumber,
                 DEVICE_ID: await Utility.getDeviceID(),
                 ACTIVITY_CD: response.ACTIVITY_CD,
                 ACTION: "CHANGEPWD",
@@ -195,10 +195,12 @@ export default class ApiRequest {
             }
             console.log("verifyReq", verifyReq);
             let result = await ApiRequest.apiRequest.callApi(verifyReq, {"CARD_VERIFY": isCard ? "Y" : "N"});
+            console.log("result si======================>",result)
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
                 return resolve(result.RESPONSE[0]);
             } else {
+                console.log(result.STATUS)
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 return reject(result.STATUS);
             }

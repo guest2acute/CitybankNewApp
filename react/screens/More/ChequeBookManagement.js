@@ -47,16 +47,6 @@ class ChequeBookManagement extends Component {
             tabBarLabel: this.props.language.more
         });
 
-        if (this.props.userDetails.AUTH_FLAG === "TP") {
-            let {data} = this.state;
-            let obj = {
-                id: "changeTransPin",
-                title: this.props.language.change_transaction_pin,
-                icon: require("../../resources/images/ic_credential_management.png")
-            }
-            let dataArr = [...data, obj]
-            this.setState({data: dataArr});
-        }
     }
 
     moveScreen(item) {

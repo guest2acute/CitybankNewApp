@@ -234,6 +234,7 @@ class PinLogin extends Component {
             TXN_PASS_EXP_ALERT: response.TXN_PASS_EXP_ALERT,
             TXN_PASS_EXP_ALERT_MSG: response.TXN_PASS_EXP_ALERT_MSG,
             USER_PROFILE_IMG: response.USER_PROFILE_IMG,
+            TXN_PASS_REG_FLAG: response.TXN_PASS_REG_FLAG,
         };
         console.log("userDetails", userDetails);
 
