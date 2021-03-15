@@ -777,11 +777,14 @@ class RegistrationAccount extends Component {
             console.log(this.state.currentSelection+"=selectedDate-", selectedDate);
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
-            this.setState({dateVal: selectedDate, dob: currentDate, show: false}, () => {
+            this.setState({dateVal: selectedDate, currentDate: currentDate, show: false}, () => {
                 if (this.state.currentSelection === 0)
-                    this.setState({errorDob: "", dob: currentDate})
-                else
-                    this.setState({errorTransDate: "", transDate: currentDate})
+                {
+                        this.setState({errorDob: "", dob: currentDate})
+                }
+                else{
+                        this.setState({errorTransDate: "", transDate: currentDate})
+                }
             });
             console.log("date is this", this.state.dateVal)
             console.log("dob", this.state.dob)
@@ -791,7 +794,8 @@ class RegistrationAccount extends Component {
     };
 
     userPersonal(language) {
-        return (<View key={"userPersonal"} style={{
+        return (
+            <View key={"userPersonal"} style={{
             borderColor: themeStyle.BORDER,
             borderRadius: 5,
             marginTop: 10,
