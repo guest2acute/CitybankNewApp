@@ -609,7 +609,7 @@ class ChangeLoginCredential extends Component {
         } = this.state;
 
 
-        if ((select_credential_type.value === 0 && newCredential === "") || (select_credential_type.value === 1 && newCredential.length !== 6)) {
+        if ((select_credential_type.value === 0 && newCredential === "") || (select_credential_type.value === 1 && (!Utility.validPassword(newCredential)))) {
             this.setState({errorNewCredential: select_credential_type.value === 0 ? language.errorNewPwd : language.errorNewPIN});
             return;
         } else if (confNewCredential !== newCredential) {

@@ -777,7 +777,7 @@ class RegistrationAccount extends Component {
             console.log(this.state.currentSelection+"=selectedDate-", selectedDate);
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
-            this.setState({dateVal: selectedDate, dob: currentDate, show: false}, () => {
+            this.setState({dateVal: selectedDate,show: false}, () => {
                 if (this.state.currentSelection === 0)
                     this.setState({errorDob: "", dob: currentDate})
                 else
@@ -1310,7 +1310,7 @@ class RegistrationAccount extends Component {
                 this.setState({errorTransPin: language.errTransPin});
             } else if (this.state.loginPin === "") {
                 this.setState({errorLoginPin: language.errValidPin})
-            } else if (this.state.password === "") {
+            } else if (!Utility.validPassword(this.state.password)) {
                 this.setState({errorpassword: language.errorpassword})
             } else {
                 await this.processSignup(language);
@@ -1371,7 +1371,6 @@ class RegistrationAccount extends Component {
                                 marginStart: Utility.setWidth(10),
                                 marginRight: Utility.setWidth(10),
                                 marginTop: Utility.setHeight(20),
-
                             }}>
                                 <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
                                     <View style={{

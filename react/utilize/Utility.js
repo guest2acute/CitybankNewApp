@@ -150,6 +150,13 @@ export default class Utility {
         return reg.test(text);
     }
 
+    static validPassword(text) {
+        if (text.length < 8 || text.length > 12) {
+            return false;
+        }
+        let reg = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*)$/;
+        return reg.test(text);
+    }
 
     static errorManage(status, message, props) {
         if (status === "99" || status === "1") {
