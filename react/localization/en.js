@@ -263,7 +263,7 @@ export default {
     errCardPin: "Please enter 4 digits card PIN",
     errorUserId: "Please enter User ID ",
     errOTP: "Please enter 4 digit OTP",
-    errorpassword: "Please enter Password",
+    errorpassword: "Please enter valid Password",
     errorMother: "Please enter Mother Name",
     errorDob: "Please select Date Of Birth",
     errorTransDate: "Please enter Transfer Date",

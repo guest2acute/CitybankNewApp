@@ -91,6 +91,7 @@ class LoginConfigureProfile extends Component {
             await StorageClass.store(Config.isFirstTime, userID);
             await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
             if (this.state.loginPrefVal === "2") {
+                console.log("result",result);
                 let response = result.RESPONSE[0];
                 await StorageClass.store(Config.BioPinPref, response.BIO_PIN);
             }

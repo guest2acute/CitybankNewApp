@@ -774,16 +774,15 @@ class RegistrationAccount extends Component {
 
     onChange = (event, selectedDate) => {
         if (event.type !== "dismissed" && selectedDate !== undefined) {
-            console.log(this.state.currentSelection+"=selectedDate-", selectedDate);
+            console.log(this.state.currentSelection + "=selectedDate-", selectedDate);
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
+
             this.setState({dateVal: selectedDate, show: false}, () => {
-                if (this.state.currentSelection === 0)
-                {
-                        this.setState({errorDob: "", dob: currentDate})
-                }
-                else{
-                        this.setState({errorTransDate: "", transDate: currentDate})
+                if (this.state.currentSelection === 0) {
+                    this.setState({errorDob: "", dob: currentDate})
+                } else {
+                    this.setState({errorTransDate: "", transDate: currentDate})
                 }
             });
             console.log("date is this", this.state.dateVal)
@@ -796,242 +795,242 @@ class RegistrationAccount extends Component {
     userPersonal(language) {
         return (
             <View key={"userPersonal"} style={{
-            borderColor: themeStyle.BORDER,
-            borderRadius: 5,
-            marginTop: 10,
-            overflow: "hidden",
-            borderWidth: 2
-        }}>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.fatherName}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.et_father_name}
-                        onChangeText={text => this.setState({errorFather: "", fatherName: text})}
-                        value={this.state.fatherName}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.motherRef.focus();
-                        }}
-                        autoCorrect={false}/>
-                </View>
-                {this.state.errorFather !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorFather}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.motherName}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                    </Text>
-                    <TextInput
-                        ref={(ref) => this.motherRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={language.et_mother_name}
-                        onChangeText={text => this.setState({errorMother: "", motherName: text})}
-                        value={this.state.motherName}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.dobRef.focus();
-                        }}
-                        autoCorrect={false}/>
-                </View>
-                {this.state.errorMother !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorMother}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.et_dob}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                    </Text>
-                    <TouchableOpacity style={{
-                        marginLeft: 10,
-                        flex: 1,
-                    }} onPress={() => this.showDatepicker(0)}>
+                borderColor: themeStyle.BORDER,
+                borderRadius: 5,
+                marginTop: 10,
+                overflow: "hidden",
+                borderWidth: 2
+            }}>
+                <View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.fatherName}
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        </Text>
                         <TextInput
-                            ref={(ref) => this.dobRef = ref}
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
                                 alignItems: "flex-end",
                                 textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
                             }]}
-                            //onChangeText={text => this.setState({text})}
-                            placeholder={"DD-MMM-YYYY"}
-                            value={this.state.dob}
-                            editable={false}
+                            placeholder={language.et_father_name}
+                            onChangeText={text => this.setState({errorFather: "", fatherName: text})}
+                            value={this.state.fatherName}
                             multiline={false}
                             numberOfLines={1}
                             contextMenuHidden={true}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}/></TouchableOpacity>
+                            returnKeyType={"next"}
+                            onSubmitEditing={(event) => {
+                                this.motherRef.focus();
+                            }}
+                            autoCorrect={false}/>
+                    </View>
+                    {this.state.errorFather !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorFather}</Text> : null}
                 </View>
-                {this.state.errorDob !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorDob}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.last_trans_date}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                    </Text>
-                    <TouchableOpacity style={{
-                        marginLeft: 10,
-                        flex: 1,
-                    }} onPress={() => this.showDatepicker(1)}>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.motherName}
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        </Text>
                         <TextInput
-                            ref={(ref) => this.transDateRef = ref}
+                            ref={(ref) => this.motherRef = ref}
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
                                 alignItems: "flex-end",
-                                textAlign: 'right'
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
                             }]}
-                            placeholder={"DD-MMM-YYYY"}
-                            value={this.state.transDate}
+                            placeholder={language.et_mother_name}
+                            onChangeText={text => this.setState({errorMother: "", motherName: text})}
+                            value={this.state.motherName}
                             multiline={false}
-                            editable={false}
                             numberOfLines={1}
                             contextMenuHidden={true}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}
-                        /></TouchableOpacity>
+                            returnKeyType={"next"}
+                            onSubmitEditing={(event) => {
+                                this.dobRef.focus();
+                            }}
+                            autoCorrect={false}/>
+                    </View>
+                    {this.state.errorMother !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorMother}</Text> : null}
                 </View>
-                {this.state.errorTransDate !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorTransDate}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.last_trans_amount}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                    </Text>
-                    <TextInput
-                        ref={(ref) => this.transAmtRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.et_dob}
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        </Text>
+                        <TouchableOpacity style={{
+                            marginLeft: 10,
                             flex: 1,
-                            marginLeft: 10
-                        }]}
-                        onChangeText={text => this.setState({
-                            errorTransAmt: "",
-                            transAmt: Utility.input(text, "0123456789.")
-                        })}
-                        value={this.state.transAmt}
-                        multiline={false}
-                        numberOfLines={1}
-                        keyboardType={"number-pad"}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={10}/>
+                        }} onPress={() => this.showDatepicker(0)}>
+                            <TextInput
+                                ref={(ref) => this.dobRef = ref}
+                                selectionColor={themeStyle.THEME_COLOR}
+                                style={[CommonStyle.textStyle, {
+                                    alignItems: "flex-end",
+                                    textAlign: 'right',
+                                }]}
+                                //onChangeText={text => this.setState({text})}
+                                placeholder={"DD-MMM-YYYY"}
+                                value={this.state.dob}
+                                editable={false}
+                                multiline={false}
+                                numberOfLines={1}
+                                contextMenuHidden={true}
+                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                autoCorrect={false}/></TouchableOpacity>
+                    </View>
+                    {this.state.errorDob !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorDob}</Text> : null}
                 </View>
-                {this.state.errorTransAmt !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorTransAmt}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            {this.otpView(language)}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.last_trans_date}
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        </Text>
+                        <TouchableOpacity style={{
+                            marginLeft: 10,
+                            flex: 1,
+                        }} onPress={() => this.showDatepicker(1)}>
+                            <TextInput
+                                ref={(ref) => this.transDateRef = ref}
+                                selectionColor={themeStyle.THEME_COLOR}
+                                style={[CommonStyle.textStyle, {
+                                    alignItems: "flex-end",
+                                    textAlign: 'right'
+                                }]}
+                                placeholder={"DD-MMM-YYYY"}
+                                value={this.state.transDate}
+                                multiline={false}
+                                editable={false}
+                                numberOfLines={1}
+                                contextMenuHidden={true}
+                                placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                                autoCorrect={false}
+                            /></TouchableOpacity>
+                    </View>
+                    {this.state.errorTransDate !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorTransDate}</Text> : null}
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.last_trans_amount}
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        </Text>
+                        <TextInput
+                            ref={(ref) => this.transAmtRef = ref}
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            onChangeText={text => this.setState({
+                                errorTransAmt: "",
+                                transAmt: Utility.input(text, "0123456789.")
+                            })}
+                            value={this.state.transAmt}
+                            multiline={false}
+                            numberOfLines={1}
+                            keyboardType={"number-pad"}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            maxLength={10}/>
+                    </View>
+                    {this.state.errorTransAmt !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorTransAmt}</Text> : null}
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                {this.otpView(language)}
 
-        </View>)
+            </View>)
     }
 
     debitCardUI(language) {
@@ -1237,7 +1236,7 @@ class RegistrationAccount extends Component {
     }
 
     async submit(language, navigation) {
-        const {stateVal, conf_mobile, conf_email, signUpResponse,hasDebitCard} = this.state;
+        const {stateVal, conf_mobile, conf_email, signUpResponse, hasDebitCard} = this.state;
         if (stateVal === 0) {
             if (this.state.accountNo.length !== 13) {
                 this.setState({errorAccount_no: language.errActNo});
@@ -1314,7 +1313,7 @@ class RegistrationAccount extends Component {
                 this.setState({errorTransPin: language.errTransPin});
             } else if (this.state.loginPin === "") {
                 this.setState({errorLoginPin: language.errValidPin})
-            } else if (this.state.password === "") {
+            } else if (!Utility.validPassword(this.state.password)) {
                 this.setState({errorpassword: language.errorpassword})
             } else {
                 await this.processSignup(language);
@@ -1324,8 +1323,8 @@ class RegistrationAccount extends Component {
 
     async blockUser(description) {
         this.setState({isProgress: true});
-        console.log("sgg",this.state.userId)
-        await blockProcess(this.state.accountNo,"",description, this.props, "USERAUTH")
+        console.log("sgg", this.state.userId)
+        await blockProcess(this.state.accountNo, "", description, this.props, "USERAUTH")
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -1368,14 +1367,13 @@ class RegistrationAccount extends Component {
                                 marginTop: 15,
                                 marginLeft: 10,
                                 marginRight: 10
-                            }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : this.state.stateVal === 2 ?"":language.provideDetails}</Text>}
+                            }]}>{this.state.stateVal === 0 ? language.welcome_signup + language.accountNo : this.state.stateVal === 1 ? language.welcome_signup + language.debitCard : this.state.stateVal === 2 ? "" : language.provideDetails}</Text>}
                             {this.state.stateVal === 0 ? this.accountView(language) : this.state.stateVal === 1 ? this.state.hasDebitCard ? this.debitCardUI(language) : this.userPersonal(language) : this.state.stateVal === 2 ? this.otpEnter(language) : this.passwordSet(language)}
                             <View style={{
                                 flexDirection: "row",
                                 marginStart: Utility.setWidth(10),
                                 marginRight: Utility.setWidth(10),
                                 marginTop: Utility.setHeight(20),
-
                             }}>
                                 <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
                                     <View style={{

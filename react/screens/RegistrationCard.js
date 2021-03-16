@@ -51,7 +51,6 @@ class RegistrationCard extends Component {
             isTerm: false,
             debitPin: "",
             errorPin: "",
-
             errorExpiry: "",
             password: "",
             loginPin: "",
@@ -71,7 +70,7 @@ class RegistrationCard extends Component {
         }
     }
 
-   async componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -90,7 +89,7 @@ class RegistrationCard extends Component {
     startReadSMS = async () => {
         console.log("Great!! you have received new sms:");
         const hasPermission = await ReadSms.requestReadSMSPermission();
-        if(hasPermission) {
+        if (hasPermission) {
             await ReadSms.startReadSMS((status, sms, error) => {
                 if (status === "success") {
                     console.log("Great!! you have received new sms:", sms);
@@ -815,7 +814,7 @@ class RegistrationCard extends Component {
         } else if (stateVal === 3) {
             if (this.state.loginPin === "") {
                 this.setState({errorLoginPin: language.errValidPin})
-            } else if (this.state.password === "") {
+            } else if (!Utility.validPassword(this.state.password)) {
                 this.setState({errorpassword: language.errorpassword})
             } else {
                 await this.processSignup(language)

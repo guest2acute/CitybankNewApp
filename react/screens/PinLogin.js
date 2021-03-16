@@ -71,8 +71,11 @@ class PinLogin extends Component {
         }
         let loginPref = await StorageClass.retrieve(Config.LoginPref);
         this.setState({loginPref: loginPref});
-        if (loginPref === "2")
+        console.log("brforeloignPref",loginPref);
+        if (loginPref === "2"){
+            console.log("loignPref",loginPref);
             this.checkFingerTouch();
+        }
     }
 
     backAction = () => {
@@ -146,7 +149,8 @@ class PinLogin extends Component {
         console.log("in", "in");
         let password = "";
         if (this.state.loginPref === "0") {
-            if (this.state.passwordTxt.length === 0) {
+            //if (this.state.passwordTxt.length === 0) {
+            if (!Utility.validPassword(this.state.passwordTxt)) {
                 this.setState({errorTextPwd: language.require_pwd});
                 return;
             } else {
