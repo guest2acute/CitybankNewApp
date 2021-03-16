@@ -68,6 +68,7 @@ import FixedDeposit from "./react/screens/More/FixedDeposit";
 import MonthlyDPS from "./react/screens/More/MonthlyDPS";
 import PayOrder from "./react/screens/More/PayOrder";
 import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
+import ViewDeleteBeneficiary from "./react/screens/Trasfer/ViewDeleteBeneficiary";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
@@ -138,6 +139,7 @@ function TransferTab() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
+            <Stack.Screen name="ViewDeleteBeneficiary" component={ViewDeleteBeneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryManagement" component={BeneficiaryManagement} options={{headerShown: false}}/>
             <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryWithCityBank" component={BeneficiaryWithCityBank} options={{headerShown: false}}/>
