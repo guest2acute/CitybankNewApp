@@ -997,7 +997,6 @@ export default {
     qr_merchant_payment: "কিউআর মার্চেন্ট পেমেন্ট",
 
     /*account srvices*/
-    fixed_deposit: "নির্দিষ্ট পরিমান",
     monthly_Dps: "মাসিক ডিপিএস",
     pay_order: "পে অর্ডার",
     positive_pay: "ইতিবাচক বেতন",
@@ -1088,33 +1087,63 @@ export default {
     cheque_book_request: "বুক অনুরোধ পরীক্ষা করুন",
     cheque_book_request_status: "বুক অনুরোধের স্থিতি পরীক্ষা করুন",
 
-    /*Fixed Deposite*/
-    fixed_deposit: "নির্দিষ্ট পরিমান",
-    account_title: "অ্যাকাউন্টের শিরোনাম",
-    depositTypeArr: [
-        {key: "0", label: "ফিক্সড ডিপোজিট-জেনারেল", value: 0},
-        {key: "1", label: "ডাবল মানি এফডি অ্যাকাউন্ট", value: 1},
-        {key: "2", label: "মাসিক সুদ পরিশোধের এফডি", value: 2}
-    ], TenureTypeArr: [
-        {key: "0", label: "মাস (গুলি)", value: 0},
-        {key: "1", label: "প্রদান করে", value: 1},
-    ],
-    select_tenure_type: "মেয়াদ প্রকার নির্বাচন করুন",
-    tenure: "মেয়াদ (সময়কাল)",
-    select_tenure_period: "সময়কাল (সময়কাল) নির্বাচন করুন",
-    auto_renewal: "স্বয়ংক্রিয় পুনর্নবীকরণ",
-    auto_renewal_Type: [{label: "হ্যাঁ", value: 0}, {label: "না", value: 1}],
-    renewTitle: "Renew",
-    renew: [{label: "মূলনীতি", value: 0}, {label: "মূল এবং আগ্রহ উভয়ই", value: 1}],
-    interestRate: "সুদের হার",
-    deposit_advice_branch: "আমানত সংগ্রহের শাখা জমা দিন",
-    select_branch: "শাখা নির্বাচন করুন",
-    maturity_Date: "পরিপক্কতার তারিখ",
-    Confirm: "কনফার্ম",
-    credit_interest_to: "Creditণ সুদ",
-    selectTenureType: "মেয়াদ প্রকার নির্বাচন করুন",
-    selectTenurePeriod: "মেয়াদ নির্বাচন করুন",
-    error_amount: "পরিমাণ প্রয়োজন",
+  /*Fixed Deposite*/
+  fixed_deposit: "নির্দিষ্ট পরিমান",
+  account_title: "অ্যাকাউন্টের শিরোনাম",
+  depositTypeArr: [
+    {key: "0", label: "ফিক্সড ডিপোজিট-জেনারেল", value: 0},
+    {key: "1", label: "ডাবল মানি এফডি অ্যাকাউন্ট", value: 1},
+    {key: "2", label: "মাসিক সুদ পরিশোধের এফডি", value: 2}
+  ],TenureTypeArr: [
+    {key: "0", label: "মাস (গুলি)", value: 0},
+    {key: "1", label: "প্রদান করে", value: 1},
+  ],
+  select_tenure_type: "মেয়াদ প্রকার নির্বাচন করুন",
+  tenure: "মেয়াদ (সময়কাল)",
+  select_tenure_period: "সময়কাল (সময়কাল) নির্বাচন করুন",
+  auto_renewal: "স্বয়ংক্রিয় পুনর্নবীকরণ",
+  auto_renewal_Type: [{label:"হ্যাঁ",value:0},{label: "না",value: 1}],
+  renewTitle: "Renew",
+  renew: [{label:"মূলনীতি",value:0},{label:"মূল এবং আগ্রহ উভয়ই",value:1}],
+  interestRate: "সুদের হার",
+  deposit_advice_branch:"আমানত সংগ্রহের শাখা জমা দিন",
+  select_branch: "শাখা নির্বাচন করুন",
+  maturity_Date: "পরিপক্কতার তারিখ",
+  Confirm:"কনফার্ম",
+  credit_interest_to: "Creditণ সুদ",
+  selectTenureType: "মেয়াদ প্রকার নির্বাচন করুন",
+  selectTenurePeriod: "মেয়াদ নির্বাচন করুন",
+  branch:"শাখা",
+  installment_start_date:"কিস্তি শুরুর তারিখ",
+  select_installment: "কিস্তি শুরুর তারিখটি নির্বাচন করুন",
+  month:"মাস",
+  select_month: "মাস নির্বাচন করুন",
+  amount_per_installment: "প্রতি কিস্তির পরিমাণ",
+  errorSelect_installment:"কিস্তি শুরুর তারিখটি নির্বাচন করুন",
+  errorSelect_month:"মাস নির্বাচন করুন",
+
+  /*pay order screen*/
+  delivery_location: "ডেলিভারির ঠিকানা",
+  select_delivery_location: "বিতরণ অবস্থান নির্বাচন করুন",
+  deliveryTypeArr:[{key:0,label:"শাখা",value:0}],
+  beneficiary_name:"সুবিধা প্রাপ্ত নাম",
+  pay_order_type: "পে অর্ডার সংগ্রহ শাখা",
+
+  /*BeneficiaryOtherCard screen*/
+  beneficiary_other_card_title: "অন্যান্য ক্রেডিট কার্ড - সুবিধাভোগী যোগ করুন",
+  beneficiary_bank_card_title: "সিটি ব্যাংক ক্রেডিট কার্ড-সুবিধাভোগী যুক্ত করুন",
+  selectDeliveryLocation: "বিতরণ অবস্থান নির্বাচন করুন",
+  error_beneficiaryName:"দয়া করে আপনার বৈধ সুবিধাভোগীর নাম লিখুন",
+
+    /*Positive Pay Screen design*/
+    cheque_date:"তারিখ চেক করুন",
+    select_cheque_date:"সিলেক্ট_চেক_ডেট",
+    cheque_book_number: "চেক বইয়ের নম্বর",
+    unused_checkLeaf_number: "অব্যবহৃত চেক লিফ নম্বর",
+    select_chequebook_number: "চেক বুক নম্বর নির্বাচন করুন",
+    select_unused_cheque_number: "অব্যবহৃত চেক লিফ নম্বরটি নির্বাচন করুন"
+
+
 
 
 }

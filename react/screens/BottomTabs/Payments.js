@@ -30,7 +30,7 @@ class Payments extends Component {
                 this.props.navigation.navigate("MobileRecharge")
                 break;
             case "BeneficiaryManagement":
-                this.props.navigation.navigate("MobileRecharge")
+                this.props.navigation.navigate("BeneficiaryManagement")
                 break;
             case "FavoritePayments":
                 this.props.navigation.navigate("Favorite",{title:this.props.language.favorite_payment})
@@ -40,7 +40,6 @@ class Payments extends Component {
                 break;
         }
     }
-
 
     _renderItem = ({item, index}) =>{
         return(

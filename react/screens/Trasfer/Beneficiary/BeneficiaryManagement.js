@@ -46,7 +46,7 @@ class BeneficiaryManagement extends Component {
                 this.props.navigation.navigate("Beneficiary");
                 break;
             case "delete":
-                this.props.navigation.navigate("Beneficiary");
+                this.props.navigation.navigate("ViewDeleteBeneficiary");
                 break;
         }
     }

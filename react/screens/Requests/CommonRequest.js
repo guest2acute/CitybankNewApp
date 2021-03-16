@@ -183,7 +183,7 @@ export const MoreDetails = (language) => {
                     id: "Positive Pay",
                     title: language.positive_pay,
                     icon: require("../../resources/images/ic_positive_pay.png"),
-                    redirectScreen: ""
+                    redirectScreen: "PositivePay"
                 },
                 {
                     id: "ChequeBookManagement",
@@ -217,7 +217,7 @@ export const MoreDetails = (language) => {
                     id: "TagAccountCityTouch",
                     title: language.tag_account_cityTouch,
                     icon: require("../../resources/images/ic_tag_account.png"),
-                    redirectScreen: ""
+                    redirectScreen: "TagCreditCardInCityTouch"
                 },
                 {
                     id: "EditAccountPreview",
@@ -229,7 +229,7 @@ export const MoreDetails = (language) => {
                     id: "RequestMonitor",
                     title: language.request_monitor,
                     icon: require("../../resources/images/ic_credit_card.png"),
-                    redirectScreen: ""
+                    redirectScreen: "RequestMonitor"
                 },
             ],
         },
@@ -353,7 +353,7 @@ export const MoreDetails = (language) => {
             title: language.otp_lock_unlock,
             icon: require("../../resources/images/ic_otp_status_change.png"),
             subCategory: [],
-            redirectScreen: ""
+            redirectScreen: "OtpLockUnlock"
         },
         {
             id: "OnlinePurchase",

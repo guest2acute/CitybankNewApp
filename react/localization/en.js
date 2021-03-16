@@ -534,7 +534,7 @@ export default {
 
     /*beneficiary management message*/
     add_beneficiary: "Add Beneficiary",
-    delete_beneficiary: "Delete Beneficiary",
+    delete_beneficiary: "View/Delete Beneficiary",
     beneficiary_management: "Beneficiary Managements",
 
     type_transfer: "Type Of Transfer *",
@@ -901,6 +901,16 @@ export default {
     pay_order_notes6: "4. The bank shall not be liable or responsible for any ",
     pay_order_notes7: "incorrect/incomplete information provide by you",
 
+    click_her:"click here to read positive pay instruction by ",
+    click_her1:"Bangladesh Bank",
+
+    positivePay_note1:"1. As per Bangladesh Bank Positive pay instruction is",
+    positivePay_note2:"required for all interbank clearing cheques for personal",
+    positivePay_note3:"account Tk.5 lacs & above and for other account Tk.1 lac & above.",
+    positivePay_note4:"2. CityTouch only shows you the unclear cheque.",
+    positivePay_note5:"3. in case of mismatch in cheque details. bank may call",
+    positivePay_note6:" you to agree to the physical cheque information.",
+
 
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
     card_block_notes1: "1. if you select stolen or lost option,your card will be",
@@ -1106,7 +1116,48 @@ export default {
     beneficiary_other_card_title: "Other Credit Card -Add Beneficiary",
     beneficiary_bank_card_title: "City Bank Credit Card -Add Beneficiary",
     selectDeliveryLocation: "Select Delivery Locations",
-    error_beneficiaryName:"Please enter your valid beneficiary name"
+    error_beneficiaryName:"Please enter your valid beneficiary name",
+
+    /*Positive Pay Screen design*/
+    cheque_date:"Cheque Date",
+    select_cheque_date:"Select Cheque Date",
+    cheque_book_number: "Check Book Number",
+    unused_checkLeaf_number: "Unused Cheque Leaf Number",
+    select_chequebook_number: "Select Cheque Book Number",
+    select_unused_cheque_number: "Select Unused Cheque Leaf Number",
+
+    /* Request Monitor*/
+    request_type: "Request Type",
+    request_status: "Request Status",
+    select_request_type:"Select Request Type",
+    select_request_status: "Select Request Status",
+    requestTypeArray:[
+        {key: "0", label: "Monthly DPS", value: 0},
+        {key: "1", label: "Fixed Deposit", value: 1},
+    ],
+    requestStatusArray:[
+        {key: "0", label: "All", value: 0},
+        {key: "1", label: "Pending", value: 1},
+        {key: "2", label: "Open", value: 2},
+    ],
+    account_title: "Account Title",
+    account_number: "Account Number",
+    start_date: "Start Date",
+
+    /*Otp Lock Unlock*/
+    reset_request: "Reset Request",
+    select_otp_status:"Select Otp Status",
+    resetRequestTypeArray:[
+        {key: "0", label: "Active", value: 0},
+    ],
+    select_debit_credit:"Select Debit/Credit Card",
+    current_otp_status:"Current Otp Status",
+    lock:"Lock",
+    unlock:"Unlock",
+    error_otp_status: "Select Otp Status",
+    error_debit_credit: "Card Number is Required",
+
+
 
 }
 
