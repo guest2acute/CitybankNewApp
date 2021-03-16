@@ -10,14 +10,14 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import themeStyle from "../../resources/theme.style";
-import CommonStyle from "../../resources/CommonStyle";
+import themeStyle from "../../../resources/theme.style";
+import CommonStyle from "../../../resources/CommonStyle";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LoginScreen from "../LoginScreen";
-import TermConditionScreen from "../TermConditionScreen";
+import LoginScreen from "../../LoginScreen";
+import TermConditionScreen from "../../TermConditionScreen";
 import {connect} from "react-redux";
-import Utility from "../../utilize/Utility";
-import FontSize from "../../resources/ManageFontSize";
+import Utility from "../../../utilize/Utility";
+import FontSize from "../../../resources/ManageFontSize";
 
 
 class BeneficiaryManagement extends Component {
@@ -29,12 +29,12 @@ class BeneficiaryManagement extends Component {
                 {
                     id: "add",
                     title: language.add_beneficiary,
-                    icon: require("../../resources/images/ic_profile.png")
+                    icon: require("../../../resources/images/ic_profile.png")
                 },
                 {
                     id: "delete",
                     title: language.delete_beneficiary,
-                    icon: require("../../resources/images/contact_icon.png")
+                    icon: require("../../../resources/images/contact_icon.png")
                 }
             ]
         }
@@ -88,7 +88,7 @@ class BeneficiaryManagement extends Component {
                         width: Utility.setWidth(30),
                         tintColor: "#b5bfc1"
                     }} resizeMode={"contain"}
-                           source={require("../../resources/images/arrow_right_ios.png")}/>
+                           source={require("../../../resources/images/arrow_right_ios.png")}/>
                 </View>
             </TouchableOpacity>
         )
@@ -114,7 +114,7 @@ class BeneficiaryManagement extends Component {
                         onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.beneficiary_management}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -129,7 +129,7 @@ class BeneficiaryManagement extends Component {
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
 

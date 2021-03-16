@@ -36,11 +36,13 @@ import ChangeLoginCredential from "./react/screens/ChangeLoginCredential";
 import ChangeContactDetails from "./react/screens/ChangeContactDetails";
 import UploadSupportDoc from "./react/screens/UploadSupportDoc";
 import PinLogin from "./react/screens/PinLogin";
-import BeneficiaryManagement from "./react/screens/Trasfer/BeneficiaryManagement";
-import Beneficiary from "./react/screens/Trasfer/Beneficiary";
-import BeneficiaryWithCityBank from "./react/screens/Trasfer/BeneficiaryWithCityBank";
-import BeneficiaryOtherBank from "./react/screens/Trasfer/BeneficiaryOtherBank";
-import BeneficiaryTransferMFS from "./react/screens/Trasfer/BeneficiaryTransferMFS";
+
+import BeneficiaryManagement from "./react/screens/Trasfer/Beneficiary/BeneficiaryManagement";
+import Beneficiary from "./react/screens/Trasfer/Beneficiary/Beneficiary";
+import BeneficiaryWithCityBank from "./react/screens/Trasfer/Beneficiary/BeneficiaryWithCityBank";
+import BeneficiaryOtherBank from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherBank";
+import BeneficiaryTransferMFS from "./react/screens/Trasfer/Beneficiary/BeneficiaryTransferMFS";
+
 import TransferWithBkash from "./react/screens/Trasfer/TransferWithBkash";
 import TransferCategory from "./react/screens/TransferCategory";
 import TransferHistory from "./react/screens/TransferHistory";
@@ -67,10 +69,11 @@ import ChequeBookManagement from "./react/screens/More/ChequeBookManagement";
 import FixedDeposit from "./react/screens/More/FixedDeposit";
 import MonthlyDPS from "./react/screens/More/MonthlyDPS";
 import PayOrder from "./react/screens/More/PayOrder";
-import BeneficiaryOtherCard from "./react/screens/Trasfer/BeneficiaryOtherCard";
+
 import RequestMonitor from "./react/screens/More/RequestMonitor";
 import OtpLockUnlock from "./react/screens/More/OtpLockUnlock";
-import ViewDeleteBeneficiary from "./react/screens/Trasfer/ViewDeleteBeneficiary";
+import ViewDeleteBeneficiary from "./react/screens/Trasfer/Beneficiary/ViewDeleteBeneficiary";
+import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();

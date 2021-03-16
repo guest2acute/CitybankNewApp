@@ -10,17 +10,17 @@ import {
     Image,
     TextInput, FlatList, Platform, StatusBar
 } from "react-native";
-import themeStyle from "../../resources/theme.style";
-import fontStyle from "../../resources/FontStyle";
-import FontSize from "../../resources/ManageFontSize";
-import CommonStyle from "../../resources/CommonStyle";
+import themeStyle from "../../../resources/theme.style";
+import fontStyle from "../../../resources/FontStyle";
+import FontSize from "../../../resources/ManageFontSize";
+import CommonStyle from "../../../resources/CommonStyle";
 import React, {Component} from "react";
-import {BusyIndicator} from "../../resources/busy-indicator";
-import Utility from "../../utilize/Utility";
-import {GETACCTBALDETAIL, AddBeneficiary} from '../Requests/RequestBeneficiary';
+import {BusyIndicator} from "../../../resources/busy-indicator";
+import Utility from "../../../utilize/Utility";
+import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiary';
 
 
-class BeneficiaryOtherCard extends Component {
+class BeneficiaryWithCityBank extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,22 +28,18 @@ class BeneficiaryOtherCard extends Component {
             nickname: "",
             account_holder_name: "",
             currency: "",
-            accountNo: "2251657635001",
-            cardNumber:"",
+            accountNo: "",
             type_act: "",
             mobile_number: "",
             emailTxt: "",
             errorEmail: "",
             error_nickname: "",
-            error_cardNo: "",
+            error_accountNo: "",
             focusUid: false,
             focusPwd: false,
             isMainForm: true,
             stageVal: 0,
             accountDetails: null,
-            title:props.route.params.title,
-            cardStatus:"",
-            cardType:""
         }
     }
 
@@ -54,25 +50,64 @@ class BeneficiaryOtherCard extends Component {
         this.setState({nickname: text, error_nickname: ""})
     }
 
-    cardChange(text) {
+    accountChange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
-        this.setState({cardNumber: text, error_cardNo: ""})
+        this.setState({accountNo: text, error_accountNo: ""})
     }
 
     async onSubmit(language, navigation) {
-        const {stageVal, nickname, cardNumber, account_holder_name} = this.state;
+        const {stageVal, nickname, accountNo, account_holder_name} = this.state;
         if (stageVal === 0) {
             if (nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
-            } else if (cardNumber.length !== 13) {
-                this.setState({error_cardNo: language.error_card_number});
-            }else {
-
+            } else if (accountNo.length !== 13) {
+                this.setState({error_accountNo: language.require_accnumber});
+            } else if (account_holder_name === "") {
+                this.getActDetails(language);
+            } else {
+                this.setState({stageVal: stageVal + 1});
             }
+        } else if (stageVal === 1) {
+            this.beneficiaryAdd();
         }
     }
 
+    beneficiaryAdd(language) {
+        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
+        this.setState({isProgress: true});
+        AddBeneficiary(accountDetails,"I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () => this.props.navigation.navigate("SecurityVerification", {
+                REQUEST_CD: response.REQUEST_CD,
+                transType: "I",
+                actNo: this.state.accountNo
+            }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
+
+    getActDetails(language) {
+        if (this.state.accountNo.length !== 13) {
+            this.setState({error_accountNo: language.require_accnumber})
+            return;
+        }
+        this.setState({isProgress: true});
+        GETACCTBALDETAIL(this.state.accountNo, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false, account_holder_name: response.ACCOUNTNAME,
+                currency: response.CURRENCYCODE, type_act: response.ACCTTYPE, accountDetails: response
+            });
+        }).catch(error => {
+            this.setState({isProgress: false, error_accountNo: language.require_valid_actNumber});
+            console.log("error", error);
+        });
+    }
 
     accountNoOption(language, flag) {
         return (<View>
@@ -124,7 +159,7 @@ class BeneficiaryOtherCard extends Component {
                 marginEnd: 10,
             }}>
                 <Text style={[CommonStyle.textStyle]}>
-                    {language.card_number}
+                    {language.actNo}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
@@ -137,8 +172,8 @@ class BeneficiaryOtherCard extends Component {
                         marginLeft: 10
                     }]}
                     placeholder={language.et_placeholder}
-                    onChangeText={text => this.cardChange(text)}
-                    value={this.state.cardNumber}
+                    onChangeText={text => this.accountChange(text)}
+                    value={this.state.accountNo}
                     multiline={false}
                     numberOfLines={1}
                     onFocus={() => this.setState({focusUid: true})}
@@ -148,13 +183,16 @@ class BeneficiaryOtherCard extends Component {
                     editable={flag}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
+                    onSubmitEditing={(event) => {
+                        this.getActDetails(language);
+                    }}
                     maxLength={13}/>
             </View>
-            {this.state.error_cardNo !== "" ?
+            {this.state.error_accountNo !== "" ?
                 <Text style={{
                     marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_cardNo}</Text> : null}
+                }}>{this.state.error_accountNo}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -162,7 +200,7 @@ class BeneficiaryOtherCard extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.cardHolderName}
+                        {language.account_holder_name}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -184,14 +222,13 @@ class BeneficiaryOtherCard extends Component {
                 </View>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            { this.state.title===language.beneficiary_bank_card_title?
             <View>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.card_status}
+                        {language.currency}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -201,48 +238,47 @@ class BeneficiaryOtherCard extends Component {
                             flex: 1,
                             marginLeft: 10
                         }]}
-                        // placeholder={language.et_placeholder}
-                        onChangeText={text => this.setState({cardStatus: Utility.userInput(text)})}
-                        value={this.state.cardStatus}
+                        //placeholder={language.et_placeholder}
+                        onChangeText={text => this.setState({currency: Utility.input(text, "0123456789")})}
+                        value={this.state.currency}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
                         editable={false}
-                        autoCorrect={false}/>
-                </View>
-            </View>:
-                null}
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.card_type}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        // placeholder={language.et_placeholder}
-                        onChangeText={text => this.setState({cardType: Utility.userInput(text)})}
-                        value={this.state.cardType}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        editable={false}
-                        autoCorrect={false}/>
+                        maxLength={13}/>
                 </View>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.type_act}
+                </Text>
+                <TextInput
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
+                    // placeholder={language.et_placeholder}
+                    onChangeText={text => this.setState({type_act: text})}
+                    value={this.state.type_act}
+                    multiline={false}
+                    numberOfLines={1}
+                    contextMenuHidden={true}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    autoCorrect={false}
+                    editable={false}
+                />
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
                     flexDirection: "row",
@@ -362,9 +398,9 @@ class BeneficiaryOtherCard extends Component {
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{this.state.title}</Text>
+                    <Text style={CommonStyle.title}>{language.add_beneficiary_wcb}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
@@ -377,7 +413,7 @@ class BeneficiaryOtherCard extends Component {
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -488,4 +524,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(BeneficiaryOtherCard);
+export default connect(mapStateToProps)(BeneficiaryWithCityBank);

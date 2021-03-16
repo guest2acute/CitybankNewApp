@@ -1,6 +1,6 @@
 import {Text} from "react-native";
 import React from "react";
-import Beneficiary from "../screens/Trasfer/Beneficiary";
+import Beneficiary from "../screens/Trasfer/Beneficiary/Beneficiary";
 
 export default {
     language_english: "EN",
@@ -263,7 +263,7 @@ export default {
     errCardPin: "দয়া করে 4 অঙ্কের কার্ডের পিন প্রবেশ করুন",
     errorUserId: "দয়া করে ব্যবহারকারীর আইডি লিখুন ",
     errOTP: "দয়া করে 4 ডিজিটের ওটিপি প্রবেশ করুন",
-    errorpassword: "পাসওয়ার্ড লিখুন দয়া করে",
+    errorpassword: "আপনার পাসওয়ার্ডে কমপক্ষে a-z, A-Z এবং 0-9 এর একটি অক্ষর থাকা উচিত",
     errorMother: "মায়ের নাম লিখুন দয়া করে",
     errorDob: "জন্ম তারিখ নির্বাচন করুন",
     errorTransDate: "স্থানান্তর তারিখ প্রবেশ করুন",

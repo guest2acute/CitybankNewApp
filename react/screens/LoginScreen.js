@@ -43,7 +43,6 @@ class LoginScreen extends Component {
         };
     }
 
-
     async onSubmit(language) {
         const {userID, passwordTxt} = this.state;
         if (userID === "") {
@@ -51,7 +50,7 @@ class LoginScreen extends Component {
         } else if (userID.length < 8) {
             this.setState({errorTextUid: language.require_length_user_id});
         } else if (!Utility.validPassword(passwordTxt)) {
-            this.setState({errorTextPwd: language.require_pwd});
+            this.setState({errorTextPwd: language.errorpassword});
         } else {
             await this.loginRequest(userID, passwordTxt);
         }

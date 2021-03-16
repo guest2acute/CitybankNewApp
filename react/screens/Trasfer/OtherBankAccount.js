@@ -21,7 +21,7 @@ import Utility from "../../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import BeneficiaryOtherBank from "./BeneficiaryOtherBank";
+import BeneficiaryOtherBank from "./Beneficiary/BeneficiaryOtherBank";
 import StorageClass from "../../utilize/StorageClass";
 import Config from "../../config/Config";
 

@@ -500,6 +500,7 @@ class ChangeLoginCredential extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        secureTextEntry={true}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
                             this.newCredentialRef.focus();
@@ -551,6 +552,7 @@ class ChangeLoginCredential extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        secureTextEntry={true}
                         maxLength={this.state.select_credential_type.value === 0 ? 12 : 6}/>
                 </View>
                 {this.state.errorConfNewCredential !== "" ?
@@ -608,15 +610,13 @@ class ChangeLoginCredential extends Component {
             select_credential_type
         } = this.state;
 
-
-        if ((select_credential_type.value === 0 && newCredential === "") || (select_credential_type.value === 1 && (!Utility.validPassword(newCredential)))) {
+        if ((select_credential_type.value === 0 && (!Utility.validPassword(newCredential))) || (select_credential_type.value === 1 && newCredential === "")) {
             this.setState({errorNewCredential: select_credential_type.value === 0 ? language.errorNewPwd : language.errorNewPIN});
             return;
         } else if (confNewCredential !== newCredential) {
             this.setState({errorConfNewCredential: select_credential_type.value === 0 ? language.errorNewConfPIN : language.errorNewConfPIN});
             return;
         }
-
 
         let userDetails = this.props.userDetails;
         userDetails = {...userDetails, REQUEST_CD: selectRes.REQUEST_CD}

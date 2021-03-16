@@ -10,13 +10,13 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import themeStyle from "../../resources/theme.style";
-import CommonStyle from "../../resources/CommonStyle";
+import themeStyle from "../../../resources/theme.style";
+import CommonStyle from "../../../resources/CommonStyle";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LoginScreen from "../LoginScreen";
-import TermConditionScreen from "../TermConditionScreen";
+import LoginScreen from "../../LoginScreen";
+import TermConditionScreen from "../../TermConditionScreen";
 import {connect} from "react-redux";
-import Utility from "../../utilize/Utility";
+import Utility from "../../../utilize/Utility";
 
 
 class BeneficiaryMobileNumber extends Component {
@@ -38,7 +38,7 @@ class BeneficiaryMobileNumber extends Component {
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.beneficiary_mo_number}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -53,7 +53,7 @@ class BeneficiaryMobileNumber extends Component {
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -89,7 +89,7 @@ class BeneficiaryMobileNumber extends Component {
                                 tintColor:themeStyle.PLACEHOLDER_COLOR
 
                             }} resizeMode={"contain"}
-                                   source={require("../../resources/images/ic_back_android.png")}/>
+                                   source={require("../../../resources/images/ic_back_android.png")}/>
                         </View>
                     </View>
                 </ScrollView>
