@@ -1157,6 +1157,15 @@ export default {
     error_otp_status: "Select Otp Status",
     error_debit_credit: "Card Number is Required",
 
+    /*view_delete_beneficiary*/
+    transfer_wcb:"Transfer Within City Bank",
+    transfer_ob:"Transfer Other Bank",
+    view_delete_beneficiary:"View Delete beneficiary",
+    my_phone:"My Phone",
+    donation: "Donation",
+    delete: "Are You Sure You Want To Delete"
+
+
 
 
 }

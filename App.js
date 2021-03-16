@@ -36,11 +36,13 @@ import ChangeLoginCredential from "./react/screens/ChangeLoginCredential";
 import ChangeContactDetails from "./react/screens/ChangeContactDetails";
 import UploadSupportDoc from "./react/screens/UploadSupportDoc";
 import PinLogin from "./react/screens/PinLogin";
+
 import BeneficiaryManagement from "./react/screens/Trasfer/Beneficiary/BeneficiaryManagement";
 import Beneficiary from "./react/screens/Trasfer/Beneficiary/Beneficiary";
 import BeneficiaryWithCityBank from "./react/screens/Trasfer/Beneficiary/BeneficiaryWithCityBank";
 import BeneficiaryOtherBank from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherBank";
 import BeneficiaryTransferMFS from "./react/screens/Trasfer/Beneficiary/BeneficiaryTransferMFS";
+
 import TransferWithBkash from "./react/screens/Trasfer/TransferWithBkash";
 import TransferCategory from "./react/screens/TransferCategory";
 import TransferHistory from "./react/screens/TransferHistory";
@@ -67,6 +69,10 @@ import ChequeBookManagement from "./react/screens/More/ChequeBookManagement";
 import FixedDeposit from "./react/screens/More/FixedDeposit";
 import MonthlyDPS from "./react/screens/More/MonthlyDPS";
 import PayOrder from "./react/screens/More/PayOrder";
+
+import RequestMonitor from "./react/screens/More/RequestMonitor";
+import OtpLockUnlock from "./react/screens/More/OtpLockUnlock";
+import ViewDeleteBeneficiary from "./react/screens/Trasfer/Beneficiary/ViewDeleteBeneficiary";
 import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
 import ViewDeleteBeneficiary from "./react/screens/Trasfer/ViewDeleteBeneficiary";
 
@@ -160,6 +166,7 @@ function TransferTab() {
             <Stack.Screen name="ViewBeneficiaryOtherBank" component={ViewBeneficiaryOtherBank} options={{headerShown: false}}/>
             <Stack.Screen name="SecurityVerification" component={SecurityVerification} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryOtherCard" component={BeneficiaryOtherCard} options={{headerShown: false}}/>
+            <Stack.Screen name="ViewDeleteBeneficiary" component={ViewDeleteBeneficiary} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -205,6 +212,8 @@ function MoreTab() {
             <Stack.Screen name="MonthlyDPS" component={MonthlyDPS} options={{headerShown: false}}/>
             <Stack.Screen name="SubCategories" component={SubCategories} options={{headerShown: false}}/>
             <Stack.Screen name="PayOrder" component={PayOrder} options={{headerShown: false}}/>
+            <Stack.Screen name="RequestMonitor" component={RequestMonitor} options={{headerShown: false}}/>
+            <Stack.Screen name="OtpLockUnlock" component={OtpLockUnlock} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

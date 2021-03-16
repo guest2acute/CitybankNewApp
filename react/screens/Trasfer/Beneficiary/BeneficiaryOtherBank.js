@@ -153,7 +153,6 @@ class BeneficiaryOtherBank extends Component {
             return;
         }
         this.getActDetails(language);
-
     }
 
     getActDetails(language) {
@@ -224,7 +223,8 @@ class BeneficiaryOtherBank extends Component {
                 marginTop: 6,
                 marginBottom: 4
             }]}>
-                {language.type_act}
+                {language.account_type}
+                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
             </Text>
 
             <TouchableOpacity

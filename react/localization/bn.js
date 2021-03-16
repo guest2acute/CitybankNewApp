@@ -1141,7 +1141,25 @@ export default {
     cheque_book_number: "চেক বইয়ের নম্বর",
     unused_checkLeaf_number: "অব্যবহৃত চেক লিফ নম্বর",
     select_chequebook_number: "চেক বুক নম্বর নির্বাচন করুন",
-    select_unused_cheque_number: "অব্যবহৃত চেক লিফ নম্বরটি নির্বাচন করুন"
+    select_unused_cheque_number: "অব্যবহৃত চেক লিফ নম্বরটি নির্বাচন করুন",
+
+    /* Request Monitor*/
+    request_type: "অনুরোধ প্রকার",
+    request_status: "অনুরোধের স্থিতি",
+    select_request_type:"অনুরোধের ধরন নির্বাচন করুন",
+    select_request_status: "অনুরোধের স্থিতি নির্বাচন করুন",
+    requestTypeArray:[
+        {key: "0", label: "মাসিক ডিপিএস", value: 0},
+        {key: "1", label: "নির্দিষ্ট পরিমান", value: 1},
+    ],
+    requestStatusArray:[
+        {key: "0", label: "সব", value: 0},
+        {key: "1", label: "বিচারাধীন", value: 1},
+        {key: "2", label: "খোলা", value: 2},
+    ],
+    account_title: "অ্যাকাউন্টের শিরোনাম",
+    account_number: "হিসাব নাম্বার",
+    start_date: "শুরুর তারিখ",
 
 
 
