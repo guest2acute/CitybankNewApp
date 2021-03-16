@@ -15,6 +15,8 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
+import FontSize from "../../resources/ManageFontSize";
+import fontStyle from "../../resources/FontStyle";
 
 
 class RequestMonitor extends Component {
@@ -22,14 +24,38 @@ class RequestMonitor extends Component {
         super(props);
         this.state = {
             isProgress: false,
-            selectType: props.language.select_type_transfer,
+            selectType: props.language.select_request_type,
+            selectRequestType: props.language.select_request_status,
             selectTypeVal: -1,
             selectActCard: props.language.TypeOfTransferArr[0],
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            title:props.route.params.title
+            title:props.route.params.title,
+            data: [
+                    {
+                        account_title: "Self Account ",
+                        account_number: "2702240346001",
+                        start_date: "8-FEB-2021"
+                    },
+                    {
+                        account_title: "Self Account ",
+                        account_number: "2252595128001",
+                        start_date: "7-APR-2019"
+                    },
+                    {
+                        account_title: "Self Account ",
+                        account_number: "2401969529001",
+                        start_date: "3-MAR-2019"
+                    },
+                    {
+                        account_title: "Self Account ",
+                        account_number: "2702240346001",
+                        start_date: "1-MAR-2019"
+                    }
+                ]
+
         }
     }
 
@@ -63,27 +89,14 @@ class RequestMonitor extends Component {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
+        }else if (modelSelection === "requestType") {
+            this.setState({selectRequestType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         console.log("selectTypeVal is this",this.state.selectTypeVal)
-        if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.error_select_beneficiary_type);
-        } else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate("BeneficiaryWithCityBank");
-        } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
-        } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("EmailTransfer");
-        } else if (this.state.selectTypeVal === 3) {
-            this.props.navigation.navigate("BeneficiaryTransfer");
-        }else if (this.state.selectTypeVal === 4) {
-            this.props.navigation.navigate("BeneficiaryOtherCard", {title:this.props.language.beneficiary_other_card_title});
-        }else if (this.state.selectTypeVal === 5) {
-            this.props.navigation.navigate("BeneficiaryOtherCard",{title:this.props.language.beneficiary_bank_card_title});
-        }
     }
 
     requestMonitor(language){
@@ -96,13 +109,13 @@ class RequestMonitor extends Component {
                     marginTop: 6,
                     marginBottom: 4
                 }]}>
-                    {language.type_transfer}
+                    {language.request_type}
                 </Text>
                 <TouchableOpacity
-                    onPress={() => this.openModal("type", language.select_beneficiary_type, language.transferTypeArr, language)}>
+                    onPress={() => this.openModal("type", language.select_request_type, language.requestTypeArray, language)}>
                     <View style={styles.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            color: this.state.selectType === language.select_request_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectType}
@@ -111,15 +124,86 @@ class RequestMonitor extends Component {
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
-                <Text style={{
+
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
                     marginStart: 10,
-                    marginTop: 20,
-                    color: themeStyle.THEME_COLOR
-                }}>*{language.mark_field_mandatory}
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.request_status}
                 </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("requestType", language.select_request_status, language.requestStatusArray, language)}>
+                    <View style={styles.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectRequestType === language.select_request_status ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectRequestType}
+                        </Text>
+                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
             </View>
         )
     }
+
+    accountList(language){
+        return(
+            <View>
+            <View style={[styles.selectionBg,{flexDirection:"row",justifyContent:"space-between",paddingTop:10,paddingBottom:10}]}>
+                <Text style={[CommonStyle.midTextStyle, {
+                    color: themeStyle.BLACK
+                }]}>
+                    {language.account_title}
+                </Text>
+                <Text style={[CommonStyle.midTextStyle, {
+                    color: themeStyle.BLACK,
+                }]}>
+                    {language.account_number}
+                </Text>
+                <Text style={[CommonStyle.midTextStyle, {
+                    color: themeStyle.BLACK,
+                }]}>
+                    {language.start_date}
+                </Text>
+            </View>
+            <FlatList data={this.state.data}
+                      renderItem={this._renderItem}
+                //ItemSeparatorComponent={() => this.bottomLine()}
+                //ListFooterComponent={this.bottomLine()}
+                      keyExtractor={(item, index) => index + ""}
+            />
+            </View>
+        )
+    }
+
+    _renderItem = ({item, index}) => {
+        return (
+            <View style={{flexDirection:"row",justifyContent:"space-around",
+                width: Utility.getDeviceWidth(),
+                paddingTop: 10,
+                paddingBottom: 10,
+                backgroundColor: index % 2 === 0 ? null : themeStyle.SEPARATOR
+            }}>
+            <Text style={[styles.textStyle, {
+            }]}>
+                {item.account_title}
+            </Text>
+            <Text style={[styles.textStyle,, {
+            }]}>
+                {item.account_number}
+            </Text>
+            <Text style={[styles.textStyle,, {
+            }]}>
+                {item.start_date}
+            </Text>
+        </View>
+    )}
+
 
     render() {
         let language = this.props.language;
@@ -152,43 +236,7 @@ class RequestMonitor extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {this.requestMonitor(language)}
-                    <View style={{
-                        flexDirection: "row",
-                        marginStart: Utility.setWidth(10),
-                        marginRight: Utility.setWidth(10),
-                        marginTop: Utility.setHeight(20)
-                    }}>
-                        <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
-                            <View style={{
-                                flex: 1,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                height: Utility.setHeight(46),
-                                borderRadius: Utility.setHeight(23),
-                                borderWidth: 1,
-                                borderColor: themeStyle.THEME_COLOR
-                            }}>
-                                <Text
-                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{width: Utility.setWidth(20)}}/>
-
-                        <TouchableOpacity style={{flex: 1}}
-                                          onPress={() => this.submit(language, this.props.navigation)}>
-                            <View style={{
-                                alignItems: "center",
-                                justifyContent: "center",
-                                height: Utility.setHeight(46),
-                                borderRadius: Utility.setHeight(23),
-                                backgroundColor: themeStyle.THEME_COLOR
-                            }}>
-                                <Text
-                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-
+                    {this.state.selectTypeVal === 0 ? this.accountList(language):null}
                 </ScrollView>
                 <Modal
                     animationType="none"
@@ -271,7 +319,13 @@ const styles = {
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5
-    }
+    },
+    c: {
+        flex:1,
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(13),
+        color: themeStyle.BLACK
+    },
 
 }
 

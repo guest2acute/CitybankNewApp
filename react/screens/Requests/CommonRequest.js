@@ -352,7 +352,7 @@ export const MoreDetails = (language) => {
             title: language.otp_lock_unlock,
             icon: require("../../resources/images/ic_otp_status_change.png"),
             subCategory: [],
-            redirectScreen: ""
+            redirectScreen: "OtpLockUnlock"
         },
         {
             id: "OnlinePurchase",

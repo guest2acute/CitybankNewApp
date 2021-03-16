@@ -777,7 +777,7 @@ class RegistrationAccount extends Component {
             console.log(this.state.currentSelection+"=selectedDate-", selectedDate);
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
-            this.setState({dateVal: selectedDate, currentDate: currentDate, show: false}, () => {
+            this.setState({dateVal: selectedDate, show: false}, () => {
                 if (this.state.currentSelection === 0)
                 {
                         this.setState({errorDob: "", dob: currentDate})

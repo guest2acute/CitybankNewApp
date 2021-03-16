@@ -534,7 +534,7 @@ export default {
 
     /*beneficiary management message*/
     add_beneficiary: "Add Beneficiary",
-    delete_beneficiary: "Delete Beneficiary",
+    delete_beneficiary: "View/Delete Beneficiary",
     beneficiary_management: "Beneficiary Managements",
 
     type_transfer: "Type Of Transfer *",
@@ -1127,7 +1127,37 @@ export default {
     select_unused_cheque_number: "Select Unused Cheque Leaf Number",
 
     /* Request Monitor*/
-    request_type: "RE"
+    request_type: "Request Type",
+    request_status: "Request Status",
+    select_request_type:"Select Request Type",
+    select_request_status: "Select Request Status",
+    requestTypeArray:[
+        {key: "0", label: "Monthly DPS", value: 0},
+        {key: "1", label: "Fixed Deposit", value: 1},
+    ],
+    requestStatusArray:[
+        {key: "0", label: "All", value: 0},
+        {key: "1", label: "Pending", value: 1},
+        {key: "2", label: "Open", value: 2},
+    ],
+    account_title: "Account Title",
+    account_number: "Account Number",
+    start_date: "Start Date",
+
+    /*Otp Lock Unlock*/
+    reset_request: "Reset Request",
+    select_otp_status:"Select Otp Status",
+    resetRequestTypeArray:[
+        {key: "0", label: "Active", value: 0},
+    ],
+    select_debit_credit:"Select Debit/Credit Card",
+    current_otp_status:"Current Otp Status",
+    lock:"Lock",
+    unlock:"Unlock",
+    error_otp_status: "Select Otp Status",
+    error_debit_credit: "Card Number is Required",
+
+
 
 }
 

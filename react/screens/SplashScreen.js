@@ -32,7 +32,6 @@ class SplashScreen extends Component {
         this.props.navigation.dispatch(
             StackActions.replace(screenName, {loginPref: loginPref})
         )
-
     }
 
      changeLanguage(language) {
