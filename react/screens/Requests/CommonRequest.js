@@ -1,6 +1,7 @@
 import Utility from "../../utilize/Utility";
 import Config from "../../config/Config";
 import ApiRequest from "../../config/ApiRequest";
+import {Alert} from "react-native";
 
 
 export const GetUserAuthByUid = async (cityTouchUserId, props) => {
@@ -73,7 +74,7 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, otp_
 }
 
 
-export const blockProcess = async (ACCT_NO, userId, description, props, authFlag,actualAction) => {
+export const blockProcess = async (ACCT_NO, userId, description, props, authFlag, actualAction) => {
     console.log("userId", userId);
     return new Promise(async (resolve, reject) => {
         let blockReq = {
@@ -464,6 +465,26 @@ export const validateCard = (cardNumber) => {
     }
 
     return (total !== 0 && (total % 10) === 0);
+}
+
+export const DeviceChange = (result,props) => {
+    Alert.alert(
+        Config.appName,
+        result.MESSAGE,
+        [
+            {
+                text: props.language.no_txt
+            },
+            {
+                text: props.language.yes_txt, onPress: () =>
+                    props.navigation.navigate("TermConditionScreen",
+                        {
+                            showButton: true,
+                            deviceChangeRes: result.RESPONSE[0],
+                        })
+            },
+        ]
+    );
 }
 
 

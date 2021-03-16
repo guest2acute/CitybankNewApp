@@ -746,6 +746,7 @@ class RegistrationCard extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         keyboardType={"number-pad"}
+                        secureTextEntry={true}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
                             this.user_idRef.focus();

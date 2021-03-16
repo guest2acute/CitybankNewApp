@@ -47,9 +47,8 @@ class PinLogin extends Component {
             fiveFocus: false,
             sixFocus: false,
             password: true,
-            passwordTxt: "Acute@123",
+            passwordTxt: "",
             errorTextPwd: "",
-            hasFinger: false,
             biometryType: null,
             isProgress: false,
             loginPref: "",
@@ -71,9 +70,9 @@ class PinLogin extends Component {
         }
         let loginPref = await StorageClass.retrieve(Config.LoginPref);
         this.setState({loginPref: loginPref});
-        console.log("brforeloignPref",loginPref);
-        if (loginPref === "2"){
-            console.log("loignPref",loginPref);
+        console.log("brforeloignPref", loginPref);
+        if (loginPref === "2") {
+            console.log("loignPref", loginPref);
             this.checkFingerTouch();
         }
     }
@@ -151,7 +150,7 @@ class PinLogin extends Component {
         if (this.state.loginPref === "0") {
             //if (this.state.passwordTxt.length === 0) {
             if (!Utility.validPassword(this.state.passwordTxt)) {
-                this.setState({errorTextPwd: language.require_pwd});
+                this.setState({errorTextPwd: language.errorpassword});
                 return;
             } else {
                 password = this.state.passwordTxt;
@@ -190,7 +189,19 @@ class PinLogin extends Component {
         } else if (result.STATUS === "71") {
             this.deviceChange(result);
         } else {
-            Utility.alert(result.MESSAGE);
+            Alert.alert(
+                Config.appName,
+                result.MESSAGE,
+                [
+                    {
+                        text: this.props.language.ok, onPress: () => {
+                            if (this.state.loginPref === "2"){
+                                this.showAuthenticationDialog();
+                            }
+                        }
+                    },
+                ]
+            );
         }
     }
 
@@ -400,7 +411,9 @@ class PinLogin extends Component {
     checkFingerTouch() {
         FingerprintScanner.isSensorAvailable()
             .then((biometryType) => {
-                this.showAuthenticationDialog();
+                this.setState({biometryType}, () => {
+                    this.showAuthenticationDialog();
+                });
             })
             .catch((error) => console.log("isSensorAvailable error => ", error));
     }
@@ -416,12 +429,14 @@ class PinLogin extends Component {
 
     showAuthenticationDialog = () => {
         const {biometryType} = this.state;
+        console.log("")
         if (biometryType !== null && biometryType !== undefined) {
             FingerprintScanner.authenticate({
                 description: this.getMessage()
             })
                 .then(async () => {
                     await this.onSubmit(this.props.language);
+                    FingerprintScanner.release();
                 })
                 .catch((error) => {
                     FingerprintScanner.release();

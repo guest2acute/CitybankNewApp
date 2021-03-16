@@ -9,6 +9,7 @@ import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-nativ
 import {CommonActions} from "@react-navigation/native";
 import StorageClass from "./StorageClass";
 import {actions} from "../redux/actions";
+import {DeviceChange} from "./../screens/Requests/CommonRequest";
 
 export default class Utility {
     static alert(msg) {
@@ -151,10 +152,8 @@ export default class Utility {
     }
 
     static validPassword(text) {
-        if (text.length < 8 || text.length > 12) {
-            return false;
-        }
-        let reg = /^(?:(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*)$/;
+        console.log(text);
+        let reg= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
         return reg.test(text);
     }
 

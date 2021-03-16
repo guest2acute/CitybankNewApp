@@ -24,7 +24,7 @@ import Config from "../config/Config";
 import {StackActions} from "@react-navigation/native";
 import FontSize from "../resources/ManageFontSize";
 import fontStyle from "../resources/FontStyle";
-import {blockProcess, GetUserAuthByUid, validateCard, VerifyAccountCard} from "./Requests/CommonRequest"
+import {blockProcess, DeviceChange, GetUserAuthByUid, VerifyAccountCard} from "./Requests/CommonRequest"
 import {VerifyResetPwd, GETUSERDTLALLKEYS} from "./Requests/CredentialRequest"
 import * as ReadSms from "react-native-read-sms/ReadSms";
 
@@ -377,7 +377,7 @@ class CredentialDetails extends Component {
         } else if (this.state.selectTypeVal > 0 && this.state.responseUserId === null) {
             await this.getUserDetails(language)
             return;
-        } else if (this.state.selectActCard.value === 0) {
+        }else if (this.state.selectActCard.value === 0) {
             if (this.state.accountNo.length !== 13) {
                 this.setState({errActNo: language.errActNo});
                 return;
@@ -407,7 +407,7 @@ class CredentialDetails extends Component {
                 return;
             }
         } else if (this.state.selectActCard.value === 1) {
-            if (this.state.creditCardNo.length < 15 || !validateCard(this.state.creditCardNo)) {
+            if (this.state.creditCardNo.length < 15) {
                 this.setState({errCardNo: language.errCardNo});
                 return;
             } else if (this.state.expiryDate === "") {
@@ -484,14 +484,20 @@ class CredentialDetails extends Component {
     async resetPwd(authToken, responseUid, actResult, actNo, isCard) {
         let language = this.props.language;
         this.setState({isProgress: true});
-
         await VerifyResetPwd(isCard, authToken, responseUid, actNo,
             this.state.selectTypeVal === 0 ? "U" : "P", this.state.transactionPin, this.state.cardPin,
             this.state.expiryDate, this.props, actResult, this.state.otp_type).then(result => {
             console.log("VerifyResetPwd", JSON.stringify(result));
             this.setState({isProgress: false});
-            let response = result.RESPONSE[0];
-            this.setState({otpView: true, responseForOTP: result.RESPONSE[0]});
+            if (result.STATUS === "71") {
+                //DeviceChange(result,this.props);
+                this.props.navigation.goBack();
+            }
+            else{
+                let response = result.RESPONSE[0];
+                this.setState({otpView: true, responseForOTP: result.RESPONSE[0]});
+            }
+
 
         }).catch(error => {
             this.setState({isProgress: false});
@@ -556,10 +562,9 @@ class CredentialDetails extends Component {
 
     async getCustomerDetails(language, CUSTOMER_DTL_LIST) {
         this.setState({isProgress: true});
-
         await GETUSERDTLALLKEYS(CUSTOMER_DTL_LIST, this.props).then(result => {
             console.log("getCustomerDetails", JSON.stringify(result));
-            this.setState({isProgress: false, userResponse: result.RESPONSE[0].CARD_DTL});
+            this.setState({isProgress: false, userResponse: this.state.responseUserId.AUTH_TYPE === "TP"?result.RESPONSE[0].ACCOUNT_DTL:result.RESPONSE[0].CARD_DTL});
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -818,6 +823,7 @@ class CredentialDetails extends Component {
                         numberOfLines={1}
                         keyboardType={this.state.selectTypeVal === 2 ? "number-pad" : "default"}
                         contextMenuHidden={true}
+                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={this.state.selectTypeVal === 2 ? 6 : 50}/>
@@ -864,6 +870,7 @@ class CredentialDetails extends Component {
                         numberOfLines={1}
                         keyboardType={this.state.selectTypeVal === 2 ? "number-pad" : "default"}
                         contextMenuHidden={true}
+                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={this.state.selectTypeVal === 2 ? 6 : 50}/>

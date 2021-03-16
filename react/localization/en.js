@@ -1,6 +1,6 @@
 import {Text} from "react-native";
 import React from "react";
-import Beneficiary from "../screens/Trasfer/Beneficiary";
+import Beneficiary from "../screens/Trasfer/Beneficiary/Beneficiary";
 
 export default {
     language_english: "EN",
@@ -263,7 +263,7 @@ export default {
     errCardPin: "Please enter 4 digits card PIN",
     errorUserId: "Please enter User ID ",
     errOTP: "Please enter 4 digit OTP",
-    errorpassword: "Please enter valid Password",
+    errorpassword: "Your password should contain at least one character of a-z, A-Z and 0-9",
     errorMother: "Please enter Mother Name",
     errorDob: "Please select Date Of Birth",
     errorTransDate: "Please enter Transfer Date",

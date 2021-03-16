@@ -36,11 +36,11 @@ import ChangeLoginCredential from "./react/screens/ChangeLoginCredential";
 import ChangeContactDetails from "./react/screens/ChangeContactDetails";
 import UploadSupportDoc from "./react/screens/UploadSupportDoc";
 import PinLogin from "./react/screens/PinLogin";
-import BeneficiaryManagement from "./react/screens/Trasfer/BeneficiaryManagement";
-import Beneficiary from "./react/screens/Trasfer/Beneficiary";
-import BeneficiaryWithCityBank from "./react/screens/Trasfer/BeneficiaryWithCityBank";
-import BeneficiaryOtherBank from "./react/screens/Trasfer/BeneficiaryOtherBank";
-import BeneficiaryTransferbKash from "./react/screens/Trasfer/BeneficiaryTransferbKash";
+import BeneficiaryManagement from "./react/screens/Trasfer/Beneficiary/BeneficiaryManagement";
+import Beneficiary from "./react/screens/Trasfer/Beneficiary/Beneficiary";
+import BeneficiaryWithCityBank from "./react/screens/Trasfer/Beneficiary/BeneficiaryWithCityBank";
+import BeneficiaryOtherBank from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherBank";
+import BeneficiaryTransferMFS from "./react/screens/Trasfer/Beneficiary/BeneficiaryTransferMFS";
 import TransferWithBkash from "./react/screens/Trasfer/TransferWithBkash";
 import TransferCategory from "./react/screens/TransferCategory";
 import TransferHistory from "./react/screens/TransferHistory";
@@ -67,7 +67,7 @@ import ChequeBookManagement from "./react/screens/More/ChequeBookManagement";
 import FixedDeposit from "./react/screens/More/FixedDeposit";
 import MonthlyDPS from "./react/screens/More/MonthlyDPS";
 import PayOrder from "./react/screens/More/PayOrder";
-import BeneficiaryOtherCard from "./react/screens/Trasfer/BeneficiaryOtherCard";
+import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
@@ -142,7 +142,7 @@ function TransferTab() {
             <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryWithCityBank" component={BeneficiaryWithCityBank} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryOtherBank" component={BeneficiaryOtherBank} options={{headerShown: false}}/>
-            <Stack.Screen name="BeneficiaryTransferbKash" component={BeneficiaryTransferbKash} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryTransferMFS" component={BeneficiaryTransferMFS} options={{headerShown: false}}/>
             <Stack.Screen name="TransferWithBkash" component={TransferWithBkash} options={{headerShown: false}}/>
             <Stack.Screen name="TransferCategory" component={TransferCategory} options={{headerShown: false}}/>
             <Stack.Screen name="TransferHistory" component={TransferHistory} options={{headerShown: false}}/>
