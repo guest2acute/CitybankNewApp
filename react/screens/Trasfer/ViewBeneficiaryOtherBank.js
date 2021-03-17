@@ -37,11 +37,20 @@ class ViewBeneficiaryOtherBank extends Component {
             districtName: details.districtDetails.DIST_NM,
             branch_name: details.branchDetails.BRANCH_NM,
             selectTypeVal: details.selectTypeVal,
+            stateVal: 0,
         }
     }
 
     async onSubmit(language, navigation) {
         this.beneficiaryAdd(language, navigation);
+    }
+
+    backEvent() {
+        const {stateVal} = this.state;
+        if (stateVal === 0)
+            this.props.navigation.goBack(null);
+        else
+            this.setState({stateVal: stateVal !== 3 ? stateVal - 1 : stateVal - 2});
     }
 
     beneficiaryAdd(language, navigation) {
@@ -393,7 +402,7 @@ class ViewBeneficiaryOtherBank extends Component {
                             marginRight: Utility.setWidth(10),
                             marginTop: Utility.setHeight(20)
                         }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
                                 <View style={{
                                     flex: 1,
                                     alignItems: "center",

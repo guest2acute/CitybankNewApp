@@ -12,7 +12,7 @@ export default {
     decline: "পতন",
     continue_txt: "চালিয়ে যাও_ txt",
     next: "পরবর্তী",
-    confirm:"কনফার্ম",
+    confirm: "কনফার্ম",
     user_ID: "ব্যবহারকারীর প্রমানপত্র",
     new_signup: "নতুন সাইনআপ",
     sign_up_now: "এখন সাইন আপ করুন!",
@@ -315,42 +315,18 @@ export default {
     ],
 
     transfer_props: [
-        {
-            id: "cityBankAcct",
-            title: "সিটি ব্যাংক অ্যাকাউন্ট",
-            icon: require("../resources/images/ic_city_bank_account.png")
-        },
-        {
-            id: "otherBankAcct",
-            title: "অন্যান্য ব্যাংক অ্যাকাউন্ট",
-            icon: require("../resources/images/contact_icon.png")
-        },
+        {id: "cityBankAcct",title: "সিটি ব্যাংক অ্যাকাউন্ট",icon: require("../resources/images/ic_city_bank_account.png")},
+        {id: "otherBankAcct",title: "অন্যান্য ব্যাংক অ্যাকাউন্ট",  icon: require("../resources/images/contact_icon.png")},
         {id: "cashByCode", title: "কোড দ্বারা নগদ", icon: require("../resources/images/case_by_code.png")},
         {id: "emailTransfer", title: "ইমেল স্থানান্তর", icon: require("../resources/images/email_transfer.png")},
-        {
-            id: "transferToBkash",
-            title: "বিকাশে স্থানান্তর করুন",
-            icon: require("../resources/images/transfer_to_bkash.png")
-        },
-        {
-            id: "beneficiaryManagement",
-            title: "সুবিধাভোগী ব্যবস্থাপনা",
-            icon: require("../resources/images/beneficiary_management.png")
-        },
-        {
-            id: "favoriteTransfer",
-            title: "প্রিয় স্থানান্তর",
-            icon: require("../resources/images/ic_facourite_transfer.png")
-        },
+        {id: "transferToBkash",title: "বিকাশে স্থানান্তর করুন",icon: require("../resources/images/transfer_to_bkash.png")},
+        {id: "beneficiaryManagement",title: "সুবিধাভোগী ব্যবস্থাপনা",icon: require("../resources/images/beneficiary_management.png")},
+        {id: "favoriteTransfer",title: "প্রিয় স্থানান্তর",icon: require("../resources/images/ic_facourite_transfer.png")},
         {id: "transferHistory", title: "স্থানান্তর ইতিহাস", icon: require("../resources/images/ic_transfer_istory.png")}
     ],
     payments_props: [
         {id: "MobileRecharge", title: "মোবাইল রিচার্জ", icon: require("../resources/images/ic_mobile_recharge.png")},
-        {
-            id: "CityCreditCard",
-            title: "সিটি ক্রেডিট কার্ড",
-            icon: require("../resources/images/ic_city_credit_card.png")
-        },
+        {id: "CityCreditCard",title: "সিটি ক্রেডিট কার্ড",icon: require("../resources/images/ic_city_credit_card.png")},
         {
             id: "ValueAddedServices",
             title: "মান যোগ পরিষেবা",
@@ -560,7 +536,6 @@ export default {
     type_transfer: "স্থানান্তর প্রকারের *",
     select_type_transfer: "স্থানান্তর প্রকার নির্বাচন করুন",
     select_beneficiary_type: "সুবিধাভোগী প্রকার নির্বাচন করুন",
-
     transferTypeArr: [
         {key: "0", label: "সিটি ব্যাংকের মধ্যে স্থানান্তর", value: 0},
         {key: "1", label: "অন্য ব্যাংক স্থানান্তর করুন", value: 1},
@@ -578,7 +553,7 @@ export default {
     ],
     notAvailable: "পাওয়া যায় না",
     add_beneficiary_wcb: "সুবিধাভোগী-সিটি ব্যাংকের মধ্যে যুক্ত করুন",
-    add_beneficiary_mfs: "Add Beneficiary-MFS",
+    add_beneficiary_mfs: "সুবিধাভোগী-এমএফএস যুক্ত করুন",
     nick_name: "নিক নাম",
     account_holder_name: "হিসাব দাতার নাম",
     currency: "মুদ্রা",
@@ -593,6 +568,7 @@ export default {
     require_nickname: "নিক নাম আবশ্যক",
     require_accnumber: "অ্যাকাউন্ট নম্বর আবশ্যক",
     require_valid_actNumber: "অবৈধ অ্যাকাউন্ট নম্বর",
+    invalid_cardNumber: "Invalid Card Number",
     require_cardname: "কার্ডধারীর নাম আবশ্যক",
     require_actName: "অ্যাকাউন্টধারীর নাম আবশ্যক",
     require_actnumber: "কার্ড নম্বর প্রয়োজনীয়",
@@ -628,16 +604,6 @@ export default {
         {key: "5", label: "বোগ্রা", value: 5},
         {key: "6", label: "চাঁদপুর", value: 6},
         {key: "7", label: "COMILLA", value: 7},
-    ],
-    branchTypeArr: [
-        {key: "0", label: "kadi", value: 0},
-        {key: "1", label: "kalol", value: 1},
-        {key: "2", label: "ahemdabad", value: 2},
-        {key: "3", label: "gadhinagar", value: 3},
-        {key: "4", label: "vijapur", value: 4},
-        {key: "5", label: "surat", value: 5},
-        {key: "6", label: "rajkot", value: 6},
-        {key: "7", label: "sitapur", value: 7},
     ],
     select_brach: "শাখা নির্বাচন করুন",
     select_branch_name: "শাখার নাম নির্বাচন করুন",
@@ -891,6 +857,9 @@ export default {
     transferTo_bkash_note9: "৫. একই বিকাশ অ্যাকাউন্টে একটানা ট্রান্সফার করতে হয়",
     transferTo_bkash_note10: "সর্বনিম্ন 10 মিনিটের ব্যবধান।",
 
+    cashBy_code_notes1: "সর্বনিম্ন স্থানান্তর পরিমাণ: প্রতি লেনদেনে 500",
+    cashBy_code_notes2: "২. সর্বাধিক স্থানান্তর পরিমাণ: টাকা প্রতিদিন 100,000",
+    cashBy_code_notes3: "৩. স্থানান্তর পরিমাণ 500 বা 20,000 অবধি 500 এর একাধিক হওয়া উচিত",
 
     email_transfer_note1: "1. একটি ইমেল স্থানান্তর লেনদেন পরবর্তী 10 দিনের জন্য বৈধ হবে।",
     email_transfer_note2: "2. সর্বাধিক স্থানান্তরযোগ্য পরিমাণ: প্রতিদিন 5 লক্ষ টাকায় বিডিটি",
@@ -932,11 +901,30 @@ export default {
     monthly_deposit_note9: "৫. যদি মাসিক কিস্তি ৪ (চার) এর জন্য পরিশোধ না করে থাকে",
     monthly_deposit_note10: "টানা মাসের ডিপিএস স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে",
 
+    pay_order_notes1: "1. পে অর্ডার সম্পূর্ণরূপে আপনার সরবরাহিত তথ্য অনুযায়ী প্রক্রিয়া করা হবে।",
+    pay_order_notes2: "২. আপনার পে অর্ডারটি কাঙ্ক্ষিত শাখা থেকে সংগ্রহ করতে প্রস্তুত হতে হবে",
+    pay_order_notes3: "পরবর্তী উপলব্ধ কাজের দিন দ্বারা।",
+    pay_order_notes4: "৩. কোনও পে অর্ডার বাতিল করতে দয়া করে জারি করা পে অর্ডারটি দেখুন",
+    pay_order_notes5: "শাখা",
+    pay_order_notes6: "৪. ব্যাংক কারও জন্য দায়বদ্ধ বা দায়বদ্ধ হইবে না ",
+    pay_order_notes7: "আপনার দ্বারা সরবরাহ করা ভুল / অসম্পূর্ণ তথ্য",
+
+    click_her: "দ্বারা ইতিবাচক বেতন নির্দেশিকাটি পড়তে এখানে ক্লিক করুন",
+    click_her1: "বাংলাদেশ ব্যাংক",
+
+    positivePay_note1: "১. বাংলাদেশ ব্যাংক অনুসারে পজিটিভ বেতনের নির্দেশনা রয়েছে",
+    positivePay_note2: "ব্যক্তিগত জন্য সমস্ত আন্তঃব্যাংক ক্লিয়ারিং চেকগুলির জন্য প্রয়োজনীয়",
+    positivePay_note3: "অ্যাকাউন্টটি ৫ লক্ষ এবং তারও বেশি এবং অন্যান্য অ্যাকাউন্টের জন্য ১ লক্ষ বা তার বেশি।",
+    positivePay_note4: "২. সিটিটাইচ আপনাকে কেবল অস্পষ্ট চেক দেখায়।",
+    positivePay_note5: "৩. চেকের বিশদগুলিতে অমিলের ক্ষেত্রে। ব্যাংক কল করতে পারে",
+    positivePay_note6: " আপনি শারীরিক চেক তথ্য সম্মত হন।",
+
     scanQrNote: "- বণিক কাউন্টারে প্রদর্শিত কিউআর কোডটি স্ক্যান করুন।",
     card_block_notes1: "1. আপনি যদি চুরি বা হারিয়ে যাওয়া বিকল্প নির্বাচন করেন তবে আপনার কার্ডটি হবে",
     card_block_notes2: "স্থায়ীভাবে নিষ্ক্রিয়। সাময়িকভাবে ব্লক করতে আপনি পারেন",
     card_block_notes3: "সীমাবদ্ধ বিকল্পটি বেছে নিয়েছে",
     card_block_notes4: "২. প্রতিস্থাপনের অনুরোধের জন্য বা কার্ডটি পুনরায় সক্রিয় করতে 16243 কল করুন।",
+
     tagCreditTitle: "আপনার সিটি ব্যাঙ্কের নিম্নলিখিত তথ্য সরবরাহ করুন",
     tagCreditTitle1: "আপনি নিজের শহরের সাথে ট্যাগ করতে চান এমন ক্রেডিট কার্ড জারি করুন",
     tagCreditTitle2: "ডিজিটাল ব্যাংকিংয়ের স্পর্শ করুন",
@@ -997,10 +985,11 @@ export default {
     qr_merchant_payment: "কিউআর মার্চেন্ট পেমেন্ট",
 
     /*account srvices*/
+    fixed_deposit: "নির্দিষ্ট পরিমান",
     monthly_Dps: "মাসিক ডিপিএস",
     pay_order: "পে অর্ডার",
     positive_pay: "ইতিবাচক বেতন",
-    cheque_book_management: "Cheque Book Management",
+    cheque_book_management: "বুক ম্যানেজমেন্ট চেক করুন",
     tag_account_cityTouch: "ট্যাগ অ্যাকাউন্ট নগরী",
     edit_account_preview: "অ্যাকাউন্ট পূর্বরূপ সম্পাদনা করুন",
     request_monitor: "অনুরোধ মনিটর",
@@ -1087,57 +1076,58 @@ export default {
     cheque_book_request: "বুক অনুরোধ পরীক্ষা করুন",
     cheque_book_request_status: "বুক অনুরোধের স্থিতি পরীক্ষা করুন",
 
-  /*Fixed Deposite*/
-  fixed_deposit: "নির্দিষ্ট পরিমান",
-  account_title: "অ্যাকাউন্টের শিরোনাম",
-  depositTypeArr: [
-    {key: "0", label: "ফিক্সড ডিপোজিট-জেনারেল", value: 0},
-    {key: "1", label: "ডাবল মানি এফডি অ্যাকাউন্ট", value: 1},
-    {key: "2", label: "মাসিক সুদ পরিশোধের এফডি", value: 2}
-  ],TenureTypeArr: [
-    {key: "0", label: "মাস (গুলি)", value: 0},
-    {key: "1", label: "প্রদান করে", value: 1},
-  ],
-  select_tenure_type: "মেয়াদ প্রকার নির্বাচন করুন",
-  tenure: "মেয়াদ (সময়কাল)",
-  select_tenure_period: "সময়কাল (সময়কাল) নির্বাচন করুন",
-  auto_renewal: "স্বয়ংক্রিয় পুনর্নবীকরণ",
-  auto_renewal_Type: [{label:"হ্যাঁ",value:0},{label: "না",value: 1}],
-  renewTitle: "Renew",
-  renew: [{label:"মূলনীতি",value:0},{label:"মূল এবং আগ্রহ উভয়ই",value:1}],
-  interestRate: "সুদের হার",
-  deposit_advice_branch:"আমানত সংগ্রহের শাখা জমা দিন",
-  select_branch: "শাখা নির্বাচন করুন",
-  maturity_Date: "পরিপক্কতার তারিখ",
-  Confirm:"কনফার্ম",
-  credit_interest_to: "Creditণ সুদ",
-  selectTenureType: "মেয়াদ প্রকার নির্বাচন করুন",
-  selectTenurePeriod: "মেয়াদ নির্বাচন করুন",
-  branch:"শাখা",
-  installment_start_date:"কিস্তি শুরুর তারিখ",
-  select_installment: "কিস্তি শুরুর তারিখটি নির্বাচন করুন",
-  month:"মাস",
-  select_month: "মাস নির্বাচন করুন",
-  amount_per_installment: "প্রতি কিস্তির পরিমাণ",
-  errorSelect_installment:"কিস্তি শুরুর তারিখটি নির্বাচন করুন",
-  errorSelect_month:"মাস নির্বাচন করুন",
+    /*Fixed Deposite*/
+    fixed_deposit: "নির্দিষ্ট পরিমান",
+    account_title: "অ্যাকাউন্টের শিরোনাম",
+    depositTypeArr: [
+        {key: "0", label: "ফিক্সড ডিপোজিট-জেনারেল", value: 0},
+        {key: "1", label: "ডাবল মানি এফডি অ্যাকাউন্ট", value: 1},
+        {key: "2", label: "মাসিক সুদ পরিশোধের এফডি", value: 2}
+    ], TenureTypeArr: [
+        {key: "0", label: "মাস (গুলি)", value: 0},
+        {key: "1", label: "প্রদান করে", value: 1},
+    ],
+    select_tenure_type: "মেয়াদ প্রকার নির্বাচন করুন",
+    tenure: "মেয়াদ (সময়কাল)",
+    select_tenure_period: "সময়কাল (সময়কাল) নির্বাচন করুন",
+    auto_renewal: "স্বয়ংক্রিয় পুনর্নবীকরণ",
+    auto_renewal_Type: [{label: "হ্যাঁ", value: 0}, {label: "না", value: 1}],
+    renewTitle: "Renew",
+    renew: [{label: "মূলনীতি", value: 0}, {label: "মূল এবং আগ্রহ উভয়ই", value: 1}],
+    interestRate: "সুদের হার",
+    deposit_advice_branch: "আমানত সংগ্রহের শাখা জমা দিন",
+    select_branch: "শাখা নির্বাচন করুন",
+    maturity_Date: "পরিপক্কতার তারিখ",
+    Confirm: "কনফার্ম",
+    credit_interest_to: "Creditণ সুদ",
+    selectTenureType: "মেয়াদ প্রকার নির্বাচন করুন",
+    selectTenurePeriod: "মেয়াদ নির্বাচন করুন",
+    error_amount: "পরিমাণ প্রয়োজন",
+    branch: "শাখা",
+    installment_start_date: "কিস্তি শুরুর তারিখ",
+    select_installment: "কিস্তি শুরুর তারিখটি নির্বাচন করুন",
+    month: "মাস",
+    select_month: "মাস নির্বাচন করুন",
+    amount_per_installment: "প্রতি কিস্তির পরিমাণ",
+    errorSelect_installment: "কিস্তি শুরুর তারিখটি নির্বাচন করুন",
+    errorSelect_month: "মাস নির্বাচন করুন",
 
-  /*pay order screen*/
-  delivery_location: "ডেলিভারির ঠিকানা",
-  select_delivery_location: "বিতরণ অবস্থান নির্বাচন করুন",
-  deliveryTypeArr:[{key:0,label:"শাখা",value:0}],
-  beneficiary_name:"সুবিধা প্রাপ্ত নাম",
-  pay_order_type: "পে অর্ডার সংগ্রহ শাখা",
+    /*pay order screen*/
+    delivery_location: "ডেলিভারির ঠিকানা",
+    select_delivery_location: "বিতরণ অবস্থান নির্বাচন করুন",
+    deliveryTypeArr: [{key: 0, label: "শাখা", value: 0}],
+    beneficiary_name: "সুবিধা প্রাপ্ত নাম",
+    pay_order_type: "পে অর্ডার সংগ্রহ শাখা",
 
-  /*BeneficiaryOtherCard screen*/
-  beneficiary_other_card_title: "অন্যান্য ক্রেডিট কার্ড - সুবিধাভোগী যোগ করুন",
-  beneficiary_bank_card_title: "সিটি ব্যাংক ক্রেডিট কার্ড-সুবিধাভোগী যুক্ত করুন",
-  selectDeliveryLocation: "বিতরণ অবস্থান নির্বাচন করুন",
-  error_beneficiaryName:"দয়া করে আপনার বৈধ সুবিধাভোগীর নাম লিখুন",
+    /*BeneficiaryOtherCard screen*/
+    beneficiary_other_card_title: "অন্যান্য ক্রেডিট কার্ড - সুবিধাভোগী যোগ করুন",
+    beneficiary_bank_card_title: "সিটি ব্যাংক ক্রেডিট কার্ড-সুবিধাভোগী যুক্ত করুন",
+    selectDeliveryLocation: "বিতরণ অবস্থান নির্বাচন করুন",
+    error_beneficiaryName: "দয়া করে আপনার বৈধ সুবিধাভোগীর নাম লিখুন",
 
     /*Positive Pay Screen design*/
-    cheque_date:"তারিখ চেক করুন",
-    select_cheque_date:"সিলেক্ট_চেক_ডেট",
+    cheque_date: "তারিখ চেক করুন",
+    select_cheque_date: "সিলেক্ট_চেক_ডেট",
     cheque_book_number: "চেক বইয়ের নম্বর",
     unused_checkLeaf_number: "অব্যবহৃত চেক লিফ নম্বর",
     select_chequebook_number: "চেক বুক নম্বর নির্বাচন করুন",
@@ -1146,13 +1136,13 @@ export default {
     /* Request Monitor*/
     request_type: "অনুরোধ প্রকার",
     request_status: "অনুরোধের স্থিতি",
-    select_request_type:"অনুরোধের ধরন নির্বাচন করুন",
+    select_request_type: "অনুরোধের ধরন নির্বাচন করুন",
     select_request_status: "অনুরোধের স্থিতি নির্বাচন করুন",
-    requestTypeArray:[
+    requestTypeArray: [
         {key: "0", label: "মাসিক ডিপিএস", value: 0},
         {key: "1", label: "নির্দিষ্ট পরিমান", value: 1},
     ],
-    requestStatusArray:[
+    requestStatusArray: [
         {key: "0", label: "সব", value: 0},
         {key: "1", label: "বিচারাধীন", value: 1},
         {key: "2", label: "খোলা", value: 2},
@@ -1160,30 +1150,30 @@ export default {
     account_title: "অ্যাকাউন্টের শিরোনাম",
     account_number: "হিসাব নাম্বার",
     start_date: "শুরুর তারিখ",
-    biometricTitle:"চালিয়ে যেতে মোবাইল স্ক্যানারে আপনার ফিঙ্গারপ্রিন্ট স্ক্যান করুন",
-    biometricError:"লগইন করতে আঙুল ব্যবহার করে বৈধতা দিন",
+    biometricTitle: "চালিয়ে যেতে মোবাইল স্ক্যানারে আপনার ফিঙ্গারপ্রিন্ট স্ক্যান করুন",
+    biometricError: "লগইন করতে আঙুল ব্যবহার করে বৈধতা দিন",
 
     /*Otp Lock Unlock*/
     reset_request: "অনুরোধ পুনরায় সেট করুন",
-    select_otp_status:"ওটিপি স্থিতি নির্বাচন করুন",
-    resetRequestTypeArray:[
+    select_otp_status: "ওটিপি স্থিতি নির্বাচন করুন",
+    resetRequestTypeArray: [
         {key: "0", label: "সক্রিয়", value: 0},
     ],
-    select_debit_credit:"ডেবিট / ক্রেডিট কার্ড নির্বাচন করুন",
-    current_otp_status:"বর্তমান ওটিপি অবস্থা",
-    lock:"লক",
-    unlock:"আনলক করুন",
+    select_debit_credit: "ডেবিট / ক্রেডিট কার্ড নির্বাচন করুন",
+    current_otp_status: "বর্তমান ওটিপি অবস্থা",
+    lock: "লক",
+    unlock: "আনলক করুন",
     error_otp_status: "ওটিপি স্থিতি নির্বাচন করুন",
     error_debit_credit: "কার্ড নম্বর আবশ্যক",
 
     /*view_delete_beneficiary*/
-    transfer_wcb:"সিটি ব্যাংকের মধ্যে স্থানান্তর",
-    transfer_ob:"অন্য ব্যাংক স্থানান্তর করুন",
-    view_delete_beneficiary:"সুবিধাভোগী মুছুন দেখুন",
-    my_phone:"আমার ফোন",
+    transfer_wcb: "সিটি ব্যাংকের মধ্যে স্থানান্তর",
+    transfer_ob: "অন্য ব্যাংক স্থানান্তর করুন",
+    view_delete_beneficiary: "সুবিধাভোগী মুছুন দেখুন",
+    my_phone: "আমার ফোন",
     donation: "Donation",
     deleteAlert: "আপনি কি নিশ্চিতরূপে যোগ হওয়া সুবিধাভোগী মুছতে চান?",
-    noBeneficiaryAdded : "কোনও সুবিধাভোগী যোগ করা হয়নি",
+    noBeneficiaryAdded: "কোনও সুবিধাভোগী যোগ করা হয়নি",
     delete: "মুছে ফেলা"
 }
 

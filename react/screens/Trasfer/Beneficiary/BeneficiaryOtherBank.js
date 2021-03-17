@@ -114,6 +114,8 @@ class BeneficiaryOtherBank extends Component {
         }
     }
 
+
+
     userInput(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
