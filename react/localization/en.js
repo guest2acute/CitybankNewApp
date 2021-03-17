@@ -1163,8 +1163,9 @@ export default {
     view_delete_beneficiary:"View Delete beneficiary",
     my_phone:"My Phone",
     donation: "Donation",
-    delete: "Are You Sure You Want To Delete"
-
+    deleteAlert: "Are You Sure You Want To Delete",
+    noBeneficiaryAdded : "No Beneficiary Added",
+    delete: "Delete"
 
 
 

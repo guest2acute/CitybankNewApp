@@ -1161,8 +1161,27 @@ export default {
     account_number: "হিসাব নাম্বার",
     start_date: "শুরুর তারিখ",
 
+    /*Otp Lock Unlock*/
+    reset_request: "অনুরোধ পুনরায় সেট করুন",
+    select_otp_status:"ওটিপি স্থিতি নির্বাচন করুন",
+    resetRequestTypeArray:[
+        {key: "0", label: "সক্রিয়", value: 0},
+    ],
+    select_debit_credit:"ডেবিট / ক্রেডিট কার্ড নির্বাচন করুন",
+    current_otp_status:"বর্তমান ওটিপি অবস্থা",
+    lock:"লক",
+    unlock:"আনলক করুন",
+    error_otp_status: "ওটিপি স্থিতি নির্বাচন করুন",
+    error_debit_credit: "কার্ড নম্বর আবশ্যক",
 
-
-
+    /*view_delete_beneficiary*/
+    transfer_wcb:"সিটি ব্যাংকের মধ্যে স্থানান্তর",
+    transfer_ob:"অন্য ব্যাংক স্থানান্তর করুন",
+    view_delete_beneficiary:"সুবিধাভোগী মুছুন দেখুন",
+    my_phone:"আমার ফোন",
+    donation: "Donation",
+    deleteAlert: "আপনি মুছে ফেলতে চান",
+    noBeneficiaryAdded : "কোনও সুবিধাভোগী যোগ করা হয়নি",
+    delete: "মুছে ফেলা"
 }
 

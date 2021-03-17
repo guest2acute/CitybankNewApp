@@ -12,17 +12,15 @@ import {
     Alert
 } from "react-native";
 
-import {actions} from "../../redux/actions";
+import {actions} from "../../../redux/actions";
 import {connect} from "react-redux";
-import Config from "../../config/Config";
-
-import themeStyle from "../../resources/theme.style";
-import Utility from "../../utilize/Utility";
-import CommonStyle from "../../resources/CommonStyle";
-import fontStyle from "../../resources/FontStyle";
-import FontSize from "../../resources/ManageFontSize";
-import StorageClass from "../../utilize/StorageClass";
-import Swipeable from 'react-native-swipeable-row';
+import Config from "../../../config/Config";
+import themeStyle from "../../../resources/theme.style";
+import Utility from "../../../utilize/Utility";
+import CommonStyle from "../../../resources/CommonStyle";
+import fontStyle from "../../../resources/FontStyle";
+import FontSize from "../../../resources/ManageFontSize";
+import StorageClass from "../../../utilize/StorageClass";
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 /**
@@ -77,22 +75,9 @@ class ViewDeleteBeneficiary extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
-
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-
-       /* if (this.props.userDetails.AUTH_FLAG === "TP") {
-            const {data} = this.state;
-            let arr = data;
-            let obj = {
-                id: "changeTransPin",
-                title:this.props.language.change_transaction_pin,
-                icon: require("../resources/images/ic_credential_management.png")
-            }
-            arr.push(obj);
-            this.setState({data: arr});
-        }*/
     }
 
     moveScreen(item) {
@@ -143,7 +128,7 @@ class ViewDeleteBeneficiary extends Component {
     deleteRow = (data, rowMap) => {
         Alert.alert(
             "",
-            this.props.language.delete,
+            this.props.language.deleteAlert,
             [
                 {text: this.props.language.no_txt},
                 {text: this.props.language.yes_txt, onPress: () => this.deleteValue(data)},
@@ -166,7 +151,7 @@ class ViewDeleteBeneficiary extends Component {
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.view_delete_beneficiary}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -180,7 +165,7 @@ class ViewDeleteBeneficiary extends Component {
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
                 <View style={{alignItems:"center",paddingTop:10,paddingBottom:10}}>
@@ -196,7 +181,7 @@ class ViewDeleteBeneficiary extends Component {
                                     style={[styles.backRightBtn, styles.backRightBtnRight]}
                                     onPress={() => this.deleteRow(data, rowMap)}
                                 >
-                                    <Text style={styles.backTextWhite}>Delete</Text>
+                                    <Text style={styles.backTextWhite}>{language.delete}</Text>
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -205,19 +190,9 @@ class ViewDeleteBeneficiary extends Component {
                     />
                 :
                 <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-                    <Text style={CommonStyle.textStyle}>no data found</Text>
+                    <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
                 </View>
                 }
-                      {/*  <Swipeable rightButtons={rightButtons}>
-                    <FlatList data={this.state.data}
-                              renderItem={this._renderItem}
-                              ItemSeparatorComponent={() => this.bottomLine()}
-                              ListHeaderComponent={()=> this.bottomLine()}
-                              ListFooterComponent={this.bottomLine()}
-                              keyExtractor={(item, index) => index + ""}
-                    />
-                        </Swipeable>*/}
-
             </View>
         );
     }
@@ -287,14 +262,6 @@ const mapStateToProps = (state) => {
         language: state.accountReducer.language,
     };
 };
-const rightButtons = [
-    <TouchableOpacity style={{
-        flex: 1,
-        justifyContent: 'center',
-        paddingLeft: 20
-    }}><Text>Delete</Text></TouchableOpacity>,
-];
-
 
 export default connect(mapStateToProps)(ViewDeleteBeneficiary);
 

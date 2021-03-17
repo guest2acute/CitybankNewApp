@@ -91,7 +91,7 @@ export const GETBANKDETAILS = async (userDetails, props, requestType,isCard) => 
         request = {...request, BANK_CD: userDetails.BANK_CD, DIST_CD: userDetails.DIST_CD};
     }
 
-    console.log("request", request);
+    console.log("request ", request);
 
     return new Promise(async (resolve, reject) => {
         await ApiRequest.apiRequest.callApi(request, {}).then(result => {
