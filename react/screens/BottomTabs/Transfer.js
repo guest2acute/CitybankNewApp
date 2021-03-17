@@ -123,6 +123,16 @@ class Transfer extends Component {
             tabBarLabel: this.props.language.transfer
         });
     }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("this.props.language.transfer",this.props.language.transfer);
+        if(prevProps.langId !== this.props.langId){
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.transfer
+            });
+        }
+    }
 }
 
 const mapStateToProps = (state) => {

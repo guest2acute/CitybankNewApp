@@ -180,6 +180,15 @@ class CityPay extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("this.props.language.city_pay",this.props.language.city_pay);
+        if(prevProps.langId !== this.props.langId){
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.city_pay
+            });
+        }
+    }
+
 
     backAction = () => {
         if (this.props.userDetails === "") {

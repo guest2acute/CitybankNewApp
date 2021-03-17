@@ -37,7 +37,6 @@ class ViewBeneficiaryOtherBank extends Component {
             districtName: details.districtDetails.DIST_NM,
             branch_name: details.branchDetails.BRANCH_NM,
             selectTypeVal: details.selectTypeVal,
-            stateVal: 0,
         }
     }
 
@@ -46,11 +45,7 @@ class ViewBeneficiaryOtherBank extends Component {
     }
 
     backEvent() {
-        const {stateVal} = this.state;
-        if (stateVal === 0)
-            this.props.navigation.goBack(null);
-        else
-            this.setState({stateVal: stateVal !== 3 ? stateVal - 1 : stateVal - 2});
+        this.props.navigation.goBack();
     }
 
     beneficiaryAdd(language, navigation) {
@@ -372,7 +367,7 @@ class ViewBeneficiaryOtherBank extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() =>this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
@@ -428,7 +423,7 @@ class ViewBeneficiaryOtherBank extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.confirm}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

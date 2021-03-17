@@ -51,6 +51,9 @@ class More extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.langId !== this.props.langId) {
             this.setState({data: MoreDetails(this.props.language)});
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.more
+            });
         }
     }
 
