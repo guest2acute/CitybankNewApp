@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar
+    TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
 import themeStyle from "../../../resources/theme.style";
 import fontStyle from "../../../resources/FontStyle";
@@ -18,6 +18,7 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
 import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiary';
+import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
 class BeneficiaryWithCityBank extends Component {
@@ -35,8 +36,6 @@ class BeneficiaryWithCityBank extends Component {
             errorEmail: "",
             error_nickname: "",
             error_accountNo: "",
-            focusUid: false,
-            focusPwd: false,
             isMainForm: true,
             stageVal: 0,
             accountDetails: null,
@@ -76,7 +75,7 @@ class BeneficiaryWithCityBank extends Component {
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails,"I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props).then(response => {
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -130,12 +129,10 @@ class BeneficiaryWithCityBank extends Component {
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({
                         error_nickname: "",
-                        nickname: Utility.userInput(text)
+                        nickname: text
                     })}
                     value={this.state.nickname}
                     multiline={false}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     numberOfLines={1}
                     editable={flag}
                     contextMenuHidden={true}
@@ -176,8 +173,6 @@ class BeneficiaryWithCityBank extends Component {
                     value={this.state.accountNo}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
                     editable={flag}
@@ -379,13 +374,6 @@ class BeneficiaryWithCityBank extends Component {
         </View>)
     }
 
-    tPinView(language) {
-        return (<View key={"tPinView"}>
-
-
-        </View>)
-
-    }
 
     render() {
         let language = this.props.language;
@@ -395,7 +383,7 @@ class BeneficiaryWithCityBank extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
@@ -418,15 +406,14 @@ class BeneficiaryWithCityBank extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.state.stageVal === 0 ? this.accountNoOption(language, true) :
-                            this.state.stageVal === 1 ? this.accountNoOption(language, false) : this.tPinView(language)}
+                        {this.state.stageVal === 0 ? this.accountNoOption(language, true) : this.accountNoOption(language, false)}
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
                             marginRight: Utility.setWidth(10),
                             marginTop: Utility.setHeight(20)
                         }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
                                 <View style={{
                                     flex: 1,
                                     alignItems: "center",
@@ -470,11 +457,35 @@ class BeneficiaryWithCityBank extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
 
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
+    }
+
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        console.log("log");
+        const {stateVal} = this.state;
+        if (stateVal === 0)
+            this.props.navigation.goBack(null);
+        else
+            this.setState({stateVal: stateVal - 1});
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
     }
 }
 

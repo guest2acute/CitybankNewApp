@@ -370,7 +370,7 @@ class ChangeLoginCredential extends Component {
             selectActCard.value === 0 ? "TP" : "CP", "CHANGEPWD",
             "O", this.props)
             .then((response) => {
-                console.log("otp response",response);
+                console.log("otp response", response);
                 this.setState({isProgress: false, stateVal: 2});
 
             }, (error) => {
@@ -402,7 +402,7 @@ class ChangeLoginCredential extends Component {
     startReadSMS = async () => {
         console.log("Great!! you have received new sms:");
         const hasPermission = await ReadSms.requestReadSMSPermission();
-        if(hasPermission) {
+        if (hasPermission) {
             await ReadSms.startReadSMS((status, sms, error) => {
                 if (status === "success") {
                     console.log("Great!! you have received new sms:", sms);
@@ -587,7 +587,7 @@ class ChangeLoginCredential extends Component {
         await ApiRequest.apiRequest.verifyAccountCard(selectActCard.value === 1,
             actCardNumber, pin, expiryDate, userDetails, this.state.select_credential_type.value === 0 ? "L" : "P", this.state.otp_type, this.props)
             .then((response) => {
-                console.log("response is this ",response);
+                console.log("response is this ", response);
                 this.setState({
                     isProgress: false,
                     selectRes: {...selectRes, REQUEST_CD: response.REQUEST_CD.toString()},
@@ -610,7 +610,7 @@ class ChangeLoginCredential extends Component {
             select_credential_type
         } = this.state;
 
-        if ((select_credential_type.value === 0 && (!Utility.validPassword(newCredential))) || (select_credential_type.value === 1 && newCredential === "")) {
+        if ((select_credential_type.value === 0 && (!Utility.validPassword(newCredential))) || (select_credential_type.value === 1 && newCredential.length !== 6)) {
             this.setState({errorNewCredential: select_credential_type.value === 0 ? language.errorNewPwd : language.errorNewPIN});
             return;
         } else if (confNewCredential !== newCredential) {

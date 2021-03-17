@@ -70,9 +70,7 @@ class PinLogin extends Component {
         }
         let loginPref = await StorageClass.retrieve(Config.LoginPref);
         this.setState({loginPref: loginPref});
-        console.log("brforeloignPref", loginPref);
         if (loginPref === "2") {
-            console.log("loignPref", loginPref);
             this.checkFingerTouch();
         }
     }
@@ -418,30 +416,32 @@ class PinLogin extends Component {
             .catch((error) => console.log("isSensorAvailable error => ", error));
     }
 
-    getMessage = () => {
-        const {biometryType} = this.state;
-        /* if (biometryType === "TouchID") {
-           return "Scan your Face on the device to continue";
-         } else {*/
-        return "Scan your Fingerprint on the mobile scanner to continue";
-        // }
-    };
 
     showAuthenticationDialog = () => {
         const {biometryType} = this.state;
         console.log("")
         if (biometryType !== null && biometryType !== undefined) {
             FingerprintScanner.authenticate({
-                description: this.getMessage()
+                description: this.props.language.biometricTitle,
+                cancelButton:this.props.language.LoginWith
             })
                 .then(async () => {
                     await this.onSubmit(this.props.language);
                     FingerprintScanner.release();
                 })
-                .catch((error) => {
+                .catch(async (error) => {
                     FingerprintScanner.release();
-                    this.popupConfirm();
-                    console.log('Authentication error is => ', error);
+                    if(error === undefined){
+                        return;
+                    }
+                    console.log('error is => ', error.message);
+                    if(error.message.indexOf("tapped Cancel") !== -1){
+                        this.redirection(this.props.navigation, "LoginScreen");
+                    }
+                    else{
+                        this.popupConfirm();
+                    }
+
                 });
         } else {
             console.log('biometric authentication is not available');
@@ -451,10 +451,9 @@ class PinLogin extends Component {
     popupConfirm() {
         Alert.alert(
             Config.appName,
-            "Please validate using finger to login",
+            this.props.language.biometricError,
             [
-                {text: "Ok", onPress: () => this.showAuthenticationDialog()},
-                {text: "Close app", onPress: () => BackHandler.exitApp()},
+                {text: this.props.language.ok, onPress: () => this.showAuthenticationDialog()},
             ]
         );
     }

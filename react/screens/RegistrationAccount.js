@@ -236,6 +236,7 @@ class RegistrationAccount extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        secureTextEntry={true}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
                             this.loginPinRef.focus();
@@ -1180,6 +1181,7 @@ class RegistrationAccount extends Component {
                         autoCorrect={false}
                         keyboardType={"number-pad"}
                         maxLength={4}
+                        secureTextEntry={true}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
                             this.userIDRef.focus();

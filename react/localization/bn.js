@@ -1160,6 +1160,8 @@ export default {
     account_title: "অ্যাকাউন্টের শিরোনাম",
     account_number: "হিসাব নাম্বার",
     start_date: "শুরুর তারিখ",
+    biometricTitle:"চালিয়ে যেতে মোবাইল স্ক্যানারে আপনার ফিঙ্গারপ্রিন্ট স্ক্যান করুন",
+    biometricError:"লগইন করতে আঙুল ব্যবহার করে বৈধতা দিন"
 
 
 
