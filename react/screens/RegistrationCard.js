@@ -790,7 +790,7 @@ class RegistrationCard extends Component {
         } else if (stateVal === 1) {
             if (this.state.expiryDate === "") {
                 this.setState({errorExpiry: language.errExpiryDate});
-            } else if (this.state.cardPin === "") {
+            } else if (this.state.cardPin.length !== 4) {
                 this.setState({errorPin: language.errCardPin});
             } else if (this.state.userId === "") {
                 this.setState({errorUserId: language.errorUserId});
@@ -811,10 +811,9 @@ class RegistrationCard extends Component {
                 return;
             }
             await this.getOTP();
-
         } else if (stateVal === 3) {
-            if (this.state.loginPin === "") {
-                this.setState({errorLoginPin: language.errValidPin})
+            if (this.state.loginPin.length !== 6) {
+                this.setState({errorLoginPin: language.digits6LoginPin})
             } else if (!Utility.validPassword(this.state.password)) {
                 this.setState({errorpassword: language.errorpassword})
             } else {

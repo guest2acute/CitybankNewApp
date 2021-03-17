@@ -65,8 +65,8 @@ class ChangeContactDetails extends Component {
             actNoList: [],
             cardNoList: [],
             selectRes: null,
-            otp_type: 0,
-            requestData:null
+            requestData: null,
+            changeInArr: []
         }
     }
 
@@ -156,6 +156,7 @@ class ChangeContactDetails extends Component {
                         numberOfLines={1}
                         contextMenuHidden={true}
                         keyboardType={"number-pad"}
+                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={4}/>
@@ -404,9 +405,9 @@ class ChangeContactDetails extends Component {
         let userDetails = this.props.userDetails;
         if (stateVal === 0) {
             if (userDetails.AUTH_FLAG === "TP") {
-                if (this.state.select_actNo === "Select Account Number") {
-                    Utility.alert("Please Select Account Number");
-                } else if (this.state.transactionPin === "") {
+                if (this.state.select_actNo === language.select_actNo) {
+                    Utility.alert(language.selectActNo);
+                } else if (this.state.transactionPin.length !== 4) {
                     this.setState({errorTransPin: language.errTransPin});
                 } else {
                     await this.getMailMobOtp();
@@ -416,7 +417,7 @@ class ChangeContactDetails extends Component {
                     Utility.alert(language.errorSelectCard);
                 } else if (this.state.expiryDate === "") {
                     this.setState({errorExpiry: language.errExpiryDate});
-                } else if (this.state.cardPin === "") {
+                } else if (this.state.cardPin.length !== 4) {
                     this.setState({errorPin: language.errCardPin});
                 } else {
                     await this.getMailMobOtp();
@@ -452,8 +453,8 @@ class ChangeContactDetails extends Component {
             userDetails.AUTH_FLAG, "GENUPDEMAILMBOTPVERIFY",
             select_contact_type.value === 0 ? "UPD_MOBILE" : "UPD_EMAIL", this.props)
             .then((response) => {
-                console.log("hello",response);
-                this.setState({isProgress: false, stateVal: 2,requestData:response.RESPONSE[0].REQ_DATA});
+                console.log("hello", response);
+                this.setState({isProgress: false, stateVal: 2, requestData: response.RESPONSE[0].REQ_DATA});
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -582,7 +583,27 @@ class ChangeContactDetails extends Component {
                 item: card
             });
         });
-        this.setState({actNoList: accountArr, cardNoList: cardArr, isProgress: false});
+
+        let changeInVal = [];
+        if (accountArr.length > 0) {
+            changeInVal.push({key: "A", label: this.props.language.accountTxt, value: 0});
+        }
+
+        if (cardArr.length > 0) {
+            changeInVal.push({key: "C", label: this.props.language.cardText, value: changeInVal.length > 0 ? 1 : 0});
+        }
+
+        this.setState({
+            actNoList: accountArr, cardNoList: cardArr, changeInArr: changeInVal,
+            isProgress: false
+        }, () => {
+            if (changeInVal.length === 1) {
+                this.setState({
+                    selectActCard: changeInVal[0],
+                    changeIn: changeInVal[0].key
+                });
+            }
+        });
     }
 
     backEvent() {
@@ -802,7 +823,7 @@ class ChangeContactDetails extends Component {
                     {language.changeIn}
                 </Text>
                 <TouchableOpacity
-                    onPress={() => this.openModal("accountType", language.select_txt, language.changeInArr, language)}>
+                    onPress={() => this.openModal("accountType", language.select_txt, this.state.changeInArr, language)}>
                     <View style={styles.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                             {this.state.selectActCard.label}

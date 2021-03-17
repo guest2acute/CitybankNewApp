@@ -28,6 +28,7 @@ import * as ReadSms from "react-native-read-sms/ReadSms";
 class ChangeLoginCredential extends Component {
     constructor(props) {
         super(props);
+        console.log("add", props.userDetails.AUTH_FLAG);
         this.state = {
             isProgress: false,
             select_credential_type: props.route.params.title === props.language.change_login_password ? props.language.credentialList[0] : props.language.credentialList[1],
@@ -57,6 +58,7 @@ class ChangeLoginCredential extends Component {
             errorCardPin: "",
             errorExpiry: "",
             dateVal: new Date(),
+            otp_type:0,
             showMonthPicker: false,
             title: props.route.params.title,
         }
@@ -330,7 +332,7 @@ class ChangeLoginCredential extends Component {
             if (this.state.selectActCard.value === 0) {
                 if (select_actNo === this.props.language.select_actNo) {
                     Utility.alert(language.errorActNo);
-                } else if (transactionPin === "") {
+                } else if (transactionPin.length !== 4) {
                     this.setState({errorTransPin: language.errTransPin});
                 } else {
                     await this.verifyCard();
@@ -340,7 +342,7 @@ class ChangeLoginCredential extends Component {
                     Utility.alert(language.errorSelectCard);
                 } else if (this.state.expiryDate === "") {
                     this.setState({errorExpiry: language.errExpiryDate});
-                } else if (this.state.cardPin === "") {
+                } else if (this.state.cardPin.length !== 4) {
                     this.setState({errorCardPin: language.errCardPin});
                 } else {
                     await this.verifyCard();

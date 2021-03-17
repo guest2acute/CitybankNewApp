@@ -166,6 +166,7 @@ export default class ApiRequest {
 
 
     verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response, passType, otp_type, props) => {
+       console.log("otp_type",otp_type);
         return new Promise(async (resolve, reject) => {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),

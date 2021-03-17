@@ -1165,8 +1165,10 @@ export default {
     donation: "Donation",
     delete: "Are You Sure You Want To Delete",
     biometricTitle:"Scan your Fingerprint on the mobile scanner to continue",
-    biometricError:"Please validate using finger to login"
-
+    biometricError:"Please validate using finger to login",
+    accountTxt:"Account",
+    cardText:"Card",
+    selectActNo:"Please Select Account Number"
 
 
 

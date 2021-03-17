@@ -173,6 +173,7 @@ class ChangeTransPin extends Component {
                         numberOfLines={1}
                         keyboardType={"number-pad"}
                         contextMenuHidden={true}
+                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={4}/>
@@ -221,6 +222,7 @@ class ChangeTransPin extends Component {
                         numberOfLines={1}
                         keyboardType={"number-pad"}
                         contextMenuHidden={true}
+                        secureTextEntry={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         maxLength={4}/>
@@ -576,9 +578,9 @@ class ChangeTransPin extends Component {
         } else if (this.state.dob === "") {
             this.setState({errorDob: language.errorDob});
         } else if (this.state.stage === 2) {
-            if (this.state.pinVal === "") {
+            if (this.state.pinVal.length !== 4) {
                 this.setState({errorPinVal: language.errTransactionPin})
-            } else if (this.state.ConfirmPinVal === "") {
+            } else if (this.state.ConfirmPinVal !== this.state.pinVal) {
                 this.setState({errorConfirmPinVal: language.errTConfPin})
             } else {
                 await this.changeTransPin(language, navigation);

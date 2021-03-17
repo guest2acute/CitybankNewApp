@@ -91,7 +91,7 @@ class LoginConfigureProfile extends Component {
             await StorageClass.store(Config.isFirstTime, userID);
             await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
             if (this.state.loginPrefVal === "2") {
-                console.log("result",result);
+                console.log("result", result);
                 let response = result.RESPONSE[0];
                 await StorageClass.store(Config.BioPinPref, response.BIO_PIN);
             }
@@ -229,7 +229,6 @@ class LoginConfigureProfile extends Component {
                                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                     autoCorrect={false}
                                     returnKeyType={"next"}
-                                    secureTextEntry={true}
                                     onSubmitEditing={(event) => {
                                         this.loginPinRef.focus();
                                     }}
@@ -381,26 +380,34 @@ class LoginConfigureProfile extends Component {
         const {transactionPin, confirmTransactionPin, loginPin, conf_loginPin, loginPrefVal} = this.state;
         console.log("loginPrefVal", loginPrefVal);
         console.log("loginPin", loginPin.length);
+        /*
+                if (this.state.loginPin !== conf_loginPin) {
+                    this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
+                } else if ((loginPrefVal === "1" || loginPin !== "") && loginPin.length !== 6) {
+                    this.setState({errorLoginPIN: language.digits6LoginPin});
+                } else {
+                    await this.updateUserRequest(navigation);
+                }
+        */
+        if (this.props.userDetails.AUTH_FLAG === "TP" &&
+            this.props.userDetails.TXN_PASS_REG_FLAG === "N") {
+            if (transactionPin.length !== 4) {
+                this.setState({errorTransPIN: language.digits4TransPin});
+                return;
+            } else if (transactionPin !== confirmTransactionPin) {
+                this.setState({errorConfTransPIN: language.errConfirmTransPin});
+                return;
+            }
+        }
 
-        if (this.state.loginPin !== conf_loginPin) {
-            this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
-        } else if ((loginPrefVal === "1" || loginPin !== "") && loginPin.length !== 6) {
+        if ((loginPrefVal === "1" || loginPin !== "") && loginPin.length !== 6) {
             this.setState({errorLoginPIN: language.digits6LoginPin});
+        } else if (this.state.loginPin !== conf_loginPin) {
+            this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
         } else {
             await this.updateUserRequest(navigation);
         }
 
-        /* if (transactionPin.length !== 4) {
-             this.setState({errorTransPIN: language.digits4TransPin});
-         } else if (this.state.loginPin !== conf_loginPin) {
-             this.setState({errorConfLoginPIN: language.errConfirmLoginPin});
-         } else if (transactionPin !== confirmTransactionPin) {
-             this.setState({errorConfTransPIN: language.errConfirmTransPin});
-         } else if ((loginPrefVal === "1" || loginPin !== "") && loginPin.length !== 6) {
-             this.setState({errorLoginPIN: language.digits6LoginPin});
-         } else {
-             await this.updateUserRequest(navigation);
-         }*/
     }
 
 

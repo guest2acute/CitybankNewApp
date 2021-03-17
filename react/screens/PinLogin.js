@@ -156,7 +156,7 @@ class PinLogin extends Component {
         } else if (this.state.loginPref === "1") {
             password = this.state.one + this.state.two + this.state.three + this.state.four + this.state.five + this.state.six;
             if (password.length !== 6) {
-                this.setState({errorPIN: language.errValidPin});
+                this.setState({errorPIN: language.digits6LoginPin});
                 return;
             }
         } else {
@@ -193,7 +193,7 @@ class PinLogin extends Component {
                 [
                     {
                         text: this.props.language.ok, onPress: () => {
-                            if (this.state.loginPref === "2"){
+                            if (this.state.loginPref === "2") {
                                 this.showAuthenticationDialog();
                             }
                         }
@@ -423,7 +423,7 @@ class PinLogin extends Component {
         if (biometryType !== null && biometryType !== undefined) {
             FingerprintScanner.authenticate({
                 description: this.props.language.biometricTitle,
-                cancelButton:this.props.language.LoginWith
+                cancelButton: this.props.language.LoginWith
             })
                 .then(async () => {
                     await this.onSubmit(this.props.language);
@@ -431,14 +431,13 @@ class PinLogin extends Component {
                 })
                 .catch(async (error) => {
                     FingerprintScanner.release();
-                    if(error === undefined){
+                    if (error === undefined) {
                         return;
                     }
                     console.log('error is => ', error.message);
-                    if(error.message.indexOf("tapped Cancel") !== -1){
+                    if (error.message.indexOf("tapped Cancel") !== -1) {
                         this.redirection(this.props.navigation, "LoginScreen");
-                    }
-                    else{
+                    } else {
                         this.popupConfirm();
                     }
 
@@ -735,16 +734,17 @@ class PinLogin extends Component {
                 </View>
                 {this.state.loginPref === "0" ? this.passwordView(language) : this.state.loginPref === "1" ? this.pinView(language) : this.state.loginPref === "2" ? this.fingerView(language) : null}
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("CityPay")}>
-                    <Image style={{
-                        alignSelf: "center",
-                        marginTop: Utility.setHeight(20),
-                        height: Utility.setHeight(70),
-                        width: Utility.setWidth(70),
-                        marginBottom: Utility.setHeight(20)
-                    }} resizeMode={"contain"}
-                           source={require("../resources/images/qr_login.jpg")}/>
-                </TouchableOpacity>
+                {this.state.loginPref !== "2" ?
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("CityPay")}>
+                        <Image style={{
+                            alignSelf: "center",
+                            marginTop: Utility.setHeight(20),
+                            height: Utility.setHeight(70),
+                            width: Utility.setWidth(70),
+                            marginBottom: Utility.setHeight(20)
+                        }} resizeMode={"contain"}
+                               source={require("../resources/images/qr_login.jpg")}/>
+                    </TouchableOpacity> : null}
 
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>

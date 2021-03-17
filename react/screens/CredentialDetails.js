@@ -385,7 +385,7 @@ class CredentialDetails extends Component {
                 this.setState({errTransPin: language.errTransPin});
                 return;
             } else if (this.state.isField) {
-                if (this.state.selectTypeVal === 1 && this.state.newP.length === "") {
+                if (this.state.selectTypeVal === 1 && !Utility.validPassword(this.state.newP)){
                     this.setState({errorNewP: language.errorNewPwd});
                     return;
                 } else if (this.state.selectTypeVal === 2 && this.state.newP.length !== 6) {

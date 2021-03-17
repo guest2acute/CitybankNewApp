@@ -1161,10 +1161,10 @@ export default {
     account_number: "হিসাব নাম্বার",
     start_date: "শুরুর তারিখ",
     biometricTitle:"চালিয়ে যেতে মোবাইল স্ক্যানারে আপনার ফিঙ্গারপ্রিন্ট স্ক্যান করুন",
-    biometricError:"লগইন করতে আঙুল ব্যবহার করে বৈধতা দিন"
-
-
-
+    biometricError:"লগইন করতে আঙুল ব্যবহার করে বৈধতা দিন",
+    accountTxt:"হিসাব",
+    cardText:"কার্ড",
+    selectActNo:"অ্যাকাউন্ট নম্বর নির্বাচন করুন"
 
 }
 

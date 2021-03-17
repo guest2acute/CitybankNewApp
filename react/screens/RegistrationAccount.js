@@ -1311,10 +1311,10 @@ class RegistrationAccount extends Component {
             await this.getOTP();
 
         } else if (stateVal === 3) {
-            if (this.state.transPin === "") {
+            if (this.state.transPin.length !== 4) {
                 this.setState({errorTransPin: language.errTransPin});
-            } else if (this.state.loginPin === "") {
-                this.setState({errorLoginPin: language.errValidPin})
+            } else if (this.state.loginPin.length!==6) {
+                this.setState({errorLoginPin: language.digits6LoginPin})
             } else if (!Utility.validPassword(this.state.password)) {
                 this.setState({errorpassword: language.errorpassword})
             } else {

@@ -45,16 +45,14 @@ class LoginScreen extends Component {
 
     async onSubmit(language) {
         const {userID, passwordTxt} = this.state;
-        if (userID === "") {
-            this.setState({errorTextUid: language.require_user_id});
-        } else if (userID.length < 8) {
-            this.setState({errorTextUid: language.require_length_user_id});
+        let userRes = Utility.verifyUserId(userID, language);
+        if (userRes !== "") {
+            this.setState({errorTextUid: userRes});
         } else if (!Utility.validPassword(passwordTxt)) {
             this.setState({errorTextPwd: language.errorpassword});
         } else {
             await this.loginRequest(userID, passwordTxt);
         }
-
     }
 
     async processLoginResponse(result) {
@@ -379,7 +377,7 @@ class LoginScreen extends Component {
                                 }}>{language.open_account}</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("CityPay")}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("CityPay")}>
                             <Image style={{
                                 alignSelf: "center",
                                 marginTop: Utility.setHeight(20),

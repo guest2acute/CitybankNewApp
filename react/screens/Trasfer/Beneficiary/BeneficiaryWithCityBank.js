@@ -18,7 +18,6 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
 import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiary';
-import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
 class BeneficiaryWithCityBank extends Component {
@@ -36,7 +35,6 @@ class BeneficiaryWithCityBank extends Component {
             errorEmail: "",
             error_nickname: "",
             error_accountNo: "",
-            isMainForm: true,
             stageVal: 0,
             accountDetails: null,
         }
@@ -116,7 +114,7 @@ class BeneficiaryWithCityBank extends Component {
             }}>
                 <Text style={[CommonStyle.textStyle]}>
                     {language.nick_name}
-                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    <Text style={{color: themeStyle.THEME_COLOR}}>{flag ? "*" : ""}</Text>
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
@@ -157,7 +155,7 @@ class BeneficiaryWithCityBank extends Component {
             }}>
                 <Text style={[CommonStyle.textStyle]}>
                     {language.actNo}
-                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    <Text style={{color: themeStyle.THEME_COLOR}}>{flag ? "*" : ""}</Text>
                 </Text>
                 <TextInput
                     ref={(ref) => this.accountNoRef = ref}
@@ -439,7 +437,7 @@ class BeneficiaryWithCityBank extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -474,12 +472,12 @@ class BeneficiaryWithCityBank extends Component {
     }
 
     backEvent() {
-        console.log("log");
-        const {stateVal} = this.state;
-        if (stateVal === 0)
-            this.props.navigation.goBack(null);
+        const {stageVal} = this.state;
+        console.log("log",stageVal);
+        if (stageVal === 0)
+            this.props.navigation.goBack();
         else
-            this.setState({stateVal: stateVal - 1});
+            this.setState({stageVal: stageVal - 1});
     }
 
     componentWillUnmount() {
