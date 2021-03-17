@@ -1163,9 +1163,13 @@ export default {
     view_delete_beneficiary:"View Delete beneficiary",
     my_phone:"My Phone",
     donation: "Donation",
-    deleteAlert: "Are You Sure You Want To Delete",
+
+    deleteAlert: "Are you sure you want to delete added beneficiary?",
     noBeneficiaryAdded : "No Beneficiary Added",
-    delete: "Delete"
+    delete: "Delete",
+    biometricTitle:"Scan your Fingerprint on the mobile scanner to continue",
+    biometricError:"Please validate using finger to login",
+
 
 
 

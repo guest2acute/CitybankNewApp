@@ -15,13 +15,15 @@ import {
 import {actions} from "../../../redux/actions";
 import {connect} from "react-redux";
 import Config from "../../../config/Config";
+
 import themeStyle from "../../../resources/theme.style";
 import Utility from "../../../utilize/Utility";
 import CommonStyle from "../../../resources/CommonStyle";
 import fontStyle from "../../../resources/FontStyle";
 import FontSize from "../../../resources/ManageFontSize";
 import StorageClass from "../../../utilize/StorageClass";
-import { SwipeListView } from 'react-native-swipe-list-view';
+
+import {SwipeListView} from 'react-native-swipe-list-view';
 
 /**
  * splash page
@@ -32,30 +34,30 @@ class ViewDeleteBeneficiary extends Component {
     constructor(props) {
         super(props);
         let language = props.language;
-        console.log("language",language.bkash_account)
+        console.log("language", language.bkash_account)
         this.state = {
             data: [
                 {
                     id: 0,
-                    name:language.my_phone,
+                    name: language.my_phone,
                     beneficiaryType: language.transfer_wcb,
-                    nickName:"test",
-                    account_number:"2702240346001",
-                    account_holder_name:"test",
-                    currency:"10.00",
-                    mobile_number:"8849380088",
-                    email:"test@email.com"
+                    nickName: "test",
+                    account_number: "2702240346001",
+                    account_holder_name: "test",
+                    currency: "10.00",
+                    mobile_number: "8849380088",
+                    email: "test@email.com"
                 },
                 {
                     id: 1,
-                    name:language.donation,
+                    name: language.donation,
                     beneficiaryType: language.transfer_ob,
-                    nickName:"test",
-                    account_number:"2702240346001",
-                    account_holder_name:"test",
-                    currency:"10.00",
-                    mobile_number:"8849380088",
-                    email:"test@email.com"
+                    nickName: "test",
+                    account_number: "2702240346001",
+                    account_holder_name: "test",
+                    currency: "10.00",
+                    mobile_number: "8849380088",
+                    email: "test@email.com"
                 }
             ],
 
@@ -80,30 +82,16 @@ class ViewDeleteBeneficiary extends Component {
         });
     }
 
-    moveScreen(item) {
-        console.log(item)
-        this.props.navigation.navigate("TransferHistory");
-    }
-
-    async redirectProfile() {
-        let loginPref = await StorageClass.retrieve(Config.LoginPref);
-        console.log("profile", loginPref);
-        if (loginPref === null || loginPref === "") {
-            loginPref = "0";
-        }
-        this.props.navigation.navigate("Profile", {loginPref: loginPref});
-    }
-
     _renderItem = (data, rowMap) => (
         <TouchableOpacity
             onPress={() => console.log('You touched me')}
             style={styles.rowFront}
         >
-            <View style={{flexDirection:"row",justifyContent:"space-between",marginStart:10,marginEnd:10}}>
+            <View style={{flexDirection: "row", justifyContent: "space-between", marginStart: 10, marginEnd: 10}}>
                 <Text style={CommonStyle.textStyle}>{data.item.name}</Text>
                 <Text style={CommonStyle.textStyle}>{data.item.account_number}</Text>
             </View>
-            <View style={{flexDirection:"column",justifyContent:"space-around",marginStart:10,marginEnd:10}}>
+            <View style={{flexDirection: "column", justifyContent: "space-around", marginStart: 10, marginEnd: 10}}>
                 <Text style={CommonStyle.textStyle}>{data.item.account_holder_name}</Text>
                 <Text style={CommonStyle.textStyle}>{data.item.currency}</Text>
                 <Text style={CommonStyle.textStyle}>{data.item.mobile_number}</Text>
@@ -112,9 +100,9 @@ class ViewDeleteBeneficiary extends Component {
         </TouchableOpacity>
     )
 
-    onItemOpen= rowKey => {
+    onItemOpen = rowKey => {
         console.log('This row opened', rowKey);
-    };
+    }
 
     bottomLine() {
         return (<View style={{
@@ -135,9 +123,10 @@ class ViewDeleteBeneficiary extends Component {
             ]
         );
     }
-    deleteValue(data){
-        const filterArray = this.state.data.filter(e=>e.id !== data.item.id)
-        this.setState({data:filterArray})
+
+    deleteValue(data) {
+        const filterArray = this.state.data.filter(e => e.id !== data.item.id)
+        this.setState({data: filterArray})
     }
 
     render() {
@@ -151,7 +140,8 @@ class ViewDeleteBeneficiary extends Component {
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") :
+                                   require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.view_delete_beneficiary}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -168,13 +158,14 @@ class ViewDeleteBeneficiary extends Component {
                                source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignItems:"center",paddingTop:10,paddingBottom:10}}>
-                <Text style={styles.title}>{language.favoriteTitle}</Text>
+                <View style={{alignItems: "center", paddingTop: 10, paddingBottom: 10}}>
+                    <Text style={styles.title}>{language.favoriteTitle}</Text>
                 </View>
                 {this.state.data.length > 0 ?
                     <SwipeListView
                         data={this.state.data}
-                        renderItem={this._renderItem}
+                        renderItem={this._renderItem} 
+                        keyExtractor={(item,index) => index+""}
                         renderHiddenItem={(data, rowMap) => (
                             <View style={styles.rowBack}>
                                 <TouchableOpacity
@@ -223,7 +214,7 @@ const styles = {
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         // justifyContent: 'center',
-        flex:1
+        flex: 1
     },
     rowBack: {
         alignItems: 'center',

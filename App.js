@@ -75,6 +75,7 @@ import OtpLockUnlock from "./react/screens/More/OtpLockUnlock";
 import ViewDeleteBeneficiary from "./react/screens/Trasfer/Beneficiary/ViewDeleteBeneficiary";
 import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
 
+
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

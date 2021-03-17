@@ -1160,6 +1160,8 @@ export default {
     account_title: "অ্যাকাউন্টের শিরোনাম",
     account_number: "হিসাব নাম্বার",
     start_date: "শুরুর তারিখ",
+    biometricTitle:"চালিয়ে যেতে মোবাইল স্ক্যানারে আপনার ফিঙ্গারপ্রিন্ট স্ক্যান করুন",
+    biometricError:"লগইন করতে আঙুল ব্যবহার করে বৈধতা দিন",
 
     /*Otp Lock Unlock*/
     reset_request: "অনুরোধ পুনরায় সেট করুন",
@@ -1180,7 +1182,7 @@ export default {
     view_delete_beneficiary:"সুবিধাভোগী মুছুন দেখুন",
     my_phone:"আমার ফোন",
     donation: "Donation",
-    deleteAlert: "আপনি মুছে ফেলতে চান",
+    deleteAlert: "আপনি কি নিশ্চিতরূপে যোগ হওয়া সুবিধাভোগী মুছতে চান?",
     noBeneficiaryAdded : "কোনও সুবিধাভোগী যোগ করা হয়নি",
     delete: "মুছে ফেলা"
 }
