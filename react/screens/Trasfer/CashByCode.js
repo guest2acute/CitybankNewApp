@@ -369,9 +369,9 @@ class CashByCode extends Component {
 
             <View style={{ marginTop: 10,}}>
                 <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>1. Mininmum Transfer Amount: Tk.500 per transaction..</Text>
-                <Text style={styles.textView}>2. Maximum Transfer Amount: Tk. 100,000 per day.</Text>
-                <Text style={styles.textView}>3. Transfer amount should be 500 or multiple of 500 up to 20,000</Text>
+                <Text style={styles.textView}>{language.cashBy_code_notes1}</Text>
+                <Text style={styles.textView}>{language.cashBy_code_notes2}</Text>
+                <Text style={styles.textView}>{language.cashBy_code_notes3}</Text>
             </View>
         </View>)
     }

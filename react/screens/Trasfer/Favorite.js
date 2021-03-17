@@ -13,6 +13,7 @@ import FontSize from "../../resources/ManageFontSize";
 import StorageClass from "../../utilize/StorageClass";
 import Swipeable from 'react-native-swipeable-row';
 
+
 /**
  * splash page
  */

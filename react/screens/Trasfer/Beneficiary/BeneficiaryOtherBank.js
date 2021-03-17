@@ -71,10 +71,10 @@ class BeneficiaryOtherBank extends Component {
             selectTypeVal: item.value,
             modalVisible: false,
             account_card_name: "",
-            accountNo: "371599109150690",
+            accountNo: "",
             error_accountNo: "",
             error_cardName: "",
-            error_cardName: "",
+         /*   error_cardName: "",*/
             districtTypeArr: [],
             branchTypeArr: [],
             selectBankType: props.language.select_bank_type,
@@ -114,6 +114,8 @@ class BeneficiaryOtherBank extends Component {
         }
     }
 
+
+
     userInput(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
@@ -127,13 +129,14 @@ class BeneficiaryOtherBank extends Component {
     }
 
     async onSubmit(language, navigation) {
+        console.log("selectType value",this.state.selectTypeVal)
         if (this.state.nickname === "") {
             this.setState({error_nickname: language.require_nickname});
             return;
         } else if (this.state.selectTypeVal === -1) {
             Utility.alert(language.select_type_account);
             return
-        } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length !== 13) {
+        } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length < 13) {
             this.setState({error_accountNo: language.require_valid_actNumber})
             return;
         } else if (this.state.selectTypeVal === 1 && (this.state.accountNo.length < 15)) {
@@ -175,7 +178,8 @@ class BeneficiaryOtherBank extends Component {
     }
 
     accountNoOption(language) {
-        return (<View>
+        return (
+            <View>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,

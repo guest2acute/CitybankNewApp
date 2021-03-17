@@ -12,7 +12,7 @@ import {
     Alert
 } from "react-native";
 
-
+import {actions} from "../../../redux/actions";
 import {connect} from "react-redux";
 import Config from "../../../config/Config";
 
@@ -77,36 +77,9 @@ class ViewDeleteBeneficiary extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
-
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-
-        /* if (this.props.userDetails.AUTH_FLAG === "TP") {
-             const {data} = this.state;
-             let arr = data;
-             let obj = {
-                 id: "changeTransPin",
-                 title:this.props.language.change_transaction_pin,
-                 icon: require("../resources/images/ic_credential_management.png")
-             }
-             arr.push(obj);
-             this.setState({data: arr});
-         }*/
-    }
-
-    moveScreen(item) {
-        console.log(item)
-        this.props.navigation.navigate("TransferHistory");
-    }
-
-    async redirectProfile() {
-        let loginPref = await StorageClass.retrieve(Config.LoginPref);
-        console.log("profile", loginPref);
-        if (loginPref === null || loginPref === "") {
-            loginPref = "0";
-        }
-        this.props.navigation.navigate("Profile", {loginPref: loginPref});
     }
 
     _renderItem = (data, rowMap) => (
@@ -129,7 +102,7 @@ class ViewDeleteBeneficiary extends Component {
 
     onItemOpen = rowKey => {
         console.log('This row opened', rowKey);
-    };
+    }
 
     bottomLine() {
         return (<View style={{
@@ -143,7 +116,7 @@ class ViewDeleteBeneficiary extends Component {
     deleteRow = (data, rowMap) => {
         Alert.alert(
             "",
-            this.props.language.delete,
+            this.props.language.deleteAlert,
             [
                 {text: this.props.language.no_txt},
                 {text: this.props.language.yes_txt, onPress: () => this.deleteValue(data)},
@@ -197,29 +170,20 @@ class ViewDeleteBeneficiary extends Component {
                             <View style={styles.rowBack}>
                                 <TouchableOpacity
                                     style={[styles.backRightBtn, styles.backRightBtnRight]}
-                                    onPress={() => this.deleteRow(data, rowMap)}>
-                                    <Text style={styles.backTextWhite}>Delete</Text>
+                                    onPress={() => this.deleteRow(data, rowMap)}
+                                >
+                                    <Text style={styles.backTextWhite}>{language.delete}</Text>
                                 </TouchableOpacity>
                             </View>
                         )}
                         rightOpenValue={-75}
                         disableRightSwipe={true}
                     />
-                    :
-                    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-                        <Text style={CommonStyle.textStyle}>no data found</Text>
-                    </View>
+                :
+                <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+                    <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
+                </View>
                 }
-                {/*  <Swipeable rightButtons={rightButtons}>
-                    <FlatList data={this.state.data}
-                              renderItem={this._renderItem}
-                              ItemSeparatorComponent={() => this.bottomLine()}
-                              ListHeaderComponent={()=> this.bottomLine()}
-                              ListFooterComponent={this.bottomLine()}
-                              keyExtractor={(item, index) => index + ""}
-                    />
-                        </Swipeable>*/}
-
             </View>
         );
     }
@@ -289,14 +253,6 @@ const mapStateToProps = (state) => {
         language: state.accountReducer.language,
     };
 };
-const rightButtons = [
-    <TouchableOpacity style={{
-        flex: 1,
-        justifyContent: 'center',
-        paddingLeft: 20
-    }}><Text>Delete</Text></TouchableOpacity>,
-];
-
 
 export default connect(mapStateToProps)(ViewDeleteBeneficiary);
 

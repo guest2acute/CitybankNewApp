@@ -1,4 +1,4 @@
-import {Text} from "react-native";
+
 import React from "react";
 import Beneficiary from "../screens/Trasfer/Beneficiary/Beneficiary";
 
@@ -12,7 +12,7 @@ export default {
     decline: "Decline",
     continue_txt: "Continue",
     next: "Next",
-    confirm:"Confirm",
+    confirm: "Confirm",
     user_ID: "Enter Your User ID",
     new_signup: "New in CityTouch?",
     sign_up_now: "Sign up now!",
@@ -97,7 +97,7 @@ export default {
     city_pay: "CityPay",
     qrId: "QR ID",
     et_qr: "Enter QR ID here",
-    errorQRId:"Please enter QR ID",
+    errorQRId: "Please enter QR ID",
     more: "More",
     payments: "Payments",
     transfer: "Transfer",
@@ -320,16 +320,8 @@ export default {
         {id: "cashByCode", title: "Cash By Code", icon: require("../resources/images/case_by_code.png")},
         {id: "emailTransfer", title: "Email Transfer", icon: require("../resources/images/email_transfer.png")},
         {id: "transferToBkash", title: "Transfer To Bkash", icon: require("../resources/images/transfer_to_bkash.png")},
-        {
-            id: "beneficiaryManagement",
-            title: "Beneficiary Management",
-            icon: require("../resources/images/beneficiary_management.png")
-        },
-        {
-            id: "favoriteTransfer",
-            title: "Favorite Transfers",
-            icon: require("../resources/images/ic_facourite_transfer.png")
-        },
+        {id: "beneficiaryManagement",title: "Beneficiary Management",icon: require("../resources/images/beneficiary_management.png")},
+        {id: "favoriteTransfer",title: "Favorite Transfers",icon: require("../resources/images/ic_facourite_transfer.png")},
         {id: "transferHistory", title: "Transfer History", icon: require("../resources/images/ic_transfer_istory.png")}
     ],
     payments_props: [
@@ -355,7 +347,11 @@ export default {
             title: "Favorite Payments",
             icon: require("../resources/images/ic_facourite_transfer.png")
         },
-        {id: "PaymentHistory", title: "Payment History", icon: require("../resources/images/ic_transfer_istory.png")},
+        {
+            id: "PaymentHistory",
+            title: "Payment History",
+            icon: require("../resources/images/ic_transfer_istory.png")
+        },
         {}
     ],
 
@@ -545,18 +541,19 @@ export default {
         {key: "1", label: "Transfer Other Bank", value: 1},
         {key: "2", label: "Email Transfer", value: 2},
         {key: "3", label: "MFS Fund Transfer", value: 3},
-        {key:"4",label: "Other Credit Card",value: 4},
-        {key:"5",label: "City Bank Credit Card",value: 5},
+        {key: "4", label: "Other Credit Card", value: 4},
+        {key: "5", label: "City Bank Credit Card", value: 5},
     ],
 
     TypeOfTransferArr: [
         {key: "0", label: "Transfer Within City Bank", value: 0},
-        {key: "1", label: "Transfer Other Bank", value: 1,},
+        {key: "1", label: "Transfer Other Bank", value: 1},
         {key: "2", label: "Transfer Within City Bank", value: 2},
         {key: "3", label: "Transfer Other Bank", value: 3}
     ],
     notAvailable: "Not available",
     add_beneficiary_wcb: "Add Beneficiary-Within City Bank",
+    add_beneficiary_mfs: "Add Beneficiary-MFS",
     nick_name: "Nick Name",
     account_holder_name: "Account Holder Name",
     currency: "Currency",
@@ -581,7 +578,6 @@ export default {
     require_bname: "Beneficiary Name is required",
     require_email: "Email Address is required",
     add_beneficiary_wob: "Add Beneficiary-Other Bank",
-    add_beneficiary_mfs: "Add Beneficiary-MFS",
     type_bank: "Bank Name",
     select_bank_type: "Select Bank Name",
     type_district: "District Name",
@@ -810,18 +806,18 @@ export default {
     fund_transfer_note7: "4. Consecutive transaction in the same account will",
     fund_transfer_note8: "take 10 minutes of interval.",
 
-    other_bankAccount_note1:"1. Maximum transaction limit from CityTouch is BDT 5 lacs per day.",
-    other_bankAccount_note2:"2. BEFTN: transfer request placed before 2:00PM will be executed on the.",
-    other_bankAccount_note3:"same day and transfer request placed after",
-    other_bankAccount_note4:"2:PM will be executed on the next working day after 10.00 AM.",
-    other_bankAccount_note5:"3. RTGS Available from 10:30 to 03:00 PM for instant.",
-    other_bankAccount_note6:"transfer of 1 to 5 lacs within working day.Fee BDT 100 (VAT Inclusive)",
-    other_bankAccount_note7:"4. NPSB: Transfer limit is BDT 5 lacs in 10 transcation per day",
-    other_bankAccount_note8:"and maximum BDT 1 lacs per transaction",
-    other_bankAccount_note9:"5. Credit card master limit: minimum transferable amount is",
-    other_bankAccount_note10:"BDT is 500 and up to 50% of total available BDT limit.",
-    other_bankAccount_note11:"other_bankAccount_note10",
-    other_bankAccount_note12:"7.consecutive transaction in the same account will take 10 minutes of interval",
+    other_bankAccount_note1: "1. Maximum transaction limit from CityTouch is BDT 5 lacs per day.",
+    other_bankAccount_note2: "2. BEFTN: transfer request placed before 2:00PM will be executed on the.",
+    other_bankAccount_note3: "same day and transfer request placed after",
+    other_bankAccount_note4: "2:PM will be executed on the next working day after 10.00 AM.",
+    other_bankAccount_note5: "3. RTGS Available from 10:30 to 03:00 PM for instant.",
+    other_bankAccount_note6: "transfer of 1 to 5 lacs within working day.Fee BDT 100 (VAT Inclusive)",
+    other_bankAccount_note7: "4. NPSB: Transfer limit is BDT 5 lacs in 10 transcation per day",
+    other_bankAccount_note8: "and maximum BDT 1 lacs per transaction",
+    other_bankAccount_note9: "5. Credit card master limit: minimum transferable amount is",
+    other_bankAccount_note10: "BDT is 500 and up to 50% of total available BDT limit.",
+    other_bankAccount_note11: "other_bankAccount_note10",
+    other_bankAccount_note12: "7.consecutive transaction in the same account will take 10 minutes of interval",
 
     beneficiary_otherBank_note1: "1. Beneficiary banks/branches should be capable to process",
     beneficiary_otherBank_note2: "RTGS/NPSB/BEFTN transaction.",
@@ -840,7 +836,6 @@ export default {
     beneficiary_otherBank_note15: "before the 13-digit card number.",
 
 
-
     transferTo_bkash_note1: "1. Transfer and transaction limit for a single bkash account.",
     transferTo_bkash_note2: "5 transaction per day and 25 per month.",
     transferTo_bkash_note3: "Transfer amount is BDT 50 to BDT 30000 per day and BDT 2",
@@ -852,46 +847,50 @@ export default {
     transferTo_bkash_note9: "5. consecutive transfer in the same bkash account require",
     transferTo_bkash_note10: "minimum 10 minitues interval.",
 
+    cashBy_code_notes1: "1. Mininmum Transfer Amount: Tk.500 per transaction..",
+    cashBy_code_notes2: "2. Maximum Transfer Amount: Tk. 100,000 per day.",
+    cashBy_code_notes3: "3. Transfer amount should be 500 or multiple of 500 up to 20,000",
+
 
     email_transfer_note1: "1. An email transfer transaction will be valid for next 10 days.",
     email_transfer_note2: "2. Maximum transferable amount:BDT in 5 lacs per day",
     email_transfer_note3: "3. Generated transfer could be canceled anytime from \"Waiting\" Tab before withdrawing by the beneficiary.",
     email_transfer_note4: "Beneficiary has to answer the security questions. case sensitive.",
 
-    mobile_recharge_note1:"1. Minimum recharge amount for postpaid connection",
-    mobile_recharge_note2:"Tk.50/- and for prepaid Tk. 10/-.",
-    mobile_recharge_note3:"2. Maximum recharge amount for postpaid connection",
-    mobile_recharge_note4:"Tk.10000/- and for prepaid Tk. 1000/-.",
-    mobile_recharge_note5:"3. only prepaid recharge is acceptable in Teletalk numbers.",
-    mobile_recharge_note6:"4. Consecutive recharge in the same number require.",
-    mobile_recharge_note7:"minimum 15 minites interval.",
-    mobile_recharge_note8:"if your recharge amount is equivalent to any trigger/bundle",
-    mobile_recharge_note9:"pack amount, a data/minute/bundle pack will be activated",
+    mobile_recharge_note1: "1. Minimum recharge amount for postpaid connection",
+    mobile_recharge_note2: "Tk.50/- and for prepaid Tk. 10/-.",
+    mobile_recharge_note3: "2. Maximum recharge amount for postpaid connection",
+    mobile_recharge_note4: "Tk.10000/- and for prepaid Tk. 1000/-.",
+    mobile_recharge_note5: "3. only prepaid recharge is acceptable in Teletalk numbers.",
+    mobile_recharge_note6: "4. Consecutive recharge in the same number require.",
+    mobile_recharge_note7: "minimum 15 minites interval.",
+    mobile_recharge_note8: "if your recharge amount is equivalent to any trigger/bundle",
+    mobile_recharge_note9: "pack amount, a data/minute/bundle pack will be activated",
 
-    fixed_deposit_note1:"1. You can View the details of this FDR after 1(one)",
-    fixed_deposit_note2:"working day of your request a CityTouch.",
-    fixed_deposit_note3:"2. if  you select auto renewal options No for  fixed",
-    fixed_deposit_note4:"Deposit- General then the entire amount will be transferred to",
-    fixed_deposit_note5:"your respected account automatically after maturity",
-    fixed_deposit_note6:"3. fixed Deposit beneficiary name would be same as ",
-    fixed_deposit_note7:"respective account name.",
-    fixed_deposit_note8:"4. Nominee of this fixed deposit (FD) would be same as",
-    fixed_deposit_note9:"respective current/saving account.To change existing ",
-    fixed_deposit_note10:"nomination,please visit your nearest branch.",
-    fixed_deposit_note11:"FD opening date would be same as your instruction ",
-    fixed_deposit_note12:"placement date at CityTouch.You can view the details of ",
-    fixed_deposit_note13:"this FDR after 1 (one) working day from CityTouch or Branch. ",
+    fixed_deposit_note1: "1. You can View the details of this FDR after 1(one)",
+    fixed_deposit_note2: "working day of your request a CityTouch.",
+    fixed_deposit_note3: "2. if  you select auto renewal options No for  fixed",
+    fixed_deposit_note4: "Deposit- General then the entire amount will be transferred to",
+    fixed_deposit_note5: "your respected account automatically after maturity",
+    fixed_deposit_note6: "3. fixed Deposit beneficiary name would be same as ",
+    fixed_deposit_note7: "respective account name.",
+    fixed_deposit_note8: "4. Nominee of this fixed deposit (FD) would be same as",
+    fixed_deposit_note9: "respective current/saving account.To change existing ",
+    fixed_deposit_note10: "nomination,please visit your nearest branch.",
+    fixed_deposit_note11: "FD opening date would be same as your instruction ",
+    fixed_deposit_note12: "placement date at CityTouch.You can view the details of ",
+    fixed_deposit_note13: "this FDR after 1 (one) working day from CityTouch or Branch. ",
 
-    monthly_deposit_note1:"1. Nominee of this DPS will be same as respective ",
-    monthly_deposit_note2:"current/saving account.To change nominee of your ",
-    monthly_deposit_note3:"current/saving account please visit any of our Branches.",
-    monthly_deposit_note4:"2. DPS beneficiary name would be same as respective account name",
-    monthly_deposit_note5:"3. monthly DPS installment to be automatically realized",
-    monthly_deposit_note6:"from your respective current/saving account.",
-    monthly_deposit_note7:"4. you can view the details of this DPS after 1(one)",
-    monthly_deposit_note8:"working day of your request at CityTouch.",
-    monthly_deposit_note9:"5. If the monthly instalment remains unpaid for 4(four)",
-    monthly_deposit_note10:"consecutive months DPS will be closed automatically",
+    monthly_deposit_note1: "1. Nominee of this DPS will be same as respective ",
+    monthly_deposit_note2: "current/saving account.To change nominee of your ",
+    monthly_deposit_note3: "current/saving account please visit any of our Branches.",
+    monthly_deposit_note4: "2. DPS beneficiary name would be same as respective account name",
+    monthly_deposit_note5: "3. monthly DPS installment to be automatically realized",
+    monthly_deposit_note6: "from your respective current/saving account.",
+    monthly_deposit_note7: "4. you can view the details of this DPS after 1(one)",
+    monthly_deposit_note8: "working day of your request at CityTouch.",
+    monthly_deposit_note9: "5. If the monthly instalment remains unpaid for 4(four)",
+    monthly_deposit_note10: "consecutive months DPS will be closed automatically",
 
     pay_order_notes1: "1. Pay order will be processed solely as per your provided information.",
     pay_order_notes2: "2. your pay order to be ready to collect from desired branch",
@@ -901,15 +900,15 @@ export default {
     pay_order_notes6: "4. The bank shall not be liable or responsible for any ",
     pay_order_notes7: "incorrect/incomplete information provide by you",
 
-    click_her:"click here to read positive pay instruction by ",
-    click_her1:"Bangladesh Bank",
+    click_her: "click here to read positive pay instruction by ",
+    click_her1: "Bangladesh Bank",
 
-    positivePay_note1:"1. As per Bangladesh Bank Positive pay instruction is",
-    positivePay_note2:"required for all interbank clearing cheques for personal",
-    positivePay_note3:"account Tk.5 lacs & above and for other account Tk.1 lac & above.",
-    positivePay_note4:"2. CityTouch only shows you the unclear cheque.",
-    positivePay_note5:"3. in case of mismatch in cheque details. bank may call",
-    positivePay_note6:" you to agree to the physical cheque information.",
+    positivePay_note1: "1. As per Bangladesh Bank Positive pay instruction is",
+    positivePay_note2: "required for all interbank clearing cheques for personal",
+    positivePay_note3: "account Tk.5 lacs & above and for other account Tk.1 lac & above.",
+    positivePay_note4: "2. CityTouch only shows you the unclear cheque.",
+    positivePay_note5: "3. in case of mismatch in cheque details. bank may call",
+    positivePay_note6: " you to agree to the physical cheque information.",
 
 
     scanQrNote: "- SCAN the QR code displayed at the merchant counter.",
@@ -920,7 +919,7 @@ export default {
     tagCreditTitle: "Please provide following information of your City Bank",
     tagCreditTitle1: "issue Credit Card that you want to tag with your City",
     tagCreditTitle2: "Touch Digital Banking",
-    tagCreditBottom:"Can We Help?",
+    tagCreditBottom: "Can We Help?",
     call: "call: 16234(local)/+880-2-8331040",
 
 
@@ -977,7 +976,7 @@ export default {
     qr_merchant_payment: "QR Merchant payment",
 
     /*account srvices*/
-    fixed_deposit:"Fixed Deposit",
+    fixed_deposit: "Fixed Deposit",
     monthly_Dps: "Monthly DPS",
     pay_order: "Pay Order",
     positive_pay: "Positive Pay",
@@ -1009,8 +1008,8 @@ export default {
     /*Enquiry screen*/
     enquiry: "Enquiry",
     customer_details: "Customer Details",
-    schedule_charges :"Schedule of Changes",
-    products:"Products",
+    schedule_charges: "Schedule of Changes",
+    products: "Products",
     submit_query: "Submit Query",
     atm_branch_search: "Atm & Branch Search",
     contact_call_center: "Contact Call Center",
@@ -1018,9 +1017,9 @@ export default {
     /*Credit Card Activation*/
     creditCard_title: "Credit Card Activation",
     select_card_number: "Select Card Number",
-    select_expiry_date:"Select Expiry Date",
-    selected_card:"Select Card",
-    credit_card_no:"Credit Card Number",
+    select_expiry_date: "Select Expiry Date",
+    selected_card: "Select Card",
+    credit_card_no: "Credit Card Number",
     card_status: "Card Status",
     card_state: "Card State",
     card_holder_name: "Card Holder Name",
@@ -1033,7 +1032,7 @@ export default {
     ],
 
     /*Debit Card Activation*/
-    debit_card_activation:"Debit Card Activation",
+    debit_card_activation: "Debit Card Activation",
 
     /*Block Credit Card*/
     card_block: "Reason For Card Block",
@@ -1049,15 +1048,15 @@ export default {
     new_pin_number: "New PIN Number",
     confirm_pin_number: "Confirm PIN Number",
     pim_reason_placeholder: "Enter Reason",
-    newPIn_placeholder:"Enter New Pin",
-    confirmPin_placeholder:"Re-enter New Pin",
+    newPIn_placeholder: "Enter New Pin",
+    confirmPin_placeholder: "Re-enter New Pin",
     error_pinChangeReason: "PIN Change Reason is Required",
     error_newPinNumber: "PIN Number is Required",
     error_confirmPinNumber: "Confirm PIN Number is Required",
 
     /*Tag Credit Card in CityTouch*/
     tagCredit: "Please",
-    enter_Card_Number:  "Enter Card Number",
+    enter_Card_Number: "Enter Card Number",
     card_Member_Name: "Card Member Name",
     cardNo_placeholder: "Please Enter Card Number",
     error_card_number: "Card Number Is Required",
@@ -1066,7 +1065,7 @@ export default {
     /*CheckBook Management*/
     cheque_leaf_status: "Check Leaf Status",
     Cheque_stop_request: "Cheque Stop Request",
-    cheque_book_request:"Cheque Book Request",
+    cheque_book_request: "Cheque Book Request",
     cheque_book_request_status: "Cheque Book Request Status",
 
     /*Fixed Deposite*/
@@ -1076,7 +1075,7 @@ export default {
         {key: "0", label: "Fixed Deposit-General", value: 0},
         {key: "1", label: "Double Money FD Account", value: 1},
         {key: "2", label: "Monthly Interest Paying FD", value: 2}
-    ],TenureTypeArr: [
+    ], TenureTypeArr: [
         {key: "0", label: "Month(s)", value: 0},
         {key: "1", label: "Pays", value: 1},
     ],
@@ -1084,43 +1083,43 @@ export default {
     tenure: "Tenure(Period)",
     select_tenure_period: "Select Tenure(Period)",
     auto_renewal: "Auto Renewal",
-    auto_renewal_Type: [{label:"Yes",value:0},{label: "No",value: 1}],
+    auto_renewal_Type: [{label: "Yes", value: 0}, {label: "No", value: 1}],
     renewTitle: "Renew",
-    renew: [{label:"Principle Only",value:0},{label:"Both Principle & interest",value:1}],
+    renew: [{label: "Principle Only", value: 0}, {label: "Both Principle & interest", value: 1}],
     interestRate: "Interest Rate",
-    deposit_advice_branch:"Deposit Advice Collection Branch",
+    deposit_advice_branch: "Deposit Advice Collection Branch",
     select_branch: "Select Branch",
     maturity_Date: "Maturity Date",
-    Confirm:"Confirm",
+    Confirm: "Confirm",
     credit_interest_to: "Credit Interest To",
     selectTenureType: "Select Tenure Type",
     selectTenurePeriod: "Select Tenure",
     error_amount: "Amount is Required",
-    branch:"branch",
-    installment_start_date:"Installment Start Date",
+    branch: "branch",
+    installment_start_date: "Installment Start Date",
     select_installment: "Select Installment Start Date",
-    month:"Month",
+    month: "Month",
     select_month: "Select Month",
     amount_per_installment: "Amount Per Installment",
-    errorSelect_installment:"Select Installment Start Date",
-    errorSelect_month:"Select Month",
+    errorSelect_installment: "Select Installment Start Date",
+    errorSelect_month: "Select Month",
 
     /*pay order screen*/
     delivery_location: "Delivery Location",
     select_delivery_location: "Select Delivery Location",
-    deliveryTypeArr:[{key:0,label:"Branch",value:0}],
-    beneficiary_name:"Beneficiary Name",
+    deliveryTypeArr: [{key: 0, label: "Branch", value: 0}],
+    beneficiary_name: "Beneficiary Name",
     pay_order_type: "Pay Order Collection Branch",
 
     /*BeneficiaryOtherCard screen*/
     beneficiary_other_card_title: "Other Credit Card -Add Beneficiary",
     beneficiary_bank_card_title: "City Bank Credit Card -Add Beneficiary",
     selectDeliveryLocation: "Select Delivery Locations",
-    error_beneficiaryName:"Please enter your valid beneficiary name",
+    error_beneficiaryName: "Please enter your valid beneficiary name",
 
     /*Positive Pay Screen design*/
-    cheque_date:"Cheque Date",
-    select_cheque_date:"Select Cheque Date",
+    cheque_date: "Cheque Date",
+    select_cheque_date: "Select Cheque Date",
     cheque_book_number: "Check Book Number",
     unused_checkLeaf_number: "Unused Cheque Leaf Number",
     select_chequebook_number: "Select Cheque Book Number",
@@ -1129,13 +1128,13 @@ export default {
     /* Request Monitor*/
     request_type: "Request Type",
     request_status: "Request Status",
-    select_request_type:"Select Request Type",
+    select_request_type: "Select Request Type",
     select_request_status: "Select Request Status",
-    requestTypeArray:[
+    requestTypeArray: [
         {key: "0", label: "Monthly DPS", value: 0},
         {key: "1", label: "Fixed Deposit", value: 1},
     ],
-    requestStatusArray:[
+    requestStatusArray: [
         {key: "0", label: "All", value: 0},
         {key: "1", label: "Pending", value: 1},
         {key: "2", label: "Open", value: 2},
@@ -1146,31 +1145,29 @@ export default {
 
     /*Otp Lock Unlock*/
     reset_request: "Reset Request",
-    select_otp_status:"Select Otp Status",
-    resetRequestTypeArray:[
+    select_otp_status: "Select Otp Status",
+    resetRequestTypeArray: [
         {key: "0", label: "Active", value: 0},
     ],
-    select_debit_credit:"Select Debit/Credit Card",
-    current_otp_status:"Current Otp Status",
-    lock:"Lock",
-    unlock:"Unlock",
+    select_debit_credit: "Select Debit/Credit Card",
+    current_otp_status: "Current Otp Status",
+    lock: "Lock",
+    unlock: "Unlock",
     error_otp_status: "Select Otp Status",
     error_debit_credit: "Card Number is Required",
 
     /*view_delete_beneficiary*/
-    transfer_wcb:"Transfer Within City Bank",
-    transfer_ob:"Transfer Other Bank",
-    view_delete_beneficiary:"View Delete beneficiary",
-    my_phone:"My Phone",
+    transfer_wcb: "Transfer Within City Bank",
+    transfer_ob: "Transfer Other Bank",
+    view_delete_beneficiary: "View Delete beneficiary",
+    my_phone: "My Phone",
     donation: "Donation",
-    delete: "Are You Sure You Want To Delete",
-    biometricTitle:"Scan your Fingerprint on the mobile scanner to continue",
-    biometricError:"Please validate using finger to login",
     accountTxt:"Account",
     cardText:"Card",
-    selectActNo:"Please Select Account Number"
-
-
-
+    selectActNo:"Please Select Account Number",
+    deleteAlert: "Are you sure you want to delete added beneficiary?",
+    noBeneficiaryAdded: "No Beneficiary Added",
+    delete: "Delete",
+    biometricTitle: "Scan your Fingerprint on the mobile scanner to continue",
+    biometricError: "Please validate using finger to login",
 }
-

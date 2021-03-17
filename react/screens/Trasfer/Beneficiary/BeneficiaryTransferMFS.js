@@ -60,7 +60,6 @@ class BeneficiaryTransferMFS extends Component {
         }
     }
 
-
     accountNoOption(language) {
         return (
             <View>
