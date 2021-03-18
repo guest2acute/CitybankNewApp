@@ -24,6 +24,8 @@ class BeneficiaryTransferMFS extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            selMFS:props.language.selMfs,
+            selMFSVal:-1,
             nickname: "",
             accountNo: "",
             error_nickname: "",
@@ -31,6 +33,7 @@ class BeneficiaryTransferMFS extends Component {
             isMainScreen: true,
             stateVal: 0,
             accountDetails: null,
+            modalVisible:false,
             updateTitle: props.route.params.title
         }
     }
@@ -83,9 +86,51 @@ class BeneficiaryTransferMFS extends Component {
     }
 
 
+    openModal(option, title, data, language) {
+        if (data.length > 0) {
+            this.setState({
+                modelSelection: option,
+                modalTitle: title,
+                modalData: data, modalVisible: true
+            });
+        } else {
+            Utility.alert(language.noRecord);
+        }
+    }
+
+    onSelectItem(item) {
+        const {modelSelection} = this.state;
+        if (modelSelection === "mfsType") {
+            this.setState({selMFS: item.label, selMFSVal: item.value, modalVisible: false})
+        }
+    }
+
     accountNoOption(language) {
         return (
             <View>
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
+                    marginStart: 10,
+                    marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.mfsTxt}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("mfsType", language.selMfs, language.mfsList, language)}>
+                    <View style={CommonStyle.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selMFSVal === -1 ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selMFS}
+                        </Text>
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                               source={require("../../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -258,6 +303,46 @@ class BeneficiaryTransferMFS extends Component {
                         </View>
                     </View>
                 </ScrollView>
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        this.setState({modalVisible: false})
+                    }}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
+                            <View style={{
+                                width: "100%",
+                                backgroundColor: themeStyle.THEME_COLOR,
+                                height: Utility.setHeight(30),
+                                justifyContent: "center"
+                            }}>
+                                <Text style={[CommonStyle.midTextStyle, {
+                                    textAlign: "center",
+                                    color: themeStyle.WHITE,
+
+                                }]}>{this.state.modalTitle}</Text>
+                            </View>
+
+                            <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
+                                      data={this.state.modalData} keyExtractor={(item, index) => index + ""}
+                                      renderItem={({item}) =>
+                                          <TouchableOpacity onPress={() => this.onSelectItem(item)}>
+                                              <View
+                                                  style={{height: Utility.setHeight(35), justifyContent: "center"}}>
+                                                  <Text
+                                                      style={[CommonStyle.textStyle, {
+                                                          color: themeStyle.THEME_COLOR,
+                                                          marginStart: 10
+                                                      }]}>{item.label}</Text>
+                                              </View>
+                                          </TouchableOpacity>
+                                      }
+                                      ItemSeparatorComponent={this.renderSeparator}/>
+                        </View>
+                    </View>
+                </Modal>
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )

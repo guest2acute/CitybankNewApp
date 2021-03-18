@@ -1,13 +1,10 @@
 import {connect} from "react-redux";
 import {
-    I18nManager,
-    Modal,
     SafeAreaView,
     ScrollView,
     Text,
     TouchableOpacity,
     View,
-    Image,
     TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
