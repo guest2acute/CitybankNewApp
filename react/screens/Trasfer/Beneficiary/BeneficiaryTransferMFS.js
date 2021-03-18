@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar
+    TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
 import themeStyle from "../../../resources/theme.style";
 import fontStyle from "../../../resources/FontStyle";
@@ -18,6 +18,7 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
 import {AddBeneficiary} from "../../Requests/RequestBeneficiary";
+import {MoreDetails} from "../../Requests/CommonRequest";
 
 class BeneficiaryTransferMFS extends Component {
     constructor(props) {
@@ -31,8 +32,9 @@ class BeneficiaryTransferMFS extends Component {
             error_nickname: "",
             error_accountNo: "",
             isMainScreen: true,
-            stateVal:0,
+            stateVal: 0,
             accountDetails: null,
+            updateTitle: props.route.params.title
         }
     }
 
@@ -52,18 +54,19 @@ class BeneficiaryTransferMFS extends Component {
 
     async onSubmit(language, navigation) {
 
-        if (this.state.stateVal === 0) {
+        if (this.state.isMainScreen) {
             if (this.state.nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
             } else if (this.state.accountNo.length !== 13) {
-                this.setState({error_accountNo: language.require_accnumber})
+                this.setState({error_accountNo: language.errActNo})
             } else if (this.state.isMainScreen) {
                 this.setState({isMainScreen: false});
             } else {
                 this.getActDetails(language);
             }
-        }else if (this.state.stateVal === 1) {
-            this.getActDetails(language);
+        }
+        else{
+            this.beneficiaryAdd();
         }
     }
 
@@ -84,6 +87,23 @@ class BeneficiaryTransferMFS extends Component {
         this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object});
     }
 
+    beneficiaryAdd(language) {
+        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
+        this.setState({isProgress: true});
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () => this.props.navigation.navigate("SecurityVerification", {
+                REQUEST_CD: response.REQUEST_CD,
+                transType: "I",
+                actNo: this.state.accountNo
+            }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
 
 
     accountNoOption(language) {
@@ -108,7 +128,7 @@ class BeneficiaryTransferMFS extends Component {
                         placeholder={this.state.isMainScreen ? language.please_enter : ""}
                         onChangeText={text => this.setState({
                             error_nickname: "",
-                            nickname: Utility.userInput(text)
+                            nickname: text
                         })}
                         value={this.state.nickname}
                         multiline={false}
@@ -124,10 +144,7 @@ class BeneficiaryTransferMFS extends Component {
                     />
                 </View>
                 {this.state.error_nickname !== "" ?
-                    <Text style={{
-                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_nickname}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_nickname}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row",
@@ -156,10 +173,12 @@ class BeneficiaryTransferMFS extends Component {
                     <TextInput
                         ref={(ref) => this.accountNoRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end",
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
                             textAlign: 'right',
                             flex: 1,
-                            marginLeft: 10}]}
+                            marginLeft: 10
+                        }]}
                         placeholder={this.state.isMainScreen ? language.bkash_account : ""}
                         onChangeText={text => this.accountchange(text)}
                         value={this.state.accountNo}
@@ -173,10 +192,7 @@ class BeneficiaryTransferMFS extends Component {
                         maxLength={13}/>
                 </View>
                 {this.state.error_accountNo !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_accountNo}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_accountNo}</Text> : null}
 
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -186,61 +202,61 @@ class BeneficiaryTransferMFS extends Component {
                     color: themeStyle.THEME_COLOR
                 }}>*{language.mark_field_mandatory}
                 </Text>
-                    <Text style={styles.textView}>{language.notes}:</Text>
-                    <Text style={{marginStart: 10, color: themeStyle.THEME_COLOR}}>Only bkash Customer Account can be
-                        added</Text></View> : null}
+                    <Text style={[CommonStyle.textView,{color:themeStyle.THEME_COLOR}]}>{language.notes}:</Text>
+                    <Text style={{
+                        marginStart: 10,
+                        color: themeStyle.THEME_COLOR
+                    }}>{language.onlybKashTxt}</Text></View> : null}
             </View>)
     }
 
-   /* beneficiaryAdd(language, navigation) {
-        const {selectTypeVal} = this.state;
-        this.setState({isProgress: true});
-        let accountDetails = {
-            ACCOUNT: accountNo,
-            ADDRESS: "",
-            CONTACTNUMBER: "",
-            ACCOUNTNAME: account_holder_name
-        }
+    /* beneficiaryAdd(language, navigation) {
+         const {selectTypeVal} = this.state;
+         this.setState({isProgress: true});
+         let accountDetails = {
+             ACCOUNT: accountNo,
+             ADDRESS: "",
+             CONTACTNUMBER: "",
+             ACCOUNTNAME: account_holder_name
+         }
 
-        AddBeneficiary(accountDetails,"O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
-            console.log("response", response);
-            this.setState({
-                isProgress: false,
-            }, () =>
-                this.props.navigation.navigate("SecurityVerification", {
-                    REQUEST_CD: response.REQUEST_CD,
-                    transType: "O",
-                    actNo: this.state.accountNo
-                }));
-        }).catch(error => {
-            this.setState({isProgress: false});
-            console.log("error", error);
-        });
-    }*/
+         AddBeneficiary(accountDetails,"O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
+             console.log("response", response);
+             this.setState({
+                 isProgress: false,
+             }, () =>
+                 this.props.navigation.navigate("SecurityVerification", {
+                     REQUEST_CD: response.REQUEST_CD,
+                     transType: "O",
+                     actNo: this.state.accountNo
+                 }));
+         }).catch(error => {
+             this.setState({isProgress: false});
+             console.log("error", error);
+         });
+     }*/
 
     render() {
         let language = this.props.language;
-        console.log("stateVal is this",this.state.stateVal)
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.add_beneficiary_transfer}</Text>
+                    <Text style={CommonStyle.title}>{this.state.updateTitle}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                    >
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -257,7 +273,8 @@ class BeneficiaryTransferMFS extends Component {
                             marginRight: Utility.setWidth(10),
                             marginTop: Utility.setHeight(20)
                         }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <TouchableOpacity style={{flex: 1}}
+                                              onPress={() => this.backEvent()}>
                                 <View style={{
                                     flex: 1,
                                     alignItems: "center",
@@ -283,7 +300,7 @@ class BeneficiaryTransferMFS extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.isMainScreen ? language.next : language.confirm}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -301,11 +318,46 @@ class BeneficiaryTransferMFS extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
 
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.more
+            tabBarLabel: this.props.language.transfer
         });
+    }
+
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        const {isMainScreen} = this.state;
+        if (isMainScreen) {
+            console.log("1");
+            this.props.navigation.goBack();
+        } else {
+            console.log("2");
+            this.setState({isMainScreen: true})
+        }
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.langId !== this.props.langId) {
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.transfer
+            });
+        }
     }
 }
 
@@ -330,21 +382,7 @@ const styles = {
         alignItems: "center",
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight: Utility.getDeviceHeight() - 100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
+
     textView: {
         marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR
     }

@@ -68,11 +68,25 @@ export default StyleSheet.create({
     },
     errorStyle: {
         textAlign: "right",
+        alignSelf: "flex-end",
         marginBottom: 5,
         marginRight: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
         fontFamily: fontStyle.RobotoRegular,
     },
-    disable:{
+    modalView: {
+        width: Utility.getDeviceWidth() - 30,
+        overflow: "hidden",
+        borderRadius: 10,
+        maxHeight: Utility.getDeviceHeight() - 100,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
 
-    }
 });

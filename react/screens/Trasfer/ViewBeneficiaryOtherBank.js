@@ -37,6 +37,8 @@ class ViewBeneficiaryOtherBank extends Component {
             districtName: details.districtDetails.DIST_NM,
             branch_name: details.branchDetails.BRANCH_NM,
             selectTypeVal: details.selectTypeVal,
+            updateTitle: props.route.params.title
+
         }
     }
 
@@ -59,7 +61,7 @@ class ViewBeneficiaryOtherBank extends Component {
             ACCOUNTNAME: account_holder_name
         }
 
-        AddBeneficiary(accountDetails,"O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
+        AddBeneficiary(accountDetails, "O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -368,12 +370,12 @@ class ViewBeneficiaryOtherBank extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() =>this.backEvent()}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.add_beneficiaryOtherBank}</Text>
+                    <Text style={CommonStyle.title}>{this.state.updateTitle}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),

@@ -505,7 +505,7 @@ class LoginConfigureProfile extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}}>
+                        <Text style={[CommonStyle.textStyle,{marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR}]}>
                             *{language.mark_field_mandatory}
                         </Text>
                     </View>

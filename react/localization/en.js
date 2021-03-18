@@ -1,6 +1,7 @@
 
 import React from "react";
 import Beneficiary from "../screens/Trasfer/Beneficiary/Beneficiary";
+import {Text} from "react-native";
 
 export default {
     language_english: "EN",
@@ -541,8 +542,8 @@ export default {
         {key: "1", label: "Transfer Other Bank", value: 1},
         {key: "2", label: "Email Transfer", value: 2},
         {key: "3", label: "MFS Fund Transfer", value: 3},
-        {key: "4", label: "Other Credit Card", value: 4},
-        {key: "5", label: "City Bank Credit Card", value: 5},
+       /* {key: "4", label: "Other Credit Card", value: 4},
+        {key: "5", label: "City Bank Credit Card", value: 5},*/
     ],
 
     TypeOfTransferArr: [
@@ -565,7 +566,7 @@ export default {
     beneficiary_mo_number: "Beneficiary Mobile Number",
     et_name_number: "Enter name or number",
     scanQrCode: "Scan QR Code",
-    require_nickname: "Nick Name is Requirered",
+    require_nickname: "Nick Name is Required",
     require_accnumber: "Account Number is  Required",
     require_valid_actNumber: "Invalid Account Number",
     invalid_cardNumber: "Invalid Card Number",
@@ -1172,5 +1173,9 @@ export default {
     biometricError: "Please validate using finger to login",
 
     /*error message*/
-    error_debit_card:"Please Select Debitcard"
+    error_debit_card:"Please select Debit Card",
+
+
+
+    onlybKashTxt:"Only bkash customer account can be added",
 }

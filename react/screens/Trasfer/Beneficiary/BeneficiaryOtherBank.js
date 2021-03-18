@@ -173,7 +173,7 @@ class BeneficiaryOtherBank extends Component {
         }
 
         console.log("object", object);
-        this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object});
+        this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object,title:props.route.params.title});
     }
 
     accountNoOption(language) {

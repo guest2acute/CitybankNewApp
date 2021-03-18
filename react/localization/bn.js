@@ -541,8 +541,8 @@ export default {
         {key: "1", label: "অন্য ব্যাংক স্থানান্তর করুন", value: 1},
         {key: "2", label: "ইমেল স্থানান্তর", value: 2},
         {key: "3", label: "এমএফএস তহবিল স্থানান্তর", value: 3},
-        {key: "4", label: "অন্যান্য ক্রেডিট কার্ড", value: 4},
-        {key: "5", label: "সিটি ব্যাংক ক্রেডিট কার্ড", value: 5},
+        /*{key: "4", label: "অন্যান্য ক্রেডিট কার্ড", value: 4},
+        {key: "5", label: "সিটি ব্যাংক ক্রেডিট কার্ড", value: 5},*/
     ],
 
     TypeOfTransferArr: [
@@ -1177,6 +1177,8 @@ export default {
     donation: "Donation",
     deleteAlert: "আপনি কি নিশ্চিতরূপে যোগ হওয়া সুবিধাভোগী মুছতে চান?",
     noBeneficiaryAdded: "কোনও সুবিধাভোগী যোগ করা হয়নি",
-    delete: "মুছে ফেলা"
+    delete: "মুছে ফেলা",
+    error_debit_card:"দয়া করে ডেবিট কার্ড নির্বাচন করুন",
+    onlybKashTxt:"কেবল বিকাশ গ্রাহকের অ্যাকাউন্ট যুক্ত করা যেতে পারে",
 }
 
