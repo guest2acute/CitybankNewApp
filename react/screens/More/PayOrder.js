@@ -31,18 +31,18 @@ class PayOrder extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            title:props.route.params.title,
+            title: props.route.params.title,
             selectAccountNumberType: props.language.select_actNo,
             selectDeliveryLocationType: props.language.select_delivery_location,
             selectBranchType: props.language.select_branch,
-            availableBalance:"",
-            beneficiaryName:"",
-            error_beneficiaryName:"",
-            servicesCharge:"",
-            vat:"",
-            grandTotal:"",
-            amount:"",
-            errorAmount:""
+            availableBalance: "",
+            beneficiaryName: "",
+            error_beneficiaryName: "",
+            servicesCharge: "",
+            vat: "",
+            grandTotal: "",
+            amount: "",
+            errorAmount: ""
         }
     }
 
@@ -78,7 +78,7 @@ class PayOrder extends Component {
             this.setState({selectAccountNumberType: item.label, selectTypeVal: item.value, modalVisible: false})
         } else if (modelSelection === "deliveryType") {
             this.setState({selectDeliveryLocationType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }else if (modelSelection === "branchType") {
+        } else if (modelSelection === "branchType") {
             this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
@@ -89,19 +89,19 @@ class PayOrder extends Component {
             Utility.alert(language.select_actNo);
         } else if (this.state.selectDeliveryLocationType === language.select_delivery_location) {
             Utility.alert(language.selectDeliveryLocation);
-        }else if (this.state.amount === "") {
-            this.setState({errorAmount:language.error_amount})
+        } else if (this.state.amount === "") {
+            this.setState({errorAmount: language.error_amount})
             return;
-        }else if (this.state.beneficiaryName === "") {
-            this.setState({error_beneficiaryName:language.error_beneficiaryName})
+        } else if (this.state.beneficiaryName === "") {
+            this.setState({error_beneficiaryName: language.error_beneficiaryName})
             return;
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
 
-    payOrderView(language){
-        return(
+    payOrderView(language) {
+        return (
             <View style={{flex: 1, paddingBottom: 30}}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
@@ -115,14 +115,14 @@ class PayOrder extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("type", language.select_actNo, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAccountNumberType === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAccountNumberType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -135,7 +135,12 @@ class PayOrder extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={"00.00"}
                         onChangeText={text => this.setState({
                             availableBalance: Utility.userInput(text)
@@ -164,14 +169,14 @@ class PayOrder extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("deliveryType", language.select_delivery_location, language.deliveryTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectDeliveryLocationType === language.select_delivery_location ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectDeliveryLocationType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -187,14 +192,14 @@ class PayOrder extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("branchType", language.select_branch, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBranchType === language.select_branch ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectBranchType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -208,7 +213,12 @@ class PayOrder extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={"00.00"}
                         onChangeText={text => this.setState({
                             errorAmount: "",
@@ -225,11 +235,8 @@ class PayOrder extends Component {
                         autoCorrect={false}
                         maxLength={13}/>
                 </View>
-                {this.state.errorAmount !==  "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.errorAmount}</Text> : null}
+                {this.state.errorAmount !== "" ?
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -263,10 +270,7 @@ class PayOrder extends Component {
                     />
                 </View>
                 {this.state.error_beneficiaryName !== "" ?
-                    <Text style={{
-                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_beneficiaryName}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_beneficiaryName}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{
@@ -278,7 +282,12 @@ class PayOrder extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             servicesCharge: Utility.userInput(text)
@@ -305,7 +314,12 @@ class PayOrder extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             vat: Utility.userInput(text)
@@ -332,7 +346,12 @@ class PayOrder extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={"0.00"}
                         onChangeText={text => this.setState({
                             grandTotal: Utility.userInput(text)
@@ -350,21 +369,17 @@ class PayOrder extends Component {
                         maxLength={13}/>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <Text style={{
-                    marginStart: 10,
-                    marginTop: 10,
-                    color: themeStyle.THEME_COLOR,
-                    marginBottom:10
-                }}>*{language.mark_field_mandatory}
-                </Text>
-                <Text style={styles.textView}>{language.notes}:</Text>
-                <Text style={styles.textView}>{language.pay_order_notes1}</Text>
-                <Text style={styles.textView}>{language.pay_order_notes2}</Text>
-                <Text style={styles.textView}>{language.pay_order_notes3}</Text>
-                <Text style={styles.textView}>{language.pay_order_notes4}</Text>
-                <Text style={styles.textView}>{language.pay_order_notes5}</Text>
-                <Text style={styles.textView}>{language.pay_order_notes6}</Text>
-                <Text style={styles.textView}>{language.pay_order_notes7}</Text>
+                <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+                <View style={{marginStart: 10, marginEnd: 10, marginTop: 10}}>
+                    <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.pay_order_notes1}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.pay_order_notes2}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.pay_order_notes3}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.pay_order_notes4}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.pay_order_notes5}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.pay_order_notes6}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.pay_order_notes7}</Text>
+                </View>
             </View>
         )
     }
@@ -444,8 +459,8 @@ class PayOrder extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -481,49 +496,6 @@ class PayOrder extends Component {
             </View>
         )
     }
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    textView: {
-        marginStart: 10,
-        color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight: Utility.getDeviceHeight() - 100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-
 }
 
 const mapStateToProps = (state) => {

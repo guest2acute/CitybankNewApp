@@ -149,7 +149,7 @@ export const ADDBENFVERIFY = async (userDetails, REQUEST_CD, props, transType, a
     console.log("request", request);
 
     return new Promise(async (resolve, reject) => {
-        await ApiRequest.apiRequest.callApi(request, {"CARD_VERIFY": authFlag === "CP" ? "Y" : "N"}).then(result => {
+        await ApiRequest.apiRequest.callApi(request, {"CARD_VERIFY": authFlag === "CP" ? "P" : "N"}).then(result => {
             console.log("responseVal", result)
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));

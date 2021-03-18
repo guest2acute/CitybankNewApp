@@ -15,6 +15,8 @@ import CommonStyle from "../../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
+import fontStyle from "../../../resources/FontStyle";
+import FontSize from "../../../resources/ManageFontSize";
 
 
 class Beneficiary extends Component {
@@ -173,11 +175,7 @@ class Beneficiary extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <Text style={{
-                            marginStart: 10,
-                            marginTop: 20,
-                            color: themeStyle.THEME_COLOR
-                        }}>*{language.mark_field_mandatory}
+                        <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}
                         </Text>
                     </View>
                 </ScrollView>

@@ -86,8 +86,6 @@ class MobileRecharge extends Component {
         else if (modelSelection === "accountType") {
             this.setState({SelectFromAccount: item.label, selectTypeVal: item.value, modalVisible: false})
         }
-
-
     }
 
     submit(language, navigation) {
@@ -185,14 +183,14 @@ class MobileRecharge extends Component {
                     }
                     <TouchableOpacity
                         onPress={() => this.openModal("accountType", language.selectAccountType, language.cardNumber, language)}>
-                        <View style={styles.selectionBg}>
+                        <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.SelectFromAccount === language.selectAccountType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.SelectFromAccount}
                             </Text>
-                            <Image resizeMode={"contain"} style={styles.arrowStyle}
+                            <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                    source={require("../../resources/images/ic_arrow_down.png")}/>
                         </View>
                     </TouchableOpacity>
@@ -236,10 +234,7 @@ class MobileRecharge extends Component {
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 {this.state.error_availableBal !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_availableBal}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_availableBal}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <FlatList horizontal={true}
@@ -300,10 +295,7 @@ class MobileRecharge extends Component {
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                   {this.state.error_transferAmount !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_transferAmount}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_transferAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
 
@@ -345,10 +337,7 @@ class MobileRecharge extends Component {
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 {this.state.error_servicescharge !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_servicescharge}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_servicescharge}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{
@@ -389,10 +378,8 @@ class MobileRecharge extends Component {
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 {this.state.error_grandTotal !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_grandTotal}</Text> : null}
+                    <Text style={CommonStyle.errorStyle
+                    }>{this.state.error_grandTotal}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             </View>
@@ -440,14 +427,14 @@ class MobileRecharge extends Component {
                         </Text>
                         <TouchableOpacity
                             onPress={() => this.openModal("type", language.select_operator_type, language.operatorsTypeArr, language)}>
-                            <View style={styles.selectionBg}>
+                            <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.SelectOperator === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.SelectOperator}
                                 </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                        source={require("../../resources/images/ic_arrow_down.png")}/>
                             </View>
                         </TouchableOpacity>
@@ -462,33 +449,31 @@ class MobileRecharge extends Component {
                         </Text>
                         <TouchableOpacity
                             onPress={() => this.openModal("NickType", language.selectNickType, language.nickTypeArr, language)}>
-                            <View style={styles.selectionBg}>
+                            <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.SelectName === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.SelectName}
                                 </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                        source={require("../../resources/images/ic_arrow_down.png")}/>
                             </View>
                         </TouchableOpacity>
                         {(this.state.selectTypeVal=== 1) ? this.mobileRecharge(language) :null}
-                        <Text
-                            style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-                        </Text>
-                        <View style={{marginTop: 10,}}>
-                            <Text style={styles.textView}>{language.notes}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note1}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note2}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note3}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note4}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note5}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note6}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note7}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note8}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note8}</Text>
-                            <Text style={styles.textView}>{language.mobile_recharge_note9}</Text>
+                        <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+                        <View style={{marginStart: 10, marginEnd: 10, marginTop: 10}}>
+                            <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note1}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note2}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note3}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note4}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note5}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note6}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note7}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note8}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note8}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note9}</Text>
                         </View>
 
                         {/*=====================================================================================*/}
@@ -538,8 +523,8 @@ class MobileRecharge extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -549,7 +534,6 @@ class MobileRecharge extends Component {
                                 <Text style={[CommonStyle.midTextStyle, {
                                     textAlign: "center",
                                     color: themeStyle.WHITE,
-
                                 }]}>{this.state.modalTitle}</Text>
                             </View>
 
@@ -591,48 +575,6 @@ class MobileRecharge extends Component {
     }
 }
 
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
-    textView: {
-        marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-
-}
 
 const mapStateToProps = (state) => {
     return {

@@ -98,9 +98,6 @@ class PositivePay extends Component {
         }else if (this.state.selectUnusedChequeBookNumberType === language.select_unused_cheque_number) {
             Utility.alert(language.select_unused_cheque_number);
         }
-        /*else if (this.state.selectChequeType === language.select_cheque_date) {
-            Utility.alert(language.select_cheque_date);
-        }*/
         else if (this.state.amount === "") {
             this.setState({errorAmount:language.error_amount})
             return;
@@ -145,14 +142,14 @@ class PositivePay extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("type", language.select_actNo, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAccountNumberType === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAccountNumberType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -194,14 +191,14 @@ class PositivePay extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("checkBookType", language.select_chequebook_number, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectChequeBookNumberType === language.select_chequebook_number ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectChequeBookNumberType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -217,14 +214,14 @@ class PositivePay extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("unusedCheckBookType", language.select_unused_cheque_number, language.cardNumber, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectUnusedChequeBookNumberType === language.select_unused_cheque_number ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectUnusedChequeBookNumberType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -241,14 +238,14 @@ class PositivePay extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.showDatepicker(0)} >
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectChequeType === language.select_cheque_date ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.chequeDate}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -322,21 +319,20 @@ class PositivePay extends Component {
                         fontFamily: fontStyle.RobotoRegular,
                     }}>{this.state.error_beneficiaryName}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <Text style={{marginStart: 10,marginTop:10,}}>{language.click_her}</Text>
-                <Text style={{marginStart: 10,}}>{language.click_her1}</Text>
-                <Text style={{
-                    marginStart: 10,
-                    marginTop: 20,
-                    color: themeStyle.THEME_COLOR
-                }}>*{language.mark_field_mandatory}
-                </Text>
-                <Text style={styles.textView}>{language.notes}:</Text>
-                <Text style={styles.textView}>{language.positivePay_note1}</Text>
-                <Text style={styles.textView}>{language.positivePay_note2}</Text>
-                <Text style={styles.textView}>{language.positivePay_note3}</Text>
-                <Text style={styles.textView}>{language.positivePay_note4}</Text>
-                <Text style={styles.textView}>{language.positivePay_note5}</Text>
-                <Text style={styles.textView}>{language.positivePay_note6}</Text>
+                <View style={{marginStart: 10,marginTop:10}}>
+                <Text style={CommonStyle.textStyle}>{language.click_her}</Text>
+                <Text style={CommonStyle.textStyle}>{language.click_her1}</Text>
+                </View>
+                <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+                <View style={{marginStart: 10, marginEnd: 10, marginTop: 10}}>
+                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.positivePay_note1}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.positivePay_note2}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.positivePay_note3}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.positivePay_note4}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.positivePay_note5}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.positivePay_note6}</Text>
+                </View>
             </View>
         )
     }
@@ -417,8 +413,8 @@ class PositivePay extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -468,46 +464,10 @@ class PositivePay extends Component {
 }
 
 const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
     textView: {
         marginStart: 10,
         color: themeStyle.THEME_COLOR
     },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight: Utility.getDeviceHeight() - 100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-
 }
 
 const mapStateToProps = (state) => {

@@ -109,7 +109,7 @@ class EmailTransferScreen extends Component {
     async onSubmit(language, navigation) {
         console.log("name",this.state.name)
         if(this.state.name === "undefined" && this.state.email == "undefined") {
-            console.log("submit name in ")
+            console.log("")
         }
         else if(this.state.selectBeneficiaryType === language.select_beneficiary_type) {
             Utility.alert(language.error_select_beneficiary_type);
@@ -153,7 +153,7 @@ class EmailTransferScreen extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.props.navigation.navigate("SelectBeneficiary",{setTitle:this.setTitle.bind(this)})}>
-                    <View style={[styles.selectionBg,{}]}>
+                    <View style={[CommonStyle.selectionBg,{}]}>
                         <View style={{flex:1,flexDirection:"column"}}>
                             <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.title?this.state.title:this.state.selectBeneficiaryType}</Text>
                             {this.state.email?<Text style={[CommonStyle.midTextStyle,{}]}>{this.state.email}</Text>:null}
@@ -223,7 +223,7 @@ class EmailTransferScreen extends Component {
                 }
                 <TouchableOpacity
                     onPress={() => this.openModal("bankType", language.bkash_selectfrom_acct, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAcctType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1

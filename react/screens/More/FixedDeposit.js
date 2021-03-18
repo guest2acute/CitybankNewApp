@@ -36,16 +36,16 @@ class FixedDeposit extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            title:props.route.params.title,
-            accountTitle:"",
-            availableBalance:"",
+            title: props.route.params.title,
+            accountTitle: "",
+            availableBalance: "",
             amount: "",
-            errorAmount:"",
-            interestRate:"",
-            emailTxt:"",
-            errorEmail:"",
-            MaturityDate:"",
-            creditInterest:""
+            errorAmount: "",
+            interestRate: "",
+            emailTxt: "",
+            errorEmail: "",
+            MaturityDate: "",
+            creditInterest: ""
         }
     }
 
@@ -81,11 +81,11 @@ class FixedDeposit extends Component {
             this.setState({selectAccountNumberType: item.label, selectTypeVal: item.value, modalVisible: false})
         } else if (modelSelection === "accountType") {
             this.setState({selectAccountType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }else if (modelSelection === "tenureType") {
+        } else if (modelSelection === "tenureType") {
             this.setState({selectTenureType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }else if (modelSelection === "tenurePeriodType") {
+        } else if (modelSelection === "tenurePeriodType") {
             this.setState({selectTenurePeriodType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }else if (modelSelection === "branchType") {
+        } else if (modelSelection === "branchType") {
             this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
@@ -97,21 +97,21 @@ class FixedDeposit extends Component {
         } else if (this.state.selectAccountType === language.select_type_account) {
             Utility.alert(language.selectActType);
         } else if (this.state.selectTenureType === language.select_tenure_type) {
-            Utility.alert(language.selectTenureType );
+            Utility.alert(language.selectTenureType);
         } else if (this.state.selectTenurePeriodType === language.select_tenure_period) {
-            Utility.alert(language.selectTenurePeriod );
+            Utility.alert(language.selectTenurePeriod);
         } else if (this.state.amount === "") {
-            this.setState({errorAmount:language.error_amount})
+            this.setState({errorAmount: language.error_amount})
             return;
-        }else if (this.state.selectBranchType === language.select_branch) {
+        } else if (this.state.selectBranchType === language.select_branch) {
             Utility.alert(language.error_select_branch_name);
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
 
-    fixedDepositView(language){
-        return(
+    fixedDepositView(language) {
+        return (
             <View style={{flex: 1, paddingBottom: 30}}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
@@ -125,14 +125,14 @@ class FixedDeposit extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("type", language.select_actNo, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAccountNumberType === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAccountNumberType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -146,7 +146,12 @@ class FixedDeposit extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             accountTitle: Utility.userInput(text)
@@ -172,7 +177,12 @@ class FixedDeposit extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             availableBalance: Utility.userInput(text)
@@ -201,14 +211,14 @@ class FixedDeposit extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("accountType", language.select_type_account, language.depositTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAccountType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAccountType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -225,14 +235,14 @@ class FixedDeposit extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("tenureType", language.select_tenure_type, language.TenureTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectTenureType === language.select_tenure_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectTenureType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -249,14 +259,14 @@ class FixedDeposit extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("tenurePeriodType", language.select_tenure_period, language.TenureTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectTenurePeriodType === language.select_tenure_period ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectTenurePeriodType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -287,11 +297,13 @@ class FixedDeposit extends Component {
                     />
                 </View>
 
-                <View style={{marginStart:10,marginEnd:10,marginTop:10, borderColor: themeStyle.BORDER,
+                <View style={{
+                    marginStart: 10, marginEnd: 10, marginTop: 10, borderColor: themeStyle.BORDER,
                     borderRadius: 5,
                     overflow: "hidden",
-                    borderWidth: 2}}>
-                    <Text style={[CommonStyle.textStyle,{marginStart: 10, marginTop: 10}]}>
+                    borderWidth: 2
+                }}>
+                    <Text style={[CommonStyle.textStyle, {marginStart: 10, marginTop: 10}]}>
                         {language.renewTitle}
                         <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
@@ -323,7 +335,12 @@ class FixedDeposit extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             creditInterest: Utility.userInput(text)
@@ -351,7 +368,12 @@ class FixedDeposit extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={language.et_placeholder}
                         onChangeText={text => this.setState({
                             errorAmount: "",
@@ -368,7 +390,7 @@ class FixedDeposit extends Component {
                         autoCorrect={false}
                         maxLength={13}/>
                 </View>
-                {this.state.errorAmount !==  "" ?
+                {this.state.errorAmount !== "" ?
                     <Text style={{
                         marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
@@ -384,7 +406,12 @@ class FixedDeposit extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             interestRate: Utility.userInput(text)
@@ -413,14 +440,14 @@ class FixedDeposit extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("branchType", language.select_branch, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBranchType === language.select_branch ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectBranchType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -471,7 +498,12 @@ class FixedDeposit extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             MaturityDate: Utility.userInput(text)
@@ -488,26 +520,23 @@ class FixedDeposit extends Component {
                         maxLength={13}/>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <Text style={styles.textView}>{language.notes}:</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note1}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note2}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note3}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note4}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note5}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note6}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note7}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note8}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note9}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note10}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note11}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note12}</Text>
-                <Text style={styles.textView}>{language.fixed_deposit_note13}</Text>
-                <Text style={{
-                    marginStart: 10,
-                    marginTop: 20,
-                    color: themeStyle.THEME_COLOR
-                }}>*{language.mark_field_mandatory}
-                </Text>
+                <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+                <View style={{marginStart: 10, marginEnd: 10, marginTop: 10}}>
+                    <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note1}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note2}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note3}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note4}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note5}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note6}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note7}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note8}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note9}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note10}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note11}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note12}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.fixed_deposit_note13}</Text>
+                </View>
             </View>
         )
     }
@@ -586,8 +615,8 @@ class FixedDeposit extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -640,24 +669,6 @@ class FixedDeposit extends Component {
 }
 
 const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    textView: {
-        marginStart: 10,
-        color: themeStyle.THEME_COLOR
-    },
     centeredView: {
         flex: 1,
         justifyContent: "center",

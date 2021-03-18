@@ -26,8 +26,6 @@ class CashByCode extends Component {
             nickname: "",
             accountNo: "",
             mobile_number:"",
-            emailTxt: "",
-            errorEmail: "",
             error_nickname:"",
             error_accountNo:"",
             focusUid: false,
@@ -129,14 +127,14 @@ class CashByCode extends Component {
                 }
                 <TouchableOpacity
                     onPress={() => this.openModal("bankType", language.select_card, language.accountTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectDebitType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectDebitType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -214,10 +212,7 @@ class CashByCode extends Component {
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             {this.state.error_amount !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_amount}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.error_amount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -264,15 +259,7 @@ class CashByCode extends Component {
                         maxLength={14}/>
                 </View>
                 {this.state.errorMobile !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorMobile}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorMobile}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -303,12 +290,8 @@ class CashByCode extends Component {
                     maxLength={13}/>
             </View>
             {this.state.error_remarks !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_remarks}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.error_remarks}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
             <View style={{marginStart:10,marginEnd:10,marginTop:10, borderColor: themeStyle.BORDER,
                 borderRadius: 5,
                 overflow: "hidden",
@@ -363,14 +346,12 @@ class CashByCode extends Component {
                     }}
                 />
             </View>
-            <Text style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-            </Text>
-
-            <View style={{ marginTop: 10,}}>
-                <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>{language.cashBy_code_notes1}</Text>
-                <Text style={styles.textView}>{language.cashBy_code_notes2}</Text>
-                <Text style={styles.textView}>{language.cashBy_code_notes3}</Text>
+            <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+            <View style={{marginStart:10,marginEnd:10}}>
+                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.cashBy_code_notes1}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.cashBy_code_notes2}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.cashBy_code_notes3}</Text>
             </View>
         </View>)
     }
@@ -453,8 +434,8 @@ class CashByCode extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -503,47 +484,6 @@ class CashByCode extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-    }
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    textView:{
-        marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
     }
 }
 

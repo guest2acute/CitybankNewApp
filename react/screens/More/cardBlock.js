@@ -36,7 +36,6 @@ class cardBlock extends Component {
             cardHolderName:"",
             cardType:"",
             cardExpiry: "",
-            showMonthPicker: false,
             errorExpiry:"",
         }
     }
@@ -89,21 +88,6 @@ class cardBlock extends Component {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
-    onValueChange = (event, newDate) => {
-        console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
-        switch (event) {
-            case "dateSetAction":
-                this.setState({cardExpiry: dateVal, showMonthPicker: false});
-                break;
-            case "neutralAction":
-                break;
-            case "dismissedAction":
-            default:
-                this.setState({showMonthPicker: false});
-        }
-    }
-
 
     creditCardActivation(language){
         return(
@@ -247,14 +231,17 @@ class cardBlock extends Component {
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
-                <Text style={[styles.textView,{marginTop: 20}]}>{language.notes}:</Text>
-                <Text style={styles.textView}>{language.card_block_notes1}</Text>
-                <Text style={styles.textView}>{language.card_block_notes2}</Text>
-                <Text style={styles.textView}>{language.card_block_notes3}</Text>
-                <Text style={styles.textView}>{language.card_block_notes4}</Text>
-            </View>
+                <View style={{marginStart:10,marginEnd:10}}>
+                <Text style={[CommonStyle.themeMidTextStyle,{marginTop: 20}]}>{language.notes}:</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.card_block_notes1}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.card_block_notes2}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.card_block_notes3}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.card_block_notes4}</Text>
+                </View>
+                </View>
         )
     }
+
     render() {
         let language = this.props.language;
         return (
@@ -325,14 +312,6 @@ class cardBlock extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                {this.state.showMonthPicker ? <MonthPicker
-                    onChange={this.onValueChange}
-                    value={new Date()}
-                    minimumDate={new Date()}
-                    maximumDate={new Date(new Date().getFullYear() + 10, 12)}
-                    locale="en"
-                    mode="number"
-                /> : null}
                 <Modal
                     animationType="none"
                     transparent={true}
@@ -340,8 +319,8 @@ class cardBlock extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -379,33 +358,6 @@ class cardBlock extends Component {
     }
 }
 
-const styles = {
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    textView:{
-        marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-
-}
 
 const mapStateToProps = (state) => {
     return {

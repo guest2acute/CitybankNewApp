@@ -56,17 +56,6 @@ class TagCreditCardInCityTouch extends Component {
         );
     };
 
-    openModal(option, title, data, language) {
-        if (data.length > 0) {
-            this.setState({
-                modelSelection: option,
-                modalTitle: title,
-                modalData: data, modalVisible: true
-            });
-        } else {
-            Utility.alert(language.noRecord);
-        }
-    }
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
@@ -297,7 +286,8 @@ class TagCreditCardInCityTouch extends Component {
     render() {
         console.log("otp_type is this", this.state.otp_type)
         let language = this.props.language;
-        return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+        return (
+            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -330,8 +320,14 @@ class TagCreditCardInCityTouch extends Component {
                         marginStart: Utility.setWidth(10),
                         marginEnd: Utility.setWidth(10)
                     }}>{language.tagCreditTitle}</Text>
-                    <Text style={{marginStart: 10, marginEnd: 10}}>{language.tagCreditTitle1}</Text>
-                    <Text style={{marginStart: 10, marginEnd: 10}}>{language.tagCreditTitle2}</Text>
+                    <Text style={[CommonStyle.textStyle, {
+                        marginStart: 10,
+                        marginEnd: 10
+                    }]}>{language.tagCreditTitle1}</Text>
+                    <Text style={[CommonStyle.textStyle, {
+                        marginStart: 10,
+                        marginEnd: 10
+                    }]}>{language.tagCreditTitle2}</Text>
                     <View style={{marginLeft: 10, marginRight: 10}}>
                         {this.tagCreditCard(language)}
                         <View style={{flex: 1, paddingBottom: 30}}>
@@ -371,63 +367,19 @@ class TagCreditCardInCityTouch extends Component {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            <Text style={{
-                                marginStart: Utility.setWidth(10),
-                                marginTop: Utility.setWidth(10),
-                                marginBottom: Utility.setWidth(10),
-                                color: themeStyle.THEME_COLOR
-                            }}>*{language.mark_field_mandatory}</Text>
+                            <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
                         </View>
                     </View>
                 </ScrollView>
                 <View style={{position: "absolute", bottom: 0}}>
                     <View style={{width: "100%", height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    <Text style={{marginStart: 10, marginTop: 10}}>{language.tagCreditBottom} </Text>
-                    <Text style={{marginStart: 10,}}>{language.call} </Text>
+                    <Text style={[CommonStyle.textStyle,{marginStart: 10, marginTop: 10}]}>{language.tagCreditBottom} </Text>
+                    <Text style={[CommonStyle.textStyle,{marginStart: 10,}]}>{language.call} </Text>
                 </View>
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
     }
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight: Utility.getDeviceHeight() - 100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-
 }
 
 const mapStateToProps = (state) => {

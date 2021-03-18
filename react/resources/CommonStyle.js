@@ -49,6 +49,16 @@ export default StyleSheet.create({
         fontSize: FontSize.getSize(13),
         color: themeStyle.BLACK
     },
+    themeTextStyle: {
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(13),
+        color: themeStyle.THEME_COLOR
+    },
+    themeMidTextStyle: {
+        fontFamily: fontStyle.RobotoMedium,
+        fontSize: FontSize.getSize(13),
+        color: themeStyle.THEME_COLOR
+    },
 
     checkboxContainer: {
         flexDirection: "row",
@@ -96,16 +106,6 @@ export default StyleSheet.create({
         elevation: 5,
         maxHeight: Utility.getDeviceHeight() - 100,
     },
-    themeMidTextStyle: {
-        fontFamily: fontStyle.RobotoMedium,
-        fontSize: FontSize.getSize(13),
-        color:themeStyle.THEME_COLOR
-    },
-    themeTextStyle: {
-        fontFamily: fontStyle.RobotoRegular,
-        fontSize: FontSize.getSize(13),
-        color: themeStyle.THEME_COLOR
-    },
     selectionBg: {
         paddingStart: 10,
         paddingBottom: 4,
@@ -115,12 +115,23 @@ export default StyleSheet.create({
         backgroundColor: themeStyle.SELECTION_BG,
         alignItems: "center"
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
     arrowStyle: {
         tintColor: themeStyle.BLACK,
         width: Utility.setWidth(35),
         height: Utility.setHeight(30)
     },
-
-
-
+    mark_mandatory:{
+        marginStart: Utility.setWidth(10),
+        marginTop: Utility.setHeight(20),
+        marginBottom:Utility.setHeight(10),
+        fontFamily:fontStyle.RobotoRegular,
+        fontSize:FontSize.getSize(11),
+        color: themeStyle.THEME_COLOR
+    }
 });

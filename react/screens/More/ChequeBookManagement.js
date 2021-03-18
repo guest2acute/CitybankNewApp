@@ -14,13 +14,8 @@ import StorageClass from "../../utilize/StorageClass";
 import {MoreDetails} from "../Requests/CommonRequest";
 
 
-/**
- * splash page
- */
-let imeiNo = "";
 
 class ChequeBookManagement extends Component {
-
     constructor(props) {
         super(props);
         let language = props.language;
@@ -51,15 +46,6 @@ class ChequeBookManagement extends Component {
 
     moveScreen(item) {
         console.log("redirectScreen",item.redirectScreen)
-    }
-
-    async redirectProfile() {
-        let loginPref = await StorageClass.retrieve(Config.LoginPref);
-        console.log("profile", loginPref);
-        if (loginPref === null || loginPref === "") {
-            loginPref = "0";
-        }
-        this.props.navigation.navigate("Profile", {loginPref: loginPref});
     }
 
     _renderItem = ({item, index}) => {
@@ -176,28 +162,6 @@ class ChequeBookManagement extends Component {
         );
     }
 }
-
-
-const styles = {
-    viewStyles: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: themeStyle.BG_COLOR,
-    },
-    toolbar: {
-        justifyContent: "center",
-        backgroundColor: themeStyle.THEME_COLOR,
-        alignItems: "center",
-        paddingBottom: 7
-    },
-    title: {
-        fontFamily: fontStyle.RobotoMedium,
-        fontSize: FontSize.getSize(12),
-        color: themeStyle.WHITE
-    },
-}
-
 
 const mapStateToProps = (state) => {
     return {

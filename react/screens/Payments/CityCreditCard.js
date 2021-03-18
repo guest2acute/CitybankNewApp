@@ -12,16 +12,10 @@ import {
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LoginScreen from "../LoginScreen";
-import TermConditionScreen from "../TermConditionScreen";
 import {connect} from "react-redux";
 import Utility from "../../utilize/Utility";
-import FontSize from "../../resources/ManageFontSize";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import RadioForm from "react-native-simple-radio-button";
-import fontStyle from "../../resources/FontStyle";
-
 
 class CityCreditCard extends Component {
     constructor(props) {
@@ -110,8 +104,6 @@ class CityCreditCard extends Component {
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
-
-
     ownCreditCardPaymentOption(language) {
         return (
             <View style={{flex: 1, paddingBottom: 30}}>
@@ -147,14 +139,14 @@ class CityCreditCard extends Component {
                         </Text>
                         <TouchableOpacity
                             onPress={() => this.openModal("type", language.selectCreditCard, language.transferTypeArr, language)}>
-                            <View style={styles.selectionBg}>
+                            <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.selectCreditCardType === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.selectCreditCardType}
                                 </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                        source={require("../../resources/images/ic_arrow_down.png")}/>
                             </View>
                         </TouchableOpacity>
@@ -238,14 +230,14 @@ class CityCreditCard extends Component {
                         </Text>
                         <TouchableOpacity
                             onPress={() => this.openModal("nickType", language.selectNickType, language.nickTypeArr, language)}>
-                            <View style={styles.selectionBg}>
+                            <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.selectNicknameType === language.selectNickType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.selectNicknameType}
                                 </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                        source={require("../../resources/images/ic_arrow_down.png")}/>
                             </View>
                         </TouchableOpacity>
@@ -330,14 +322,14 @@ class CityCreditCard extends Component {
                     }
                     <TouchableOpacity
                         onPress={() => this.openModal("accountType", language.bkash_select_acct, language.cardNumber, language)}>
-                        <View style={styles.selectionBg}>
+                        <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectAcctType === language.selectAcctType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectAcctType}
                             </Text>
-                            <Image resizeMode={"contain"} style={styles.arrowStyle}
+                            <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                    source={require("../../resources/images/ic_arrow_down.png")}/>
                         </View>
                     </TouchableOpacity>
@@ -410,10 +402,7 @@ class CityCreditCard extends Component {
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 {this.state.errorPaymentAmount !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.errorPaymentAmount}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorPaymentAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{
@@ -495,14 +484,14 @@ class CityCreditCard extends Component {
                         }
                         <TouchableOpacity
                             onPress={() => this.openModal("paymentType", language.select_payment, language.payment_array, language)}>
-                            <View style={styles.selectionBg}>
+                            <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.selectPaymentType === language.select_payment ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.selectPaymentType}
                                 </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                        source={require("../../resources/images/ic_arrow_down.png")}/>
                             </View>
                         </TouchableOpacity>
@@ -534,21 +523,7 @@ class CityCreditCard extends Component {
                     />
                 </View>
                     :null }
-                <Text style={{
-                    marginStart: 10,
-                    marginTop: 10,
-                    color: themeStyle.THEME_COLOR
-                }}>*{language.mark_field_mandatory}
-                </Text>
-
-            </View>
-        )
-    }
-
-    otherCreditCardOption(language) {
-        return (
-            <View>
-                <Text>{}</Text>
+                <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
             </View>
         )
     }
@@ -671,8 +646,8 @@ class CityCreditCard extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -727,49 +702,12 @@ class CityCreditCard extends Component {
 const styles = {
     headerLabel: {
         flexDirection: "row",
-        //justifyContent:"space-between",
-        //backgroundColor: themeStyle.THEME_COLOR,
         height: Utility.setHeight(40),
         borderRadius: 5,
         borderWidth: 1,
         borderColor: themeStyle.WHITE,
         overflow: "hidden"
-    }, selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        maxHeight:Utility.getDeviceHeight()-100,
-        borderRadius: 10,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
     }
-
 }
 const mapStateToProps = (state) => {
     return {

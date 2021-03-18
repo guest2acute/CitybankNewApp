@@ -55,7 +55,6 @@ class RequestMonitor extends Component {
                         start_date: "1-MAR-2019"
                     }
                 ]
-
         }
     }
 
@@ -113,14 +112,14 @@ class RequestMonitor extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("type", language.select_request_type, language.requestTypeArray, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectType === language.select_request_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -136,14 +135,14 @@ class RequestMonitor extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("requestType", language.select_request_status, language.requestStatusArray, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectRequestType === language.select_request_status ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectRequestType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -154,7 +153,7 @@ class RequestMonitor extends Component {
     accountList(language){
         return(
             <View>
-            <View style={[styles.selectionBg,{flexDirection:"row",justifyContent:"space-between",paddingTop:10,paddingBottom:10}]}>
+            <View style={[CommonStyle.selectionBg,{flexDirection:"row",justifyContent:"space-between",paddingTop:10,paddingBottom:10}]}>
                 <Text style={[CommonStyle.midTextStyle, {
                     color: themeStyle.BLACK
                 }]}>
@@ -189,15 +188,15 @@ class RequestMonitor extends Component {
                 paddingBottom: 10,
                 backgroundColor: index % 2 === 0 ? null : themeStyle.SEPARATOR
             }}>
-            <Text style={[styles.textStyle, {
+            <Text style={[CommonStyle.textStyle, {
             }]}>
                 {item.account_title}
             </Text>
-            <Text style={[styles.textStyle,, {
+            <Text style={[CommonStyle.textStyle,, {
             }]}>
                 {item.account_number}
             </Text>
-            <Text style={[styles.textStyle,, {
+            <Text style={[CommonStyle.textStyle,, {
             }]}>
                 {item.start_date}
             </Text>
@@ -245,8 +244,8 @@ class RequestMonitor extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -284,50 +283,6 @@ class RequestMonitor extends Component {
     }
 }
 
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight: Utility.getDeviceHeight() - 100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
-    c: {
-        flex:1,
-        fontFamily: fontStyle.RobotoRegular,
-        fontSize: FontSize.getSize(13),
-        color: themeStyle.BLACK
-    },
-
-}
 
 const mapStateToProps = (state) => {
     return {

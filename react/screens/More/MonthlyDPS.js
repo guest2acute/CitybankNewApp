@@ -37,16 +37,16 @@ class MonthlyDPS extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            title:props.route.params.title,
-            accountTitle:"",
+            title: props.route.params.title,
+            accountTitle: "",
             show: false,
             mode: "date",
             dateVal: new Date(),
-            interestRate:"",
-            emailTxt:"",
-            amount:"",
-            errorAmount:"",
-            monthArray:[]
+            interestRate: "",
+            emailTxt: "",
+            amount: "",
+            errorAmount: "",
+            monthArray: []
         }
     }
 
@@ -80,9 +80,9 @@ class MonthlyDPS extends Component {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
             this.setState({selectAccountNumberType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }else if (modelSelection === "accountType") {
+        } else if (modelSelection === "accountType") {
             this.setState({selectAccountType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }else if (modelSelection === "branchType") {
+        } else if (modelSelection === "branchType") {
             this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
@@ -97,18 +97,18 @@ class MonthlyDPS extends Component {
             Utility.alert(language.error_select_branch_name);
         } else if (this.state.selectInstallmentType === language.select_installment) {
             Utility.alert(language.errorSelect_installment);
-        }else if (this.state.selectMonthType === language.select_month) {
+        } else if (this.state.selectMonthType === language.select_month) {
             Utility.alert(language.errorSelect_month);
-        }else if (this.state.amount === "") {
-            this.setState({errorAmount:language.error_amount})
+        } else if (this.state.amount === "") {
+            this.setState({errorAmount: language.error_amount})
             return;
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
 
-    monthShow(){
-        let data=[]
+    monthShow() {
+        let data = []
         /*data.map((item,index)=>{
             index++;
         })*/
@@ -120,7 +120,7 @@ class MonthlyDPS extends Component {
 
     showDatepicker = (id) => {
         console.log("click");
-        this.setState({errorpaymentdate:"",currentSelection: id, show: true, mode: "date"});
+        this.setState({errorpaymentdate: "", currentSelection: id, show: true, mode: "date"});
     };
 
     onChange = (event, selectedDate) => {
@@ -134,8 +134,8 @@ class MonthlyDPS extends Component {
         }
     };
 
-    monthlyDPS(language){
-        return(
+    monthlyDPS(language) {
+        return (
             <View style={{flex: 1, paddingBottom: 30}}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
@@ -149,14 +149,14 @@ class MonthlyDPS extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("type", language.select_actNo, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAccountNumberType === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAccountNumberType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -170,7 +170,12 @@ class MonthlyDPS extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             accountTitle: Utility.userInput(text)
@@ -197,7 +202,12 @@ class MonthlyDPS extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             availableBalance: Utility.userInput(text)
@@ -226,14 +236,14 @@ class MonthlyDPS extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("accountType", language.select_type_account, language.depositTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAccountType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAccountType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -250,14 +260,14 @@ class MonthlyDPS extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("branchType", language.select_branch, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBranchType === language.select_branch ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectBranchType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -272,15 +282,15 @@ class MonthlyDPS extends Component {
                     {language.installment_start_date}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
-                <TouchableOpacity onPress={() => this.showDatepicker(0)} >
-                    <View style={styles.selectionBg}>
+                <TouchableOpacity onPress={() => this.showDatepicker(0)}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectInstallmentType === language.select_installment ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectInstallmentType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -297,14 +307,14 @@ class MonthlyDPS extends Component {
                 <TouchableOpacity
                     onPress={() => this.monthShow()}
                 >
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectMonthType === language.select_month ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectMonthType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -318,7 +328,12 @@ class MonthlyDPS extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={language.et_placeholder}
                         onChangeText={text => this.setState({
                             errorAmount: "",
@@ -335,7 +350,7 @@ class MonthlyDPS extends Component {
                         autoCorrect={false}
                         maxLength={13}/>
                 </View>
-                {this.state.errorAmount !==  "" ?
+                {this.state.errorAmount !== "" ?
                     <Text style={{
                         marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                         fontFamily: fontStyle.RobotoRegular,
@@ -351,7 +366,12 @@ class MonthlyDPS extends Component {
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
                             interestRate: Utility.userInput(text)
@@ -398,27 +418,24 @@ class MonthlyDPS extends Component {
                         autoCorrect={false}/>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <Text style={{
-                    marginStart: 10,
-                    marginTop: 10,
-                    color: themeStyle.THEME_COLOR,
-                    marginBottom:10
-                }}>*{language.mark_field_mandatory}
-                </Text>
-                <Text style={styles.textView}>{language.notes}:</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note1}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note2}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note3}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note4}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note5}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note6}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note7}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note8}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note9}</Text>
-                <Text style={styles.textView}>{language.monthly_deposit_note10}</Text>
+                <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+                <View style={{marginStart: 10, marginEnd: 10, marginTop: 10}}>
+                    <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note1}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note2}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note3}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note4}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note5}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note6}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note7}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note8}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note9}</Text>
+                    <Text style={CommonStyle.themeTextStyle}>{language.monthly_deposit_note10}</Text>
+                </View>
             </View>
         )
     }
+
     render() {
         let language = this.props.language;
         return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
@@ -493,8 +510,8 @@ class MonthlyDPS extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -540,49 +557,6 @@ class MonthlyDPS extends Component {
             </View>
         )
     }
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    textView: {
-        marginStart: 10,
-        color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight: Utility.getDeviceHeight() - 100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-
 }
 
 const mapStateToProps = (state) => {

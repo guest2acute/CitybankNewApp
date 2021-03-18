@@ -18,6 +18,7 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
 import {AddBeneficiary, GETACCTBALDETAIL, GETBANKDETAILS} from "../../Requests/RequestBeneficiary";
+import {MoreDetails} from "../../Requests/CommonRequest";
 
 class BeneficiaryOtherBank extends Component {
     constructor(props) {
@@ -232,11 +233,11 @@ class BeneficiaryOtherBank extends Component {
 
             <TouchableOpacity
                 onPress={() => this.openModal("type", language.selectActType, language.changeInArr, language)}>
-                <View style={[styles.selectionBg, {height: Utility.setHeight(40)}]}>
+                <View style={[CommonStyle.selectionBg, {height: Utility.setHeight(40)}]}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                         {this.state.selectType}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../../../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -333,14 +334,14 @@ class BeneficiaryOtherBank extends Component {
                 }
                 <TouchableOpacity disabled={this.state.selectTypeVal === -1}
                                   onPress={() => this.openModal("bankType", language.select_bank_type, this.state.bankTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectBankType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectBankType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -359,14 +360,14 @@ class BeneficiaryOtherBank extends Component {
                     </Text>
                     <TouchableOpacity disabled={this.state.selectBankVal === null}
                                       onPress={() => this.openModal("district_type", language.select_district_type, this.state.districtTypeArr, language)}>
-                        <View style={styles.selectionBg}>
+                        <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectDistrictType}
                             </Text>
-                            <Image resizeMode={"contain"} style={styles.arrowStyle}
+                            <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                    source={require("../../../resources/images/ic_arrow_down.png")}/>
                         </View>
                     </TouchableOpacity>
@@ -384,14 +385,14 @@ class BeneficiaryOtherBank extends Component {
                     </Text>
                     <TouchableOpacity disabled={this.state.selectDistrictVal === null}
                                       onPress={() => this.openModal("branch_type", language.select_branch_name, this.state.branchTypeArr, language)}>
-                        <View style={styles.selectionBg}>
+                        <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectBranchType}
                             </Text>
-                            <Image resizeMode={"contain"} style={styles.arrowStyle}
+                            <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                    source={require("../../../resources/images/ic_arrow_down.png")}/>
                         </View>
                     </TouchableOpacity>
@@ -484,23 +485,23 @@ class BeneficiaryOtherBank extends Component {
                     }}>{this.state.errorEmail}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View style={{}}>
-                <Text style={styles.textView}>{language.notes}:</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note1}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note2}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note3}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note4}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note5}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note6}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note7}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note8}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note9}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note10}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note11}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note12}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note13}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note14}</Text>
-                <Text style={styles.textView}>{language.beneficiary_otherBank_note15}</Text>
+            <View style={{marginLeft:10,marginRight:10}}>
+                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note1}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note2}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note3}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note4}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note5}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note6}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note7}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note8}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note9}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note10}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note11}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note12}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note13}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note14}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note15}</Text>
             </View>
         </View>)
     }
@@ -586,8 +587,8 @@ class BeneficiaryOtherBank extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -635,6 +636,14 @@ class BeneficiaryOtherBank extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.langId !== this.props.langId) {
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.more
+            });
+        }
     }
 
     async getBankName() {
@@ -693,48 +702,6 @@ class BeneficiaryOtherBank extends Component {
         });
     }
 }
-
-const styles =
-    {
-        arrowStyle: {
-            tintColor: themeStyle.BLACK,
-            width: Utility.setWidth(35),
-            height: Utility.setHeight(30)
-        },
-        selectionBg: {
-            paddingStart: 10,
-            paddingBottom: 4,
-            paddingTop: 4,
-            paddingEnd: 10,
-            flexDirection: "row",
-            backgroundColor: themeStyle.SELECTION_BG,
-            alignItems: "center"
-        },
-        centeredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: 'rgba(0,0,0,0.5)',
-        },
-        textView: {
-            marginStart: 10,
-            color: themeStyle.THEME_COLOR
-        },
-        modalView: {
-            width: Utility.getDeviceWidth() - 30,
-            overflow: "hidden",
-            borderRadius: 10,
-            maxHeight: Utility.getDeviceHeight() - 100,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset:
-                {
-                    width: 0,
-                    height: 2
-                }, shadowOpacity: 0.25,
-            shadowRadius: 3.84, elevation: 5
-        }
-    }
 
 const mapStateToProps = (state) => {
         return {
