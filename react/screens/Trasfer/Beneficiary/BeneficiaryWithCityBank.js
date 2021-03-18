@@ -143,10 +143,7 @@ class BeneficiaryWithCityBank extends Component {
                 />
             </View>
             {this.state.error_nickname !== "" ?
-                <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_nickname}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.error_nickname}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -182,10 +179,7 @@ class BeneficiaryWithCityBank extends Component {
                     maxLength={13}/>
             </View>
             {this.state.error_accountNo !== "" ?
-                <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_accountNo}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.error_accountNo}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -220,7 +214,7 @@ class BeneficiaryWithCityBank extends Component {
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle]}>
+                    <Text style={CommonStyle.textStyle}>
                         {language.currency}
                     </Text>
                     <TextInput
@@ -260,7 +254,6 @@ class BeneficiaryWithCityBank extends Component {
                         flex: 1,
                         marginLeft: 10
                     }]}
-                    // placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({type_act: text})}
                     value={this.state.type_act}
                     multiline={false}
@@ -466,6 +459,14 @@ class BeneficiaryWithCityBank extends Component {
         });
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.langId !== this.props.langId) {
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.transfer
+            });
+        }
+    }
+
     backAction = () => {
         this.backEvent();
         return true;
@@ -487,43 +488,6 @@ class BeneficiaryWithCityBank extends Component {
     }
 }
 
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        alignItems: "center",
-        maxHeight: Utility.getDeviceHeight() - 100,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-}
 
 const mapStateToProps = (state) => {
     return {

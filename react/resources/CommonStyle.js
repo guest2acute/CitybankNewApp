@@ -49,6 +49,15 @@ export default StyleSheet.create({
         fontSize: FontSize.getSize(13),
         color: themeStyle.BLACK
     },
+    themeTextStyle: {
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(13),
+        color: themeStyle.THEME_COLOR
+    },
+    themeMidTextStyle: {
+        fontFamily: fontStyle.RobotoMedium,
+        fontSize: FontSize.getSize(13),
+    },
 
     checkboxContainer: {
         flexDirection: "row",
@@ -88,5 +97,37 @@ export default StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5
     },
-
+    themeTextStyle: {
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(13),
+        color: themeStyle.THEME_COLOR
+    },
+    selectionBg: {
+        paddingStart: 10,
+        paddingBottom: 4,
+        paddingTop: 4,
+        paddingEnd: 10,
+        flexDirection: "row",
+        backgroundColor: themeStyle.SELECTION_BG,
+        alignItems: "center"
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    arrowStyle: {
+        tintColor: themeStyle.BLACK,
+        width: Utility.setWidth(35),
+        height: Utility.setHeight(30)
+    },
+    mark_mandatory:{
+        marginStart: Utility.setWidth(10),
+        marginTop: Utility.setHeight(20),
+        marginBottom:Utility.setHeight(10),
+        fontFamily:fontStyle.RobotoRegular,
+        fontSize:FontSize.getSize(11),
+        color: themeStyle.THEME_COLOR
+    }
 });

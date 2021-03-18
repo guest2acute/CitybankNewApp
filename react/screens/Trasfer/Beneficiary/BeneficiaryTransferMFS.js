@@ -26,9 +26,6 @@ class BeneficiaryTransferMFS extends Component {
         this.state = {
             nickname: "",
             accountNo: "",
-            mobile_number: "",
-            emailTxt: "",
-            errorEmail: "",
             error_nickname: "",
             error_accountNo: "",
             isMainScreen: true,
@@ -45,8 +42,7 @@ class BeneficiaryTransferMFS extends Component {
         this.setState({nickname: text, error_nickname: ""})
     }
 
-    accountchange(text) {
-        console.log("acccount change", text)
+    accountChange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
         this.setState({accountNo: text, error_accountNo: ""})
@@ -59,44 +55,25 @@ class BeneficiaryTransferMFS extends Component {
                 this.setState({error_nickname: language.require_nickname});
             } else if (this.state.accountNo.length !== 13) {
                 this.setState({error_accountNo: language.errActNo})
-            } else if (this.state.isMainScreen) {
-                this.setState({isMainScreen: false});
             } else {
-                this.getActDetails(language);
+                this.setState({isMainScreen: false});
             }
-        }
-        else{
-            this.beneficiaryAdd();
+        } else {
+            //this.beneficiaryAdd();
         }
     }
 
-    getActDetails(language) {
-        this.setState({isProgress: true});
-        let object = {
-            nickname: this.state.nickname,
-            accountNo: this.state.accountNo,
-            account_card_name: this.state.account_card_name,
-            bankDetails: this.state.selectBankVal,
-            districtDetails: this.state.selectTypeVal === 0 ? this.state.selectDistrictVal : "",
-            branchDetails: this.state.selectTypeVal === 0 ? this.state.selectBranchVal : "",
-            mobile_number: this.state.mobile_number,
-            emailTxt: this.state.emailTxt,
-        }
 
-        console.log("object", object);
-        this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object});
-    }
-
-    beneficiaryAdd(language) {
-        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
+    beneficiaryAdd() {
+        const {accountDetails, nickname} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props).then(response => {
+        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, "", "", this.props).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
             }, () => this.props.navigation.navigate("SecurityVerification", {
                 REQUEST_CD: response.REQUEST_CD,
-                transType: "I",
+                transType: "W",
                 actNo: this.state.accountNo
             }));
         }).catch(error => {
@@ -180,7 +157,7 @@ class BeneficiaryTransferMFS extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={this.state.isMainScreen ? language.bkash_account : ""}
-                        onChangeText={text => this.accountchange(text)}
+                        onChangeText={text => this.accountChange(text)}
                         value={this.state.accountNo}
                         multiline={false}
                         editable={this.state.isMainScreen}
@@ -196,45 +173,20 @@ class BeneficiaryTransferMFS extends Component {
 
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-                {this.state.isMainScreen ? <View><Text style={{
+                {this.state.isMainScreen ? <View><Text style={[CommonStyle.textStyle, {
                     marginStart: 10,
                     marginTop: 20,
+                    marginBottom:10,
                     color: themeStyle.THEME_COLOR
-                }}>*{language.mark_field_mandatory}
+                }]}>*{language.mark_field_mandatory}
                 </Text>
-                    <Text style={[CommonStyle.textView,{color:themeStyle.THEME_COLOR}]}>{language.notes}:</Text>
+                    <Text style={[CommonStyle.midTextStyle, {marginLeft:10,color: themeStyle.THEME_COLOR}]}>{language.notes}:</Text>
                     <Text style={{
                         marginStart: 10,
                         color: themeStyle.THEME_COLOR
                     }}>{language.onlybKashTxt}</Text></View> : null}
             </View>)
     }
-
-    /* beneficiaryAdd(language, navigation) {
-         const {selectTypeVal} = this.state;
-         this.setState({isProgress: true});
-         let accountDetails = {
-             ACCOUNT: accountNo,
-             ADDRESS: "",
-             CONTACTNUMBER: "",
-             ACCOUNTNAME: account_holder_name
-         }
-
-         AddBeneficiary(accountDetails,"O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
-             console.log("response", response);
-             this.setState({
-                 isProgress: false,
-             }, () =>
-                 this.props.navigation.navigate("SecurityVerification", {
-                     REQUEST_CD: response.REQUEST_CD,
-                     transType: "O",
-                     actNo: this.state.accountNo
-                 }));
-         }).catch(error => {
-             this.setState({isProgress: false});
-             console.log("error", error);
-         });
-     }*/
 
     render() {
         let language = this.props.language;
@@ -361,32 +313,6 @@ class BeneficiaryTransferMFS extends Component {
     }
 }
 
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-
-    textView: {
-        marginStart: 10, marginTop: 20, color: themeStyle.THEME_COLOR
-    }
-}
 
 const mapStateToProps = (state) => {
     return {

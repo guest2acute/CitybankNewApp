@@ -798,7 +798,11 @@ export default {
     transactionTitle: "Enter Transaction PIN",
 
     /*notes*/
-    fund_transfer_note1: "1. There is no found transfer restriction between your",
+
+    notePin4Digits:"Your Transaction PIN should be 4 digits.",
+    noteLock3Attempt:"Consecutive 3 wrong attempts will lock.",
+    noteCallTPin:"Your Transaction PIN call 16243 to unlock.",
+    fund_transfer_note1: "1.There is no found transfer restriction between your",
     fund_transfer_note2: "own account for account transaction.",
     fund_transfer_note3: "2.Credit card transfer limit:minimum transferable.",
     fund_transfer_note4: "amount is BDT 500 and up to 50% of total available.",
