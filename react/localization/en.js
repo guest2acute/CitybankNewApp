@@ -1178,4 +1178,5 @@ export default {
 
 
     onlybKashTxt:"Only bkash customer account can be added",
+
 }

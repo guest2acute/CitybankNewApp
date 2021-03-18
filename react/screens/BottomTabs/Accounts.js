@@ -34,10 +34,7 @@ class Accounts extends Component {
         }
         that = this;
         this.state = {dataList: null, contentVisible: false};
-
-
     }
-
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -61,8 +58,6 @@ class Accounts extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
-
-
         await this.getAccounts(this.props.language, this.props.navigation)
     }
 
@@ -89,15 +84,7 @@ class Accounts extends Component {
 
     level1(node) {
         return (
-            <View key={"level1"} style={{
-                backgroundColor: themeStyle.THEME_COLOR,
-                height: Utility.setHeight(35),
-                alignItems: "center",
-                marginTop: 10,
-                paddingStart: 10,
-                paddingEnd: 10,
-                flexDirection: "row"
-            }}>
+            <View key={"level1"} style={styles.level1}>
                 <Text
                     style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{node.title}</Text>
             </View>)
@@ -105,14 +92,7 @@ class Accounts extends Component {
 
     level2(node) {
         return (<View key={"level2"}>
-            <View style={{
-                backgroundColor: themeStyle.TITLE_BG,
-                height: Utility.setHeight(35),
-                alignItems: "center",
-                paddingStart: 10,
-                paddingEnd: 10,
-                flexDirection: "row"
-            }}>
+            <View style={styles.level2}>
                 <Text
                     style={[CommonStyle.midTextStyle, {flex: 1}]}>{node.title}</Text>
                 <Text style={[CommonStyle.midTextStyle]}>{this.props.language.avail_balance}</Text>
@@ -124,13 +104,7 @@ class Accounts extends Component {
         return (
             <View key={"level3"}>
                 <TouchableOpacity disabled={true} onPress={() => this.props.navigation.navigate("AccountDetails")}>
-                    <View style={{
-                        backgroundColor: themeStyle.WHITE,
-                        marginLeft: 10,
-                        marginRight: 10,
-                        marginTop: 13,
-                        marginBottom: 13
-                    }}>
+                    <View style={styles.level3}>
                         <Text style={CommonStyle.midTextStyle}>{account.PRODUCTNAME}</Text>
                         <View style={{flexDirection: "row", marginTop: 2}}>
                             <Text style={[CommonStyle.textStyle, {
@@ -350,15 +324,13 @@ class Accounts extends Component {
 }
 
 
-const
-    styles = StyleSheet.create({
+const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',
             justifyContent: 'space-between',
             padding: 5,
             backgroundColor: "blue"
         },
-
         toolbar: {
             justifyContent: "center",
             backgroundColor: themeStyle.THEME_COLOR,
@@ -370,7 +342,30 @@ const
             fontSize: FontSize.getSize(12),
             color: themeStyle.WHITE
         },
-
+        level1:{
+            backgroundColor: themeStyle.THEME_COLOR,
+            height: Utility.setHeight(35),
+            alignItems: "center",
+            paddingStart: 10,
+            paddingEnd: 10,
+            flexDirection: "row",
+            marginTop: 10,
+        },
+    level2:{
+        backgroundColor: themeStyle.TITLE_BG,
+        height: Utility.setHeight(35),
+        alignItems: "center",
+        paddingStart: 10,
+        paddingEnd: 10,
+        flexDirection: "row"
+    },
+    level3:{
+        backgroundColor: themeStyle.WHITE,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 13,
+        marginBottom: 13
+    }
     });
 
 

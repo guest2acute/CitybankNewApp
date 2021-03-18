@@ -13,12 +13,6 @@ import FontSize from "../../resources/ManageFontSize";
 import StorageClass from "../../utilize/StorageClass";
 import {MoreDetails} from "../Requests/CommonRequest";
 
-
-/**
- * splash page
- */
-let imeiNo = "";
-
 class More extends Component {
 
     constructor(props) {
@@ -62,26 +56,11 @@ class More extends Component {
         this.props.navigation.navigate(item.redirectScreen, {title: item.title, subCategory: item.subCategory});
     }
 
-    async redirectProfile() {
-        let loginPref = await StorageClass.retrieve(Config.LoginPref);
-        console.log("profile", loginPref);
-        if (loginPref === null || loginPref === "") {
-            loginPref = "0";
-        }
-        this.props.navigation.navigate("Profile", {loginPref: loginPref});
-    }
 
     _renderItem = ({item, index}) => {
         return (
             <TouchableOpacity onPress={() => this.moveScreen(item)}>
-                <View style={{
-                    flexDirection: "row",
-                    marginTop: 17,
-                    marginBottom: 17,
-                    paddingLeft: 10,
-                    paddingRight: 10,
-                    alignItems: "center"
-                }}>
+                <View style={styles.renderView}>
                     <Image style={{
                         height: Utility.setHeight(20),
                         width: Utility.setWidth(20),
@@ -153,23 +132,20 @@ class More extends Component {
 
 
 const styles = {
-    viewStyles: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: themeStyle.BG_COLOR,
-    },
     toolbar: {
         justifyContent: "center",
         backgroundColor: themeStyle.THEME_COLOR,
         alignItems: "center",
         paddingBottom: 7
     },
-    title: {
-        fontFamily: fontStyle.RobotoMedium,
-        fontSize: FontSize.getSize(12),
-        color: themeStyle.WHITE
-    },
+    renderView: {
+        flexDirection: "row",
+        marginTop: 17,
+        marginBottom: 17,
+        paddingLeft: 10,
+        paddingRight: 10,
+        alignItems: "center"
+    }
 }
 
 

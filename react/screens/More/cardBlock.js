@@ -15,10 +15,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
-import moment from "moment";
 import MonthPicker from "react-native-month-year-picker";
-import FontSize from "../../resources/ManageFontSize";
-import fontStyle from "../../resources/FontStyle";
 
 class cardBlock extends Component {
     constructor(props) {
@@ -41,7 +38,6 @@ class cardBlock extends Component {
             cardExpiry: "",
             showMonthPicker: false,
             errorExpiry:"",
-
         }
     }
 
@@ -124,14 +120,14 @@ class cardBlock extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("creditCardType", language.select_card_number, language.cardTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectCard === language.select_card_number ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectCard}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -240,14 +236,14 @@ class cardBlock extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("cardBlockType", language.select_reason, language.cardBlockTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectType === language.selectType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            color: this.state.selectType === language.select_reason ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -384,20 +380,6 @@ class cardBlock extends Component {
 }
 
 const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
     centeredView: {
         flex: 1,
         justifyContent: "center",

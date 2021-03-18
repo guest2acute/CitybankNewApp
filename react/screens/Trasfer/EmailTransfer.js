@@ -8,6 +8,7 @@ import TermConditionScreen from "../TermConditionScreen";
 import {connect} from "react-redux";
 import Utility from "../../utilize/Utility";
 import FontSize from "../../resources/ManageFontSize";
+import fontStyle from "../../resources/FontStyle";
 
 
 class EmailTransfer extends Component {
@@ -15,9 +16,14 @@ class EmailTransfer extends Component {
         super(props);
         let language = props.language;
         this.state={
+            options: [
+                {id:0,title: props.language.ownAccount, selected: false},
+                {id:1, title: props.language.cityAccount, selected: true},
+            ],
             stateVal: 0,
         }
     }
+
 
     async changeCard(cardCode) {
         this.setState({
@@ -104,6 +110,8 @@ class EmailTransfer extends Component {
                             backgroundColor: this.state.stateVal === 0 ? themeStyle.THEME_COLOR : "#F4F4F4",
                         }}>
                         <Text style={[styles.langText, {
+                            fontFamily: fontStyle.RobotoMedium,
+                            fontSize: FontSize.getSize(11),
                             color: this.state.stateVal === 0 ? themeStyle.WHITE : themeStyle.BLACK
                         }]}>{this.props.language.send}</Text>
                     </TouchableOpacity>
@@ -120,6 +128,8 @@ class EmailTransfer extends Component {
                             backgroundColor: this.state.stateVal === 1 ? themeStyle.THEME_COLOR : "#F4F4F4",
                         }}>
                         <Text style={[styles.langText, {
+                            fontFamily: fontStyle.RobotoMedium,
+                            fontSize: FontSize.getSize(11),
                             color: this.state.stateVal === 1 ? themeStyle.WHITE : themeStyle.BLACK
                         }]}>{this.props.language.waiting}</Text>
                     </TouchableOpacity>
@@ -148,12 +158,13 @@ const styles = {
     headerLabel: {
         flexDirection: "row",
         //backgroundColor: themeStyle.THEME_COLOR,
-        height: Utility.setHeight(35),
+        height: Utility.setHeight(40),
         borderRadius: 5,
         borderWidth: 1,
         borderColor: themeStyle.WHITE,
         overflow: "hidden"
     },
+
 }
 const mapStateToProps = (state) => {
     return {

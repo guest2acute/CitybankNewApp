@@ -55,15 +55,7 @@ class CityPay extends Component {
                     </TouchableOpacity> : null}
                     <Text style={CommonStyle.title}>{language.city_pay}</Text>
                 </View>
-                <View style={{
-                    paddingLeft: Utility.setWidth(20),
-                    paddingRight: Utility.setWidth(20),
-                    paddingTop: 5,
-                    paddingBottom: Utility.setHeight(5),
-                    justifyContent: "center",
-                    backgroundColor: themeStyle.BG_COLOR,
-                    width: Utility.getDeviceWidth()
-                }}>
+                <View style={styles.scanQrCodeText}>
                     <Text style={CommonStyle.labelStyle}>{language.scanQrCode}</Text>
                 </View>
                 <View style={{flex: 1}}>
@@ -76,11 +68,8 @@ class CityPay extends Component {
                             this.scanner = node
                         }}
                     />
-
                     {this.bottomView(language)}
-
                 </View>
-
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>)
     }
@@ -230,6 +219,15 @@ let styles = {
         position: "absolute", bottom: 0, paddingLeft: Utility.setWidth(20), paddingRight: Utility.setWidth(20),
         paddingTop: Utility.setHeight(10),
         paddingBottom: Utility.setHeight(10), backgroundColor: themeStyle.BG_COLOR, width: Utility.getDeviceWidth()
+    },
+    scanQrCodeText:{
+        paddingLeft: Utility.setWidth(20),
+        paddingRight: Utility.setWidth(20),
+        paddingTop: 5,
+        paddingBottom: Utility.setHeight(5),
+        justifyContent: "center",
+        backgroundColor: themeStyle.BG_COLOR,
+        width: Utility.getDeviceWidth()
     }
 }
 

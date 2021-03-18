@@ -73,6 +73,13 @@ export default StyleSheet.create({
         marginRight: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
         fontFamily: fontStyle.RobotoRegular,
     },
+    /*model view parent*/
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
     modalView: {
         width: Utility.getDeviceWidth() - 30,
         overflow: "hidden",
@@ -86,7 +93,34 @@ export default StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5
+        elevation: 5,
+        maxHeight: Utility.getDeviceHeight() - 100,
     },
+    themeMidTextStyle: {
+        fontFamily: fontStyle.RobotoMedium,
+        fontSize: FontSize.getSize(13),
+        color:themeStyle.THEME_COLOR
+    },
+    themeTextStyle: {
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(13),
+        color: themeStyle.THEME_COLOR
+    },
+    selectionBg: {
+        paddingStart: 10,
+        paddingBottom: 4,
+        paddingTop: 4,
+        paddingEnd: 10,
+        flexDirection: "row",
+        backgroundColor: themeStyle.SELECTION_BG,
+        alignItems: "center"
+    },
+    arrowStyle: {
+        tintColor: themeStyle.BLACK,
+        width: Utility.setWidth(35),
+        height: Utility.setHeight(30)
+    },
+
+
 
 });

@@ -107,7 +107,11 @@ class EmailTransferScreen extends Component {
     }
 
     async onSubmit(language, navigation) {
-        if (this.state.selectBeneficiaryType === language.select_beneficiary_type) {
+        console.log("name",this.state.name)
+        if(this.state.name === "undefined" && this.state.email == "undefined") {
+            console.log("submit name in ")
+        }
+        else if(this.state.selectBeneficiaryType === language.select_beneficiary_type) {
             Utility.alert(language.error_select_beneficiary_type);
             return;
         }
@@ -152,14 +156,8 @@ class EmailTransferScreen extends Component {
                     <View style={[styles.selectionBg,{}]}>
                         <View style={{flex:1,flexDirection:"column"}}>
                             <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.title?this.state.title:this.state.selectBeneficiaryType}</Text>
-                            <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.email?this.state.email:null}</Text>
+                            {this.state.email?<Text style={[CommonStyle.midTextStyle,{}]}>{this.state.email}</Text>:null}
                         </View>
-                        {/*<Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectBeneficiaryType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                            flex: 1
-                        }]}>
-                            {this.state.selectBeneficiaryType}
-                        </Text>*/}
                         <Image resizeMode={"contain"} style={styles.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>

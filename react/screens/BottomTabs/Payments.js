@@ -2,20 +2,15 @@ import React, {Component} from "react";
 import {FlatList, Image, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View} from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LoginScreen from "../LoginScreen";
-import TermConditionScreen from "../TermConditionScreen";
 import {connect} from "react-redux";
 import Utility from "../../utilize/Utility";
 import FontSize from "../../resources/ManageFontSize";
-
 
 class Payments extends Component {
     constructor(props) {
         super(props);
     }
     moveScreen(item){
-        console.log("moveScreen called",item.id)
         switch (item.id){
             case "MobileRecharge":
             this.props.navigation.navigate("MobileRecharge")
@@ -82,12 +77,10 @@ class Payments extends Component {
                            style={{width: Utility.setWidth(90), flexGrow: 0, height: Utility.setHeight(50)}}
                            source={require("../../resources/images/citytouch_header.png")}/>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
-                                      style={{
-                                          width: Utility.setWidth(35),
+                                      style={{ width: Utility.setWidth(35),
                                           height: Utility.setHeight(35),
                                           position: "absolute",
-                                          right: Utility.setWidth(10),
-                                      }}
+                                          right: Utility.setWidth(10),}}
                                       onPress={() => Utility.logout(this.props.navigation, language)}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),

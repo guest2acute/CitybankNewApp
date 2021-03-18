@@ -9,8 +9,6 @@ import {
     TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
-import fontStyle from "../../resources/FontStyle";
-import FontSize from "../../resources/ManageFontSize";
 import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
@@ -53,20 +51,6 @@ class Profile extends Component {
                 console.log("isSensorAvailable error => ", error)
             });
     }
-
-    renderSeparator = () => {
-        return (
-            <View
-                style={{
-                    height: 1,
-                    width: "100%",
-                    marginStart: 5,
-                    marginEnd: 5,
-                    backgroundColor: themeStyle.SEPARATOR,
-                }}
-            />
-        );
-    };
 
     accountNoOption(language) {
         return (<View key={"accountNoOption"}>

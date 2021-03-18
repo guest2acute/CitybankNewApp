@@ -2,13 +2,9 @@ import React, {Component} from "react";
 import {Image, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View,FlatList} from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LoginScreen from "../LoginScreen";
-import TermConditionScreen from "../TermConditionScreen";
 import {connect} from "react-redux";
 import Utility from "../../utilize/Utility";
 import FontSize from "../../resources/ManageFontSize";
-
 
 class Transfer extends Component {
     constructor(props) {
@@ -37,7 +33,6 @@ class Transfer extends Component {
                 break;
             case "favoriteTransfer":
                 this.props.navigation.navigate("Favorite",{title:this.props.language.favorite_transferTitle})
-                /*this.props.navigation.navigate("FavoriteTransfers");*/
                 break;
             case "transferHistory":
                 this.props.navigation.navigate("TransferCategory");
@@ -72,7 +67,6 @@ class Transfer extends Component {
             </TouchableOpacity>
         )
     }
-
 
     render() {
         let language = this.props.language;
@@ -124,9 +118,7 @@ class Transfer extends Component {
         });
     }
 
-
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("this.props.language.transfer",this.props.language.transfer);
         if(prevProps.langId !== this.props.langId){
             this.props.navigation.setOptions({
                 tabBarLabel: this.props.language.transfer
