@@ -513,7 +513,7 @@ export default {
     amount: "AMOUNT",
     total_credit: "Total Credit Line",
     credit_available: "Credit Available",
-    outstanding_bal: "Outstanding Balance",
+    outstanding_bal: "Outstanding",
 
     /*Transfer Category screen message*/
     transfer_title: "Transfer Category",
@@ -1178,9 +1178,10 @@ export default {
 
     /*error message*/
     error_debit_card:"Please select Debit Card",
-
-
-
     onlybKashTxt:"Only bkash customer account can be added",
+
+    selMfs:"Select MFS",
+    mfsTxt:"MFS",
+    mfsList:[{label:"bKash Account",value:0}],
 
 }

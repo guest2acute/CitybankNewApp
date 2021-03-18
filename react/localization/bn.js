@@ -512,7 +512,7 @@ export default {
     amount: "পরিমাণ",
     total_credit: "মোট ক্রেডিট লাইন",
     credit_available: "ক্রেডিট উপলব্ধ",
-    outstanding_bal: "অসামান্য ব্যালেন্স",
+    outstanding_bal: "বকেয়া",
 
     /*Transfer Category screen message*/
     transfer_title: "বিভাগ স্থানান্তর",
@@ -1177,11 +1177,15 @@ export default {
     transfer_ob: "অন্য ব্যাংক স্থানান্তর করুন",
     view_delete_beneficiary: "সুবিধাভোগী মুছুন দেখুন",
     my_phone: "আমার ফোন",
-    donation: "Donation",
+    donation: "অনুদান",
     deleteAlert: "আপনি কি নিশ্চিতরূপে যোগ হওয়া সুবিধাভোগী মুছতে চান?",
     noBeneficiaryAdded: "কোনও সুবিধাভোগী যোগ করা হয়নি",
     delete: "মুছে ফেলা",
     error_debit_card:"দয়া করে ডেবিট কার্ড নির্বাচন করুন",
     onlybKashTxt:"কেবল বিকাশ গ্রাহকের অ্যাকাউন্ট যুক্ত করা যেতে পারে",
+
+    selMfs:"এমএফএস নির্বাচন করুন",
+    mfsTxt:"এমএফএস",
+    mfsList:[{label:"বিকাশ অ্যাকাউন্ট",value:0}],
 }
 

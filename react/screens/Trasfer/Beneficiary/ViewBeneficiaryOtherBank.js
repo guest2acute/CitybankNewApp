@@ -10,14 +10,14 @@ import {
     Image,
     TextInput, FlatList, Platform, StatusBar
 } from "react-native";
-import themeStyle from "../../resources/theme.style";
-import fontStyle from "../../resources/FontStyle";
-import FontSize from "../../resources/ManageFontSize";
-import CommonStyle from "../../resources/CommonStyle";
+import themeStyle from "../../../resources/theme.style";
+import fontStyle from "../../../resources/FontStyle";
+import FontSize from "../../../resources/ManageFontSize";
+import CommonStyle from "../../../resources/CommonStyle";
 import React, {Component} from "react";
-import {BusyIndicator} from "../../resources/busy-indicator";
-import Utility from "../../utilize/Utility";
-import {AddBeneficiary} from "../Requests/RequestBeneficiary";
+import {BusyIndicator} from "../../../resources/busy-indicator";
+import Utility from "../../../utilize/Utility";
+import {AddBeneficiary} from "../../Requests/RequestBeneficiary";
 
 let details = "";
 
@@ -373,7 +373,7 @@ class ViewBeneficiaryOtherBank extends Component {
                         onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{this.state.updateTitle}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -388,7 +388,7 @@ class ViewBeneficiaryOtherBank extends Component {
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>

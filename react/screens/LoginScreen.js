@@ -6,7 +6,6 @@ import {
     StatusBar,
     TextInput,
     Linking,
-    NativeModules,
     Platform, TouchableOpacity, Image, ScrollView, Alert, BackHandler
 } from "react-native";
 import themeStyle from "../resources/theme.style";
@@ -24,9 +23,6 @@ import Config from "../config/Config";
 import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
 import ApiRequest from "../config/ApiRequest";
-import Secure from "../config/Secure";
-
-let Aes = NativeModules.Aes;
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -294,7 +290,6 @@ class LoginScreen extends Component {
                                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                     autoCorrect={false}
                                 />
-
                                 <Icon style={{marginEnd: 10, marginBottom: -10}}
                                       name={this.state.passwordVisible ? "eye" : "eye-slash"}
                                       size={20}

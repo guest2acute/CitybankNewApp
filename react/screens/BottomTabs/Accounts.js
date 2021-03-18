@@ -50,11 +50,6 @@ class Accounts extends Component {
             );
         }
 
-        // bottom tab management
-        /* this.props.navigation.setOptions({
-             tabBarLabel: this.props.language.account
-         });*/
-
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
@@ -91,11 +86,12 @@ class Accounts extends Component {
     }
 
     level2(node) {
+        console.log("node",node);
         return (<View key={"level2"}>
             <View style={styles.level2}>
                 <Text
                     style={[CommonStyle.midTextStyle, {flex: 1}]}>{node.title}</Text>
-                <Text style={[CommonStyle.midTextStyle]}>{this.props.language.avail_balance}</Text>
+                <Text style={[CommonStyle.midTextStyle]}>{node.code==="CARD_ACCOUNT" || node.code==="LOAN_ACCOUNT"?this.props.language.outstanding_bal:this.props.language.avail_balance}</Text>
             </View>
         </View>)
     }
@@ -111,7 +107,7 @@ class Accounts extends Component {
                                 flex: 1,
                                 color: themeStyle.DIMCOLOR
                             }]}>{account.ACCOUNTORCARDNO}</Text>
-                            {account.BALANCE ? <Text style={[CommonStyle.textStyle, {
+                            {account.hasOwnProperty("BALANCE")? <Text style={[CommonStyle.textStyle, {
                                     color: themeStyle.THEME_COLOR
                                 }]}>{account.BALANCE}</Text>
                                 : <View style={{
@@ -148,12 +144,13 @@ class Accounts extends Component {
 
 
     async processSummary(responseArr) {
+
         let mainArray = [];
         let actArr = [];
         if (responseArr.length > 1) {
             responseArr = responseArr.sort((a, b) => {
                 return parseInt(a.DISPLAY_ORDER) - parseInt(b.DISPLAY_ORDER)
-            })
+            });
         }
 
         await responseArr.map(async (level1) => {
@@ -201,7 +198,7 @@ class Accounts extends Component {
             }
 
         });
-
+        console.log("mainArray",JSON.stringify(mainArray));
         this.setState({isProgress: false, dataList: mainArray}, async () => {
             console.log("actArr", actArr.length);
             actArr.map((account) => {
@@ -229,11 +226,12 @@ class Accounts extends Component {
 
         await ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
             if (result.STATUS === "0") {
-                if (accountNo === "4541407554008")
-                    console.log("responseArr", result);
                 let response = result.RESPONSE.filter((e) => e.ACCOUNTNUMBER === accountNo || e.ACCOUNT === accountNo);
                 if (response.length > 0)
-                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].BALANCE, accountNo, "");
+                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].hasOwnProperty("AVAILBALANCE")?response[0].AVAILBALANCE:response[0].BALANCE, accountNo, "");
+                else{
+                    this.processBalance("", accountNo, "");
+                }
             } else {
                 this.processBalance("", accountNo, "");
             }
@@ -245,7 +243,7 @@ class Accounts extends Component {
     }
 
     processBalance(balance, accountNo, message) {
-        balance = balance === "" ? this.props.language.notAvailable : balance;
+      //  balance = balance === "" ? this.props.language.notAvailable : balance;
         let dataList = this.state.dataList;
         let objectPos = -1;
         let object;
