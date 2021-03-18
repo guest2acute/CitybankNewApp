@@ -30,7 +30,9 @@ class BeneficiaryTransferMFS extends Component {
             errorEmail: "",
             error_nickname: "",
             error_accountNo: "",
-            isMainScreen: true
+            isMainScreen: true,
+            stateVal:0,
+            accountDetails: null,
         }
     }
 
@@ -49,16 +51,40 @@ class BeneficiaryTransferMFS extends Component {
     }
 
     async onSubmit(language, navigation) {
-        if (this.state.nickname === "") {
-            this.setState({error_nickname: language.require_nickname});
-        } else if (this.state.accountNo.length !== 13) {
-            this.setState({error_accountNo: language.require_accnumber})
-        } else if (this.state.isMainScreen) {
-            this.setState({isMainScreen: false});
-        } else {
-            this.beneficiaryAdd();
+
+        if (this.state.stateVal === 0) {
+            if (this.state.nickname === "") {
+                this.setState({error_nickname: language.require_nickname});
+            } else if (this.state.accountNo.length !== 13) {
+                this.setState({error_accountNo: language.require_accnumber})
+            } else if (this.state.isMainScreen) {
+                this.setState({isMainScreen: false});
+            } else {
+                this.getActDetails(language);
+            }
+        }else if (this.state.stateVal === 1) {
+            this.getActDetails(language);
         }
     }
+
+    getActDetails(language) {
+        this.setState({isProgress: true});
+        let object = {
+            nickname: this.state.nickname,
+            accountNo: this.state.accountNo,
+            account_card_name: this.state.account_card_name,
+            bankDetails: this.state.selectBankVal,
+            districtDetails: this.state.selectTypeVal === 0 ? this.state.selectDistrictVal : "",
+            branchDetails: this.state.selectTypeVal === 0 ? this.state.selectBranchVal : "",
+            mobile_number: this.state.mobile_number,
+            emailTxt: this.state.emailTxt,
+        }
+
+        console.log("object", object);
+        this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object});
+    }
+
+
 
     accountNoOption(language) {
         return (
@@ -130,7 +156,10 @@ class BeneficiaryTransferMFS extends Component {
                     <TextInput
                         ref={(ref) => this.accountNoRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {marginLeft: 10}]}
+                        style={[CommonStyle.textStyle, {alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10}]}
                         placeholder={this.state.isMainScreen ? language.bkash_account : ""}
                         onChangeText={text => this.accountchange(text)}
                         value={this.state.accountNo}
@@ -191,6 +220,7 @@ class BeneficiaryTransferMFS extends Component {
 
     render() {
         let language = this.props.language;
+        console.log("stateVal is this",this.state.stateVal)
         return (
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
@@ -253,7 +283,7 @@ class BeneficiaryTransferMFS extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : this.state.isMainScreen ? language.next : language.confirm}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -322,6 +352,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

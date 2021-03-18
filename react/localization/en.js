@@ -1170,4 +1170,7 @@ export default {
     delete: "Delete",
     biometricTitle: "Scan your Fingerprint on the mobile scanner to continue",
     biometricError: "Please validate using finger to login",
+
+    /*error message*/
+    error_debit_card:"Please Select Debitcard"
 }

@@ -38,6 +38,7 @@ class ViewBeneficiaryOtherBank extends Component {
             branch_name: details.branchDetails.BRANCH_NM,
             selectTypeVal: details.selectTypeVal,
             stateVal: 0,
+            stageVal:0,
         }
     }
 
@@ -46,12 +47,14 @@ class ViewBeneficiaryOtherBank extends Component {
     }
 
     backEvent() {
-        const {stateVal} = this.state;
-        if (stateVal === 0)
-            this.props.navigation.goBack(null);
+        const {stageVal} = this.state;
+        console.log("log",stageVal);
+        if (stageVal === 0)
+            this.props.navigation.goBack();
         else
-            this.setState({stateVal: stateVal !== 3 ? stateVal - 1 : stateVal - 2});
+            this.setState({stageVal: stageVal - 1});
     }
+
 
     beneficiaryAdd(language, navigation) {
         const {accountNo, nickname, mobile_number, emailTxt, selectTypeVal, account_holder_name} = this.state;

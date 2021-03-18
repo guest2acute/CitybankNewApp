@@ -95,9 +95,8 @@ class CashByCode extends Component {
     }
 
     async onSubmit(language, navigation) {
-
-        if (this.state.selectDebitType === "Debit Card") {
-            Utility.alert("Please Select Debitcard");
+        if (this.state.selectDebitType === language.cash_select_acct) {
+            Utility.alert(language.error_debit_card);
             return;
         }
         else if(this.state.amount===""){
