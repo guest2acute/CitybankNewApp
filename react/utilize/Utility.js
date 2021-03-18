@@ -63,6 +63,12 @@ export default class Utility {
 
     }
 
+    static verifyAccountHolder(text){
+        if (text.indexOf("&") !== -1)
+            text = text.replace(/&/g, '');
+        return text;
+    }
+
     static maskString(value) {
         let updatedStr = "";
         for (let l = 0; l < value.length; l++) {

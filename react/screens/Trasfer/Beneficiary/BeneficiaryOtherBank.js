@@ -129,7 +129,7 @@ class BeneficiaryOtherBank extends Component {
     }
 
     async onSubmit(language, navigation) {
-        console.log("selectType value",this.state.selectTypeVal)
+        console.log("selectType value",this.state.selectTypeVal);
         if (this.state.nickname === "") {
             this.setState({error_nickname: language.require_nickname});
             return;
@@ -159,7 +159,6 @@ class BeneficiaryOtherBank extends Component {
     }
 
     getActDetails(language) {
-        this.setState({isProgress: true});
         let object = {
             selectType: this.state.selectType,
             selectTypeVal: this.state.selectTypeVal,
@@ -199,7 +198,7 @@ class BeneficiaryOtherBank extends Component {
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({
                         error_nickname: "",
-                        nickname: Utility.userInput(text)
+                        nickname: text
                     })}
                     value={this.state.nickname}
                     multiline={false}
@@ -303,7 +302,7 @@ class BeneficiaryOtherBank extends Component {
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({
                         error_cardName: "",
-                        account_card_name: text
+                        account_card_name: Utility.verifyAccountHolder(text)
                     })}
                     value={this.state.account_card_name}
                     multiline={false}
@@ -311,6 +310,7 @@ class BeneficiaryOtherBank extends Component {
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
+                    maxLength={35}
                 />
             </View>
             {this.state.error_cardName !== "" ?

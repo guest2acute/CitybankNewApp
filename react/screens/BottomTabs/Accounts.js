@@ -24,6 +24,7 @@ import themesStyle from "../../resources/theme.style";
 import Config from "../../config/Config";
 
 let balanceArr = [];
+let that;
 
 class Accounts extends Component {
     constructor(props) {
@@ -31,8 +32,12 @@ class Accounts extends Component {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
+        that = this;
         this.state = {dataList: null, contentVisible: false};
+
+
     }
+
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -49,9 +54,15 @@ class Accounts extends Component {
         }
 
         // bottom tab management
+        /* this.props.navigation.setOptions({
+             tabBarLabel: this.props.language.account
+         });*/
+
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.account
         });
+
+
         await this.getAccounts(this.props.language, this.props.navigation)
     }
 
@@ -59,6 +70,15 @@ class Accounts extends Component {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener(
                 "hardwareBackPress", this.backAction)
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("this.props.language.account", this.props.language.account);
+        if (prevProps.langId !== this.props.langId) {
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.account
+            });
         }
     }
 
@@ -235,7 +255,7 @@ class Accounts extends Component {
 
         await ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
             if (result.STATUS === "0") {
-                if(accountNo === "4541407554008") 
+                if (accountNo === "4541407554008")
                     console.log("responseArr", result);
                 let response = result.RESPONSE.filter((e) => e.ACCOUNTNUMBER === accountNo || e.ACCOUNT === accountNo);
                 if (response.length > 0)
@@ -287,7 +307,8 @@ class Accounts extends Component {
             <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={[styles.toolbar, {marginBottom: 0}]}>
-                    <Image resizeMode={"contain"} style={{width: Utility.setWidth(90), height: Utility.setHeight(50)}}
+                    <Image resizeMode={"contain"}
+                           style={{width: Utility.setWidth(90), height: Utility.setHeight(50)}}
                            source={require("../../resources/images/citytouch_header.png")}/>
                     <TouchableOpacity
                         style={{
@@ -329,35 +350,42 @@ class Accounts extends Component {
 }
 
 
-const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 5,
-        backgroundColor: "blue"
-    },
+const
+    styles = StyleSheet.create({
+        header: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 5,
+            backgroundColor: "blue"
+        },
 
-    toolbar: {
-        justifyContent: "center",
-        backgroundColor: themeStyle.THEME_COLOR,
-        alignItems: "center",
-        paddingBottom: 7
-    },
-    title: {
-        fontFamily: fontStyle.RobotoMedium,
-        fontSize: FontSize.getSize(12),
-        color: themeStyle.WHITE
-    },
+        toolbar: {
+            justifyContent: "center",
+            backgroundColor: themeStyle.THEME_COLOR,
+            alignItems: "center",
+            paddingBottom: 7
+        },
+        title: {
+            fontFamily: fontStyle.RobotoMedium,
+            fontSize: FontSize.getSize(12),
+            color: themeStyle.WHITE
+        },
 
-});
+    });
 
 
-const mapStateToProps = (state) => {
-    return {
-        userDetails: state.accountReducer.userDetails,
-        langId: state.accountReducer.langId,
-        language: state.accountReducer.language,
+const
+    mapStateToProps = (state) => {
+        return {
+            userDetails: state.accountReducer.userDetails,
+            langId: state.accountReducer.langId,
+            language: state.accountReducer.language,
+        };
     };
-};
 
-export default connect(mapStateToProps)(Accounts);
+export default connect(mapStateToProps)
+
+(
+    Accounts
+)
+;

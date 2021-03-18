@@ -121,6 +121,15 @@ class Payments extends Component {
             tabBarLabel: this.props.language.payments
         });
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("this.props.language.payments",this.props.language.payments);
+        if(prevProps.langId !== this.props.langId){
+            this.props.navigation.setOptions({
+                tabBarLabel: this.props.language.payments
+            });
+        }
+    }
 }
 
 const mapStateToProps = (state) => {
