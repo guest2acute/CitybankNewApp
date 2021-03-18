@@ -15,66 +15,8 @@ class EmailTransfer extends Component {
         super(props);
         let language = props.language;
         this.state={
-            options: [
-                {id:0,title: props.language.ownAccount, selected: false},
-                {id:1, title: props.language.cityAccount, selected: true},
-            ],
             stateVal: 0,
         }
-    }
-
-    moveScreen(item) {
-        switch (item.id) {
-            case "add":
-                this.props.navigation.navigate("Beneficiary");
-                break;
-            case "delete":
-                this.props.navigation.navigate("Beneficiary");
-                break;
-        }
-    }
-
-    _renderItem = ({item, index}) => {
-        return (
-            <TouchableOpacity onPress={() => this.moveScreen(item)}>
-                <View style={{
-                    flexDirection: "row",
-                    marginTop: 17,
-                    marginBottom: 17,
-                    //paddingLeft: 10,
-                   // paddingRight: 10,
-                    alignItems: "center"
-                }}>
-                    <Image style={{
-                        height: Utility.setHeight(20),
-                        width: Utility.setWidth(20),
-                        marginLeft: Utility.setWidth(10),
-                        marginRight: Utility.setWidth(10),
-                    }} resizeMode={"contain"}
-                           source={item.icon}/>
-                    <Text style={[CommonStyle.labelStyle, {
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(12),
-                        flex: 1,
-                    }]}>{item.title}</Text>
-                    <Image style={{
-                        height: Utility.setHeight(12),
-                        width: Utility.setWidth(30),
-                        tintColor: "#b5bfc1"
-                    }} resizeMode={"contain"}
-                           source={require("../../resources/images/arrow_right_ios.png")}/>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
-    bottomLine() {
-        return (<View style={{
-            height: 1,
-            marginLeft: 10,
-            marginRight: 10,
-            backgroundColor: "#D3D1D2"
-        }}/>)
     }
 
     async changeCard(cardCode) {

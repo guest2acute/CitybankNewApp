@@ -48,6 +48,7 @@ class ViewBeneficiaryOtherBank extends Component {
         this.props.navigation.goBack();
     }
 
+
     beneficiaryAdd(language, navigation) {
         const {accountNo, nickname, mobile_number, emailTxt, selectTypeVal, account_holder_name} = this.state;
         this.setState({isProgress: true});
