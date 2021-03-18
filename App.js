@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from "react";
 import {createStackNavigator, CardStyleInterpolators} from "@react-navigation/stack";
 import {CommonActions, NavigationContainer} from "@react-navigation/native";
@@ -56,7 +48,7 @@ import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
-import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/ViewBeneficiaryOtherBank";
+import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/Beneficiary/ViewBeneficiaryOtherBank";
 import CityCreditCard from "./react/screens/Payments/CityCreditCard";
 import SecurityVerification from "./react/screens/Trasfer/SecurityVerification";
 import SubCategories from "./react/screens/More/SubCategories";
