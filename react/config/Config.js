@@ -12,7 +12,7 @@ export default class Config {
      * @type {string}
      */
 
-    static base_url = "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0/easynetpro-serv/request";
+    static base_url = "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0_dev/easynetpro-serv/request";
 
     /**
      * API Action
