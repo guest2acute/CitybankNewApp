@@ -10,13 +10,13 @@ import {
     Image,
     TextInput, FlatList, Platform, StatusBar
 } from "react-native";
-import themeStyle from "../../resources/theme.style";
-import fontStyle from "../../resources/FontStyle";
-import FontSize from "../../resources/ManageFontSize";
-import CommonStyle from "../../resources/CommonStyle";
+import themeStyle from "../../../resources/theme.style";
+import fontStyle from "../../../resources/FontStyle";
+import FontSize from "../../../resources/ManageFontSize";
+import CommonStyle from "../../../resources/CommonStyle";
 import React, {Component} from "react";
-import {BusyIndicator} from "../../resources/busy-indicator";
-import Utility from "../../utilize/Utility";
+import {BusyIndicator} from "../../../resources/busy-indicator";
+import Utility from "../../../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
 
 class EmailTransferScreen extends Component {
@@ -39,7 +39,6 @@ class EmailTransferScreen extends Component {
             selectAcctType: props.language.bkash_select_acct,
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
-           // selectTypeAccount: props.language.select_type_account,
             selectTypeVal: -1,
             modelSelection: "",
             modalVisible: false,
@@ -158,8 +157,9 @@ class EmailTransferScreen extends Component {
                             <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.title?this.state.title:this.state.selectBeneficiaryType}</Text>
                             {this.state.email?<Text style={[CommonStyle.midTextStyle,{}]}>{this.state.email}</Text>:null}
                         </View>
+
                         <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                               source={require("../../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -182,7 +182,7 @@ class EmailTransferScreen extends Component {
                             marginLeft: Utility.setWidth(10),
                             marginRight: Utility.setWidth(10),
                         }} resizeMode={"contain"}
-                               source={require("../../resources/images/ic_beneficiary.png")}/>
+                               source={require("../../../resources/images/ic_beneficiary.png")}/>
                     </TouchableOpacity>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -231,7 +231,7 @@ class EmailTransferScreen extends Component {
                             {this.state.selectAcctType}
                         </Text>
                         <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                               source={require("../../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -466,7 +466,7 @@ class EmailTransferScreen extends Component {
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.email_transfer}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -481,7 +481,7 @@ class EmailTransferScreen extends Component {
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>

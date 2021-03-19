@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import {FlatList, Image, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View} from "react-native";
-import themeStyle from "../../resources/theme.style";
-import CommonStyle from "../../resources/CommonStyle";
+import themeStyle from "../../../resources/theme.style";
+import CommonStyle from "../../../resources/CommonStyle";
 import {connect} from "react-redux";
-import Utility from "../../utilize/Utility";
-import FontSize from "../../resources/ManageFontSize";
-import fontStyle from "../../resources/FontStyle";
+import Utility from "../../../utilize/Utility";
+import FontSize from "../../../resources/ManageFontSize";
+import fontStyle from "../../../resources/FontStyle";
 
 
 class EmailTransfer extends Component {
@@ -48,7 +48,7 @@ class EmailTransfer extends Component {
                    marginEnd:20,
                    alignSelf:"flex-start"
                 }} resizeMode={"contain"}
-                       source={require("../../resources/images/message.png")}/>
+                       source={require("../../../resources/images/message.png")}/>
                 </View>
                 </TouchableOpacity>
             </View>
@@ -74,7 +74,7 @@ class EmailTransfer extends Component {
                         onPress={() => this.props.navigation.goBack(null)}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
+                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.email_transfer}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -89,7 +89,7 @@ class EmailTransfer extends Component {
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.headerLabel,{  marginTop:10,marginStart: 10,

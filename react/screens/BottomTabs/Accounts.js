@@ -225,6 +225,7 @@ class Accounts extends Component {
         }
 
         await ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
+            console.log("balance",JSON.stringify(result));
             if (result.STATUS === "0") {
                 let response = result.RESPONSE.filter((e) => e.ACCOUNTNUMBER === accountNo || e.ACCOUNT === accountNo);
                 if (response.length > 0)

@@ -8,8 +8,6 @@ import DeviceInfo from "react-native-device-info";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {CommonActions} from "@react-navigation/native";
 import StorageClass from "./StorageClass";
-import {actions} from "../redux/actions";
-import {DeviceChange} from "./../screens/Requests/CommonRequest";
 
 export default class Utility {
     static alert(msg) {
@@ -38,6 +36,7 @@ export default class Utility {
         if (id === "") {
             return language.errorUserId;
         }
+        id = id.toLowerCase();
         let number = "0123456789";
         let alphabet = "abcdefghijklmnopqrstuvwxyz";
 

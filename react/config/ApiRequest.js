@@ -9,7 +9,8 @@ export default class ApiRequest {
                 headers: {
                     "Content-Type": "application/json",
                     ...header
-                }
+                },
+                timeout: 1000 * 120,
             }).then(response => {
                 console.log("response", response.data)
                 let result = response.data;
@@ -144,10 +145,13 @@ export default class ApiRequest {
             };
 
             if (action === "REGUSERVERIFY") {
-                otpVerifyRequest={...otpVerifyRequest, ACTIVATION_CD: response.ACTIVATION_CD}
-            }
-            else{
-                otpVerifyRequest={...otpVerifyRequest, ACTIVITY_CD: response.ACTIVITY_CD, USER_ID: response.USER_ID ? response.USER_ID : "",}
+                otpVerifyRequest = {...otpVerifyRequest, ACTIVATION_CD: response.ACTIVATION_CD}
+            } else {
+                otpVerifyRequest = {
+                    ...otpVerifyRequest,
+                    ACTIVITY_CD: response.ACTIVITY_CD,
+                    USER_ID: response.USER_ID ? response.USER_ID : "",
+                }
             }
 
             console.log("otpVerifyRequest", otpVerifyRequest);
@@ -166,7 +170,7 @@ export default class ApiRequest {
 
 
     verifyAccountCard = async (isCard, actCardNumber, pin, expiryDate, response, passType, otp_type, props) => {
-       console.log("otp_type",otp_type);
+        console.log("otp_type", otp_type);
         return new Promise(async (resolve, reject) => {
             let verifyReq = {
                 CUSTOMER_ID: response.CUSTOMER_ID.toString(),
@@ -196,7 +200,7 @@ export default class ApiRequest {
             }
             console.log("verifyReq", verifyReq);
             let result = await ApiRequest.apiRequest.callApi(verifyReq, {"CARD_VERIFY": isCard ? "Y" : "N"});
-            console.log("result si======================>",result)
+            console.log("result si======================>", result)
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
                 return resolve(result.RESPONSE[0]);
