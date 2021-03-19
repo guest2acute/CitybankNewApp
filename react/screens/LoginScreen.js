@@ -469,8 +469,7 @@ class LoginScreen extends Component {
     }
 }
 
-const
-    styles = {
+const styles = {
         optionText: {
             fontFamily: fontStyle.RobotoMedium, fontSize: FontSize.getSize(12), color: themeStyle.THEME_COLOR
         },
@@ -480,7 +479,6 @@ const
             marginRight: Utility.setWidth(20),
             color: themeStyle.PLACEHOLDER_COLOR
         },
-
         rightReserved: {
             marginTop: Utility.setHeight(30),
             marginLeft: Utility.setWidth(10),

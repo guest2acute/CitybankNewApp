@@ -753,19 +753,6 @@ class PinLogin extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    inputcontainer: {
-        //height: '5%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        paddingHorizontal: '20%',
-        marginBottom: '2%',
-
-    },
     textInput: {
         fontSize: 22,
         textAlign: 'center',

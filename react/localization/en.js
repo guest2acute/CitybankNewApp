@@ -1184,4 +1184,7 @@ export default {
     mfsTxt:"MFS",
     mfsList:[{label:"bKash Account",value:0}],
 
+    update_beneficiary_alert:"Please update this beneficiary information",
+    settings:"Settings"
+
 }

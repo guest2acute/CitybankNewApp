@@ -13,13 +13,7 @@ import FontSize from "../resources/ManageFontSize";
 import StorageClass from "../utilize/StorageClass";
 
 
-/**
- * splash page
- */
-let imeiNo = "";
-
 class TransferCategory extends Component {
-
     constructor(props) {
         super(props);
         let language = props.language;
@@ -62,22 +56,9 @@ class TransferCategory extends Component {
                 StatusBar.setBarStyle("light-content");
             });
         }
-
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-
-       /* if (this.props.userDetails.AUTH_FLAG === "TP") {
-            const {data} = this.state;
-            let arr = data;
-            let obj = {
-                id: "changeTransPin",
-                title:this.props.language.change_transaction_pin,
-                icon: require("../resources/images/ic_credential_management.png")
-            }
-            arr.push(obj);
-            this.setState({data: arr});
-        }*/
     }
 
     moveScreen(item) {
@@ -199,18 +180,6 @@ class TransferCategory extends Component {
 
 
 const styles = {
-    viewStyles: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: themeStyle.BG_COLOR,
-    },
-    toolbar: {
-        justifyContent: "center",
-        backgroundColor: themeStyle.THEME_COLOR,
-        alignItems: "center",
-        paddingBottom: 7
-    },
     title: {
         fontFamily: fontStyle.RobotoMedium,
         fontSize: FontSize.getSize(14),

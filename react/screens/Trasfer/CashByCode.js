@@ -256,7 +256,7 @@ class CashByCode extends Component {
                         onSubmitEditing={(event) => {
                             this.emailRef.focus();
                         }}
-                        maxLength={14}/>
+                        maxLength={11}/>
                 </View>
                 {this.state.errorMobile !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.errorMobile}</Text> : null}

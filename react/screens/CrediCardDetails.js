@@ -43,18 +43,6 @@ class CrediCardDetails extends Component {
         }
     }
 
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({name: text, error_name: ""})
-    }
-    accountchange(text){
-        console.log("acccount change",text)
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({statementdate: text, error_accountNo: ""})
-    }
-
     async changeCard(cardCode) {
         console.log("cardcode is this",cardCode)
         this.setState({
@@ -112,10 +100,7 @@ class CrediCardDetails extends Component {
                 />
             </View>
             {this.state.error_name !==  "" ?
-                <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_name}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.error_name}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -156,15 +141,8 @@ class CrediCardDetails extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.error_account !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.error_account}</Text> : null}
+                    <Text style={CommonStyle.errorStyle
+                    }>{this.state.error_account}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -242,15 +220,7 @@ class CrediCardDetails extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.error_account !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.error_account}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_account}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -327,15 +297,7 @@ class CrediCardDetails extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.error_account !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.error_account}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_account}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -378,15 +340,8 @@ class CrediCardDetails extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.error_account !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.error_account}</Text> : null}
+                    <Text style={CommonStyle.errorStyle
+                    }>{this.state.error_account}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
@@ -429,12 +384,8 @@ class CrediCardDetails extends Component {
                 />
             </View>
             {this.state.error_name !==  "" ?
-                <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_name}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.error_name}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
             <View>
                 <View style={{
                     flexDirection: "row",
@@ -474,15 +425,7 @@ class CrediCardDetails extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.error_account !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.error_account}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_account}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -637,7 +580,7 @@ class CrediCardDetails extends Component {
                                 }]}>{this.props.language.bdt}</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={[styles.selectionBg,{marginTop:10}]}>
+                        <View style={[CommonStyle.selectionBg,{marginTop:10}]}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: themeStyle.BLACK,
                                 flex: 1,
@@ -680,7 +623,7 @@ class CrediCardDetails extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={[styles.selectionBg,{marginTop:10,justifyContent:"space-between"}]}>
+                        <View style={[CommonStyle.selectionBg,{marginTop:10,justifyContent:"space-between"}]}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: themeStyle.BLACK,margin:5
                             }]}>
@@ -714,20 +657,6 @@ class CrediCardDetails extends Component {
 }
 
 const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
     headerLabel: {
         flexDirection: "row",
         //backgroundColor: themeStyle.THEME_COLOR,
@@ -743,27 +672,6 @@ const styles = {
         textAlign: 'center',
         width: Utility.setWidth(65),
     },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        maxHeight:Utility.getDeviceHeight()-100,
-        borderRadius: 10,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
 }
 
 const mapStateToProps = (state) => {

@@ -115,11 +115,11 @@ class OtherBankAccount extends Component {
 
      alertToNavigate(){
                   Alert.alert(
-                     "",
-                     "Please update this beneficiary information",
+                     Config.appName,
+                     this.props.language.update_beneficiary_alert,
                      [
-                         {text: "Yes", onPress: () => this.props.navigation.navigate("BeneficiaryOtherBank",{title:this.props.language.update_beneficiary})},
-                         {text: "No"},
+                         {text: this.props.language.yes_txt, onPress: () => this.props.navigation.navigate("BeneficiaryOtherBank",{title:this.props.language.update_beneficiary})},
+                         {text: this.props.language.no_txt},
                      ]
                  );
     }
@@ -174,14 +174,14 @@ class OtherBankAccount extends Component {
                 }
                 <TouchableOpacity
                     onPress={() => this.openModal("bankType", language.bkash_selectfrom_acct, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectAcctType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            color: this.state.selectAcctType === language.bkash_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAcctType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -270,14 +270,14 @@ class OtherBankAccount extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("type", language.selectNickType, language.nickTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
-                            color: this.state.selectNicknameType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            color: this.state.selectNicknameType === language.select_nickname ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectNicknameType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -337,10 +337,7 @@ class OtherBankAccount extends Component {
                     maxLength={13}/>
             </View>
             {this.state.errorTransferAmount !== "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.errorTransferAmount}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.errorTransferAmount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{flexDirection: "row", marginStart: 10, marginEnd: 10}}>
@@ -687,10 +684,8 @@ class OtherBankAccount extends Component {
                     maxLength={13}/>
             </View>
             {this.state.error_remarks !== "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_remarks}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_remarks}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -807,14 +802,14 @@ class OtherBankAccount extends Component {
                         }
                         <TouchableOpacity
                             onPress={() => this.openModal("paymentType", language.select_payment, language.payment_array, language)}>
-                            <View style={styles.selectionBg}>
+                            <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.selectPaymentType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.selectPaymentType}
                                 </Text>
-                                <Image resizeMode={"contain"} style={styles.arrowStyle}
+                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                        source={require("../../resources/images/ic_arrow_down.png")}/>
                             </View>
                         </TouchableOpacity>
@@ -864,24 +859,21 @@ class OtherBankAccount extends Component {
             }
 
 
-            <Text
-                style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-            </Text>
-
-            <View style={{marginTop: 10,}}>
-                <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note1}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note2}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note3}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note4}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note5}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note6}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note7} </Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note8}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note9}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note10}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note11}</Text>
-                <Text style={styles.textView}>{language.other_bankAccount_note12}</Text>
+            <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+            <View style={{marginStart:10,marginEnd:10}}>
+                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note1}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note2}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note3}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note4}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note5}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note6}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note7} </Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note8}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note9}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note10}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note11}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.other_bankAccount_note12}</Text>
             </View>
         </View>)
     }
@@ -964,8 +956,8 @@ class OtherBankAccount extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -1031,43 +1023,8 @@ class OtherBankAccount extends Component {
 }
 
 const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
     textView: {
         marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        alignItems: "center",
-        maxHeight:Utility.getDeviceHeight()-100,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
     },
     textStyle: {
         fontFamily: fontStyle.RobotoRegular,

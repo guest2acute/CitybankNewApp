@@ -15,20 +15,15 @@ import CommonStyle from "../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../resources/busy-indicator";
 import Utility from "../utilize/Utility";
-
-import FontSize from "../resources/ManageFontSize";
-import fontStyle from "../resources/FontStyle";
 import ApiRequest from "../config/ApiRequest";
 import MonthPicker from "react-native-month-year-picker";
 import Config from "../config/Config";
 import RadioForm from "react-native-simple-radio-button";
 import * as ReadSms from "react-native-read-sms/ReadSms";
 
-
 class ChangeLoginCredential extends Component {
     constructor(props) {
         super(props);
-        console.log("add", props.userDetails.AUTH_FLAG);
         this.state = {
             isProgress: false,
             select_credential_type: props.route.params.title === props.language.change_login_password ? props.language.credentialList[0] : props.language.credentialList[1],
@@ -62,13 +57,6 @@ class ChangeLoginCredential extends Component {
             showMonthPicker: false,
             title: props.route.params.title,
         }
-        console.log("title", props.route.params.title)
-        console.log("password", props.language.change_login_password)
-        console.log("check it", props.route.params.title === props.language.change_login_password)
-        console.log("credentialList[0]", props.language.credentialList[0])
-        console.log("credentialList[1]", props.language.credentialList[1])
-
-
     }
 
     renderSeparator = () => {
@@ -151,14 +139,14 @@ class ChangeLoginCredential extends Component {
         return (<View key={"accountNoOption"}>
             <TouchableOpacity style={{marginTop: 20}}
                               onPress={() => this.openModal("accountListType", language.select_actNo, this.state.actNoList, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.select_actNo}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -195,15 +183,7 @@ class ChangeLoginCredential extends Component {
                         maxLength={4}/>
                 </View>
                 {this.state.errorTransPin !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorTransPin}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorTransPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View> : null}
             {this.selectOtpView(language)}
@@ -215,14 +195,14 @@ class ChangeLoginCredential extends Component {
 
             <TouchableOpacity style={{marginTop: 20}}
                               onPress={() => this.openModal("cardType", language.selectCard, this.state.cardNoList, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.selectCard}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -258,15 +238,7 @@ class ChangeLoginCredential extends Component {
                         autoCorrect={false}/></TouchableOpacity>
             </View>
             {this.state.errorExpiry !== "" ?
-                <Text style={{
-                    marginLeft: 5,
-                    marginRight: 10,
-                    color: themeStyle.THEME_COLOR,
-                    fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                    alignSelf: "flex-end",
-                    marginBottom: 10,
-                }}>{this.state.errorExpiry}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.errorExpiry}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -297,15 +269,7 @@ class ChangeLoginCredential extends Component {
                     maxLength={4}/>
             </View>
             {this.state.errorCardPin !== "" ?
-                <Text style={{
-                    marginLeft: 5,
-                    marginRight: 10,
-                    color: themeStyle.THEME_COLOR,
-                    fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                    alignSelf: "flex-end",
-                    marginBottom: 10,
-                }}>{this.state.errorCardPin}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.errorCardPin}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             {this.selectOtpView(language)}
         </View>)
@@ -510,15 +474,7 @@ class ChangeLoginCredential extends Component {
                         maxLength={this.state.select_credential_type.value === 0 ? 12 : 6}/>
                 </View>
                 {this.state.errorNewCredential !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorNewCredential}</Text> : null}
+                    <Text style={CommonStyle.arrowStyle}>{this.state.errorNewCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -558,15 +514,7 @@ class ChangeLoginCredential extends Component {
                         maxLength={this.state.select_credential_type.value === 0 ? 12 : 6}/>
                 </View>
                 {this.state.errorConfNewCredential !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfNewCredential}</Text> : null}
+                    <Text style={CommonStyle.arrowStyle}>{this.state.errorConfNewCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)
@@ -710,11 +658,11 @@ class ChangeLoginCredential extends Component {
 
             {/*  <TouchableOpacity
                 onPress={() => this.openModal("credentialType", language.select_credential_type, language.credentialList, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                         {this.state.select_credential_type.label}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>*/}
@@ -732,11 +680,11 @@ class ChangeLoginCredential extends Component {
                 <TouchableOpacity
                     disabled={true}
                     onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
-                    <View style={[styles.selectionBg, {height: Utility.setHeight(40)}]}>
+                    <View style={[CommonStyle.selectionBg, {height: Utility.setHeight(40)}]}>
                         <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                             {this.state.selectActCard.label}
                         </Text>
-                        {/* <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        {/* <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                    source={require("../resources/images/ic_arrow_down.png")}/>*/}
                     </View>
                 </TouchableOpacity></View>
@@ -794,8 +742,8 @@ class ChangeLoginCredential extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -838,45 +786,6 @@ class ChangeLoginCredential extends Component {
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
-    }
-
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight: Utility.getDeviceHeight() - 100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
     }
 
 }

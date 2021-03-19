@@ -126,14 +126,14 @@ class UploadSupportDoc extends Component {
             <TouchableOpacity
                 onPress={() => this.openModal("accountCardNo", language.sel_act_card_no, this.state.accountCardNoList, language)}>
 
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.AccountCardNo === language.sel_act_card_no ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.AccountCardNo}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -151,14 +151,14 @@ class UploadSupportDoc extends Component {
             <TouchableOpacity
                 onPress={() => this.openModal("documentFor", language.select_request, language.DocumentRequiredForArr, language)}>
 
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.DocumentRequiredFor === language.changeFor ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.DocumentRequiredFor}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -176,14 +176,14 @@ class UploadSupportDoc extends Component {
             <TouchableOpacity
                 onPress={() => this.openModal("documentType", language.selectDocument, language.documentTypeArr, language)}>
 
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.documentType === language.selectDocument ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.documentType}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -411,8 +411,8 @@ class UploadSupportDoc extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -425,7 +425,6 @@ class UploadSupportDoc extends Component {
 
                                 }]}>{this.state.modalTitle}</Text>
                             </View>
-
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
                                       data={this.state.modalData} keyExtractor={(item, index) => item.key}
                                       renderItem={({item}) =>
@@ -450,48 +449,7 @@ class UploadSupportDoc extends Component {
             </View>
         )
     }
-
 }
-
-const
-    styles = {
-        arrowStyle: {
-            tintColor: themeStyle.BLACK,
-            width: Utility.setWidth(35),
-            height: Utility.setHeight(30)
-        },
-        selectionBg: {
-            paddingStart: 10,
-            paddingBottom: 4,
-            paddingTop: 4,
-            paddingEnd: 10,
-            flexDirection: "row",
-            backgroundColor: themeStyle.SELECTION_BG,
-            alignItems: "center"
-        },
-        centeredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: 'rgba(0,0,0,0.5)',
-        },
-        modalView: {
-            width: Utility.getDeviceWidth() - 30,
-            overflow: "hidden",
-            borderRadius: 10,
-            maxHeight:Utility.getDeviceHeight()-100,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5
-        }
-
-    }
 
 const mapStateToProps = (state) => {
     return {

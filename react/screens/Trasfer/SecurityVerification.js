@@ -259,10 +259,7 @@ class SecurityVerification extends Component {
                         maxLength={4}/>
                 </View>
                 {this.state.errorTransactionPin !== "" ?
-                    <Text style={{
-                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.errorTransactionPin}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorTransactionPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
                 <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>

@@ -391,10 +391,7 @@ class FixedDeposit extends Component {
                         maxLength={13}/>
                 </View>
                 {this.state.errorAmount !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.errorAmount}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{

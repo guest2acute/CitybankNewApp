@@ -85,18 +85,6 @@ class TransferToBkash extends Component {
         }
     }
 
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({nickname: text, error_nickname: ""})
-    }
-
-    accountchange(text){
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({accountNo: text, error_accountNo: ""})
-    }
-
     async onSubmit(language, navigation) {
         if (this.state.selectNicknameType === language.select_nickname) {
             Utility.alert(language.error_select_nickname);
@@ -130,14 +118,14 @@ class TransferToBkash extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("type", language.selectNickType, language.nickTypeArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectNicknameType === language.select_type_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectNicknameType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -175,10 +163,8 @@ class TransferToBkash extends Component {
                     maxLength={13}/>
             </View>
             {this.state.error_accountNo !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_accountNo}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_accountNo}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -226,14 +212,14 @@ class TransferToBkash extends Component {
                 }
                 <TouchableOpacity
                     onPress={() => this.openModal("bankType", language.bkash_selectfrom_acct, language.cardNumber, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectAcctType === language.select_bank_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.selectAcctType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -272,10 +258,8 @@ class TransferToBkash extends Component {
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             {this.state.error_availablebal !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_availablebal}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_availablebal}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -311,10 +295,8 @@ class TransferToBkash extends Component {
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             {this.state.error_transferamt !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_transferamt}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_transferamt}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
 
@@ -352,10 +334,8 @@ class TransferToBkash extends Component {
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             {this.state.error_servicescharge !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_servicescharge}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_servicescharge}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -391,10 +371,8 @@ class TransferToBkash extends Component {
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             {this.state.error_grandtotal !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_grandtotal}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_grandtotal}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -425,10 +403,8 @@ class TransferToBkash extends Component {
                     maxLength={13}/>
             </View>
             {this.state.error_remarks !==  "" ?
-                <Text style={{
-                    marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_remarks}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_remarks}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -458,21 +434,19 @@ class TransferToBkash extends Component {
                     }}
                 />
             </View>
-            <Text style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-            </Text>
-
-            <View style={{ marginTop: 10,}}>
-                <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note1}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note2}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note3}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note4}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note5}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note6}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note7}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note8}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note9}</Text>
-                <Text style={styles.textView}>{language.transferTo_bkash_note10}</Text>
+            <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+            <View style={{marginStart:10,marginEnd:10}}>
+                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note1}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note2}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note3}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note4}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note5}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note6}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note7}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note8}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note9}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note10}</Text>
             </View>
         </View>)
     }
@@ -555,8 +529,8 @@ class TransferToBkash extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -608,46 +582,6 @@ class TransferToBkash extends Component {
     }
 }
 
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    textView:{
-        marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-}
 
 const mapStateToProps = (state) => {
     return {

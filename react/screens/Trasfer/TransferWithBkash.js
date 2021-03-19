@@ -26,27 +26,11 @@ class TransferWithBkash extends Component {
             name: "",
             accountNo: "",
             mobile_number:"",
-            emailTxt: "",
-            errorEmail: "",
             error_name:"",
             error_account:"",
-            error_accountNo:"",
             focusUid: false,
             focusPwd: false,
-            error_email: ""
         }
-    }
-
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({name: text, error_name: ""})
-    }
-    accountchange(text){
-        console.log("acccount change",text)
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({accountNo: text, error_accountNo: ""})
     }
 
     async onSubmit(language, navigation) {
@@ -61,9 +45,9 @@ class TransferWithBkash extends Component {
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
-
     accountNoOption(language) {
-        return (<View>
+        return (
+            <View>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
@@ -100,10 +84,8 @@ class TransferWithBkash extends Component {
                 />
             </View>
             {this.state.error_name !==  "" ?
-                <Text style={{
-                    marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                }}>{this.state.error_name}</Text> : null}
+                <Text style={CommonStyle.errorStyle
+                }>{this.state.error_name}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
                 <View style={{
@@ -144,15 +126,7 @@ class TransferWithBkash extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.error_account !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.error_account}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_account}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -262,7 +236,6 @@ class TransferWithBkash extends Component {
                         </View>
                     </View>
                 </ScrollView>
-
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
@@ -280,44 +253,6 @@ class TransferWithBkash extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
-    }
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        alignItems: "center",
-        maxHeight:Utility.getDeviceHeight()-100,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
     }
 }
 

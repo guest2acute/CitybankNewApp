@@ -92,7 +92,6 @@ class SubCategories extends Component {
             marginRight: 10,
             backgroundColor: "#D3D1D2"
         }}/>)
-
     }
 
     render() {

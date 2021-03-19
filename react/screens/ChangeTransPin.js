@@ -179,15 +179,7 @@ class ChangeTransPin extends Component {
                         maxLength={4}/>
                 </View>
                 {this.state.errorPinVal !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorPinVal}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorPinVal}</Text> : null}
 
             </View>
 
@@ -228,15 +220,8 @@ class ChangeTransPin extends Component {
                         maxLength={4}/>
                 </View>
                 {this.state.errorConfirmPinVal !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfirmPinVal}</Text> : null}
+                    <Text style={CommonStyle.errorStyle
+                    }>{this.state.errorConfirmPinVal}</Text> : null}
 
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -318,14 +303,14 @@ class ChangeTransPin extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("account", language.select_actNo, this.state.actNoList, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                             flex: 1
                         }]}>
                             {this.state.select_actNo}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -372,15 +357,7 @@ class ChangeTransPin extends Component {
                                     autoCorrect={false}/>
                             </View>
                             {this.state.errorFather !== "" ?
-                                <Text style={{
-                                    marginLeft: 5,
-                                    marginRight: 10,
-                                    color: themeStyle.THEME_COLOR,
-                                    fontSize: FontSize.getSize(11),
-                                    fontFamily: fontStyle.RobotoRegular,
-                                    alignSelf: "flex-end",
-                                    marginBottom: 10,
-                                }}>{this.state.errorFather}</Text> : null}
+                                <Text style={CommonStyle.errorStyle}>{this.state.errorFather}</Text> : null}
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         <View>
@@ -416,15 +393,7 @@ class ChangeTransPin extends Component {
                                     autoCorrect={false}/>
                             </View>
                             {this.state.errorMother !== "" ?
-                                <Text style={{
-                                    marginLeft: 5,
-                                    marginRight: 10,
-                                    color: themeStyle.THEME_COLOR,
-                                    fontSize: FontSize.getSize(11),
-                                    fontFamily: fontStyle.RobotoRegular,
-                                    alignSelf: "flex-end",
-                                    marginBottom: 10,
-                                }}>{this.state.errorMother}</Text> : null}
+                                <Text style={CommonStyle.errorStyle}>{this.state.errorMother}</Text> : null}
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         <View>
@@ -460,15 +429,7 @@ class ChangeTransPin extends Component {
                                 </TouchableOpacity>
                             </View>
                             {this.state.errorDob !== "" ?
-                                <Text style={{
-                                    marginLeft: 5,
-                                    marginRight: 10,
-                                    color: themeStyle.THEME_COLOR,
-                                    fontSize: FontSize.getSize(11),
-                                    fontFamily: fontStyle.RobotoRegular,
-                                    alignSelf: "flex-end",
-                                    marginBottom: 10,
-                                }}>{this.state.errorDob}</Text> : null}
+                                <Text style={CommonStyle.errorStyle}>{this.state.errorDob}</Text> : null}
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -529,9 +490,11 @@ class ChangeTransPin extends Component {
             isProgress: false,
             dateVal: new Date(),
             mode: "date",
+            currentSelection: 0,
             show: false,
             dob: "",
             pinVal: "",
+            errorDob: "",
             ConfirmPinVal: "",
             verifyRes: "",
             otpVal: ""
@@ -640,7 +603,7 @@ class ChangeTransPin extends Component {
             console.log("selectedDate-", selectedDate);
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
-            this.setState({dateVal: selectedDate, dob: currentDate, show: false});
+            this.setState({errorDob: "",dateVal: selectedDate, dob: currentDate, show: false});
         } else {
             this.setState({show: false});
         }
@@ -736,8 +699,8 @@ class ChangeTransPin extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -771,7 +734,7 @@ class ChangeTransPin extends Component {
                 {this.state.show && (
                     <DateTimePicker
                         testID="dateTimePicker"
-                        value={this.state.dateVal}
+                        value={new Date()}
                         mode={this.state.mode}
                         is24Hour={false}
                         display="default"
@@ -782,48 +745,7 @@ class ChangeTransPin extends Component {
             </View>
         )
     }
-
 }
-
-const
-    styles = {
-        arrowStyle: {
-            tintColor: themeStyle.BLACK,
-            width: Utility.setWidth(35),
-            height: Utility.setHeight(30)
-        },
-        selectionBg: {
-            paddingStart: 10,
-            paddingBottom: 4,
-            paddingTop: 4,
-            paddingEnd: 10,
-            flexDirection: "row",
-            backgroundColor: themeStyle.SELECTION_BG,
-            alignItems: "center"
-        },
-        centeredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: 'rgba(0,0,0,0.5)',
-        },
-        modalView: {
-            width: Utility.getDeviceWidth() - 30,
-            overflow: "hidden",
-            maxHeight: Utility.getDeviceHeight() - 100,
-            borderRadius: 10,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5
-        }
-
-    }
 
 const mapStateToProps = (state) => {
     return {

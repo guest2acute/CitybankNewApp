@@ -28,10 +28,6 @@ import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
 import * as ReadSms from "react-native-read-sms/ReadSms";
 
-/**
- * splash page
- */
-
 let description, value, deviceChangeRes;
 
 class OTPVerification extends Component {

@@ -707,14 +707,14 @@ class CredentialDetails extends Component {
             </Text>
             <TouchableOpacity
                 onPress={() => this.openModal("type", language.selectType, language.optionTypeArr, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.selectType === language.selectType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.selectType}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -773,11 +773,15 @@ class CredentialDetails extends Component {
             <TouchableOpacity
                 disabled={this.state.selectTypeVal !== 0}
                 onPress={() => this.openModal("accountType", language.selectActType, language.accountTypeArr, language)}>
-                <View style={[styles.selectionBg, {height: Utility.setHeight(40)}]}>
+                <View style={[CommonStyle.selectionBg, {height: Utility.setHeight(40)}]}>
+                        {/*<Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectType === language.selectType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>*/}
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                         {this.state.selectActCard.label}
                     </Text>
-                    {this.state.selectTypeVal === 0 ? <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    {this.state.selectTypeVal === 0 ? <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                                              source={require("../resources/images/ic_arrow_down.png")}/> : null}
                 </View>
             </TouchableOpacity>
@@ -829,15 +833,7 @@ class CredentialDetails extends Component {
                         maxLength={this.state.selectTypeVal === 2 ? 6 : 50}/>
                 </View>
                 {this.state.errorNewP !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorNewP}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorNewP}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -989,8 +985,8 @@ class CredentialDetails extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -1038,44 +1034,6 @@ class CredentialDetails extends Component {
 
 }
 
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        maxHeight: Utility.getDeviceHeight() - 100,
-        borderRadius: 10,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-
-}
 
 const mapStateToProps = (state) => {
     return {

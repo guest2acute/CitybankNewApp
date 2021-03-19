@@ -83,9 +83,9 @@ class TransferHistory extends Component {
                     backgroundColor: index % 2 === 0 ? null : themeStyle.SEPARATOR
                 }}>
                     <View style={{flex:0.8,flexDirection:"column",marginStart:10,marginEnd:10}}>
-                    <Text style={[styles.textStyle, {
+                    <Text style={[CommonStyle.textStyle, {
                     }]}>{item.description}</Text>
-                    <Text style={[styles.textStyle, {
+                    <Text style={[CommonStyle.textStyle, {
                         fontSize: FontSize.getSize(12),
                         color:themeStyle.PLACEHOLDER_COLOR
                     }]}>
@@ -93,7 +93,7 @@ class TransferHistory extends Component {
                     </Text>
                     </View>
                     <View style={{flex:0.2}}>
-                    <Text style={[styles.textStyle, {
+                    <Text style={[CommonStyle.textStyle, {
                         color:themeStyle.THEME_COLOR,marginStart:10,marginEnd:10,textAlign:"center"
                     }]}>{item.amount}</Text>
                     </View>
@@ -130,7 +130,7 @@ class TransferHistory extends Component {
                                source={require("../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.selectionBg,{flexDirection:"row",justifyContent:"space-between",paddingTop:10,paddingBottom:10}]}>
+                <View style={[CommonStyle.selectionBg,{flexDirection:"row",justifyContent:"space-between",paddingTop:10,paddingBottom:10}]}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: themeStyle.BLACK
                     }]}>
@@ -154,35 +154,6 @@ class TransferHistory extends Component {
         );
     }
 }
-
-const styles = {
-    viewStyles: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: themeStyle.BG_COLOR,
-    },
-    title: {
-        fontFamily: fontStyle.RobotoMedium,
-        fontSize: FontSize.getSize(14),
-        color: themeStyle.THEME_COLOR
-    },
-    textStyle: {
-        fontFamily: fontStyle.RobotoRegular,
-        fontSize: FontSize.getSize(13),
-        color: themeStyle.BLACK
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-}
-
 
 const mapStateToProps = (state) => {
     return {

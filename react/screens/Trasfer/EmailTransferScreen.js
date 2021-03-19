@@ -158,7 +158,7 @@ class EmailTransferScreen extends Component {
                             <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.title?this.state.title:this.state.selectBeneficiaryType}</Text>
                             {this.state.email?<Text style={[CommonStyle.midTextStyle,{}]}>{this.state.email}</Text>:null}
                         </View>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -230,7 +230,7 @@ class EmailTransferScreen extends Component {
                         }]}>
                             {this.state.selectAcctType}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -444,15 +444,13 @@ class EmailTransferScreen extends Component {
                     }}
                 />
             </View>
-            <Text style={{marginStart: 10, marginTop: 10, color: themeStyle.THEME_COLOR}}>*{language.mark_field_mandatory}
-            </Text>
-
-            <View style={{ marginTop: 10,}}>
-                <Text style={styles.textView}>{language.notes}</Text>
-                <Text style={styles.textView}>{language.email_transfer_note1}</Text>
-                <Text style={styles.textView}>{language.email_transfer_note2}</Text>
-                <Text style={styles.textView}>{language.email_transfer_note3}</Text>
-                <Text style={styles.textView}>{language.email_transfer_note4}</Text>
+            <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
+            <View style={{marginStart:10,marginEnd:10}}>
+                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.email_transfer_note1}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.email_transfer_note2}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.email_transfer_note3}</Text>
+                <Text style={CommonStyle.themeTextStyle}>{language.email_transfer_note4}</Text>
             </View>
         </View>)
     }
@@ -535,8 +533,8 @@ class EmailTransferScreen extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -585,47 +583,6 @@ class EmailTransferScreen extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
-    }
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    textView:{
-        marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        borderRadius: 10,
-        maxHeight:Utility.getDeviceHeight()-100,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
     }
 }
 

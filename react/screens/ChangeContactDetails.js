@@ -117,14 +117,14 @@ class ChangeContactDetails extends Component {
         return (<View key={"accountNoOption"}>
             <TouchableOpacity style={{marginTop: 20}}
                               onPress={() => this.openModal("accountListType", language.select_actNo, this.state.actNoList, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.select_actNo}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -162,15 +162,7 @@ class ChangeContactDetails extends Component {
                         maxLength={4}/>
                 </View>
                 {this.state.errorTransPin !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorTransPin}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorTransPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View> : null}
 
@@ -217,14 +209,14 @@ class ChangeContactDetails extends Component {
 
             <TouchableOpacity style={{marginTop: 20}}
                               onPress={() => this.openModal("cardType", language.selectCard, this.state.cardNoList, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {
                         color: this.state.select_actNo === language.select_actNo ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                         flex: 1
                     }]}>
                         {this.state.selectCard}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -266,15 +258,7 @@ class ChangeContactDetails extends Component {
                     </TouchableOpacity>
                 </View>
                 {this.state.errorExpiry !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorExpiry}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorExpiry}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
@@ -309,15 +293,7 @@ class ChangeContactDetails extends Component {
                     maxLength={4}/>
             </View>
             {this.state.errorPin !== "" ?
-                <Text style={{
-                    marginLeft: 5,
-                    marginRight: 10,
-                    color: themeStyle.THEME_COLOR,
-                    fontSize: FontSize.getSize(11),
-                    fontFamily: fontStyle.RobotoRegular,
-                    alignSelf: "flex-end",
-                    marginBottom: 10,
-                }}>{this.state.errorPin}</Text> : null}
+                <Text style={CommonStyle.errorStyle}>{this.state.errorPin}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             {this.selectOtpView(language)}
         </View>)
@@ -662,15 +638,7 @@ class ChangeContactDetails extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.errorCredential !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorCredential}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorCredential}</Text> : null}
 
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -709,15 +677,7 @@ class ChangeContactDetails extends Component {
                         autoCorrect={false}/>
                 </View>
                 {this.state.errorConfCredential !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfCredential} </Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorConfCredential} </Text> : null}
 
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -802,11 +762,11 @@ class ChangeContactDetails extends Component {
 
             <TouchableOpacity
                 onPress={() => this.openModal("contactType", language.select_contact_type, language.contactList, language)}>
-                <View style={styles.selectionBg}>
+                <View style={CommonStyle.selectionBg}>
                     <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                         {this.state.select_contact_type.label}
                     </Text>
-                    <Image resizeMode={"contain"} style={styles.arrowStyle}
+                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                            source={require("../resources/images/ic_arrow_down.png")}/>
                 </View>
             </TouchableOpacity>
@@ -824,11 +784,11 @@ class ChangeContactDetails extends Component {
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("accountType", language.select_txt, this.state.changeInArr, language)}>
-                    <View style={styles.selectionBg}>
+                    <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
                             {this.state.selectActCard.label}
                         </Text>
-                        <Image resizeMode={"contain"} style={styles.arrowStyle}
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
@@ -886,8 +846,8 @@ class ChangeContactDetails extends Component {
                     onRequestClose={() => {
                         this.setState({modalVisible: false})
                     }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                    <View style={CommonStyle.centeredView}>
+                        <View style={CommonStyle.modalView}>
                             <View style={{
                                 width: "100%",
                                 backgroundColor: themeStyle.THEME_COLOR,
@@ -933,45 +893,6 @@ class ChangeContactDetails extends Component {
             </View>
         )
     }
-
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35), height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        maxHeight: Utility.getDeviceHeight() - 100,
-        borderRadius: 10,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
-
 }
 
 const mapStateToProps = (state) => {

@@ -53,7 +53,6 @@ class TermConditionScreen extends Component {
         return (
             <View style={styles.viewStyles}>
                 <SafeAreaView/>
-
                 <View style={{
                     flexDirection: "row",
                     justifyContent: "center",

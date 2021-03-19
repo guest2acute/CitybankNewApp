@@ -28,7 +28,6 @@ class LoginConfigureProfile extends Component {
     constructor(props) {
         super(props);
         userID = props.route.params.userID;
-        console.log("userID", userID);
         this.state = {
             isProgress: false,
             transactionPin: "",
@@ -177,15 +176,8 @@ class LoginConfigureProfile extends Component {
                                     maxLength={4}/>
                             </View>
                             {this.state.errorTransPIN !== "" ?
-                                <Text style={{
-                                    marginLeft: 5,
-                                    marginRight: 10,
-                                    color: themeStyle.THEME_COLOR,
-                                    fontSize: FontSize.getSize(11),
-                                    fontFamily: fontStyle.RobotoRegular,
-                                    alignSelf: "flex-end",
-                                    marginBottom: 10,
-                                }}>{this.state.errorTransPIN}</Text> : null}
+                                <Text style={CommonStyle.errorStyle
+                                }>{this.state.errorTransPIN}</Text> : null}
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                     </View>
@@ -232,15 +224,7 @@ class LoginConfigureProfile extends Component {
                                     maxLength={4}/>
                             </View>
                             {this.state.errorConfTransPIN !== "" ?
-                                <Text style={{
-                                    marginLeft: 5,
-                                    marginRight: 10,
-                                    color: themeStyle.THEME_COLOR,
-                                    fontSize: FontSize.getSize(11),
-                                    fontFamily: fontStyle.RobotoRegular,
-                                    alignSelf: "flex-end",
-                                    marginBottom: 10,
-                                }}>{this.state.errorConfTransPIN}</Text> : null}
+                                <Text style={CommonStyle.errorStyle}>{this.state.errorConfTransPIN}</Text> : null}
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                     </View>
@@ -286,15 +270,7 @@ class LoginConfigureProfile extends Component {
                         maxLength={6}/>
                 </View>
                 {this.state.errorLoginPIN !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorLoginPIN}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorLoginPIN}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View>
@@ -333,15 +309,7 @@ class LoginConfigureProfile extends Component {
                         maxLength={6}/>
                 </View>
                 {this.state.errorConfLoginPIN !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorConfLoginPIN}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorConfLoginPIN}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -538,44 +506,6 @@ class LoginConfigureProfile extends Component {
         return true;
     }
 
-}
-
-const styles = {
-    arrowStyle: {
-        tintColor: themeStyle.BLACK,
-        width: Utility.setWidth(35),
-        height: Utility.setHeight(30)
-    },
-    selectionBg: {
-        paddingStart: 10,
-        paddingBottom: 4,
-        paddingTop: 4,
-        paddingEnd: 10,
-        flexDirection: "row",
-        backgroundColor: themeStyle.SELECTION_BG,
-        alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: Utility.getDeviceWidth() - 30,
-        overflow: "hidden",
-        maxHeight: Utility.getDeviceHeight() - 100,
-        borderRadius: 10,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    }
 }
 
 const mapStateToProps = (state) => {
