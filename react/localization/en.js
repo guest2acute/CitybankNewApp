@@ -1,4 +1,3 @@
-
 import React from "react";
 import Beneficiary from "../screens/Trasfer/Beneficiary/Beneficiary";
 import {Text} from "react-native";
@@ -321,8 +320,16 @@ export default {
         {id: "cashByCode", title: "Cash By Code", icon: require("../resources/images/case_by_code.png")},
         {id: "emailTransfer", title: "Email Transfer", icon: require("../resources/images/email_transfer.png")},
         {id: "transferToBkash", title: "Transfer To Bkash", icon: require("../resources/images/transfer_to_bkash.png")},
-        {id: "beneficiaryManagement",title: "Beneficiary Management",icon: require("../resources/images/beneficiary_management.png")},
-        {id: "favoriteTransfer",title: "Favorite Transfers",icon: require("../resources/images/ic_facourite_transfer.png")},
+        {
+            id: "beneficiaryManagement",
+            title: "Beneficiary Management",
+            icon: require("../resources/images/beneficiary_management.png")
+        },
+        {
+            id: "favoriteTransfer",
+            title: "Favorite Transfers",
+            icon: require("../resources/images/ic_facourite_transfer.png")
+        },
         {id: "transferHistory", title: "Transfer History", icon: require("../resources/images/ic_transfer_istory.png")}
     ],
     payments_props: [
@@ -531,6 +538,7 @@ export default {
 
     /*beneficiary management message*/
     add_beneficiary: "Add Beneficiary",
+    view_beneficiary: "Beneficiary",
     delete_beneficiary: "View/Delete Beneficiary",
     beneficiary_management: "Beneficiary Managements",
 
@@ -538,12 +546,12 @@ export default {
     select_type_transfer: "Select Transfer Type",
     select_beneficiary_type: "Select Beneficiary Type",
     transferTypeArr: [
-        {key: "0", label: "Transfer Within City Bank", value: 0},
-        {key: "1", label: "Transfer Other Bank", value: 1},
-        {key: "2", label: "Email Transfer", value: 2},
-        {key: "3", label: "MFS Fund Transfer", value: 3},
-       /* {key: "4", label: "Other Credit Card", value: 4},
-        {key: "5", label: "City Bank Credit Card", value: 5},*/
+        {key: "0", label: "bKash Fund Transfer", value: 0},
+        {key: "1", label: "City Bank Account", value: 1},
+        {key: "2", label: "Other Bank Account", value: 2},
+        {key: "3", label: "Transfer By Email", value: 3},
+        /* {key: "4", label: "Other Credit Card", value: 4},
+         {key: "5", label: "City Bank Credit Card", value: 5},*/
     ],
 
     TypeOfTransferArr: [
@@ -554,7 +562,9 @@ export default {
     ],
     notAvailable: "Not available",
     add_beneficiary_wcb: "Add Beneficiary-Within City Bank",
-    add_beneficiary_mfs: "Add Beneficiary-MFS",
+    manage_beneficiary_wcb: "Beneficiary-Within City Bank",
+    add_beneficiary_mfs: "Add Beneficiary-bKash",
+    manage_beneficiary_mfs: "Beneficiary-bKash",
     nick_name: "Nick Name",
     account_holder_name: "Account Holder Name",
     currency: "Currency",
@@ -579,7 +589,9 @@ export default {
     require_bname: "Beneficiary Name is required",
     require_email: "Email Address is required",
     add_beneficiary_wob: "Add Beneficiary-Other Bank",
+    manage_beneficiary_wob: "Beneficiary-Other Bank",
     add_beneficiary_email: "Add Beneficiary-Email",
+    manage_beneficiary_email: "Beneficiary-Email",
     type_bank: "Bank Name",
     select_bank_type: "Select Bank Name",
     type_district: "District Name",
@@ -721,7 +733,8 @@ export default {
     /* Favorite Transfer screen message*/
     Donation: "Donation",
     transfer_bkash: "Transfer to bkash",
-    favoriteTitle: "Swipe Right to left to Delete Favirote item",
+    beneficiaryTitle: "Swipe right to left to Delete beneficiary",
+    favoriteTitle: "Swipe Right to left to Delete Favourite item",
     favorite_transferTitle: "Favorite Transfer",
 
     /* Email Transfer screen message*/
@@ -800,9 +813,9 @@ export default {
 
     /*notes*/
 
-    notePin4Digits:"Your Transaction PIN should be 4 digits.",
-    noteLock3Attempt:"Consecutive 3 wrong attempts will lock.",
-    noteCallTPin:"Your Transaction PIN call 16243 to unlock.",
+    notePin4Digits: "Your Transaction PIN should be 4 digits.",
+    noteLock3Attempt: "Consecutive 3 wrong attempts will lock.",
+    noteCallTPin: "Your Transaction PIN call 16243 to unlock.",
     fund_transfer_note1: "1.There is no found transfer restriction between your",
     fund_transfer_note2: "own account for account transaction.",
     fund_transfer_note3: "2.Credit card transfer limit:minimum transferable.",
@@ -827,9 +840,9 @@ export default {
 
     beneficiary_otherBank_note1: "1. Beneficiary banks/branches should be capable to process",
     beneficiary_otherBank_note2: "RTGS/NPSB/BEFTN transaction.",
-    beneficiary_otherBank_note3: "2. BEFTN(Ragular Transfer): Transaction Process before",
+    beneficiary_otherBank_note3: "2. BEFTN(Regular Transfer): Transaction Process before",
     beneficiary_otherBank_note4: "10:30 PM,any amount up to 5 lacs. Transfer Processed",
-    beneficiary_otherBank_note5: "through BEFTN whould be credited by next working day.the amount",
+    beneficiary_otherBank_note5: "through BEFTN would be credited by next working day.the amount",
     beneficiary_otherBank_note6: "3. RTGS (instant transfer): Transactions processed before",
     beneficiary_otherBank_note7: "10:30 PM,any amount up to 5 lacs ",
     beneficiary_otherBank_note8: "must be between 1 lac to 5 lacs",
@@ -851,9 +864,9 @@ export default {
     transferTo_bkash_note7: "BDT 500 and up to 50% of total available BDT limit.",
     transferTo_bkash_note8: "4. Processing fee +VAT will be applicable",
     transferTo_bkash_note9: "5. consecutive transfer in the same bkash account require",
-    transferTo_bkash_note10: "minimum 10 minitues interval.",
+    transferTo_bkash_note10: "minimum 10 minutes interval.",
 
-    cashBy_code_notes1: "1. Mininmum Transfer Amount: Tk.500 per transaction..",
+    cashBy_code_notes1: "1. Minimum Transfer Amount: Tk.500 per transaction..",
     cashBy_code_notes2: "2. Maximum Transfer Amount: Tk. 100,000 per day.",
     cashBy_code_notes3: "3. Transfer amount should be 500 or multiple of 500 up to 20,000",
 
@@ -869,7 +882,7 @@ export default {
     mobile_recharge_note4: "Tk.10000/- and for prepaid Tk. 1000/-.",
     mobile_recharge_note5: "3. only prepaid recharge is acceptable in Teletalk numbers.",
     mobile_recharge_note6: "4. Consecutive recharge in the same number require.",
-    mobile_recharge_note7: "minimum 15 minites interval.",
+    mobile_recharge_note7: "minimum 15 minutes interval.",
     mobile_recharge_note8: "if your recharge amount is equivalent to any trigger/bundle",
     mobile_recharge_note9: "pack amount, a data/minute/bundle pack will be activated",
 
@@ -1166,11 +1179,9 @@ export default {
     transfer_wcb: "Transfer Within City Bank",
     transfer_ob: "Transfer Other Bank",
     view_delete_beneficiary: "View Delete beneficiary",
-    my_phone: "My Phone",
-    donation: "Donation",
-    accountTxt:"Account",
-    cardText:"Card",
-    selectActNo:"Please Select Account Number",
+    accountTxt: "Account",
+    cardText: "Card",
+    selectActNo: "Please Select Account Number",
     deleteAlert: "Are you sure you want to delete added beneficiary?",
     noBeneficiaryAdded: "No Beneficiary Added",
     delete: "Delete",
@@ -1178,14 +1189,14 @@ export default {
     biometricError: "Please validate using finger to login",
 
     /*error message*/
-    error_debit_card:"Please select Debit Card",
-    onlybKashTxt:"Only bkash customer account can be added",
+    error_debit_card: "Please select Debit Card",
+    onlybKashTxt: "Only bkash customer account can be added",
 
-    selMfs:"Select MFS",
-    mfsTxt:"MFS",
-    mfsList:[{label:"bKash Account",value:0}],
+    selMfs: "Select MFS",
+    mfsTxt: "MFS",
+    mfsList: [{label: "bKash Account", value: 0}],
 
-    update_beneficiary_alert:"Please update this beneficiary information",
-    settings:"Settings"
+    update_beneficiary_alert: "Please update this beneficiary information",
+    settings: "Settings"
 
 }

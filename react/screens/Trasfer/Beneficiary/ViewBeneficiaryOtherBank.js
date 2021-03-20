@@ -50,6 +50,12 @@ class ViewBeneficiaryOtherBank extends Component {
         this.props.navigation.goBack();
     }
 
+    resetScreen = (flag) => {
+        if (flag) {
+            this.props.route.params.resetScreen(true);
+            this.props.navigation.goBack();
+        }
+    }
 
     beneficiaryAdd(language, navigation) {
         const {accountNo, nickname, mobile_number, emailTxt, selectTypeVal, account_holder_name} = this.state;
@@ -61,7 +67,8 @@ class ViewBeneficiaryOtherBank extends Component {
             ACCOUNTNAME: account_holder_name
         }
 
-        AddBeneficiary(accountDetails, "O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props).then(response => {
+        AddBeneficiary(accountDetails, "O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props,
+            selectTypeVal === 0 ?"A":"C").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -69,7 +76,8 @@ class ViewBeneficiaryOtherBank extends Component {
                 this.props.navigation.navigate("SecurityVerification", {
                     REQUEST_CD: response.REQUEST_CD,
                     transType: "O",
-                    actNo: this.state.accountNo
+                    actNo: this.state.accountNo,
+                    resetScreen: this.resetScreen
                 }));
         }).catch(error => {
             this.setState({isProgress: false});

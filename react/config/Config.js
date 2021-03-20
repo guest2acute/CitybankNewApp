@@ -6,7 +6,6 @@ import {Dimensions, Platform} from "react-native";
 
 export default class Config {
 
-
     /**
      * API Base url
      * @type {string}

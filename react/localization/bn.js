@@ -536,13 +536,14 @@ export default {
     type_transfer: "স্থানান্তর প্রকারের *",
     select_type_transfer: "স্থানান্তর প্রকার নির্বাচন করুন",
     select_beneficiary_type: "সুবিধাভোগী প্রকার নির্বাচন করুন",
+
     transferTypeArr: [
-        {key: "0", label: "সিটি ব্যাংকের মধ্যে স্থানান্তর", value: 0},
-        {key: "1", label: "অন্য ব্যাংক স্থানান্তর করুন", value: 1},
-        {key: "2", label: "ইমেল স্থানান্তর", value: 2},
-        {key: "3", label: "এমএফএস তহবিল স্থানান্তর", value: 3},
-        /*{key: "4", label: "অন্যান্য ক্রেডিট কার্ড", value: 4},
-        {key: "5", label: "সিটি ব্যাংক ক্রেডিট কার্ড", value: 5},*/
+        {key: "0", label: "বিকাশ তহবিল স্থানান্তর", value: 0},
+        {key: "1", label: "সিটি ব্যাংক অ্যাকাউন্ট", value: 1},
+        {key: "2", label: "অন্যান্য ব্যাংক অ্যাকাউন্ট", value: 2},
+        {key: "3", label: "ইমেল দ্বারা স্থানান্তর", value: 3},
+        /* {key: "4", label: "Other Credit Card", value: 4},
+         {key: "5", label: "City Bank Credit Card", value: 5},*/
     ],
 
     TypeOfTransferArr: [
@@ -553,7 +554,9 @@ export default {
     ],
     notAvailable: "পাওয়া যায় না",
     add_beneficiary_wcb: "সুবিধাভোগী-সিটি ব্যাংকের মধ্যে যুক্ত করুন",
-    add_beneficiary_mfs: "সুবিধাভোগী-এমএফএস যুক্ত করুন",
+    manage_beneficiary_wcb: "সুবিধাভোগী-সিটি ব্যাংকের মধ্যে",
+    add_beneficiary_mfs: "সুবিধাভোগী-বিকাশ যুক্ত করুন",
+    manage_beneficiary_mfs: "সুবিধাভোগী-বিকাশ",
     nick_name: "নিক নাম",
     account_holder_name: "হিসাব দাতার নাম",
     currency: "মুদ্রা",
@@ -578,7 +581,9 @@ export default {
     require_bname: "উপকারকারীর নাম প্রয়োজন",
     require_email: "ইমেল ঠিকানা প্রয়োজন",
     add_beneficiary_wob: "সুবিধাভোগী-অন্যান্য ব্যাংক যুক্ত করুন",
+    manage_beneficiary_wob: "সুবিধাভোগী-অন্যান্য ব্যাংক",
     add_beneficiary_email: "সুবিধাভোগী-ইমেল যুক্ত করুন",
+    manage_beneficiary_email: "সুবিধাভোগী-ইমেল",
     type_bank: "ব্যাংকের নাম",
     select_bank_type: "ব্যাঙ্কের নাম নির্বাচন করুন",
     type_district: "জেলার নাম",
@@ -620,6 +625,7 @@ export default {
     b_name: "এখানে উপকারকারীর নাম প্রবেশ করান",
     b_email: "সুবিধাভোগী ইমেল প্রবেশ করান",
     add_beneficiary: "সুবিধাভোগী যোগ করুন",
+    view_beneficiary: "মৃত ব্যক্তির সম্পত্তির উত্তরাধিকারী",
 
     /*Transfer to bkash screen*/
     transfer_bkash: "বিকাশে স্থানান্তর করুন",
@@ -730,7 +736,7 @@ export default {
     /* Favorite Transfer screen message*/
     Donation: "অনুদান",
     transfer_bkash: "বিকাশে স্থানান্তর করুন",
-    favoriteTitle: "ফ্যাভিরোট আইটেম মোছার জন্য ডান থেকে বাম সোয়াইপ করুন",
+    favoriteTitle: "প্রিয় আইটেম মুছতে ডান থেকে বাম সোয়াইপ করুন",
     favorite_transferTitle: "প্রিয় স্থানান্তর",
 
     /* Email Transfer screen message*/
@@ -835,9 +841,9 @@ export default {
 
     beneficiary_otherBank_note1: "1. উপকারী ব্যাংক / শাখাগুলি প্রক্রিয়া করতে সক্ষম হতে হবে capable",
     beneficiary_otherBank_note2: "আরটিজিএস / এনপিএসবি / বেফটিএন লেনদেন",
-    beneficiary_otherBank_note3: "২. বেফটিএন (রাগুলার স্থানান্তর): আগে লেনদেন প্রক্রিয়া",
+    beneficiary_otherBank_note3: "২. বেফটিএন (নিয়মিত স্থানান্তর): আগে লেনদেন প্রক্রিয়া",
     beneficiary_otherBank_note4: "10:30 pm, 5 লক্ষ পর্যন্ত যেকোন পরিমাণ। স্থানান্তর প্রক্রিয়াজাত",
-    beneficiary_otherBank_note5: "BEFTN এর মাধ্যমে পরবর্তী কার্যদিবসের মাধ্যমে জমা দেওয়া উচিত he পরিমাণ",
+    beneficiary_otherBank_note5: "বিএফটিএন এর মাধ্যমে পরবর্তী কার্য দিবস হিসাবে জমা হবে amount",
     beneficiary_otherBank_note6: "3. আরটিজিএস (তাত্ক্ষণিক স্থানান্তর): লেনদেনগুলি আগে প্রক্রিয়াজাত হয়",
     beneficiary_otherBank_note7: "10:30 pm, 5 লক্ষ পর্যন্ত যেকোন পরিমাণ ",
     beneficiary_otherBank_note8: "1 লক্ষ থেকে 5 লক্ষের মধ্যে হতে হবে",
@@ -861,7 +867,7 @@ export default {
     transferTo_bkash_note9: "৫. একই বিকাশ অ্যাকাউন্টে একটানা ট্রান্সফার করতে হয়",
     transferTo_bkash_note10: "সর্বনিম্ন 10 মিনিটের ব্যবধান।",
 
-    cashBy_code_notes1: "সর্বনিম্ন স্থানান্তর পরিমাণ: প্রতি লেনদেনে 500",
+    cashBy_code_notes1: "1. সর্বনিম্ন স্থানান্তর পরিমাণ: প্রতি লেনদেনের জন্য 500 টাকা।",
     cashBy_code_notes2: "২. সর্বাধিক স্থানান্তর পরিমাণ: টাকা প্রতিদিন 100,000",
     cashBy_code_notes3: "৩. স্থানান্তর পরিমাণ 500 বা 20,000 অবধি 500 এর একাধিক হওয়া উচিত",
 
@@ -876,7 +882,7 @@ export default {
     mobile_recharge_note4: "10000 / - এবং প্রিপেইডের জন্য Rs। 1000 / -।",
     mobile_recharge_note5: "৩. শুধুমাত্র টেলিটক সংখ্যায় প্রিপেইড রিচার্জ গ্রহণযোগ্য।",
     mobile_recharge_note6: "৪. একই সংখ্যার ধারাবাহিকভাবে রিচার্জের প্রয়োজন।",
-    mobile_recharge_note7: "সর্বনিম্ন 15 মিনিট অন্তর।",
+    mobile_recharge_note7: "সর্বনিম্ন 15 মিনিটের ব্যবধান।",
     mobile_recharge_note8: "আপনার রিচার্জের পরিমাণ যদি কোনও ট্রিগার / বান্ডেলের সমতুল্য হয়",
     mobile_recharge_note9: "প্যাক পরিমাণ, একটি ডেটা / মিনিট / বান্ডেল প্যাক সক্রিয় করা হবে",
 
@@ -1177,8 +1183,6 @@ export default {
     transfer_wcb: "সিটি ব্যাংকের মধ্যে স্থানান্তর",
     transfer_ob: "অন্য ব্যাংক স্থানান্তর করুন",
     view_delete_beneficiary: "সুবিধাভোগী মুছুন দেখুন",
-    my_phone: "আমার ফোন",
-    donation: "অনুদান",
     deleteAlert: "আপনি কি নিশ্চিতরূপে যোগ হওয়া সুবিধাভোগী মুছতে চান?",
     noBeneficiaryAdded: "কোনও সুবিধাভোগী যোগ করা হয়নি",
     delete: "মুছে ফেলা",

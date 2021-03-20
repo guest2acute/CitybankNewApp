@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, BackHandler, Platform, StatusBar
+    TextInput, FlatList, BackHandler, Platform, StatusBar, Alert
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
@@ -19,8 +19,10 @@ import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
 import ApiRequest from "../../config/ApiRequest";
 import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
+import Config from "../../config/Config";
 
 let transType = "", actNo = "", REQUEST_CD = "";
+let resetScreen;
 
 class SecurityVerification extends Component {
     constructor(props) {
@@ -130,17 +132,33 @@ class SecurityVerification extends Component {
 
 
     async processVerification() {
+        this.setState({isProgress: true});
         const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
         await ADDBENFVERIFY(
             this.props.userDetails, REQUEST_CD, this.props, transType, authFlag === "CP" ? selectTypeVal : actNo, authFlag, cardPin, transactionPin)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
-
+                this.alertConfirm(response.MESSAGE);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
             });
+    }
+
+    alertConfirm(msg) {
+        Alert.alert(
+            Config.appName,
+            msg,
+            [
+                {
+                    text: this.props.language.ok, onPress: () => {
+                        this.props.route.params.resetScreen(true);
+                        this.props.navigation.goBack();
+                    }
+                },
+            ]
+        );
     }
 
     cPinView(language) {

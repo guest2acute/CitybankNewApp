@@ -28,7 +28,6 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 /**
  * splash page
  */
-let imeiNo = "";
 
 class ViewDeleteBeneficiary extends Component {
     constructor(props) {
@@ -36,38 +35,49 @@ class ViewDeleteBeneficiary extends Component {
         let language = props.language;
         console.log("language", language.bkash_account)
         this.state = {
+            title: props.route.params.title,
             data: [
                 {
                     id: 0,
-                    name: language.my_phone,
-                    beneficiaryType: language.transfer_wcb,
-                    nickName: "test",
+                    nickName: "Shoeb",
                     account_number: "2702240346001",
-                    account_holder_name: "test",
-                    currency: "10.00",
-                    mobile_number: "8849380088",
-                    email: "test@email.com"
+                    account_holder_name: "Shoeb Khan",
+                    currency: "BDT",
+                    mobile_number: "8849380080",
+                    email: "shoeb.khan@email.com"
                 },
                 {
                     id: 1,
-                    name: language.donation,
-                    beneficiaryType: language.transfer_ob,
-                    nickName: "test",
+                    nickName: "Irfan",
                     account_number: "2702240346001",
-                    account_holder_name: "test",
-                    currency: "10.00",
-                    mobile_number: "8849380088",
-                    email: "test@email.com"
+                    account_holder_name: "Irfan pathan",
+                    currency: "BDT",
+                    mobile_number: "8849380084",
+                    email: "irfan.pathan@email.com"
+                },
+                {
+                    id: 2,
+                    nickName: "Rahim",
+                    account_number: "2702240346001",
+                    account_holder_name: "Rahim khan",
+                    currency: "BDT",
+                    mobile_number: "8849380082",
+                    email: "rahim@email.com"
+                },
+                {
+                    id: 3,
+                    nickName: "Sarfraj",
+                    account_number: "2702240346001",
+                    account_holder_name: "Sarfraj Ahmed",
+                    currency: "BDT",
+                    mobile_number: "8849380085",
+                    email: "rahim@email.com"
                 }
-            ],
 
-            /* updateTitle: props.route.params.title*/
+            ],
         }
     }
 
-    /**
-     * redirect to landing screen
-     */
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -78,24 +88,23 @@ class ViewDeleteBeneficiary extends Component {
             });
         }
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.more
+            tabBarLabel: this.props.language.transfer
         });
     }
 
     _renderItem = (data, rowMap) => (
         <TouchableOpacity
             onPress={() => console.log('You touched me')}
-            style={styles.rowFront}
-        >
+            style={styles.rowFront}>
             <View style={{flexDirection: "row", justifyContent: "space-between", marginStart: 10, marginEnd: 10}}>
-                <Text style={CommonStyle.textStyle}>{data.item.name}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.account_number}</Text>
+                <Text style={CommonStyle.themeMidTextStyle}>{data.item.nickName}</Text>
+                <Text style={CommonStyle.themeMidTextStyle}>{data.item.currency}</Text>
             </View>
             <View style={{flexDirection: "column", justifyContent: "space-around", marginStart: 10, marginEnd: 10}}>
-                <Text style={CommonStyle.textStyle}>{data.item.account_holder_name}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.currency}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.mobile_number}</Text>
+                <Text style={CommonStyle.midTextStyle}>{data.item.account_holder_name}</Text>
+                <Text style={CommonStyle.textStyle}>{data.item.account_number}</Text>
                 <Text style={CommonStyle.textStyle}>{data.item.email}</Text>
+                <Text style={CommonStyle.textStyle}>{data.item.mobile_number}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -104,18 +113,9 @@ class ViewDeleteBeneficiary extends Component {
         console.log('This row opened', rowKey);
     }
 
-    bottomLine() {
-        return (<View style={{
-            height: 1,
-            marginLeft: 10,
-            marginRight: 10,
-            backgroundColor: "#D3D1D2"
-        }}/>)
-    }
-
     deleteRow = (data, rowMap) => {
         Alert.alert(
-            "",
+            Config.appName,
             this.props.language.deleteAlert,
             [
                 {text: this.props.language.no_txt},
@@ -126,13 +126,14 @@ class ViewDeleteBeneficiary extends Component {
 
     deleteValue(data) {
         const filterArray = this.state.data.filter(e => e.id !== data.item.id)
-        this.setState({data: filterArray})
+        this.setState({data: filterArray});
     }
+
 
     render() {
         let language = this.props.language;
         return (
-            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+            <View style={{flex: 1, backgroundColor: "#F5F5F5"}}>
                 <SafeAreaView/>
                 <View style={[CommonStyle.toolbar, {flexDirection: "row"}]}>
                     <TouchableOpacity
@@ -143,49 +144,49 @@ class ViewDeleteBeneficiary extends Component {
                                    require("../../../resources/images/ic_back_android.png") :
                                    require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.view_delete_beneficiary}</Text>
-                    <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
-                                      style={{
-                                          width: Utility.setWidth(35),
-                                          height: Utility.setHeight(35),
-                                          position: "absolute",
-                                          right: Utility.setWidth(10),
-                                      }}>
+                    <Text style={[CommonStyle.title, {flex: 1}]}>{this.state.title}</Text>
+                    <TouchableOpacity onPress={() => this.redirect()}
+                                      style={{}}>
                         <Image resizeMode={"contain"} style={{
-                            width: Utility.setWidth(30),
-                            height: Utility.setHeight(30),
+                            width: Utility.setWidth(25),
+                            height: Utility.setHeight(25),
+                            tintColor: themeStyle.WHITE
                         }}
-                               source={require("../../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/add_icon.png")}/>
                     </TouchableOpacity>
                 </View>
                 <View style={{alignItems: "center", paddingTop: 10, paddingBottom: 10}}>
-                    <Text style={styles.title}>{language.favoriteTitle}</Text>
+                    <Text style={styles.title}>{language.beneficiaryTitle}</Text>
                 </View>
                 {this.state.data.length > 0 ?
                     <SwipeListView
                         data={this.state.data}
-                        renderItem={this._renderItem} 
-                        keyExtractor={(item,index) => index+""}
+                        renderItem={this._renderItem}
+                        keyExtractor={(item, index) => index + ""}
                         renderHiddenItem={(data, rowMap) => (
                             <View style={styles.rowBack}>
                                 <TouchableOpacity
                                     style={[styles.backRightBtn, styles.backRightBtnRight]}
-                                    onPress={() => this.deleteRow(data, rowMap)}
-                                >
-                                    <Text style={styles.backTextWhite}>{language.delete}</Text>
+                                    onPress={() => this.deleteRow(data, rowMap)}>
+                                    <Image style={{height: Utility.setHeight(30), width: Utility.setWidth(30)}}
+                                           source={require("../../../resources/images/trash.png")}
+                                           resizeMode={"contain"}/>
                                 </TouchableOpacity>
                             </View>
                         )}
                         rightOpenValue={-75}
                         disableRightSwipe={true}
-                    />
-                :
-                <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-                    <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
-                </View>
+                    /> :
+                    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                        <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
+                    </View>
                 }
             </View>
         );
+    }
+
+    redirect() {
+        this.props.navigation.navigate(this.props.route.params.screenName, {title: this.props.route.params.addTitle});
     }
 }
 
@@ -210,18 +211,23 @@ const styles = {
     },
     rowFront: {
         // alignItems: 'center',
-        backgroundColor: '#CCC',
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        // justifyContent: 'center',
+        backgroundColor: themeStyle.WHITE,
+        paddingLeft: 5,
+        paddingRight: 5,
+        paddingBottom: 10,
+        paddingTop: 10,
+        borderBottomColor: "#F5F5F5",
+        borderBottomWidth: 5,
         flex: 1
     },
     rowBack: {
+        backgroundColor: "#FF0000",
         alignItems: 'center',
-        // backgroundColor: '#DDD',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        borderBottomColor: "#F5F5F5",
+        borderBottomWidth: 5,
         paddingLeft: 15,
     },
     backRightBtn: {
@@ -230,11 +236,10 @@ const styles = {
         justifyContent: 'center',
         position: 'absolute',
         top: 0,
-        width: 75,
+        width: Utility.setWidth(75),
     },
     backRightBtnLeft: {
-        backgroundColor: 'blue',
-        right: 75,
+        right: Utility.setWidth(75),
     },
     backRightBtnRight: {
         backgroundColor: 'red',

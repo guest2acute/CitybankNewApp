@@ -70,7 +70,7 @@ class BeneficiaryTransferMFS extends Component {
     beneficiaryAdd() {
         const {accountDetails, nickname} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, "", "", this.props).then(response => {
+        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, "", "", this.props,"A").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
