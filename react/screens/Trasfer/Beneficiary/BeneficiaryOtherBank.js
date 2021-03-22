@@ -157,6 +157,34 @@ class BeneficiaryOtherBank extends Component {
         this.getActDetails(language);
     }
 
+    resetScreen = (flag) => {
+        if (flag) {
+            this.setState({
+                nickname: "",
+                account_card_name: "",
+                accountNo: "",
+                mobile_number: "",
+                emailTxt: "",
+                bankTypeArr: [],
+                districtTypeArr: [],
+                branchTypeArr: [],
+                selectType: this.props.language.select_type_account,
+                selectBankType: this.props.language.select_bank_type,
+                selectDistrictType: this.props.language.select_district_type,
+                selectBranchType: this.props.language.select_branch_type,
+                selectTypeVal: -1,
+                selectBankVal: null,
+                selectBranchVal: null,
+                selectDistrictVal: null,
+                modelSelection: "",
+                modalVisible: false,
+                modalTitle: "",
+                modalData: [],
+                updateTitle: this.props.route.params.title
+            });
+        }
+    }
+
     getActDetails(language) {
         let object = {
             selectType: this.state.selectType,
@@ -172,7 +200,9 @@ class BeneficiaryOtherBank extends Component {
         }
 
         console.log("object", object);
-        this.props.navigation.navigate("ViewBeneficiaryOtherBank", {details: object, title: props.route.params.title});
+        this.props.navigation.navigate("ViewBeneficiaryOtherBank",
+            {details: object, title: this.props.route.params.title, resetScreen: this.resetScreen},
+        );
     }
 
     accountNoOption(language) {
@@ -205,10 +235,6 @@ class BeneficiaryOtherBank extends Component {
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.actNoRef.focus();
-                        }}
                     />
                 </View>
                 {this.state.error_nickname !== "" ?
@@ -430,7 +456,7 @@ class BeneficiaryOtherBank extends Component {
                             onSubmitEditing={(event) => {
                                 this.emailRef.focus();
                             }}
-                            maxLength={14}/>
+                            maxLength={11}/>
                     </View>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -607,6 +633,7 @@ class BeneficiaryOtherBank extends Component {
             </View>
         )
     }
+
 
     async componentDidMount() {
         if (Platform.OS === "android") {

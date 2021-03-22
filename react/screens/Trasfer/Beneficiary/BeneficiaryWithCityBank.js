@@ -23,6 +23,7 @@ import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiar
 class BeneficiaryWithCityBank extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             isProgress: false,
             nickname: "",
@@ -37,6 +38,7 @@ class BeneficiaryWithCityBank extends Component {
             error_accountNo: "",
             stageVal: 0,
             accountDetails: null,
+            title:props.route.params.title
         }
     }
 
@@ -70,17 +72,35 @@ class BeneficiaryWithCityBank extends Component {
         }
     }
 
+    resetScreen = (flag) => {
+        console.log("flag", flag);
+        if (flag) {
+            this.setState({
+                nickname: "",
+                account_holder_name: "",
+                currency: "",
+                accountNo: "",
+                type_act: "",
+                mobile_number: "",
+                emailTxt: "",
+                stageVal: 0,
+                accountDetails: null,
+            })
+        }
+    }
+
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props).then(response => {
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props,"A").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
             }, () => this.props.navigation.navigate("SecurityVerification", {
                 REQUEST_CD: response.REQUEST_CD,
                 transType: "I",
-                actNo: this.state.accountNo
+                actNo: this.state.accountNo,
+                resetScreen: this.resetScreen
             }));
         }).catch(error => {
             this.setState({isProgress: false});
@@ -379,7 +399,7 @@ class BeneficiaryWithCityBank extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.add_beneficiary_wcb}</Text>
+                    <Text style={CommonStyle.title}>{this.state.title}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
@@ -430,7 +450,7 @@ class BeneficiaryWithCityBank extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stageVal === 0 ? language.next : language.confirm}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -474,7 +494,7 @@ class BeneficiaryWithCityBank extends Component {
 
     backEvent() {
         const {stageVal} = this.state;
-        console.log("log",stageVal);
+        console.log("log", stageVal);
         if (stageVal === 0)
             this.props.navigation.goBack();
         else

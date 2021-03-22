@@ -6,13 +6,12 @@ import {Dimensions, Platform} from "react-native";
 
 export default class Config {
 
-
     /**
      * API Base url
      * @type {string}
      */
 
-    static base_url = "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0/easynetpro-serv/request";
+    static base_url = "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0_dev/easynetpro-serv/request";
 
     /**
      * API Action

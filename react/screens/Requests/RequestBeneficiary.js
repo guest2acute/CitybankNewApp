@@ -34,8 +34,8 @@ export const GETACCTBALDETAIL = (accountNo, props) => {
 }
 
 
-export const AddBeneficiary = (accountRes,beneType, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID,ifscCode, props) => {
-    console.log("accountRes",accountRes);
+export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID, ifscCode, props, reqFlag) => {
+    console.log("accountRes", accountRes);
     return new Promise(async (resolve, reject) => {
         let request = {
             ACTION: "ADDBENF",
@@ -45,6 +45,7 @@ export const AddBeneficiary = (accountRes,beneType, userDetails, NICK_NAME, MOBI
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             ...Config.commonReq,
             BENE_LIST: [{
+                REQ_FLAG: reqFlag,
                 LIMIT_AMT: "0",
                 TO_ACCT_NO: accountRes.ACCOUNT,
                 NICK_NAME: NICK_NAME,
@@ -75,12 +76,12 @@ export const AddBeneficiary = (accountRes,beneType, userDetails, NICK_NAME, MOBI
     });
 }
 
-export const GETBANKDETAILS = async (userDetails, props, requestType,isCard) => {
+export const GETBANKDETAILS = async (userDetails, props, requestType, isCard) => {
     let request = {
         ACTION: "GETBENFBANK",
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         REQ_TYPE: requestType,
-        MOD_TRAN: isCard?"NPSB":"ALL",
+        MOD_TRAN: isCard ? "NPSB" : "ALL",
         USER_ID: userDetails.USER_ID,
         ...Config.commonReq
     }
@@ -101,11 +102,11 @@ export const GETBANKDETAILS = async (userDetails, props, requestType,isCard) => 
                 let itemArr = [];
                 result.RESPONSE.map((item) => {
                     if (requestType === "DIST")
-                        itemArr.push({label: item.DIST_NM, value: item.DIST_CD,details:item});
+                        itemArr.push({label: item.DIST_NM, value: item.DIST_CD, details: item});
                     else if (requestType === "BRANCH")
-                        itemArr.push({label: item.BRANCH_NM, value: item.BRANCH_CD,details:item});
+                        itemArr.push({label: item.BRANCH_NM, value: item.BRANCH_CD, details: item});
                     else
-                        itemArr.push({label: item.BANK_NM, value: item.BANK_CD,details:item});
+                        itemArr.push({label: item.BANK_NM, value: item.BANK_CD, details: item});
                 });
                 return resolve(itemArr);
             } else {
@@ -151,6 +152,99 @@ export const ADDBENFVERIFY = async (userDetails, REQUEST_CD, props, transType, a
     return new Promise(async (resolve, reject) => {
         await ApiRequest.apiRequest.callApi(request, {"CARD_VERIFY": authFlag === "CP" ? "P" : "N"}).then(result => {
             console.log("responseVal", result)
+            if (result.STATUS === "0" || result.STATUS === "999") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
+
+export const VERIFYBKASHAC = async (userDetails, mobileNumber, props) => {
+    let request = {
+        MOBILE_NUMBER: mobileNumber,
+        ACTION: "VERIFYBKASHAC",
+        USER_ID: userDetails.USER_ID,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        ...Config.commonReq
+    }
+
+    console.log("VERIFYBKASHAC", request);
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result);
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
+
+export const GETBENF = async (userDetails, benfType, props) => {
+    let request = {
+        BENF_TYPE: benfType,
+        ACTION: "GETBENF",
+        USER_ID: userDetails.USER_ID,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        ...Config.commonReq
+    }
+
+    console.log("GETBENF", request);
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result);
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result.RESPONSE);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
+
+export const DELETEBENF = async (userDetails, transType, item, props) => {
+    let request = {
+        TRN_TYPE: transType,
+        ACTION: "DELETEBENF",
+        USER_ID: userDetails.USER_ID,
+        TO_ACCT_NO: item.TO_ACCT_NO,
+        TO_IFSCCODE: item.TO_IFSCODE,
+        REF_NO: item.REF_NO,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        ...Config.commonReq
+    }
+
+    console.log("DELETEBENF", request);
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result);
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
                 return resolve(result);

@@ -43,10 +43,10 @@ class BeneficiaryManagement extends Component {
     moveScreen(item) {
         switch (item.id) {
             case "add":
-                this.props.navigation.navigate("Beneficiary");
+                this.props.navigation.navigate("Beneficiary",{type:"add"});
                 break;
             case "delete":
-                this.props.navigation.navigate("ViewDeleteBeneficiary");
+                this.props.navigation.navigate("Beneficiary",{type:"delete"});
                 break;
         }
     }

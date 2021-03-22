@@ -44,6 +44,10 @@ import FundTransfer from "./react/screens/Trasfer/FundTransfer";
 import OtherBankAccount from "./react/screens/Trasfer/OtherBankAccount";
 import Favorite from "./react/screens/Trasfer/Favorite";
 import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
+
+import EmailTransfer from "./react/screens/Trasfer/Beneficiary/EmailTransfer";
+import EmailTransferScreen from "./react/screens/Trasfer/Beneficiary/EmailTransferScreen";
+
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
 import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/Beneficiary/ViewBeneficiaryOtherBank";
@@ -64,8 +68,8 @@ import RequestMonitor from "./react/screens/More/RequestMonitor";
 import OtpLockUnlock from "./react/screens/More/OtpLockUnlock";
 import ViewDeleteBeneficiary from "./react/screens/Trasfer/Beneficiary/ViewDeleteBeneficiary";
 import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
-import EmailTransfer from "./react/screens/Trasfer/Beneficiary/EmailTransfer";
-import EmailTransferScreen from "./react/screens/Trasfer/Beneficiary/EmailTransferScreen";
+import BeneficiaryEmail from "./react/screens/Trasfer/Beneficiary/BeneficiaryEmail";
+
 
 
 const store = configureStore(window.__State__);
@@ -137,11 +141,15 @@ function TransferTab() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
-            <Stack.Screen name="BeneficiaryManagement" component={BeneficiaryManagement} options={{headerShown: false}}/>
             <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
-            <Stack.Screen name="BeneficiaryWithCityBank" component={BeneficiaryWithCityBank} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryEmail" component={BeneficiaryEmail} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryManagement" component={BeneficiaryManagement}
+                          options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryWithCityBank" component={BeneficiaryWithCityBank}
+                          options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryOtherBank" component={BeneficiaryOtherBank} options={{headerShown: false}}/>
-            <Stack.Screen name="BeneficiaryTransferMFS" component={BeneficiaryTransferMFS} options={{headerShown: false}}/>
+            <Stack.Screen name="BeneficiaryTransferMFS" component={BeneficiaryTransferMFS}
+                          options={{headerShown: false}}/>
             <Stack.Screen name="TransferWithBkash" component={TransferWithBkash} options={{headerShown: false}}/>
             <Stack.Screen name="TransferCategory" component={TransferCategory} options={{headerShown: false}}/>
             <Stack.Screen name="TransferHistory" component={TransferHistory} options={{headerShown: false}}/>
@@ -154,10 +162,12 @@ function TransferTab() {
             <Stack.Screen name="EmailTransfer" component={EmailTransfer} options={{headerShown: false}}/>
             <Stack.Screen name="EmailTransferScreen" component={EmailTransferScreen} options={{headerShown: false}}/>
             <Stack.Screen name="SelectBeneficiary" component={SelectBeneficiary} options={{headerShown: false}}/>
-            <Stack.Screen name="ViewBeneficiaryOtherBank" component={ViewBeneficiaryOtherBank} options={{headerShown: false}}/>
+            <Stack.Screen name="ViewBeneficiaryOtherBank" component={ViewBeneficiaryOtherBank}
+                          options={{headerShown: false}}/>
             <Stack.Screen name="SecurityVerification" component={SecurityVerification} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryOtherCard" component={BeneficiaryOtherCard} options={{headerShown: false}}/>
-            <Stack.Screen name="ViewDeleteBeneficiary" component={ViewDeleteBeneficiary} options={{headerShown: false}}/>
+            <Stack.Screen name="ViewDeleteBeneficiary" component={ViewDeleteBeneficiary}
+                          options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -191,13 +201,15 @@ function MoreTab() {
             <Stack.Screen name="More" component={More} options={{headerShown: false}}/>
             <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
             <Stack.Screen name="ChangeTransPin" component={ChangeTransPin} options={{headerShown: false}}/>
-            <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential} options={{headerShown: false}}/>
+            <Stack.Screen name="ChangeLoginCredential" component={ChangeLoginCredential}
+                          options={{headerShown: false}}/>
             <Stack.Screen name="ChangeContactDetails" component={ChangeContactDetails} options={{headerShown: false}}/>
             <Stack.Screen name="UploadSupportDoc" component={UploadSupportDoc} options={{headerShown: false}}/>
             <Stack.Screen name="CreditCardActivation" component={CreditCardActivation} options={{headerShown: false}}/>
             <Stack.Screen name="cardBlock" component={cardBlock} options={{headerShown: false}}/>
             <Stack.Screen name="CardPinReset" component={CardPinReset} options={{headerShown: false}}/>
-            <Stack.Screen name="TagCreditCardInCityTouch" component={TagCreditCardInCityTouch} options={{headerShown: false}}/>
+            <Stack.Screen name="TagCreditCardInCityTouch" component={TagCreditCardInCityTouch}
+                          options={{headerShown: false}}/>
             <Stack.Screen name="ChequeBookManagement" component={ChequeBookManagement} options={{headerShown: false}}/>
             <Stack.Screen name="FixedDeposit" component={FixedDeposit} options={{headerShown: false}}/>
             <Stack.Screen name="MonthlyDPS" component={MonthlyDPS} options={{headerShown: false}}/>
@@ -222,7 +234,8 @@ function Root() {
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationAccount" component={RegistrationAccount} options={{headerShown: false}}/>
             <Stack.Screen name="RegistrationCard" component={RegistrationCard} options={{headerShown: false}}/>
-            <Stack.Screen name="LoginConfigureProfile" component={LoginConfigureProfile} options={{headerShown: false}}/>
+            <Stack.Screen name="LoginConfigureProfile" component={LoginConfigureProfile}
+                          options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
             <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
         </Stack.Navigator>);

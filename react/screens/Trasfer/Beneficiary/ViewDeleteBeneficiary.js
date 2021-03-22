@@ -21,53 +21,42 @@ import Utility from "../../../utilize/Utility";
 import CommonStyle from "../../../resources/CommonStyle";
 import fontStyle from "../../../resources/FontStyle";
 import FontSize from "../../../resources/ManageFontSize";
-import StorageClass from "../../../utilize/StorageClass";
-
-import {SwipeListView} from 'react-native-swipe-list-view';
+import {AddBeneficiary, DELETEBENF, GETBENF} from "../../Requests/RequestBeneficiary";
+import {BusyIndicator} from "../../../resources/busy-indicator";
 
 /**
  * splash page
  */
-let imeiNo = "";
+
+let screenName, title, benfType;
 
 class ViewDeleteBeneficiary extends Component {
     constructor(props) {
         super(props);
-        let language = props.language;
-        console.log("language", language.bkash_account)
+        screenName = this.props.route.params.screenName;
+        title = this.props.route.params.addTitle;
+        benfType = this.props.route.params.benfType;
         this.state = {
-            data: [
-                {
-                    id: 0,
-                    name: language.my_phone,
-                    beneficiaryType: language.transfer_wcb,
-                    nickName: "test",
-                    account_number: "2702240346001",
-                    account_holder_name: "test",
-                    currency: "10.00",
-                    mobile_number: "8849380088",
-                    email: "test@email.com"
-                },
-                {
-                    id: 1,
-                    name: language.donation,
-                    beneficiaryType: language.transfer_ob,
-                    nickName: "test",
-                    account_number: "2702240346001",
-                    account_holder_name: "test",
-                    currency: "10.00",
-                    mobile_number: "8849380088",
-                    email: "test@email.com"
-                }
-            ],
-
-            /* updateTitle: props.route.params.title*/
+            isProgress: false,
+            title: props.route.params.title,
+            data: null,
         }
     }
 
-    /**
-     * redirect to landing screen
-     */
+    getBeneficiary() {
+        this.setState({isProgress: true});
+        GETBENF(this.props.userDetails, benfType, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+                data: response
+            });
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
+
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -78,61 +67,75 @@ class ViewDeleteBeneficiary extends Component {
             });
         }
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.more
+            tabBarLabel: this.props.language.transfer
         });
+
+        this.getBeneficiary();
     }
 
-    _renderItem = (data, rowMap) => (
-        <TouchableOpacity
-            onPress={() => console.log('You touched me')}
-            style={styles.rowFront}
-        >
+    _renderItem = ({item}) => (
+        <View style={styles.rowFront}>
             <View style={{flexDirection: "row", justifyContent: "space-between", marginStart: 10, marginEnd: 10}}>
-                <Text style={CommonStyle.textStyle}>{data.item.name}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.account_number}</Text>
+                <Text style={CommonStyle.themeMidTextStyle}>{item.NICK_NAME}</Text>
+                <Text style={CommonStyle.themeMidTextStyle}>{item.CURRENCY}</Text>
             </View>
             <View style={{flexDirection: "column", justifyContent: "space-around", marginStart: 10, marginEnd: 10}}>
-                <Text style={CommonStyle.textStyle}>{data.item.account_holder_name}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.currency}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.mobile_number}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.email}</Text>
+                {benfType !== "E" && item.TO_ACCT_NM !== "" ?
+                    <Text style={CommonStyle.midTextStyle}>{item.TO_ACCT_NM}</Text> : null}
+                {benfType !== "E" && item.TO_ACCT_NO !== "" ? <Text style={CommonStyle.textStyle}>{item.TO_ACCT_NO}</Text> : null}
+                {item.TO_EMAIL_ID !== "" ?
+                    <Text style={CommonStyle.textStyle}>{item.TO_EMAIL_ID}</Text> : null}
+                {item.TO_CONTACT_NO !== "" ?
+                    <Text style={CommonStyle.textStyle}>{item.TO_CONTACT_NO}</Text> : null}
             </View>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.deleteBeneficiary(item)} style={{
+                width: 25, position: "absolute",
+                right: Utility.setWidth(10),
+                top: Utility.setHeight(50),
+                height: 25
+            }}>
+                <Image style={{
+                    width: 20,
+                    height: 20,
+                    tintColor: themeStyle.THEME_COLOR,
+                }} resizeMode={"contain"} source={require("../../../resources/images/icon-close.png")}/>
+            </TouchableOpacity>
+        </View>
     )
 
-    onItemOpen = rowKey => {
-        console.log('This row opened', rowKey);
-    }
 
-    bottomLine() {
-        return (<View style={{
-            height: 1,
-            marginLeft: 10,
-            marginRight: 10,
-            backgroundColor: "#D3D1D2"
-        }}/>)
-    }
-
-    deleteRow = (data, rowMap) => {
+    deleteBeneficiary = (item) => {
+        console.log("data", item);
         Alert.alert(
-            "",
+            Config.appName,
             this.props.language.deleteAlert,
             [
                 {text: this.props.language.no_txt},
-                {text: this.props.language.yes_txt, onPress: () => this.deleteValue(data)},
+                {text: this.props.language.yes_txt, onPress: () => this.deleteValue(item)},
             ]
         );
     }
 
-    deleteValue(data) {
-        const filterArray = this.state.data.filter(e => e.id !== data.item.id)
-        this.setState({data: filterArray})
+    deleteValue(item) {
+        console.log("item",item);
+        this.setState({isProgress: true});
+        DELETEBENF(this.props.userDetails, benfType, item, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+                data: this.state.data.filter(e => e !== item)
+            });
+            Utility.alert(response.MESSAGE);
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     render() {
         let language = this.props.language;
         return (
-            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+            <View style={{flex: 1, backgroundColor: "#F5F5F5"}}>
                 <SafeAreaView/>
                 <View style={[CommonStyle.toolbar, {flexDirection: "row"}]}>
                     <TouchableOpacity
@@ -143,49 +146,35 @@ class ViewDeleteBeneficiary extends Component {
                                    require("../../../resources/images/ic_back_android.png") :
                                    require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.view_delete_beneficiary}</Text>
-                    <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
-                                      style={{
-                                          width: Utility.setWidth(35),
-                                          height: Utility.setHeight(35),
-                                          position: "absolute",
-                                          right: Utility.setWidth(10),
-                                      }}>
+                    <Text style={[CommonStyle.title, {flex: 1}]}>{this.state.title}</Text>
+                    <TouchableOpacity onPress={() => this.redirect()}
+                                      style={{}}>
                         <Image resizeMode={"contain"} style={{
-                            width: Utility.setWidth(30),
-                            height: Utility.setHeight(30),
+                            width: Utility.setWidth(25),
+                            height: Utility.setHeight(25),
+                            tintColor: themeStyle.WHITE
                         }}
-                               source={require("../../../resources/images/ic_logout.png")}/>
+                               source={require("../../../resources/images/add_icon.png")}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignItems: "center", paddingTop: 10, paddingBottom: 10}}>
-                    <Text style={styles.title}>{language.favoriteTitle}</Text>
-                </View>
-                {this.state.data.length > 0 ?
-                    <SwipeListView
+                {this.state.data !== null && this.state.data.length > 0 ?
+                    <FlatList
                         data={this.state.data}
-                        renderItem={this._renderItem} 
-                        keyExtractor={(item,index) => index+""}
-                        renderHiddenItem={(data, rowMap) => (
-                            <View style={styles.rowBack}>
-                                <TouchableOpacity
-                                    style={[styles.backRightBtn, styles.backRightBtnRight]}
-                                    onPress={() => this.deleteRow(data, rowMap)}
-                                >
-                                    <Text style={styles.backTextWhite}>{language.delete}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        rightOpenValue={-75}
-                        disableRightSwipe={true}
-                    />
-                :
-                <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-                    <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
-                </View>
+                        renderItem={this._renderItem}
+                        keyExtractor={(item, index) => index + ""}
+                    /> :
+                    this.state.data !== null && this.state.data.length === 0 ?
+                        <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                            <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
+                        </View> : null
                 }
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>
         );
+    }
+
+    redirect() {
+        this.props.navigation.navigate(screenName, {title: title});
     }
 }
 
@@ -210,18 +199,23 @@ const styles = {
     },
     rowFront: {
         // alignItems: 'center',
-        backgroundColor: '#CCC',
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        // justifyContent: 'center',
+        backgroundColor: themeStyle.WHITE,
+        paddingLeft: 5,
+        paddingRight: 5,
+        paddingBottom: 10,
+        paddingTop: 10,
+        borderBottomColor: "#F5F5F5",
+        borderBottomWidth: 5,
         flex: 1
     },
     rowBack: {
+        backgroundColor: "#FF0000",
         alignItems: 'center',
-        // backgroundColor: '#DDD',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        borderBottomColor: "#F5F5F5",
+        borderBottomWidth: 5,
         paddingLeft: 15,
     },
     backRightBtn: {
@@ -230,11 +224,10 @@ const styles = {
         justifyContent: 'center',
         position: 'absolute',
         top: 0,
-        width: 75,
+        width: Utility.setWidth(75),
     },
     backRightBtnLeft: {
-        backgroundColor: 'blue',
-        right: 75,
+        right: Utility.setWidth(75),
     },
     backRightBtnRight: {
         backgroundColor: 'red',

@@ -14,6 +14,8 @@ import themeStyle from "../../../resources/theme.style";
 import CommonStyle from "../../../resources/CommonStyle";
 import Utility from "../../../utilize/Utility";
 import {connect} from "react-redux";
+import {AddBeneficiary} from "../../Requests/RequestBeneficiary";
+import {BusyIndicator} from "../../../resources/busy-indicator";
 
 class BeneficiaryEmail extends Component {
     constructor(props) {
@@ -31,7 +33,7 @@ class BeneficiaryEmail extends Component {
         }
     }
 
-    onSubmit(language,navigation) {
+    onSubmit(language, navigation) {
         if (this.state.isMainScreen) {
             if (this.state.nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
@@ -39,16 +41,46 @@ class BeneficiaryEmail extends Component {
                 this.setState({errorEmail: language.require_email})
             } else if (!Utility.validateEmail(this.state.emailTxt)) {
                 this.setState({errorEmail: language.email_not_valid})
-            }
-            else if (this.state.mobileNo === "") {
-                this.setState({errorMobileNo: language.require_mobile})
-            }
-            else {
+            } else if (this.state.mobileNo.length < 11) {
+                this.setState({errorMobileNo: language.invalidMobile})
+            } else {
                 this.setState({isMainScreen: false});
             }
         } else {
-            //this.beneficiaryAdd();
+            this.beneficiaryAdd();
         }
+    }
+
+    resetScreen = (flag) => {
+        if (flag) {
+            this.setState({
+                nickname: "",
+                isMainScreen: true,
+                emailTxt: "",
+                mobileNo: "",
+            });
+        }
+    }
+
+
+    beneficiaryAdd() {
+        const {mobileNo, nickname, emailTxt} = this.state;
+        this.setState({isProgress: true});
+        let accountDetails = {ACCOUNT: emailTxt, ADDRESS: "", CONTACTNUMBER: mobileNo, ACCOUNTNAME: nickname};
+        AddBeneficiary(accountDetails, "E", this.props.userDetails, nickname, mobileNo, emailTxt, "", this.props, "A").then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () => this.props.navigation.navigate("SecurityVerification", {
+                REQUEST_CD: response.REQUEST_CD,
+                transType: "E",
+                actNo: emailTxt,
+                resetScreen: this.resetScreen
+            }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     backAction = () => {
@@ -75,7 +107,7 @@ class BeneficiaryEmail extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() =>  this.backEvent()}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
@@ -203,11 +235,7 @@ class BeneficiaryEmail extends Component {
                                 keyboardType={"number-pad"}
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                 autoCorrect={false}
-                                returnKeyType={"next"}
                                 maxLength={11}
-                                onSubmitEditing={(event) => {
-                                    this.mobileRef.focus();
-                                }}
                             /></View>
                         {this.state.errorMobileNo !== "" ?
                             <Text style={CommonStyle.errorStyle}>{this.state.errorMobileNo}</Text> : null}
@@ -244,14 +272,14 @@ class BeneficiaryEmail extends Component {
                                     height: Utility.setHeight(46),
                                     borderRadius: Utility.setHeight(23),
                                     backgroundColor: themeStyle.THEME_COLOR
-                                }}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.isMainScreen ? language.next : language.confirm}</Text>
+                                }}><Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.isMainScreen ? language.next : language.confirm}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
     }
@@ -295,6 +323,7 @@ class BeneficiaryEmail extends Component {
 
 const mapStateToProps = (state) => {
         return {
+            userDetails: state.accountReducer.userDetails,
             langId: state.accountReducer.langId,
             language: state.accountReducer.language,
         };

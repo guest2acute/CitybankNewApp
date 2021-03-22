@@ -18,10 +18,12 @@ import Utility from "../../../utilize/Utility";
 import fontStyle from "../../../resources/FontStyle";
 import FontSize from "../../../resources/ManageFontSize";
 
+let type;
 
 class Beneficiary extends Component {
     constructor(props) {
         super(props);
+        type = props.route.params.type;
         this.state = {
             isProgress: false,
             selectType: props.language.select_type_transfer,
@@ -68,23 +70,49 @@ class Beneficiary extends Component {
     }
 
     submit(language, navigation) {
-        let otpMsg = "", successMsg = "";
-        console.log("selectTypeVal is this",this.state.selectTypeVal)
+        let addTitle = "", title = "", screenName = "", benfType = "";
         if (this.state.selectTypeVal === -1) {
             Utility.alert(language.error_select_beneficiary_type);
+            return;
         } else if (this.state.selectTypeVal === 0) {
-            this.props.navigation.navigate("BeneficiaryWithCityBank");
+            addTitle = this.props.language.add_beneficiary_mfs;
+            title = this.props.language.manage_beneficiary_mfs;
+            benfType = "W";
+            screenName = "BeneficiaryTransferMFS";
         } else if (this.state.selectTypeVal === 1) {
-            this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary_wob});
+            addTitle = this.props.language.add_beneficiary_wcb;
+            title = this.props.language.manage_beneficiary_wcb;
+            benfType = "I";
+            screenName = "BeneficiaryWithCityBank";
         } else if (this.state.selectTypeVal === 2) {
-            this.props.navigation.navigate("BeneficiaryEmail",{title: this.props.language.add_beneficiary_email});
+            addTitle = this.props.language.add_beneficiary_wob;
+            title = this.props.language.manage_beneficiary_wob;
+            benfType = "O";
+            screenName = "BeneficiaryOtherCard";
         } else if (this.state.selectTypeVal === 3) {
-            this.props.navigation.navigate("BeneficiaryTransferMFS",{title:this.props.language.add_beneficiary_mfs});
-        }else if (this.state.selectTypeVal === 4) {
-            this.props.navigation.navigate("BeneficiaryOtherCard", {title:this.props.language.beneficiary_other_card_title});
-        }else if (this.state.selectTypeVal === 5) {
-            this.props.navigation.navigate("BeneficiaryOtherCard",{title:this.props.language.beneficiary_bank_card_title});
+            addTitle = this.props.language.add_beneficiary_email;
+            title = this.props.language.manage_beneficiary_email;
+            benfType = "E";
+            screenName = "BeneficiaryEmail";
+        } else if (this.state.selectTypeVal === 4) {
+            addTitle = this.props.language.beneficiary_other_card_title;
+            title = this.props.language.beneficiary_other_card_title;
+            benfType = "C";
+            screenName = "BeneficiaryOtherCard";
+        } else if (this.state.selectTypeVal === 5) {
+            addTitle = this.props.language.beneficiary_bank_card_title;
+            title = this.props.language.beneficiary_bank_card_title;
+            benfType = "B";
+            screenName = "BeneficiaryOtherBank";
         }
+
+        if (type === "delete")
+            navigation.navigate("ViewDeleteBeneficiary", {
+                title: title, screenName: screenName,
+                addTitle: addTitle, benfType: benfType
+            });
+        else
+            navigation.navigate(screenName, {title: addTitle});
     }
 
     render() {
@@ -99,7 +127,8 @@ class Beneficiary extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.add_beneficiary}</Text>
+                    <Text
+                        style={CommonStyle.title}>{type === "add" ? language.add_beneficiary : language.view_beneficiary}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
