@@ -199,3 +199,65 @@ export const VERIFYBKASHAC = async (userDetails, mobileNumber, props) => {
 }
 
 
+export const GETBENF = async (userDetails, benfType, props) => {
+    let request = {
+        BENF_TYPE: benfType,
+        ACTION: "GETBENF",
+        USER_ID: userDetails.USER_ID,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        ...Config.commonReq
+    }
+
+    console.log("GETBENF", request);
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result);
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result.RESPONSE);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
+
+export const DELETEBENF = async (userDetails, transType, item, props) => {
+    let request = {
+        TRN_TYPE: transType,
+        ACTION: "DELETEBENF",
+        USER_ID: userDetails.USER_ID,
+        TO_ACCT_NO: item.TO_ACCT_NO,
+        TO_IFSCCODE: item.TO_IFSCODE,
+        REF_NO: item.REF_NO,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        ...Config.commonReq
+    }
+
+    console.log("DELETEBENF", request);
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result);
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+

@@ -70,38 +70,47 @@ class Beneficiary extends Component {
     }
 
     submit(language, navigation) {
-        let addTitle = "", title = "", screenName = "";
+        let addTitle = "", title = "", screenName = "", benfType = "";
         if (this.state.selectTypeVal === -1) {
             Utility.alert(language.error_select_beneficiary_type);
             return;
         } else if (this.state.selectTypeVal === 0) {
             addTitle = this.props.language.add_beneficiary_mfs;
             title = this.props.language.manage_beneficiary_mfs;
+            benfType = "W";
             screenName = "BeneficiaryTransferMFS";
         } else if (this.state.selectTypeVal === 1) {
             addTitle = this.props.language.add_beneficiary_wcb;
             title = this.props.language.manage_beneficiary_wcb;
+            benfType = "I";
             screenName = "BeneficiaryWithCityBank";
         } else if (this.state.selectTypeVal === 2) {
             addTitle = this.props.language.add_beneficiary_wob;
             title = this.props.language.manage_beneficiary_wob;
+            benfType = "O";
             screenName = "BeneficiaryOtherCard";
         } else if (this.state.selectTypeVal === 3) {
             addTitle = this.props.language.add_beneficiary_email;
             title = this.props.language.manage_beneficiary_email;
+            benfType = "E";
             screenName = "BeneficiaryEmail";
         } else if (this.state.selectTypeVal === 4) {
             addTitle = this.props.language.beneficiary_other_card_title;
             title = this.props.language.beneficiary_other_card_title;
+            benfType = "C";
             screenName = "BeneficiaryOtherCard";
         } else if (this.state.selectTypeVal === 5) {
             addTitle = this.props.language.beneficiary_bank_card_title;
             title = this.props.language.beneficiary_bank_card_title;
+            benfType = "B";
             screenName = "BeneficiaryOtherBank";
         }
 
         if (type === "delete")
-            navigation.navigate("ViewDeleteBeneficiary", {title: title, screenName: screenName, addTitle: addTitle});
+            navigation.navigate("ViewDeleteBeneficiary", {
+                title: title, screenName: screenName,
+                addTitle: addTitle, benfType: benfType
+            });
         else
             navigation.navigate(screenName, {title: addTitle});
     }

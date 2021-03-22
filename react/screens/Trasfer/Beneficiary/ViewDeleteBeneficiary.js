@@ -21,61 +21,40 @@ import Utility from "../../../utilize/Utility";
 import CommonStyle from "../../../resources/CommonStyle";
 import fontStyle from "../../../resources/FontStyle";
 import FontSize from "../../../resources/ManageFontSize";
-import StorageClass from "../../../utilize/StorageClass";
-
-import {SwipeListView} from 'react-native-swipe-list-view';
+import {AddBeneficiary, DELETEBENF, GETBENF} from "../../Requests/RequestBeneficiary";
+import {BusyIndicator} from "../../../resources/busy-indicator";
 
 /**
  * splash page
  */
 
+let screenName, title, benfType;
+
 class ViewDeleteBeneficiary extends Component {
     constructor(props) {
         super(props);
-        let language = props.language;
-        console.log("language", language.bkash_account)
+        screenName = this.props.route.params.screenName;
+        title = this.props.route.params.addTitle;
+        benfType = this.props.route.params.benfType;
         this.state = {
+            isProgress: false,
             title: props.route.params.title,
-            data: [
-                {
-                    id: 0,
-                    nickName: "Shoeb",
-                    account_number: "2702240346001",
-                    account_holder_name: "Shoeb Khan",
-                    currency: "BDT",
-                    mobile_number: "8849380080",
-                    email: "shoeb.khan@email.com"
-                },
-                {
-                    id: 1,
-                    nickName: "Irfan",
-                    account_number: "2702240346001",
-                    account_holder_name: "Irfan pathan",
-                    currency: "BDT",
-                    mobile_number: "8849380084",
-                    email: "irfan.pathan@email.com"
-                },
-                {
-                    id: 2,
-                    nickName: "Rahim",
-                    account_number: "2702240346001",
-                    account_holder_name: "Rahim khan",
-                    currency: "BDT",
-                    mobile_number: "8849380082",
-                    email: "rahim@email.com"
-                },
-                {
-                    id: 3,
-                    nickName: "Sarfraj",
-                    account_number: "2702240346001",
-                    account_holder_name: "Sarfraj Ahmed",
-                    currency: "BDT",
-                    mobile_number: "8849380085",
-                    email: "rahim@email.com"
-                }
-
-            ],
+            data: null,
         }
+    }
+
+    getBeneficiary() {
+        this.setState({isProgress: true});
+        GETBENF(this.props.userDetails, benfType, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+                data: response
+            });
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
 
@@ -90,21 +69,26 @@ class ViewDeleteBeneficiary extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
+
+        this.getBeneficiary();
     }
 
-    _renderItem = (data) => (
+    _renderItem = ({item}) => (
         <View style={styles.rowFront}>
             <View style={{flexDirection: "row", justifyContent: "space-between", marginStart: 10, marginEnd: 10}}>
-                <Text style={CommonStyle.themeMidTextStyle}>{data.item.nickName}</Text>
-                <Text style={CommonStyle.themeMidTextStyle}>{data.item.currency}</Text>
+                <Text style={CommonStyle.themeMidTextStyle}>{item.NICK_NAME}</Text>
+                <Text style={CommonStyle.themeMidTextStyle}>{item.CURRENCY}</Text>
             </View>
             <View style={{flexDirection: "column", justifyContent: "space-around", marginStart: 10, marginEnd: 10}}>
-                <Text style={CommonStyle.midTextStyle}>{data.item.account_holder_name}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.account_number}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.email}</Text>
-                <Text style={CommonStyle.textStyle}>{data.item.mobile_number}</Text>
+                {benfType !== "E" && item.TO_ACCT_NM !== "" ?
+                    <Text style={CommonStyle.midTextStyle}>{item.TO_ACCT_NM}</Text> : null}
+                {benfType !== "E" && item.TO_ACCT_NO !== "" ? <Text style={CommonStyle.textStyle}>{item.TO_ACCT_NO}</Text> : null}
+                {item.TO_EMAIL_ID !== "" ?
+                    <Text style={CommonStyle.textStyle}>{item.TO_EMAIL_ID}</Text> : null}
+                {item.TO_CONTACT_NO !== "" ?
+                    <Text style={CommonStyle.textStyle}>{item.TO_CONTACT_NO}</Text> : null}
             </View>
-            <TouchableOpacity onPress={() => this.deleteBeneficiary(data)} style={{
+            <TouchableOpacity onPress={() => this.deleteBeneficiary(item)} style={{
                 width: 25, position: "absolute",
                 right: Utility.setWidth(10),
                 top: Utility.setHeight(50),
@@ -119,25 +103,33 @@ class ViewDeleteBeneficiary extends Component {
         </View>
     )
 
-    onItemOpen = rowKey => {
-        console.log('This row opened', rowKey);
-    }
 
-    deleteBeneficiary = (data) => {
-        console.log("data", data);
+    deleteBeneficiary = (item) => {
+        console.log("data", item);
         Alert.alert(
             Config.appName,
             this.props.language.deleteAlert,
             [
                 {text: this.props.language.no_txt},
-                {text: this.props.language.yes_txt, onPress: () => this.deleteValue(data)},
+                {text: this.props.language.yes_txt, onPress: () => this.deleteValue(item)},
             ]
         );
     }
 
-    deleteValue(data) {
-        const filterArray = this.state.data.filter(e => e.id !== data.item.id)
-        this.setState({data: filterArray});
+    deleteValue(item) {
+        console.log("item",item);
+        this.setState({isProgress: true});
+        DELETEBENF(this.props.userDetails, benfType, item, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+                data: this.state.data.filter(e => e !== item)
+            });
+            Utility.alert(response.MESSAGE);
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     render() {
@@ -165,22 +157,24 @@ class ViewDeleteBeneficiary extends Component {
                                source={require("../../../resources/images/add_icon.png")}/>
                     </TouchableOpacity>
                 </View>
-                {this.state.data.length > 0 ?
+                {this.state.data !== null && this.state.data.length > 0 ?
                     <FlatList
                         data={this.state.data}
                         renderItem={this._renderItem}
                         keyExtractor={(item, index) => index + ""}
                     /> :
-                    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-                        <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
-                    </View>
+                    this.state.data !== null && this.state.data.length === 0 ?
+                        <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                            <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>
+                        </View> : null
                 }
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>
         );
     }
 
     redirect() {
-        this.props.navigation.navigate(this.props.route.params.screenName, {title: this.props.route.params.addTitle});
+        this.props.navigation.navigate(screenName, {title: title});
     }
 }
 
