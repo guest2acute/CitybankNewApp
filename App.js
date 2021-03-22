@@ -44,8 +44,6 @@ import FundTransfer from "./react/screens/Trasfer/FundTransfer";
 import OtherBankAccount from "./react/screens/Trasfer/OtherBankAccount";
 import Favorite from "./react/screens/Trasfer/Favorite";
 import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
-import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
-import EmailTransferScreen from "./react/screens/Trasfer/EmailTransferScreen";
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
 import ViewBeneficiaryOtherBank from "./react/screens/Trasfer/Beneficiary/ViewBeneficiaryOtherBank";
@@ -66,6 +64,8 @@ import RequestMonitor from "./react/screens/More/RequestMonitor";
 import OtpLockUnlock from "./react/screens/More/OtpLockUnlock";
 import ViewDeleteBeneficiary from "./react/screens/Trasfer/Beneficiary/ViewDeleteBeneficiary";
 import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
+import EmailTransfer from "./react/screens/Trasfer/Beneficiary/EmailTransfer";
+import EmailTransferScreen from "./react/screens/Trasfer/Beneficiary/EmailTransferScreen";
 
 
 const store = configureStore(window.__State__);
