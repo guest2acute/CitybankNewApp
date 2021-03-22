@@ -3,7 +3,6 @@ import en from "../../localization/en";
 import bn from "../../localization/bn";
 
 
-
 const initialState = {
     langId: 'en',
     language: en,

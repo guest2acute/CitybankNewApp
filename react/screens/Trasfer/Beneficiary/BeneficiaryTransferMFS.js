@@ -17,73 +17,87 @@ import CommonStyle from "../../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
-import {AddBeneficiary} from "../../Requests/RequestBeneficiary";
+import {AddBeneficiary, VERIFYBKASHAC} from "../../Requests/RequestBeneficiary";
 import {MoreDetails} from "../../Requests/CommonRequest";
 
 class BeneficiaryTransferMFS extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selMFS:props.language.selMfs,
-            selMFSVal:-1,
+            selMFS: props.language.selMfs,
+            selMFSVal: -1,
             nickname: "",
             accountNo: "",
             error_nickname: "",
             error_accountNo: "",
             isMainScreen: true,
-            stateVal: 0,
-            accountDetails: null,
-            modalVisible:false,
+            modalVisible: false,
             updateTitle: props.route.params.title
         }
     }
 
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-
-        this.setState({nickname: text, error_nickname: ""})
-    }
-
-    accountChange(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({accountNo: text, error_accountNo: ""})
-    }
-
     async onSubmit(language, navigation) {
-
         if (this.state.isMainScreen) {
-            if (this.state.nickname === "") {
+            if (this.state.selMFSVal === -1) {
+                Utility.alert(language.errorSelMFSVal);
+            } else if (this.state.nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
-            } else if (this.state.accountNo.length !== 13) {
-                this.setState({error_accountNo: language.errActNo})
-            } else {
-                this.setState({isMainScreen: false});
+            } else if (this.state.accountNo.length < 11) {
+                this.setState({error_accountNo: language.errBkash})
+            } else{
+                this.verifybKashAct();
             }
         } else {
-            //this.beneficiaryAdd();
+            this.beneficiaryAdd();
         }
     }
 
+    verifybKashAct() {
+        const {accountNo, nickname} = this.state;
+        this.setState({isProgress: true});
+        VERIFYBKASHAC(this.props.userDetails, accountNo, this.props).then(response => {
+            this.setState({
+                isProgress: false,
+                isMainScreen: false
+            });
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
 
     beneficiaryAdd() {
-        const {accountDetails, nickname} = this.state;
+        const {accountNo, nickname} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, "", "", this.props,"A").then(response => {
+        let accountDetails = {ACCOUNT:accountNo,ADDRESS:"",CONTACTNUMBER:accountNo,ACCOUNTNAME:nickname};
+        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, accountNo, "", "",this.props, "A").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
             }, () => this.props.navigation.navigate("SecurityVerification", {
                 REQUEST_CD: response.REQUEST_CD,
                 transType: "W",
-                actNo: this.state.accountNo
+                actNo: accountNo,
+                resetScreen: this.resetScreen
             }));
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
         });
     }
+
+    resetScreen = (flag) => {
+        if (flag) {
+            this.setState({
+                selMFS: this.props.language.selMfs,
+                selMFSVal: -1,
+                nickname: "",
+                accountNo: "",
+                isMainScreen: true,
+            });
+        }
+    }
+
 
 
     openModal(option, title, data, language) {
@@ -202,7 +216,10 @@ class BeneficiaryTransferMFS extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={this.state.isMainScreen ? language.bkash_account : ""}
-                        onChangeText={text => this.accountChange(text)}
+                        onChangeText={text => this.setState({
+                            error_accountNo: "",
+                            accountNo: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.accountNo}
                         multiline={false}
                         editable={this.state.isMainScreen}
@@ -211,25 +228,24 @@ class BeneficiaryTransferMFS extends Component {
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        maxLength={13}/>
+                        maxLength={11}/>
                 </View>
                 {this.state.error_accountNo !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.error_accountNo}</Text> : null}
 
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-                {this.state.isMainScreen ? <View><Text style={[CommonStyle.textStyle, {
-                    marginStart: 10,
-                    marginTop: 20,
-                    marginBottom:10,
-                    color: themeStyle.THEME_COLOR
-                }]}>*{language.mark_field_mandatory}
-                </Text>
-                    <Text style={[CommonStyle.midTextStyle, {marginLeft:10,color: themeStyle.THEME_COLOR}]}>{language.notes}:</Text>
-                    <Text style={{
-                        marginStart: 10,
-                        color: themeStyle.THEME_COLOR
-                    }}>{language.onlybKashTxt}</Text></View> : null}
+                {this.state.isMainScreen ?
+                    <View><Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}
+                    </Text>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            marginLeft: 10,
+                            color: themeStyle.THEME_COLOR
+                        }]}>{language.notes}:</Text>
+                        <Text style={{
+                            marginStart: 10,
+                            color: themeStyle.THEME_COLOR
+                        }}>{language.onlybKashTxt}</Text></View> : null}
             </View>)
     }
 

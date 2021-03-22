@@ -168,3 +168,34 @@ export const ADDBENFVERIFY = async (userDetails, REQUEST_CD, props, transType, a
     });
 }
 
+
+export const VERIFYBKASHAC = async (userDetails, mobileNumber, props) => {
+    let request = {
+        MOBILE_NUMBER: mobileNumber,
+        ACTION: "VERIFYBKASHAC",
+        USER_ID: userDetails.USER_ID,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        ...Config.commonReq
+    }
+
+    console.log("VERIFYBKASHAC", request);
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result);
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(error);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
+

@@ -92,10 +92,8 @@ class ViewDeleteBeneficiary extends Component {
         });
     }
 
-    _renderItem = (data, rowMap) => (
-        <TouchableOpacity
-            onPress={() => console.log('You touched me')}
-            style={styles.rowFront}>
+    _renderItem = (data) => (
+        <View style={styles.rowFront}>
             <View style={{flexDirection: "row", justifyContent: "space-between", marginStart: 10, marginEnd: 10}}>
                 <Text style={CommonStyle.themeMidTextStyle}>{data.item.nickName}</Text>
                 <Text style={CommonStyle.themeMidTextStyle}>{data.item.currency}</Text>
@@ -106,14 +104,27 @@ class ViewDeleteBeneficiary extends Component {
                 <Text style={CommonStyle.textStyle}>{data.item.email}</Text>
                 <Text style={CommonStyle.textStyle}>{data.item.mobile_number}</Text>
             </View>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.deleteBeneficiary(data)} style={{
+                width: 25, position: "absolute",
+                right: Utility.setWidth(10),
+                top: Utility.setHeight(50),
+                height: 25
+            }}>
+                <Image style={{
+                    width: 20,
+                    height: 20,
+                    tintColor: themeStyle.THEME_COLOR,
+                }} resizeMode={"contain"} source={require("../../../resources/images/icon-close.png")}/>
+            </TouchableOpacity>
+        </View>
     )
 
     onItemOpen = rowKey => {
         console.log('This row opened', rowKey);
     }
 
-    deleteRow = (data, rowMap) => {
+    deleteBeneficiary = (data) => {
+        console.log("data", data);
         Alert.alert(
             Config.appName,
             this.props.language.deleteAlert,
@@ -128,7 +139,6 @@ class ViewDeleteBeneficiary extends Component {
         const filterArray = this.state.data.filter(e => e.id !== data.item.id)
         this.setState({data: filterArray});
     }
-
 
     render() {
         let language = this.props.language;
@@ -155,27 +165,11 @@ class ViewDeleteBeneficiary extends Component {
                                source={require("../../../resources/images/add_icon.png")}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignItems: "center", paddingTop: 10, paddingBottom: 10}}>
-                    <Text style={styles.title}>{language.beneficiaryTitle}</Text>
-                </View>
                 {this.state.data.length > 0 ?
-                    <SwipeListView
+                    <FlatList
                         data={this.state.data}
                         renderItem={this._renderItem}
                         keyExtractor={(item, index) => index + ""}
-                        renderHiddenItem={(data, rowMap) => (
-                            <View style={styles.rowBack}>
-                                <TouchableOpacity
-                                    style={[styles.backRightBtn, styles.backRightBtnRight]}
-                                    onPress={() => this.deleteRow(data, rowMap)}>
-                                    <Image style={{height: Utility.setHeight(30), width: Utility.setWidth(30)}}
-                                           source={require("../../../resources/images/trash.png")}
-                                           resizeMode={"contain"}/>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        rightOpenValue={-75}
-                        disableRightSwipe={true}
                     /> :
                     <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
                         <Text style={CommonStyle.textStyle}>{language.noBeneficiaryAdded}</Text>

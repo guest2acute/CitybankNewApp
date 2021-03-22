@@ -257,6 +257,7 @@ export default {
     errValidPin: "Please enter valid Login PIN",
     errValidType: "Please select type",
     errActNo: "Please enter 13 digits account number",
+    errBkash: "Please enter valid bKash account number",
     errTransPin: "Please enter 4 digits PIN",
     errCardNo: "Please enter valid card number",
     errExpiryDate: "Please select expiry date",
@@ -607,6 +608,7 @@ export default {
     error_select_nickname: "Please Select Nickname",
     error_select_operator: "Please Select Operator",
     errorSelectCard: "Please select card",
+    errorSelMFSVal: "Please select MFS",
     error_select_reason: "Please Select Reason",
     type_Branch: "Branch Name",
     select_brach: "select branch",
@@ -733,7 +735,6 @@ export default {
     /* Favorite Transfer screen message*/
     Donation: "Donation",
     transfer_bkash: "Transfer to bkash",
-    beneficiaryTitle: "Swipe right to left to Delete beneficiary",
     favoriteTitle: "Swipe Right to left to Delete Favourite item",
     favorite_transferTitle: "Favorite Transfer",
 

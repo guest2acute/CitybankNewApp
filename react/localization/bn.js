@@ -257,6 +257,7 @@ export default {
     errValidPin: "বৈধ লগইন পিন প্রবেশ করুন",
     errValidType: "টাইপ নির্বাচন করুন",
     errActNo: "13 অঙ্কের অ্যাকাউন্ট নম্বর লিখুন দয়া করে",
+    errBkash: "দয়া করে বৈধ বিকাশ অ্যাকাউন্ট নম্বর প্রবেশ করুন",
     errTransPin: "4 অঙ্কের পিন প্রবেশ করুন",
     errCardNo: "বৈধ কার্ড নম্বর প্রবেশ করুন",
     errExpiryDate: "দয়া করে মেয়াদ শেষ হওয়ার তারিখটি নির্বাচন করুন",
@@ -599,6 +600,7 @@ export default {
     error_select_nickname: "দয়া করে ডাকনামটি নির্বাচন করুন",
     error_select_operator: "অপারেটর নির্বাচন করুন",
     errorSelectCard: "দয়া করে কার্ড নির্বাচন করুন",
+    errorSelMFSVal: "এমএফএস নির্বাচন করুন",
     error_select_reason: "কারণ নির্বাচন করুন",
     type_Branch: "শাখার নাম",
     districtTypeArr: [

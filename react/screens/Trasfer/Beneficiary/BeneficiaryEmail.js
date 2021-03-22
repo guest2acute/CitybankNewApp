@@ -14,6 +14,7 @@ import themeStyle from "../../../resources/theme.style";
 import CommonStyle from "../../../resources/CommonStyle";
 import Utility from "../../../utilize/Utility";
 import {connect} from "react-redux";
+import {AddBeneficiary} from "../../Requests/RequestBeneficiary";
 
 class BeneficiaryEmail extends Component {
     constructor(props) {
@@ -47,8 +48,27 @@ class BeneficiaryEmail extends Component {
                 this.setState({isMainScreen: false});
             }
         } else {
-            //this.beneficiaryAdd();
+            this.beneficiaryAdd();
         }
+    }
+
+    beneficiaryAdd() {
+        const {accountNo, nickname} = this.state;
+        this.setState({isProgress: true});
+        let accountDetails = {ACCOUNT:accountNo,ADDRESS:"",CONTACTNUMBER:"",ACCOUNTNAME:nickname};
+        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, accountNo, "", "",this.props, "A").then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () => this.props.navigation.navigate("SecurityVerification", {
+                REQUEST_CD: response.REQUEST_CD,
+                transType: "W",
+                actNo: accountNo
+            }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     backAction = () => {

@@ -22,7 +22,6 @@ import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
 
 let transType = "", actNo = "", REQUEST_CD = "";
-let resetScreen;
 
 class SecurityVerification extends Component {
     constructor(props) {

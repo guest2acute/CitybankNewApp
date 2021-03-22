@@ -97,7 +97,6 @@ class BeneficiaryWithCityBank extends Component {
             this.setState({
                 isProgress: false,
             }, () => this.props.navigation.navigate("SecurityVerification", {
-
                 REQUEST_CD: response.REQUEST_CD,
                 transType: "I",
                 actNo: this.state.accountNo,
