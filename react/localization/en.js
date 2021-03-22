@@ -691,8 +691,8 @@ export default {
     select_payment: "Select Payment Frequency",
     number_of_payment: "Number Of Payment",
     payment_array: [{key: "0", label: "Monthly", value: 1234567890123456},
-        {key: "1", label: "Quartely", value: 4567890123456123},
-        {key: "1", label: "Halfyearly", value: 4567890123456123},
+        {key: "1", label: "Quarterly", value: 4567890123456123},
+        {key: "1", label: "HalfYearly", value: 4567890123456123},
         {key: "1", label: "Yearly", value: 4567890123456123}
     ],
 
@@ -712,7 +712,7 @@ export default {
     district_type: "District Name",
     branch_name: "Branch Name",
     other_bank_props: [
-        {label: "BEFTN(Ragular Transfer)", value: 0},
+        {label: "BEFTN(Regular Transfer)", value: 0},
         {label: "RTGS(Instant Transfer)", value: 1},
         {label: "NPSB(Instant Transfer)", value: 2},
     ],
@@ -721,7 +721,7 @@ export default {
     /* Favorite Transfer screen message*/
     Donation: "Donation",
     transfer_bkash: "Transfer to bkash",
-    favoriteTitle: "Swipe Right to left to Delete Favirote item",
+    favoriteTitle: "Swipe Right to left to Delete favorite item",
     favorite_transferTitle: "Favorite Transfer",
 
     /* Email Transfer screen message*/
@@ -803,14 +803,17 @@ export default {
     notePin4Digits:"Your Transaction PIN should be 4 digits.",
     noteLock3Attempt:"Consecutive 3 wrong attempts will lock.",
     noteCallTPin:"Your Transaction PIN call 16243 to unlock.",
-    fund_transfer_note1: "1.There is no found transfer restriction between your",
+    fund_transfer_note1: "1.There is no fund transfer restriction between your",
     fund_transfer_note2: "own account for account transaction.",
-    fund_transfer_note3: "2.Credit card transfer limit:minimum transferable.",
+    fund_transfer_note3: "2.Credit card transfer limit:Minimum transferable.",
     fund_transfer_note4: "amount is BDT 500 and up to 50% of total available.",
     fund_transfer_note5: "BDT limit.",
     fund_transfer_note6: "3.Processing fee +VAT will be applicable",
     fund_transfer_note7: "4. Consecutive transaction in the same account will",
     fund_transfer_note8: "take 10 minutes of interval.",
+
+    fund_transferCity_note1:"1.Maximum Transaction limit from CityTouch is BDT",
+    fund_transferCity_note2:"5 lacs per day",
 
     other_bankAccount_note1: "1. Maximum transaction limit from CityTouch is BDT 5 lacs per day.",
     other_bankAccount_note2: "2. BEFTN: transfer request placed before 2:00PM will be executed on the.",
@@ -825,22 +828,21 @@ export default {
     other_bankAccount_note11: "other_bankAccount_note10",
     other_bankAccount_note12: "7.consecutive transaction in the same account will take 10 minutes of interval",
 
-    beneficiary_otherBank_note1: "1. Beneficiary banks/branches should be capable to process",
-    beneficiary_otherBank_note2: "RTGS/NPSB/BEFTN transaction.",
-    beneficiary_otherBank_note3: "2. BEFTN(Ragular Transfer): Transaction Process before",
-    beneficiary_otherBank_note4: "10:30 PM,any amount up to 5 lacs. Transfer Processed",
+    beneficiary_otherBank_note1: "1. Beneficiary banks/branches should be capable to",
+    beneficiary_otherBank_note2: "process RTGS/NPSB/BEFTN transaction.",
+    beneficiary_otherBank_note3: "2. BEFTN(Ragular Transfer): Transaction Process",
+    beneficiary_otherBank_note4: "before 10:30 PM,any amount up to 5 lacs. Transfer Processed",
     beneficiary_otherBank_note5: "through BEFTN whould be credited by next working day.the amount",
-    beneficiary_otherBank_note6: "3. RTGS (instant transfer): Transactions processed before",
-    beneficiary_otherBank_note7: "10:30 PM,any amount up to 5 lacs ",
-    beneficiary_otherBank_note8: "must be between 1 lac to 5 lacs",
+    beneficiary_otherBank_note6: "3. RTGS (instant transfer): Transactions processed",
+    beneficiary_otherBank_note7: "before 10:30 PM,any amount up to 5 lacs must",
+    beneficiary_otherBank_note8: "be between 1 lac to 5 lacs",
     beneficiary_otherBank_note9: "4. NPSB (instant transfer). transfer can be processed",
-    beneficiary_otherBank_note10: "anytime. Transaction limit is BDT 2 lacs in 5 transaction",
+    beneficiary_otherBank_note10: "anytime.Transaction limit is BDT 2 lacs in 5 transaction",
     beneficiary_otherBank_note11: "per day and BDT 2 lacs in 5 transaction",
-    beneficiary_otherBank_note12: "5. For NPSB transfer,while adding DBBL beneficiary, complete",
-    beneficiary_otherBank_note13: "13-digit account number will be required. in case of adding",
-    beneficiary_otherBank_note14: "DBBL credit card,the digit 100001 need to be added",
-    beneficiary_otherBank_note15: "before the 13-digit card number.",
-
+    beneficiary_otherBank_note12: "5. For NPSB transfer,while adding DBBL beneficiary,",
+    beneficiary_otherBank_note13: "complete 13-digit account number will be required.",
+    beneficiary_otherBank_note14: "in case of adding DBBL credit card,the digit 100001",
+    beneficiary_otherBank_note15: "need to be added before the 13-digit card number.",
 
     transferTo_bkash_note1: "1. Transfer and transaction limit for a single bkash account.",
     transferTo_bkash_note2: "5 transaction per day and 25 per month.",
@@ -1186,6 +1188,11 @@ export default {
     mfsList:[{label:"bKash Account",value:0}],
 
     update_beneficiary_alert:"Please update this beneficiary information",
-    settings:"Settings"
+    settings:"Settings",
 
+    error_select_to_type:"Please Select To Account",
+    error_select_nickname_type:"select nick name",
+    fund_transfer_own_account:"Fund Transfer Own Account",
+    fund_transfer_city_account:"Fund Transfer City Account",
+    transfer:"Transfer"
 }

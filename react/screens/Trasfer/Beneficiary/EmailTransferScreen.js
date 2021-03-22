@@ -157,7 +157,6 @@ class EmailTransferScreen extends Component {
                             <Text style={[CommonStyle.midTextStyle,{}]}>{this.state.title?this.state.title:this.state.selectBeneficiaryType}</Text>
                             {this.state.email?<Text style={[CommonStyle.midTextStyle,{}]}>{this.state.email}</Text>:null}
                         </View>
-
                         <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../../resources/images/ic_arrow_down.png")}/>
                     </View>
@@ -205,7 +204,7 @@ class EmailTransferScreen extends Component {
                         onSubmitEditing={(event) => {
                             this.emailRef.focus();
                         }}
-                        maxLength={14}/>
+                        maxLength={11}/>
                 </View>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>

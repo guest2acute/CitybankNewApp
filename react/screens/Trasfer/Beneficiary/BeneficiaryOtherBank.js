@@ -80,7 +80,6 @@ class BeneficiaryOtherBank extends Component {
             branchTypeArr: [],
             selectBankType: props.language.select_bank_type,
             selectDistrictType: props.language.select_district_type,
-            selectBranchType: props.language.select_branch_type,
             selectBankVal: null,
             selectBranchVal: null,
             selectDistrictVal: null,
@@ -213,10 +212,7 @@ class BeneficiaryOtherBank extends Component {
                     />
                 </View>
                 {this.state.error_nickname !== "" ?
-                    <Text style={{
-                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_nickname}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_nickname}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <Text style={[CommonStyle.labelStyle, {
@@ -277,10 +273,7 @@ class BeneficiaryOtherBank extends Component {
                         maxLength={this.state.selectTypeVal === 1 ? 16 : 13}/>
                 </View>
                 {this.state.error_accountNo !== "" ?
-                    <Text style={{
-                        marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_accountNo}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_accountNo}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -314,10 +307,8 @@ class BeneficiaryOtherBank extends Component {
                     />
                 </View>
                 {this.state.error_cardName !== "" ?
-                    <Text style={{
-                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_cardName}</Text> : null}
+                    <Text style={CommonStyle.errorStyle
+                    }>{this.state.error_cardName}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{flex: 1}}>
                     {<Text style={[CommonStyle.labelStyle, {
@@ -473,15 +464,8 @@ class BeneficiaryOtherBank extends Component {
                             autoCorrect={false}/>
                     </View>
                     {this.state.errorEmail !== "" ?
-                        <Text style={{
-                            marginLeft: 5,
-                            marginRight: 10,
-                            color: themeStyle.THEME_COLOR,
-                            fontSize: FontSize.getSize(11),
-                            fontFamily: fontStyle.RobotoRegular,
-                            alignSelf: "flex-end",
-                            marginBottom: 10,
-                        }}>{this.state.errorEmail}</Text> : null}
+                        <Text style={CommonStyle.errorStyle
+                        }>{this.state.errorEmail}</Text> : null}
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{marginLeft: 10, marginRight: 10}}>

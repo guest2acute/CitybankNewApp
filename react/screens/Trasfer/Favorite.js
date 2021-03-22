@@ -1,5 +1,16 @@
 import React, {Component} from "react";
-import {Platform, StatusBar, View, Image, Text, TouchableOpacity, TouchableHighlight,SafeAreaView, FlatList} from "react-native";
+import {
+    Platform,
+    StatusBar,
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    TouchableHighlight,
+    SafeAreaView,
+    FlatList,
+    Alert, Dimensions
+} from "react-native";
 
 import {actions} from "../../redux/actions";
 import {connect} from "react-redux";
@@ -12,7 +23,7 @@ import fontStyle from "../../resources/FontStyle";
 import FontSize from "../../resources/ManageFontSize";
 import StorageClass from "../../utilize/StorageClass";
 import Swipeable from 'react-native-swipeable-row';
-
+import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 
 /**
  * splash page
@@ -23,13 +34,18 @@ class Favorite extends Component {
     constructor(props) {
         super(props);
         let language = props.language;
-        console.log("language",language.bkash_account)
+        console.log("language", language.bkash_account)
         this.state = {
             data: [
                 {
-                    id: "profile",
+                    id: 0,
                     title: language.Donation,
-                    description:language.transfer_bkash
+                    description: language.transfer_bkash
+                },
+                {
+                    id: 1,
+                    title: language.Donation,
+                    description: language.transfer_bkash
                 }
             ],
             updateTitle: props.route.params.title
@@ -50,20 +66,8 @@ class Favorite extends Component {
         }
 
         this.props.navigation.setOptions({
-            tabBarLabel: this.props.language.more
+            tabBarLabel: this.props.language.transfer
         });
-
-       /* if (this.props.userDetails.AUTH_FLAG === "TP") {
-            const {data} = this.state;
-            let arr = data;
-            let obj = {
-                id: "changeTransPin",
-                title:this.props.language.change_transaction_pin,
-                icon: require("../resources/images/ic_credential_management.png")
-            }
-            arr.push(obj);
-            this.setState({data: arr});
-        }*/
     }
 
     moveScreen(item) {
@@ -92,44 +96,56 @@ class Favorite extends Component {
         }*/
     }
 
-    async redirectProfile() {
-        let loginPref = await StorageClass.retrieve(Config.LoginPref);
-        console.log("profile", loginPref);
-        if (loginPref === null || loginPref === "") {
-            loginPref = "0";
-        }
-        this.props.navigation.navigate("Profile", {loginPref: loginPref});
-    }
 
-    _renderItem = ({item, index}) => {
-        console.log("item is this ",item)
-        return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate("FavTransferBkash")}>
-                <View style={{
-                    flexDirection: "row",
-                    justifyContent:"space-between",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    paddingLeft: 10,
-                    paddingRight: 10,
-                    alignItems: "center"
-                }}>
-                   <View style={{flexDirection:"column"}}>
-                       <Text style={CommonStyle.midTextStyle}>{item.title}</Text>
-                       <Text style={[CommonStyle.textStyle, {
-                           flex: 1,
-                           color: themeStyle.DIMCOLOR
-                       }]}>{item.description}</Text>
-                   </View>
-                    <Image style={{
-                        height: Utility.setHeight(12),
-                        width: Utility.setWidth(30),
-                        tintColor: "#b5bfc1"
-                    }} resizeMode={"contain"}
-                           source={require("../../resources/images/arrow_right_ios.png")}/>
+    _renderItem = (data, rowMap) => (
+        <View>
+            <TouchableOpacity
+                // onPress={() => rowMap[data.item.id].closeRow()}
+                style={styles.rowFront}>
+                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                    <View style={{
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        marginStart: 10,
+                        marginEnd: 10
+                    }}>
+                        <Text style={CommonStyle.textStyle}>{data.item.title}</Text>
+                        <Text style={CommonStyle.textStyle}>{data.item.description}</Text>
+                    </View>
+                    <View>
+                        <Image style={{
+                            height: Utility.setHeight(12),
+                            width: Utility.setWidth(30),
+                            tintColor: "#b5bfc1"
+                        }} resizeMode={"contain"}
+                               source={require("../../resources/images/arrow_right_ios.png")}/>
+                    </View>
                 </View>
             </TouchableOpacity>
-        )
+        </View>
+
+    )
+
+    closeRow = (rowMap, rowKey) => {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
+    };
+
+    deleteRow = (data, rowMap) => {
+        Alert.alert(
+            "",
+            this.props.language.deleteAlert,
+            [
+                {text: this.props.language.no_txt},
+                {text: this.props.language.yes_txt, onPress: () => this.deleteValue(data)},
+            ]
+        );
+    }
+
+    deleteValue(data) {
+        const filterArray = this.state.data.filter(e => e.id !== data.item.id)
+        this.setState({data: filterArray})
     }
 
     bottomLine() {
@@ -169,25 +185,45 @@ class Favorite extends Component {
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignItems:"center",paddingTop:10,paddingBottom:10}}>
-                <Text style={styles.title}>{language.favoriteTitle}</Text>
+                <View style={{alignItems: "center", paddingTop: 10, paddingBottom: 10}}>
+                    <Text style={styles.title}>{language.favoriteTitle}</Text>
                 </View>
-                    <View>
-                        <Swipeable rightButtons={rightButtons}>
-                    <FlatList data={this.state.data}
-                              renderItem={this._renderItem}
-                              ItemSeparatorComponent={() => this.bottomLine()}
-                              ListHeaderComponent={()=> this.bottomLine()}
-                              ListFooterComponent={this.bottomLine()}
-                              keyExtractor={(item, index) => index + ""}
+                    <SwipeListView
+                         disableRightSwipe={true}
+                        data={this.state.data}
+                        renderItem={this._renderItem}
+                        keyExtractor={(item, index) => index + ""}
+                        renderHiddenItem={(data, rowMap) => (
+                            <View style={styles.rowBack} onStartShouldSetResponder={
+                                () => this.closeRow(rowMap, data.item.id)
+                            }>
+                               {/* <TouchableOpacity
+                                    style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                                    onPress={() => this.closeRow(rowMap, data.item.id)}
+                                >
+                                    <Text style={styles.backTextWhite}>Close</Text>
+                                </TouchableOpacity>*/}
+                                <TouchableOpacity
+                                    style={[styles.backRightBtn, styles.backRightBtnRight]}
+                                    onPress={() => this.deleteRow(data, rowMap)}
+                                >
+                                    <Image style={{
+                                        height: Utility.setHeight(22),
+                                        width: Utility.setWidth(30),
+                                        tintColor: themeStyle.WHITE
+                                    }} resizeMode={"contain"}
+                                           source={require("../../resources/images/trash.png")}/>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                        leftOpenValue={75}
+                        // rightOpenValue={-300}
+                        rightOpenValue={-Utility.getDeviceWidth()}
                     />
-                        </Swipeable>
-                </View>
             </View>
         );
     }
 }
-
 
 const styles = {
     viewStyles: {
@@ -195,6 +231,31 @@ const styles = {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: themeStyle.BG_COLOR,
+    },
+    rowBack: {
+        backgroundColor: themeStyle.THEME_COLOR,
+        flex: 1,
+        // paddingLeft: 25,
+    },
+    backRightBtn: {
+        backgroundColor: "yellow",
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+    },
+    backRightBtnRight: {
+        backgroundColor: themeStyle.THEME_COLOR,
+        right: 0,
+    },
+    backRightBtnLeft: {
+        backgroundColor: 'blue',
+        right: 75,
+    },
+    backTextWhite: {
+        color: '#FFF',
     },
     toolbar: {
         justifyContent: "center",
@@ -206,6 +267,16 @@ const styles = {
         fontFamily: fontStyle.RobotoMedium,
         fontSize: FontSize.getSize(14),
         color: themeStyle.THEME_COLOR
+    },
+    rowFront: {
+        flex:1,
+        backgroundColor: themeStyle.WHITE,
+        borderBottomColor: themeStyle.SEPARATOR,
+        borderTopColor: themeStyle.SEPARATOR,
+        borderTopWidth: 1,
+        justifyContent: "center",
+        borderBottomWidth: 1,
+        height: 50,
     },
 }
 
