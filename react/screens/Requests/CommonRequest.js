@@ -470,7 +470,7 @@ export const validateCard = (cardNumber) => {
 export const DeviceChange = (result, props) => {
     Alert.alert(
         Config.appName,
-        result.MESSAGE,
+        unicodeToChar(result.MESSAGE),
         [
             {
                 text: props.language.no_txt

@@ -28,7 +28,7 @@ import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-nativ
 import dimen from "../resources/Dimens";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
-import {unicodeToChar} from "./Requests/CommonRequest";
+import {DeviceChange, unicodeToChar} from "./Requests/CommonRequest";
 
 
 class PinLogin extends Component {
@@ -186,7 +186,7 @@ class PinLogin extends Component {
             if (result.STATUS === "0") {
                 await this.processLoginResponse(result, userName);
             } else if (result.STATUS === "71") {
-                this.deviceChange(result);
+                DeviceChange(result,this.props);
             } else {
                 Alert.alert(
                     Config.appName,
@@ -221,26 +221,6 @@ class PinLogin extends Component {
 
     }
 
-    deviceChange(result) {
-        let that = this;
-        Alert.alert(
-            Config.appName,
-            result.MESSAGE,
-            [
-                {
-                    text: that.props.language.no_txt
-                },
-                {
-                    text: that.props.language.yes_txt, onPress: () =>
-                        this.props.navigation.navigate("TermConditionScreen",
-                            {
-                                showButton: true,
-                                deviceChangeRes: result.RESPONSE[0],
-                            })
-                },
-            ]
-        );
-    }
 
 
     async processLoginResponse(result, userName) {

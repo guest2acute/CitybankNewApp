@@ -134,7 +134,7 @@ class Favorite extends Component {
 
     deleteRow = (data, rowMap) => {
         Alert.alert(
-            "",
+            Config.appName,
             this.props.language.deleteAlert,
             [
                 {text: this.props.language.no_txt},

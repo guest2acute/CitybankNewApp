@@ -8,12 +8,13 @@ import DeviceInfo from "react-native-device-info";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {CommonActions} from "@react-navigation/native";
 import StorageClass from "./StorageClass";
+import {unicodeToChar} from "../screens/Requests/CommonRequest";
 
 export default class Utility {
     static alert(msg, text) {
         Alert.alert(
             Config.appName,
-            msg,
+            unicodeToChar(msg),
             [
                 {
                     text: text, onPress: () => {
@@ -26,7 +27,7 @@ export default class Utility {
     static alertWithBack(btn_txt, msg, navigation) {
         Alert.alert(
             Config.appName,
-            msg,
+            unicodeToChar(msg),
             [
                 {
                     text: btn_txt, onPress: () => {
@@ -173,11 +174,11 @@ export default class Utility {
 
     static errorManage(status, message, props) {
         if (status === "99" || status === "1") {
-            Utility.alert(message,props.language.ok);
+            Utility.alert(unicodeToChar(message),props.language.ok);
         } else if (status === "9") {
-            Utility.sessionTimeout(message, props.language, props.navigation);
+            Utility.sessionTimeout(unicodeToChar(message), props.language, props.navigation);
         } else if (status === "999") {
-            Utility.alertWithBack(props.language.ok, message, props.navigation);
+            Utility.alertWithBack(props.language.ok, unicodeToChar(message), props.navigation);
         }
 
     }

@@ -94,7 +94,7 @@ class BeneficiaryWithCityBank extends Component {
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props, "A").then(response => {
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props, "A",this.state.currency).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,

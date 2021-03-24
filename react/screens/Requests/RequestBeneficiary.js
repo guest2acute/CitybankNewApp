@@ -25,7 +25,7 @@ export const GETACCTBALDETAIL = (accountNo, props) => {
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -34,7 +34,7 @@ export const GETACCTBALDETAIL = (accountNo, props) => {
 }
 
 
-export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID, ifscCode, props, reqFlag) => {
+export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID, ifscCode, props, reqFlag,currency) => {
     console.log("accountRes", accountRes);
     return new Promise(async (resolve, reject) => {
         let request = {
@@ -47,6 +47,7 @@ export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOB
             BENE_LIST: [{
                 REQ_FLAG: reqFlag,
                 LIMIT_AMT: "0",
+                TO_CURRENCY: currency,
                 TO_ACCT_NO: accountRes.ACCOUNT,
                 NICK_NAME: NICK_NAME,
                 TO_ADD1: accountRes.ADDRESS,
@@ -69,7 +70,7 @@ export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOB
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -115,7 +116,7 @@ export const GETBANKDETAILS = async (userDetails, props, requestType, isCard) =>
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -161,7 +162,7 @@ export const ADDBENFVERIFY = async (userDetails, REQUEST_CD, props, transType, a
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -191,7 +192,7 @@ export const VERIFYBKASHAC = async (userDetails, mobileNumber, props) => {
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -221,7 +222,7 @@ export const GETBENF = async (userDetails, benfType, props) => {
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -254,7 +255,7 @@ export const DELETEBENF = async (userDetails, transType, item, props) => {
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(error, language.ok);
             console.log("error", error);
             return reject(error);
         });
