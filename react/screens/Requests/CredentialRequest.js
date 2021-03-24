@@ -49,7 +49,7 @@ export const VerifyResetPwd = async (isCard, authToken, cityTouchUserId, actNo, 
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(error);
+            Utility.alert(props.language.somethingWrong,props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -77,7 +77,7 @@ export const GETUSERDTLALLKEYS = async (CUSTOMER_DTL_LIST, props) => {
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(error);
+            Utility.alert(props.language.somethingWrong,props.language.ok);
             console.log("error", error);
             return reject(error);
         });

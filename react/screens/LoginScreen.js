@@ -23,6 +23,7 @@ import Config from "../config/Config";
 import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
 import ApiRequest from "../config/ApiRequest";
+import {unicodeToChar} from "./Requests/CommonRequest";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -172,11 +173,11 @@ class LoginScreen extends Component {
             } else if (result.STATUS === "71") {
                 this.deviceChange(result);
             } else {
-                Utility.alert(result.MESSAGE);
+                Utility.alert(unicodeToChar(result.MESSAGE),this.props.language.ok);
             }
         }).catch(error => {
             this.setState({isProgress: false});
-            Utility.alert(this.props.language.somethingWrong);
+            Utility.alert(this.props.language.somethingWrong,this.props.language.ok);
         });
     }
 
@@ -189,7 +190,7 @@ class LoginScreen extends Component {
                     <Text style={CommonStyle.title}>{language.login}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "en")}
+                            onPress={() => this.changeLanguage(this.props, Config.EN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -201,7 +202,7 @@ class LoginScreen extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "bangla")}
+                            onPress={() => this.changeLanguage(this.props, Config.BN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",

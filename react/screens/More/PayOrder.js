@@ -68,7 +68,7 @@ class PayOrder extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -86,15 +86,13 @@ class PayOrder extends Component {
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.selectAccountNumberType === language.select_actNo) {
-            Utility.alert(language.select_actNo);
+            Utility.alert(language.select_actNo,language.ok);
         } else if (this.state.selectDeliveryLocationType === language.select_delivery_location) {
-            Utility.alert(language.selectDeliveryLocation);
+            Utility.alert(language.selectDeliveryLocation,language.ok);
         } else if (this.state.amount === "") {
             this.setState({errorAmount: language.error_amount})
-            return;
         } else if (this.state.beneficiaryName === "") {
             this.setState({error_beneficiaryName: language.error_beneficiaryName})
-            return;
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }

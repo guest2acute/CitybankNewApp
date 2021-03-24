@@ -28,6 +28,7 @@ import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-nativ
 import dimen from "../resources/Dimens";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
+import {unicodeToChar} from "./Requests/CommonRequest";
 
 
 class PinLogin extends Component {
@@ -189,7 +190,7 @@ class PinLogin extends Component {
             } else {
                 Alert.alert(
                     Config.appName,
-                    result.MESSAGE,
+                    unicodeToChar(result.MESSAGE),
                     [
                         {
                             text: this.props.language.ok, onPress: () => {
@@ -725,7 +726,7 @@ class PinLogin extends Component {
                     <Text style={CommonStyle.title}>{this.props.language.PINLogin}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("en")}
+                            onPress={() => this.changeLanguage(Config.EN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -737,7 +738,7 @@ class PinLogin extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("bangla")}
+                            onPress={() => this.changeLanguage(Config.BN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",

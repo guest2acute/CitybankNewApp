@@ -58,7 +58,7 @@ class Beneficiary extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -72,7 +72,7 @@ class Beneficiary extends Component {
     submit(language, navigation) {
         let addTitle = "", title = "", screenName = "", benfType = "";
         if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.error_select_beneficiary_type);
+            Utility.alert(language.error_select_beneficiary_type,language.ok);
             return;
         } else if (this.state.selectTypeVal === 0) {
             addTitle = this.props.language.add_beneficiary_mfs;

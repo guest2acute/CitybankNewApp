@@ -73,7 +73,7 @@ class EmailTransferScreen extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -111,11 +111,11 @@ class EmailTransferScreen extends Component {
             console.log("")
         }
         else if(this.state.selectBeneficiaryType === language.select_beneficiary_type) {
-            Utility.alert(language.error_select_beneficiary_type);
+            Utility.alert(language.error_select_beneficiary_type,language.ok);
             return;
         }
         else if(this.state.selectAcctType===language.bkash_select_acct){
-            Utility.alert(language.error_select_from_type);
+            Utility.alert(language.error_select_from_type,language.ok);
             return;
         }
         else if(this.state.paymentAmount===""){

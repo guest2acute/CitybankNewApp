@@ -193,7 +193,7 @@ class Profile extends Component {
         this.setState({isProgress: false});
         if (result.STATUS === "0") {
             //await StorageClass.store(Config.LoginPref, this.state.loginPrefVal);
-            Utility.alert(result.MESSAGE);
+            Utility.alert(result.MESSAGE,this.props.language.ok);
         } else {
             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
         }
@@ -261,7 +261,7 @@ class Profile extends Component {
 
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "en")}
+                            onPress={() => this.changeLanguage(this.props, Config.EN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -273,7 +273,7 @@ class Profile extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "bangla")}
+                            onPress={() => this.changeLanguage(this.props, Config.BN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",

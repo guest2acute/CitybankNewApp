@@ -39,7 +39,7 @@ class BeneficiaryTransferMFS extends Component {
     async onSubmit(language, navigation) {
         if (this.state.isMainScreen) {
             if (this.state.selMFSVal === -1) {
-                Utility.alert(language.errorSelMFSVal);
+                Utility.alert(language.errorSelMFSVal,language.ok);
             } else if (this.state.nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
             } else if (this.state.accountNo.length < 11) {
@@ -108,7 +108,7 @@ class BeneficiaryTransferMFS extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 

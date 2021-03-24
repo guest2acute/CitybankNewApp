@@ -125,7 +125,7 @@ class ViewDeleteBeneficiary extends Component {
                 isProgress: false,
                 data: this.state.data.filter(e => e !== item)
             });
-            Utility.alert(response.MESSAGE);
+            Utility.alert(response.MESSAGE,this.props.language.ok);
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);

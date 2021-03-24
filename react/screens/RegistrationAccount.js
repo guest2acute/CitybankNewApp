@@ -1268,7 +1268,7 @@ class RegistrationAccount extends Component {
                     this.setState({errorUserId: userRes});
                     return;
                 } else if (!this.state.isTerm) {
-                    Utility.alert(language.errorTerm);
+                    Utility.alert(language.errorTerm,language.ok);
                     return;
                 }
                 await this.signupRequest();
@@ -1297,7 +1297,7 @@ class RegistrationAccount extends Component {
                     this.setState({errorUserId: userRes});
                     return;
                 } else if (!this.state.isTerm) {
-                    Utility.alert(language.errorTerm);
+                    Utility.alert(language.errorTerm,language.ok);
                     return;
                 }
                 await this.signupRequest();
@@ -1305,7 +1305,7 @@ class RegistrationAccount extends Component {
 
         } else if (stateVal === 2) {
             if (this.state.otpVal.length !== 4) {
-                Utility.alert(language.errOTP);
+                Utility.alert(language.errOTP,language.ok);
                 return;
             }
             await this.getOTP();
@@ -1330,7 +1330,7 @@ class RegistrationAccount extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
-                Utility.alert(description);
+                Utility.alert(description,this.props.language.ok);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);

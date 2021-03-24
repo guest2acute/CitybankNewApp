@@ -89,7 +89,7 @@ class FundTransfer extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -144,40 +144,29 @@ class FundTransfer extends Component {
     async onSubmit(language, navigation) {
         if(this.state.stateVal===0) {
             if (this.state.selectAcctType === language.selectAccountType) {
-                Utility.alert(language.error_select_from_type);
-                return;
+                Utility.alert(language.error_select_from_type,language.ok);
             } else if (this.state.selectToAcctType === language.select_to_acct) {
-                Utility.alert(language.error_select_to_type);
-                return;
+                Utility.alert(language.error_select_to_type,language.ok);
             } else if (this.state.transferAmount === "") {
                 this.setState({error_transferAmount: language.errtransferammt})
-                return;
             } else if (this.state.transferAmount <= 500) {
                 this.setState({error_transferAmount: language.error_less_ammt})
-                return;
             } else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
-                return;
             }else{
                 this.setState({stateVal: this.state.stateVal + 2});
-                // this.props.navigation.navigate("FundTransferDetails")
             }
         } else if(this.state.stateVal === 1) {
             if (this.state.selectAcctType === language.selectAccountType) {
-                Utility.alert(language.error_select_from_type);
-                return;
+                Utility.alert(language.error_select_from_type,language.ok);
             }else if(this.state.selectNicknameType === language.select_nickname){
-                Utility.alert(language.error_select_nickname_type);
-                return;
+                Utility.alert(language.error_select_nickname_type,language.ok);
             }else if (this.state.transferAmount === "") {
                 this.setState({error_transferAmount: language.errtransferammt})
-                return;
             } else if (this.state.transferAmount <= 500) {
                 this.setState({error_transferAmount: language.error_less_ammt})
-                return;
             } else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
-                return;
             }else{
                 this.setState({stateVal: this.state.stateVal + 3});
             }
@@ -187,11 +176,9 @@ class FundTransfer extends Component {
             if (this.state.paymentdate === "") {
                 this.setState({errorpaymentdate: language.error_payment_date});
             }else if (this.state.selectPaymentType === language.select_payment) {
-                Utility.alert(language.select_payment);
-                return;
+                Utility.alert(language.select_payment,language.ok);
             }else if(this.state.numberPayment===""){
                 this.setState({error_numberPayment:language.error_numberPayment})
-                return;
             }
         }
       //  Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)

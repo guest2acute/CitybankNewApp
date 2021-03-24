@@ -60,7 +60,7 @@ class CityCreditCard extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -80,10 +80,10 @@ class CityCreditCard extends Component {
     submit(language, navigation) {
         if(this.state.stateVal === 0) {
             if (this.state.selectCreditCardType === language.selectCreditCard) {
-                Utility.alert(language.error_select_credit_card);
+                Utility.alert(language.error_select_credit_card,language.ok);
                 return;
             }else if (this.state.selectAcctType === language.bkash_select_acct) {
-                Utility.alert(language.error_select_from_type);
+                Utility.alert(language.error_select_from_type,language.ok);
                 return;
             } else if (this.state.paymentAmount === "") {
                 this.setState({errorPaymentAmount: language.err_payment_amount})
@@ -91,10 +91,10 @@ class CityCreditCard extends Component {
             }
         }else if(this.state.stateVal === 1){
               if(this.state.selectNicknameType === language.select_nickname) {
-                Utility.alert(language.error_select_nickname);
+                Utility.alert(language.error_select_nickname,language.ok);
                 return;
             }else if (this.state.selectAcctType === language.bkash_select_acct) {
-                  Utility.alert(language.error_select_from_type);
+                  Utility.alert(language.error_select_from_type,language.ok);
                   return;
               }else if (this.state.paymentAmount === "") {
                   this.setState({errorPaymentAmount: language.err_payment_amount})

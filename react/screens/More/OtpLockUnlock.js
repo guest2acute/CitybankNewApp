@@ -64,7 +64,7 @@ class OtpLockUnlock extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -97,9 +97,9 @@ class OtpLockUnlock extends Component {
         let otpMsg = "", successMsg = "";
         console.log("selectTypeVal is this",this.state.selectTypeVal)
         if (this.state.selectOtpType === language.select_otp_status) {
-            Utility.alert(language.error_otp_status);
+            Utility.alert(language.error_otp_status,language.ok);
         }else if (this.state.selectDebitCreditType === language.select_debit_credit) {
-            Utility.alert(language.error_debit_credit);
+            Utility.alert(language.error_debit_credit,language.ok);
         } else if (this.state.cardExpiry === "") {
             this.setState({errorExpiry: language.errExpiryDate});
         } else if (this.state.debitPin === "") {

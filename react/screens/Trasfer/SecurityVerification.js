@@ -93,7 +93,7 @@ class SecurityVerification extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -111,11 +111,9 @@ class SecurityVerification extends Component {
         console.log("authFlag", authFlag);
         if (authFlag === "CP") {
             if (selectTypeVal === -1) {
-                Utility.alert(language.errorSelectCard);
-                return;
+                Utility.alert(language.errorSelectCard,language.ok);
             } else if (cardPin === "") {
                 this.setState({errorCardPin: language.errSecurity})
-                return;
             } else {
                 await this.processVerification();
             }

@@ -60,7 +60,7 @@ class CashByCode extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -94,7 +94,7 @@ class CashByCode extends Component {
 
     async onSubmit(language, navigation) {
         if (this.state.selectDebitType === language.cash_select_acct) {
-            Utility.alert(language.error_debit_card);
+            Utility.alert(language.error_debit_card,language.ok);
             return;
         }
         else if(this.state.amount===""){

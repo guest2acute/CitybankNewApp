@@ -25,7 +25,7 @@ export const GetUserAuthByUid = async (cityTouchUserId, props) => {
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(error);
+            Utility.alert(props.language.somethingWrong,props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -66,7 +66,7 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, otp_
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(error);
+            Utility.alert(props.language.somethingWrong,props.language.ok);
             console.log("error", error);
             return reject(error);
         });
