@@ -25,7 +25,7 @@ class CashByCode extends Component {
         this.state = {
             nickname: "",
             accountNo: "",
-            mobile_number:"",
+            mobileNumber:"",
             error_nickname:"",
             error_accountNo:"",
             focusUid: false,
@@ -49,6 +49,9 @@ class CashByCode extends Component {
             remarks:"",
             error_remarks:"",
             errorMobile:"",
+            services_charge:"",
+            vat:"",
+            grandTotal:"",
 }
     }
 
@@ -80,18 +83,6 @@ class CashByCode extends Component {
         }
     }
 
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({nickname: text, error_nickname: ""})
-    }
-
-    accountchange(text){
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({accountNo: text, error_accountNo: ""})
-    }
-
     async onSubmit(language, navigation) {
         if (this.state.selectDebitType === language.cash_select_acct) {
             Utility.alert(language.error_debit_card,language.ok);
@@ -100,13 +91,17 @@ class CashByCode extends Component {
         else if(this.state.amount===""){
             this.setState({error_amount:language.error_amount})
             return;
-        }else if(this.state.mobile_number===""){
+        }else if(this.state.mobileNumber===""){
             this.setState({errorMobile:language.error_mobile})
             return;
-        }
-        else if(this.state.remarks === "") {
+        }else if(this.state.mobile_number.length > 11){
+            this.setState({errorMobile:language.error_mobile_number})
+            return;
+        }else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})
             return;
+        }else{
+
         }
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
@@ -168,7 +163,7 @@ class CashByCode extends Component {
                     onSubmitEditing={(event) => {
                         this.amountRef.focus();
                     }}
-                    maxLength={13}/>
+                    />
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             {this.state.error_availableBal !==  "" ?
@@ -190,7 +185,7 @@ class CashByCode extends Component {
                     ref={(ref) => this.amountRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
-                    placeholder={"00.00"}
+                    placeholder={language.enter_amount}
                     onChangeText={text => this.setState({
                         error_amount: "",
                         amount: Utility.userInput(text)
@@ -224,7 +219,9 @@ class CashByCode extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.beneficiary_mobile_number}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
+{/*
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
                         <Image style={{
                             height: Utility.setHeight(20),
@@ -234,6 +231,7 @@ class CashByCode extends Component {
                         }} resizeMode={"contain"}
                                source={require("../../resources/images/ic_beneficiary.png")}/>
                     </TouchableOpacity>
+*/}
                     <TextInput
                         ref={(ref) => this.mobileNumberRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
@@ -244,8 +242,8 @@ class CashByCode extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={"01********"}
-                        onChangeText={text => this.setState({errorMobile:"",mobile_number: Utility.input(text, "0123456789")})}
-                        value={this.state.mobile_number}
+                        onChangeText={text => this.setState({errorMobile:"",mobileNumber: Utility.ValidateMobileNumber(text, "0123456789")})}
+                        value={this.state.mobileNumber}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
@@ -298,7 +296,7 @@ class CashByCode extends Component {
                 borderWidth: 2}}>
                 <Text style={[CommonStyle.textStyle,{marginStart: 10, marginTop: 10}]}>
                     {language.case_code_via}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <RadioForm
                     radio_props={language.bkash_otp_props}
@@ -319,6 +317,7 @@ class CashByCode extends Component {
                 />
             </View>
 
+{/*
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10
@@ -346,6 +345,100 @@ class CashByCode extends Component {
                     }}
                 />
             </View>
+*/}
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.services_charge}
+                </Text>
+                <TextInput
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
+                    placeholder={"00.00"}
+                    onChangeText={text => this.setState({
+                        errorServicesCharge: "",
+                        servicesCharge: Utility.userInput(text)
+                    })}
+                    value={this.state.servicesCharge}
+                    multiline={false}
+                    numberOfLines={1}
+                    contextMenuHidden={true}
+                    keyboardType={"number-pad"}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    autoCorrect={false}
+                    editable={false}
+                    maxLength={13}/>
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.vat}
+                </Text>
+                <TextInput
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
+                    placeholder={"00.00"}
+                    onChangeText={text => this.setState({
+                        error_vat: "",
+                        vat: Utility.userInput(text)
+                    })}
+                    value={this.state.vat}
+                    multiline={false}
+                    numberOfLines={1}
+                    contextMenuHidden={true}
+                    keyboardType={"number-pad"}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    autoCorrect={false}
+                    editable={false}
+                    maxLength={13}/>
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.grand_total}
+                </Text>
+                <TextInput
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
+                    placeholder={"00.00"}
+                    onChangeText={text => this.setState({
+                        grandTotal: Utility.userInput(text)
+                    })}
+                    value={this.state.grandTotal}
+                    multiline={false}
+                    numberOfLines={1}
+                    contextMenuHidden={true}
+                    keyboardType={"number-pad"}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    autoCorrect={false}
+                    editable={false}
+                />
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
             <View style={{marginStart:10,marginEnd:10}}>
                 <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>

@@ -1,6 +1,5 @@
 import React from "react";
 import Beneficiary from "../screens/Trasfer/Beneficiary/Beneficiary";
-import {Text} from "react-native";
 
 export default {
     language_english: "EN",
@@ -833,16 +832,16 @@ export default {
     fund_transferCity_note2: "5 lacs per day",
 
     other_bankAccount_note1: "1. Maximum transaction limit from CityTouch is BDT 5 lacs per day.",
-    other_bankAccount_note2: "2. BEFTN: transfer request placed before 2:00PM will be executed on the.",
-    other_bankAccount_note3: "same day and transfer request placed after",
-    other_bankAccount_note4: "2:PM will be executed on the next working day after 10.00 AM.",
+    other_bankAccount_note2: "2. BEFTN: transfer request placed before 2:00PM will",
+    other_bankAccount_note3: "be executed on the. same day and transfer request",
+    other_bankAccount_note4: " placed after 2:PM will be executed on the next working day after 10.00 AM.",
     other_bankAccount_note5: "3. RTGS Available from 10:30 to 03:00 PM for instant.",
     other_bankAccount_note6: "transfer of 1 to 5 lacs within working day.Fee BDT 100 (VAT Inclusive)",
-    other_bankAccount_note7: "4. NPSB: Transfer limit is BDT 5 lacs in 10 transcation per day",
-    other_bankAccount_note8: "and maximum BDT 1 lacs per transaction",
-    other_bankAccount_note9: "5. Credit card master limit: minimum transferable amount is",
-    other_bankAccount_note10: "BDT is 500 and up to 50% of total available BDT limit.",
-    other_bankAccount_note11: "other_bankAccount_note10",
+    other_bankAccount_note7: "4. NPSB: Transfer limit is BDT 5 lacs in 10 transaction",
+    other_bankAccount_note8: " per day and maximum BDT 1 lacs per transaction",
+    other_bankAccount_note9: "5. Credit card master limit: minimum transferable",
+    other_bankAccount_note10: " amount is BDT is 500 and up to 50% of total available BDT limit.",
+    other_bankAccount_note11: "6.Processing fee + Vat will be applicable",
     other_bankAccount_note12: "7.consecutive transaction in the same account will take 10 minutes of interval",
 
     beneficiary_otherBank_note1: "1. Beneficiary banks/branches should be capable to",
@@ -1206,11 +1205,28 @@ export default {
     update_beneficiary_alert: "Please update this beneficiary information",
     settings: "Settings",
 
+    error_select_to_type:"Please Select To Account",
+    error_select_nickname_type:"select nick name",
+    fund_transfer_own_account:"Fund Transfer Own Account",
+    fund_transfer_city_account:"Fund Transfer City Account",
+    transfer:"Transfer",
+    fund_transfer_bank:"Fund Transfer Other Bank Account",
 
-    error_select_to_type: "Please Select To Account",
-    error_select_nickname_type: "select nick name",
-    fund_transfer_own_account: "Fund Transfer Own Account",
-    fund_transfer_city_account: "Fund Transfer City Account",
-    transfer: "Transfer",
-    somethingWrong: "Something wrong please try after sometime"
+    error_grand_total_amount:"Grand total amount should be less than or equal to  available balance.",
+    enter_amount: "Enter amount here",
+    error_mobile_number:"Mobile number should be 11 digit and start with 01",
+    payment_details:"Payment Details",
+
+    /* Payments Details*/
+    merchant_name: "Merchant Name",
+    merchant_city: "Merchant City",
+    payment_amount: "Payment Amount(BDT)",
+    grandTotal_bdt: "Grand Total (BDT)",
+    bill_number:"Bill Number",
+    store_label: "Store Label",
+    terminal_label: "Terminal Label",
+    payment_details_note1:"1. Enter Amount or the total bill value of the goods purchased.",
+    somethingWrong: "Something wrong please try after sometime",
+
+
 }

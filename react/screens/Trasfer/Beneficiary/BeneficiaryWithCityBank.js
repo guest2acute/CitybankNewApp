@@ -110,6 +110,7 @@ class BeneficiaryWithCityBank extends Component {
         });
     }
 
+
     getActDetails(language) {
         if (this.state.accountNo.length !== 13) {
             this.setState({error_accountNo: language.require_accnumber})
@@ -129,7 +130,8 @@ class BeneficiaryWithCityBank extends Component {
     }
 
     accountNoOption(language, flag) {
-        return (<View>
+        return (
+            <View>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
