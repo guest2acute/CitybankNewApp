@@ -10,8 +10,17 @@ import {CommonActions} from "@react-navigation/native";
 import StorageClass from "./StorageClass";
 
 export default class Utility {
-    static alert(msg) {
-        Alert.alert(Config.appName, msg);
+    static alert(msg, text) {
+        Alert.alert(
+            Config.appName,
+            msg,
+            [
+                {
+                    text: text, onPress: () => {
+                    }
+                },
+            ]
+        );
     }
 
     static alertWithBack(btn_txt, msg, navigation) {
@@ -62,7 +71,7 @@ export default class Utility {
 
     }
 
-    static verifyAccountHolder(text){
+    static verifyAccountHolder(text) {
         if (text.indexOf("&") !== -1)
             text = text.replace(/&/g, '');
         return text;
@@ -158,13 +167,13 @@ export default class Utility {
 
     static validPassword(text) {
         console.log(text);
-        let reg= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        let reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
         return reg.test(text);
     }
 
     static errorManage(status, message, props) {
         if (status === "99" || status === "1") {
-            Utility.alert(message);
+            Utility.alert(message,props.language.ok);
         } else if (status === "9") {
             Utility.sessionTimeout(message, props.language, props.navigation);
         } else if (status === "999") {

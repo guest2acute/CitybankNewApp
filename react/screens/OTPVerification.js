@@ -81,7 +81,7 @@ class OTPVerification extends Component {
         if (this.state.stageVal === 0) {
             await this.deviceRegister(language, navigation)
         } else if (this.state.otpVal.length !== 4) {
-            Utility.alert(language.errOTP);
+            Utility.alert(language.errOTP,language.ok);
         } else {
             await this.processOTP(language, navigation);
         }

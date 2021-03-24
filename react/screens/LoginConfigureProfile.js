@@ -409,7 +409,7 @@ class LoginConfigureProfile extends Component {
                     <Text style={CommonStyle.title}>{language.login_configure_profile}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "en")}
+                            onPress={() => this.changeLanguage(this.props, Config.EN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -421,7 +421,7 @@ class LoginConfigureProfile extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "bangla")}
+                            onPress={() => this.changeLanguage(this.props, Config.BN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",

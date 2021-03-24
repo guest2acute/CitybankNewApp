@@ -21,9 +21,10 @@ import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiar
 
 
 class BeneficiaryWithCityBank extends Component {
+
+
     constructor(props) {
         super(props);
-
         this.state = {
             isProgress: false,
             nickname: "",
@@ -38,14 +39,15 @@ class BeneficiaryWithCityBank extends Component {
             error_accountNo: "",
             stageVal: 0,
             accountDetails: null,
-            title:props.route.params.title
+            title: props.route.params.title
         }
+
+        this.resetScreen =  this.resetScreen.bind(this);
     }
 
     userInput(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
-
         this.setState({nickname: text, error_nickname: ""})
     }
 
@@ -89,24 +91,25 @@ class BeneficiaryWithCityBank extends Component {
         }
     }
 
-        beneficiaryAdd(language) {
-            const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
-            this.setState({isProgress: true});
-            AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props,"A").then(response => {
-                console.log("response", response);
-                this.setState({
-                    isProgress: false,
-                }, () => this.props.navigation.navigate("SecurityVerification", {
-                    REQUEST_CD: response.REQUEST_CD,
-                    transType: "I",
-                    actNo: this.state.accountNo,
-                    resetScreen: this.resetScreen
-                }));
-            }).catch(error => {
-                this.setState({isProgress: false});
-                console.log("error", error);
-            });
-        }
+    beneficiaryAdd(language) {
+        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
+        this.setState({isProgress: true});
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props, "A").then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () => this.props.navigation.navigate("SecurityVerification", {
+                REQUEST_CD: response.REQUEST_CD,
+                transType: "I",
+                actNo: this.state.accountNo,
+                resetScreen: this.resetScreen
+            }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
+
 
     getActDetails(language) {
         if (this.state.accountNo.length !== 13) {

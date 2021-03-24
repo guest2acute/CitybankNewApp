@@ -237,7 +237,7 @@ class Accounts extends Component {
                 this.processBalance("", accountNo, "");
             }
         }).catch(error => {
-            Utility.alert(error);
+            Utility.alert(error,this.props.language.ok);
             console.log("error", error);
         });
 

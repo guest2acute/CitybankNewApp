@@ -14,5 +14,10 @@ export function* setSignupDetails(action) {
     return action.payload;
 }
 
+export function* addBeneficiary(action) {
+    return action.payload;
+}
+
+
 
 

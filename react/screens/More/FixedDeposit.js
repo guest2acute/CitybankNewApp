@@ -71,7 +71,7 @@ class FixedDeposit extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -93,18 +93,18 @@ class FixedDeposit extends Component {
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.selectAccountNumberType === language.select_actNo) {
-            Utility.alert(language.select_actNo);
+            Utility.alert(language.select_actNo,language.ok);
         } else if (this.state.selectAccountType === language.select_type_account) {
-            Utility.alert(language.selectActType);
+            Utility.alert(language.selectActType,language.ok);
         } else if (this.state.selectTenureType === language.select_tenure_type) {
-            Utility.alert(language.selectTenureType);
+            Utility.alert(language.selectTenureType,language.ok);
         } else if (this.state.selectTenurePeriodType === language.select_tenure_period) {
-            Utility.alert(language.selectTenurePeriod);
+            Utility.alert(language.selectTenurePeriod,language.ok);
         } else if (this.state.amount === "") {
             this.setState({errorAmount: language.error_amount})
             return;
         } else if (this.state.selectBranchType === language.select_branch) {
-            Utility.alert(language.error_select_branch_name);
+            Utility.alert(language.error_select_branch_name,language.ok);
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }

@@ -1,6 +1,4 @@
-import {Text} from "react-native";
 import React from "react";
-import Beneficiary from "../screens/Trasfer/Beneficiary/Beneficiary";
 
 export default {
     language_english: "EN",
@@ -1219,6 +1217,8 @@ export default {
     bill_number:"বিল নম্বর",
     store_label: "স্টোর লেবেল",
     terminal_label: "টার্মিনাল লেবেল",
-    payment_details_note1:"1. ক্রয়কৃত সামগ্রীর পরিমাণ বা বিলের মোট মূল্য প্রবেশ করান।"
+    payment_details_note1:"1. ক্রয়কৃত সামগ্রীর পরিমাণ বা বিলের মোট মূল্য প্রবেশ করান।",
+    somethingWrong: "কিছু ভুল হয়েছে দয়া করে কিছুক্ষণ পরে চেষ্টা করুন"
+
 }
 

@@ -72,7 +72,7 @@ class PositivePay extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -92,19 +92,17 @@ class PositivePay extends Component {
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.selectAccountNumberType === language.select_actNo) {
-            Utility.alert(language.select_actNo);
+            Utility.alert(language.select_actNo,language.ok);
         } else if (this.state.selectChequeBookNumberType === language.select_chequebook_number) {
-            Utility.alert(language.select_chequebook_number);
+            Utility.alert(language.select_chequebook_number,language.ok);
         }else if (this.state.selectUnusedChequeBookNumberType === language.select_unused_cheque_number) {
-            Utility.alert(language.select_unused_cheque_number);
+            Utility.alert(language.select_unused_cheque_number,language.ok);
         }
         else if (this.state.amount === "") {
             this.setState({errorAmount:language.error_amount})
-            return;
         }
         else if (this.state.beneficiaryName === "") {
             this.setState({error_beneficiaryName:language.error_beneficiaryName})
-            return;
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }

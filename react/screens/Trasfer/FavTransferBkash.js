@@ -57,7 +57,7 @@ class FavTransferBkash extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -73,11 +73,11 @@ class FavTransferBkash extends Component {
 
     async onSubmit(language, navigation) {
         if (this.state.selectNicknameType === language.selectNickType) {
-            Utility.alert(language.error_select_nickname);
+            Utility.alert(language.error_select_nickname,language.ok);
             return;
         }
         else if(this.state.selectAcctType===language.bkash_select_acct){
-            Utility.alert(language.error_select_from_type);
+            Utility.alert(language.error_select_from_type,language.ok);
             return;
         }
         else if(this.state.transferAmount===""){

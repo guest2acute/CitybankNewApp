@@ -113,7 +113,7 @@ class ChangeTransPin extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -526,7 +526,7 @@ class ChangeTransPin extends Component {
 
         if (result.STATUS === "0") {
             this.resetAll();
-            Utility.alert(result.MESSAGE);
+            Utility.alert(result.MESSAGE,language.ok);
         } else {
             this.setState({isProgress: false});
             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
@@ -550,7 +550,7 @@ class ChangeTransPin extends Component {
             }
         } else if (this.state.stage === 1) {
             if (this.state.otpVal.length !== 4) {
-                Utility.alert(language.errOTP);
+                Utility.alert(language.errOTP,language.ok);
             } else {
                 await this.processOTP(language, navigation);
             }

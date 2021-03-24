@@ -55,7 +55,7 @@ class InsurancePayment extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -69,23 +69,17 @@ class InsurancePayment extends Component {
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.error_select_beneficiary_type);
-            return;
-        }
-        else if (this.state.selectTypeVal === 0) {
+            Utility.alert(language.error_select_beneficiary_type, language.ok);
+        } else if (this.state.selectTypeVal === 0) {
             this.props.navigation.navigate("BeneficiaryWithCityBank");
-            return;
         } else if (this.state.selectTypeVal === 1) {
             this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.add_beneficiary});
-            return;
         } else if (this.state.selectTypeVal === 2) {
             this.props.navigation.navigate("TransferWithBkash");
-            return;
-        }
-        else{
+        } else {
             this.props.navigation.navigate("BeneficiaryTransfer")
         }
-        }
+    }
 
     render() {
         let language = this.props.language;

@@ -121,7 +121,7 @@ class OtherBankAccount extends Component {
                 modalData: data, modalVisible: true,selected:false
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -166,6 +166,7 @@ class OtherBankAccount extends Component {
     }
 
     async onSubmit(language, navigation) {
+<<<<<<< HEAD
         console.log("stageVal next screen",this.state.stageVal)
         console.log("otp_type is this",this.state.otp_type)
         if(this.state.stageVal===0) {
@@ -211,6 +212,19 @@ class OtherBankAccount extends Component {
         console.log("get account details",this.state.accountNo)
         if (this.state.accountNo.length !== 13) {
             this.setState({error_accountNo: language.require_accnumber})
+=======
+        if (this.state.selectAcctType === language.bkash_select_acct) {
+            Utility.alert(language.error_select_from_type,language.ok);
+            return;
+        } else if (this.state.selectNicknameType === language.selectNickType) {
+            Utility.alert(language.error_select_nickname,language.ok);
+            return;
+        } else if (this.state.transferAmount === "") {
+            this.setState({errorTransferAmount: language.errtransferammt})
+            return;
+        } else if (this.state.remarks === "") {
+            this.setState({error_remarks: language.errRemarks})
+>>>>>>> 098e88893bc9d6dd47bad1f9425023395fd39d99
             return;
         }
         this.setState({isProgress: true});

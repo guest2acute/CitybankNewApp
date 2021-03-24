@@ -33,7 +33,7 @@ export default class Config {
     static androidAppVersion = "Version 1.0";
     static apiVersion = "1.0";
 
-    static ExpiryDateFormat:"MM/YY"
+    static ExpiryDateFormat: "MM/YY"
 
     static CP_AUTH_TYPE = "CP";
     static TP_AUTH_TYPE = "TP";
@@ -60,7 +60,8 @@ export default class Config {
     static Label = "label";
     static Text = "text";
 
-
+    static EN = "en";
+    static BN = "bn";
 
 
 }

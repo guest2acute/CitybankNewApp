@@ -86,7 +86,7 @@ class UploadSupportDoc extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -325,7 +325,7 @@ class UploadSupportDoc extends Component {
                 file_name: "",
                 errorDocumentAttach: "",
             })
-            Utility.alert(result.MESSAGE);
+            Utility.alert(result.MESSAGE,this.props.language.ok);
         } else {
             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
         }

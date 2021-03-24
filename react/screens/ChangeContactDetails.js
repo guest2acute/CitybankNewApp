@@ -93,7 +93,7 @@ class ChangeContactDetails extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -382,7 +382,7 @@ class ChangeContactDetails extends Component {
         if (stateVal === 0) {
             if (userDetails.AUTH_FLAG === "TP") {
                 if (this.state.select_actNo === language.select_actNo) {
-                    Utility.alert(language.selectActNo);
+                    Utility.alert(language.selectActNo,language.ok);
                 } else if (this.state.transactionPin.length !== 4) {
                     this.setState({errorTransPin: language.errTransPin});
                 } else {
@@ -390,7 +390,7 @@ class ChangeContactDetails extends Component {
                 }
             } else if (userDetails.AUTH_FLAG === "CP") {
                 if (this.state.selectCard === language.selectCard) {
-                    Utility.alert(language.errorSelectCard);
+                    Utility.alert(language.errorSelectCard,language.ok);
                 } else if (this.state.expiryDate === "") {
                     this.setState({errorExpiry: language.errExpiryDate});
                 } else if (this.state.cardPin.length !== 4) {
@@ -401,7 +401,7 @@ class ChangeContactDetails extends Component {
             }
         } else if (stateVal === 1) {
             if (this.state.otpVal.length !== 4) {
-                Utility.alert(language.errOTP);
+                Utility.alert(language.errOTP,language.ok);
             } else {
                 await this.verifyOtp();
             }
@@ -535,7 +535,7 @@ class ChangeContactDetails extends Component {
         if (result.STATUS === "0") {
             Utility.alertWithBack(language.ok, result.MESSAGE, navigation)
         } else if (result.STATUS === "999") {
-            Utility.alert(result.MESSAGE);
+            Utility.alert(result.MESSAGE,language.ok);
         } else {
             this.setState({isProgress: false});
             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);

@@ -23,6 +23,7 @@ import Config from "../config/Config";
 import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
 import ApiRequest from "../config/ApiRequest";
+import {unicodeToChar} from "./Requests/CommonRequest";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -163,17 +164,21 @@ class LoginScreen extends Component {
             ...Config.commonReq
         };
         console.log("request", loginReq);
-        let result = await ApiRequest.apiRequest.callApi(loginReq, {});
-        console.log("result", result);
 
-        this.setState({isProgress: false});
-        if (result.STATUS === "0") {
-            await this.processLoginResponse(result);
-        } else if (result.STATUS === "71") {
-            this.deviceChange(result);
-        } else {
-            Utility.alert(result.MESSAGE);
-        }
+        await ApiRequest.apiRequest.callApi(loginReq, {}).then(async result => {
+            console.log("responseVal", result);
+            this.setState({isProgress: false});
+            if (result.STATUS === "0") {
+                await this.processLoginResponse(result);
+            } else if (result.STATUS === "71") {
+                this.deviceChange(result);
+            } else {
+                Utility.alert(unicodeToChar(result.MESSAGE),this.props.language.ok);
+            }
+        }).catch(error => {
+            this.setState({isProgress: false});
+            Utility.alert(this.props.language.somethingWrong,this.props.language.ok);
+        });
     }
 
     render() {
@@ -185,7 +190,7 @@ class LoginScreen extends Component {
                     <Text style={CommonStyle.title}>{language.login}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "en")}
+                            onPress={() => this.changeLanguage(this.props, Config.EN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -197,7 +202,7 @@ class LoginScreen extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage(this.props, "bangla")}
+                            onPress={() => this.changeLanguage(this.props, Config.BN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -470,23 +475,23 @@ class LoginScreen extends Component {
 }
 
 const styles = {
-        optionText: {
-            fontFamily: fontStyle.RobotoMedium, fontSize: FontSize.getSize(12), color: themeStyle.THEME_COLOR
-        },
-        dashStyle: {
-            marginLeft: Utility.setWidth(20),
-            fontSize: FontSize.getSize(12),
-            marginRight: Utility.setWidth(20),
-            color: themeStyle.PLACEHOLDER_COLOR
-        },
-        rightReserved: {
-            marginTop: Utility.setHeight(30),
-            marginLeft: Utility.setWidth(10),
-            marginRight: Utility.setWidth(10),
-            marginBottom: Utility.setHeight(20),
-            fontFamily: fontStyle.RobotoRegular, fontSize: FontSize.getSize(9), color: themeStyle.PLACEHOLDER_COLOR
-        }
+    optionText: {
+        fontFamily: fontStyle.RobotoMedium, fontSize: FontSize.getSize(12), color: themeStyle.THEME_COLOR
+    },
+    dashStyle: {
+        marginLeft: Utility.setWidth(20),
+        fontSize: FontSize.getSize(12),
+        marginRight: Utility.setWidth(20),
+        color: themeStyle.PLACEHOLDER_COLOR
+    },
+    rightReserved: {
+        marginTop: Utility.setHeight(30),
+        marginLeft: Utility.setWidth(10),
+        marginRight: Utility.setWidth(10),
+        marginBottom: Utility.setHeight(20),
+        fontFamily: fontStyle.RobotoRegular, fontSize: FontSize.getSize(9), color: themeStyle.PLACEHOLDER_COLOR
     }
+}
 
 
 const mapStateToProps = (state) => {

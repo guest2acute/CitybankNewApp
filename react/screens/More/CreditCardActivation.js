@@ -67,7 +67,7 @@ class CreditCardActivation extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -80,8 +80,7 @@ class CreditCardActivation extends Component {
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert(language.errorSelectCard);
-            return;
+            Utility.alert(language.errorSelectCard,language.ok);
         } else if (this.state.cardExpiry === "") {
             this.setState({errorExpiry: language.errExpiryDate});
         } else {

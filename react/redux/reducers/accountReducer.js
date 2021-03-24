@@ -8,7 +8,8 @@ const initialState = {
     language: en,
     login_val: 0,
     userDetails: "",
-    signupDetails:"",
+    signupDetails: "",
+    update_beneficiary: false
 };
 
 export function accountReducer(state = initialState, action) {
@@ -44,6 +45,14 @@ export function accountReducer(state = initialState, action) {
                 {
                     ...state,
                     signupDetails: action.payload.signupDetails
+                },
+            );
+        case actions.account.ADD_BENEFICIARY:
+            return Object.assign(
+                {},
+                {
+                    ...state,
+                    update_beneficiary: action.payload.update_beneficiary
                 },
             );
         default:

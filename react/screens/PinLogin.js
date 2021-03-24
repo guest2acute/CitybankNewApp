@@ -28,6 +28,7 @@ import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-nativ
 import dimen from "../resources/Dimens";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
+import {unicodeToChar} from "./Requests/CommonRequest";
 
 
 class PinLogin extends Component {
@@ -178,18 +179,34 @@ class PinLogin extends Component {
             ...Config.commonReq
         };
         console.log("request", loginReq);
-        let result = await ApiRequest.apiRequest.callApi(loginReq, {});
-        console.log("logres", result);
 
-        this.setState({isProgress: false});
-        if (result.STATUS === "0") {
-            await this.processLoginResponse(result, userName);
-        } else if (result.STATUS === "71") {
-            this.deviceChange(result);
-        } else {
+        await ApiRequest.apiRequest.callApi(loginReq, {}).then(async result => {
+            console.log("responseVal", result);
+            this.setState({isProgress: false});
+            if (result.STATUS === "0") {
+                await this.processLoginResponse(result, userName);
+            } else if (result.STATUS === "71") {
+                this.deviceChange(result);
+            } else {
+                Alert.alert(
+                    Config.appName,
+                    unicodeToChar(result.MESSAGE),
+                    [
+                        {
+                            text: this.props.language.ok, onPress: () => {
+                                if (this.state.loginPref === "2") {
+                                    this.showAuthenticationDialog();
+                                }
+                            }
+                        },
+                    ]
+                );
+            }
+        }).catch(error => {
+            this.setState({isProgress: false});
             Alert.alert(
                 Config.appName,
-                result.MESSAGE,
+                this.props.language.somethingWrong,
                 [
                     {
                         text: this.props.language.ok, onPress: () => {
@@ -200,7 +217,8 @@ class PinLogin extends Component {
                     },
                 ]
             );
-        }
+        });
+
     }
 
     deviceChange(result) {
@@ -708,7 +726,7 @@ class PinLogin extends Component {
                     <Text style={CommonStyle.title}>{this.props.language.PINLogin}</Text>
                     <View style={CommonStyle.headerLabel}>
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("en")}
+                            onPress={() => this.changeLanguage(Config.EN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",
@@ -720,7 +738,7 @@ class PinLogin extends Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => this.changeLanguage("bangla")}
+                            onPress={() => this.changeLanguage(Config.BN)}
                             style={{
                                 height: "100%",
                                 justifyContent: "center",

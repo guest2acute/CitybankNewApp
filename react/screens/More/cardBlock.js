@@ -62,7 +62,7 @@ class cardBlock extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -77,12 +77,10 @@ class cardBlock extends Component {
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert(language.errorSelectCard);
-            return;
+            Utility.alert(language.errorSelectCard,language.ok);
         }
         else if (this.state.selectType === language.select_reason) {
-            Utility.alert(language.error_select_reason);
-            return;
+            Utility.alert(language.error_select_reason,language.ok);
         }
         else{
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)

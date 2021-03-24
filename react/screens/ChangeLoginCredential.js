@@ -81,7 +81,7 @@ class ChangeLoginCredential extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -295,7 +295,7 @@ class ChangeLoginCredential extends Component {
         if (stateVal === 0) {
             if (this.state.selectActCard.value === 0) {
                 if (select_actNo === this.props.language.select_actNo) {
-                    Utility.alert(language.errorActNo);
+                    Utility.alert(language.errorActNo,language.ok);
                 } else if (transactionPin.length !== 4) {
                     this.setState({errorTransPin: language.errTransPin});
                 } else {
@@ -303,7 +303,7 @@ class ChangeLoginCredential extends Component {
                 }
             } else if (this.state.selectActCard.value === 1) {
                 if (this.state.selectCard === language.selectCard) {
-                    Utility.alert(language.errorSelectCard);
+                    Utility.alert(language.errorSelectCard,language.ok);
                 } else if (this.state.expiryDate === "") {
                     this.setState({errorExpiry: language.errExpiryDate});
                 } else if (this.state.cardPin.length !== 4) {
@@ -315,7 +315,7 @@ class ChangeLoginCredential extends Component {
         } else if (stateVal === 1) {
             if (this.state.selectActCard.value === 0) {
                 if (this.state.otpVal.length !== 4) {
-                    Utility.alert(language.errOTP);
+                    Utility.alert(language.errOTP,language.ok);
                 } else {
                     await this.verifyOtp();
                 }

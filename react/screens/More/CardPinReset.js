@@ -72,7 +72,7 @@ class CardPinReset extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -89,17 +89,13 @@ class CardPinReset extends Component {
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert(language.errorSelectCard);
-            return;
+            Utility.alert(language.errorSelectCard,language.ok);
         } else if (this.state.pinChangeReason === "") {
             this.setState({error_pinChangeReason: language.error_pinChangeReason});
-            return;
         } else if (this.state.pinVal === "") {
             this.setState({errorPinVal: language.error_newPinNumber});
-            return;
         } else if (this.state.confirmPinNumber === "") {
             this.setState({errorConfirmPinNumber: language.error_confirmPinNumber});
-            return;
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }

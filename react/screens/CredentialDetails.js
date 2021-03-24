@@ -91,7 +91,7 @@ class CredentialDetails extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -369,7 +369,7 @@ class CredentialDetails extends Component {
     async submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.errValidType);
+            Utility.alert(language.errValidType,language.ok);
             return;
         } else if (this.state.selectTypeVal > 0 && (this.state.cityTouchUserId.length < 8 || this.state.cityTouchUserId.length > 12)) {
             this.setState({errorUid: language.invalidUid});
@@ -400,7 +400,7 @@ class CredentialDetails extends Component {
                 return;
             } else if (this.state.otpView) {
                 if (this.state.otpVal.length !== 4) {
-                    Utility.alert(language.errOTP);
+                    Utility.alert(language.errOTP,language.ok);
                 } else {
                     await this.processOTP(language, navigation);
                 }
@@ -428,7 +428,7 @@ class CredentialDetails extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
-                Utility.alert(description);
+                Utility.alert(description,this.props.language.ok);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -445,7 +445,7 @@ class CredentialDetails extends Component {
                 let result = response.RESPONSE[0];
                 if (this.state.selectTypeVal > 0 && result.USER_ID !== this.state.responseUserId.USER_ID) {
                     this.setState({isProgress: false});
-                    Utility.alert(isCard ? language.errCardMatch : language.errAccountMatch);
+                    Utility.alert(isCard ? language.errCardMatch : language.errAccountMatch,language.ok);
                     return;
                 }
                 await this.resetPwd(response.AUTH_TOKEN, result.USER_ID, null, actNo, isCard);
@@ -667,7 +667,7 @@ class CredentialDetails extends Component {
 
             if (this.state.selectTypeVal === 0) {
                 this.resetAll();
-                Utility.alert(result.MESSAGE);
+                Utility.alert(result.MESSAGE,language.ok);
             } else {
                 console.log("otpvalidate", result.RESPONSE[0]);
                 this.setState({isField: true});
@@ -912,7 +912,7 @@ class CredentialDetails extends Component {
         this.setState({isProgress: false});
         if (result.STATUS === "0" || result.STATUS === "999") {
             console.log("result final", result.MESSAGE);
-            Utility.alert(result.MESSAGE);
+            Utility.alert(result.MESSAGE,language.ok);
         } else {
             Utility.errorManage(result.STATUS, result.MESSAGE, this.props);
         }

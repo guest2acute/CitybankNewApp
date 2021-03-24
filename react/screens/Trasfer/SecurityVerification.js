@@ -20,6 +20,7 @@ import fontStyle from "../../resources/FontStyle";
 import ApiRequest from "../../config/ApiRequest";
 import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
+import {actions} from "../../redux/actions";
 
 let transType = "", actNo = "", REQUEST_CD = "";
 
@@ -92,7 +93,7 @@ class SecurityVerification extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -110,11 +111,9 @@ class SecurityVerification extends Component {
         console.log("authFlag", authFlag);
         if (authFlag === "CP") {
             if (selectTypeVal === -1) {
-                Utility.alert(language.errorSelectCard);
-                return;
+                Utility.alert(language.errorSelectCard,language.ok);
             } else if (cardPin === "") {
                 this.setState({errorCardPin: language.errSecurity})
-                return;
             } else {
                 await this.processVerification();
             }
@@ -138,6 +137,12 @@ class SecurityVerification extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
+                this.props.dispatch({
+                    type: actions.account.ADD_BENEFICIARY,
+                    payload: {
+                        update_beneficiary: true
+                    }
+                })
                 this.alertConfirm(response.MESSAGE);
             }, (error) => {
                 this.setState({isProgress: false});

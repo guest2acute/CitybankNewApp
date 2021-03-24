@@ -32,10 +32,10 @@ class CityPay extends Component {
 
     onSuccess = e => {
         if (e.type === "QR_CODE") {
-            Utility.alert("data-" + e.data);
+          //  Utility.alert("data-" + e.data);
             //this.scanner.reactivate();
         } else {
-            Utility.alert(e.type + "-" + e.data);
+           // Utility.alert(e.type + "-" + e.data);
         }
         console.log("e.data", e);
     };
@@ -76,7 +76,7 @@ class CityPay extends Component {
 
     submit(language) {
         if (this.state.qrId === "") {
-            Utility.alert(language.errorQRId);
+            Utility.alert(language.errorQRId,language.ok);
         } else {
 
         }

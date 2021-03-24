@@ -125,12 +125,13 @@ class ViewDeleteBeneficiary extends Component {
                 isProgress: false,
                 data: this.state.data.filter(e => e !== item)
             });
-            Utility.alert(response.MESSAGE);
+            Utility.alert(response.MESSAGE,this.props.language.ok);
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
         });
     }
+
 
     render() {
         let language = this.props.language;
@@ -173,8 +174,22 @@ class ViewDeleteBeneficiary extends Component {
         );
     }
 
-    redirect() {
+    redirect(url) {
         this.props.navigation.navigate(screenName, {title: title});
+    }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.update_beneficiary)
+        {
+            this.props.dispatch({
+                type: actions.account.ADD_BENEFICIARY,
+                payload: {
+                    update_beneficiary: false,
+                },
+            })
+            this.getBeneficiary();
+        }
     }
 }
 
@@ -241,6 +256,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        update_beneficiary: state.accountReducer.update_beneficiary,
         userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,

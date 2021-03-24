@@ -69,7 +69,7 @@ class MobileRecharge extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -91,17 +91,13 @@ class MobileRecharge extends Component {
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.SelectOperator === language.SelectOperator) {
-            Utility.alert(language.error_select_operator);
-            return;
+            Utility.alert(language.error_select_operator,language.ok);
         }else if (this.state.SelectName === language.selectNickType) {
-            Utility.alert(language.error_select_nickname);
-            return;
+            Utility.alert(language.error_select_nickname,language.ok);
         }  else if (this.state.SelectFromAccount === language.selectAccountType) {
-            Utility.alert(language.error_select_from_type);
-            return;
+            Utility.alert(language.error_select_from_type,language.ok);
         }else if (this.state.transferAmount === "") {
             this.setState({error_transferAmount: language.errPaymentAmount})
-            return;
         }
     }
 

@@ -72,7 +72,7 @@ class MonthlyDPS extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord);
+            Utility.alert(language.noRecord,language.ok);
         }
     }
 
@@ -90,18 +90,17 @@ class MonthlyDPS extends Component {
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.selectAccountNumberType === language.select_actNo) {
-            Utility.alert(language.select_actNo);
+            Utility.alert(language.select_actNo,language.ok);
         } else if (this.state.selectAccountType === language.select_type_account) {
-            Utility.alert(language.selectActType);
+            Utility.alert(language.selectActType,language.ok);
         } else if (this.state.selectBranchType === language.select_branch) {
-            Utility.alert(language.error_select_branch_name);
+            Utility.alert(language.error_select_branch_name,language.ok);
         } else if (this.state.selectInstallmentType === language.select_installment) {
-            Utility.alert(language.errorSelect_installment);
+            Utility.alert(language.errorSelect_installment,language.ok);
         } else if (this.state.selectMonthType === language.select_month) {
-            Utility.alert(language.errorSelect_month);
+            Utility.alert(language.errorSelect_month,language.ok);
         } else if (this.state.amount === "") {
             this.setState({errorAmount: language.error_amount})
-            return;
         } else {
             Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
