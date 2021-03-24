@@ -829,8 +829,8 @@ export default {
     fund_transfer_note7: "4. Consecutive transaction in the same account will",
     fund_transfer_note8: "take 10 minutes of interval.",
 
-    fund_transferCity_note1:"1.Maximum Transaction limit from CityTouch is BDT",
-    fund_transferCity_note2:"5 lacs per day",
+    fund_transferCity_note1: "1.Maximum Transaction limit from CityTouch is BDT",
+    fund_transferCity_note2: "5 lacs per day",
 
     other_bankAccount_note1: "1. Maximum transaction limit from CityTouch is BDT 5 lacs per day.",
     other_bankAccount_note2: "2. BEFTN: transfer request placed before 2:00PM will be executed on the.",
@@ -945,7 +945,7 @@ export default {
     tagCreditTitle1: "issue Credit Card that you want to tag with your City",
     tagCreditTitle2: "Touch Digital Banking",
     tagCreditBottom: "Can We Help?",
-    call:"call: 16234(local)/+880-2-8331040",
+    call: "call: 16234(local)/+880-2-8331040",
 
 
     /*Credit Card Payment*/
@@ -1203,13 +1203,14 @@ export default {
     mfsList: [{label: "bKash Account", value: 0}],
 
 
-    update_beneficiary_alert:"Please update this beneficiary information",
-    settings:"Settings",
+    update_beneficiary_alert: "Please update this beneficiary information",
+    settings: "Settings",
 
 
-    error_select_to_type:"Please Select To Account",
-    error_select_nickname_type:"select nick name",
-    fund_transfer_own_account:"Fund Transfer Own Account",
-    fund_transfer_city_account:"Fund Transfer City Account",
-    transfer:"Transfer"
+    error_select_to_type: "Please Select To Account",
+    error_select_nickname_type: "select nick name",
+    fund_transfer_own_account: "Fund Transfer Own Account",
+    fund_transfer_city_account: "Fund Transfer City Account",
+    transfer: "Transfer",
+    somethingWrong: "Something wrong please try after sometime"
 }

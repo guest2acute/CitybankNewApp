@@ -20,6 +20,7 @@ import fontStyle from "../../resources/FontStyle";
 import ApiRequest from "../../config/ApiRequest";
 import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
+import {actions} from "../../redux/actions";
 
 let transType = "", actNo = "", REQUEST_CD = "";
 
@@ -138,6 +139,12 @@ class SecurityVerification extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
+                this.props.dispatch({
+                    type: actions.account.ADD_BENEFICIARY,
+                    payload: {
+                        update_beneficiary: true
+                    }
+                })
                 this.alertConfirm(response.MESSAGE);
             }, (error) => {
                 this.setState({isProgress: false});

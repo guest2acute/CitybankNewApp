@@ -1194,5 +1194,7 @@ export default {
     selMfs:"এমএফএস নির্বাচন করুন",
     mfsTxt:"এমএফএস",
     mfsList:[{label:"বিকাশ অ্যাকাউন্ট",value:0}],
+
+    somethingWrong: "কিছু ভুল হয়েছে দয়া করে কিছুক্ষণ পরে চেষ্টা করুন"
 }
 

@@ -178,18 +178,34 @@ class PinLogin extends Component {
             ...Config.commonReq
         };
         console.log("request", loginReq);
-        let result = await ApiRequest.apiRequest.callApi(loginReq, {});
-        console.log("logres", result);
 
-        this.setState({isProgress: false});
-        if (result.STATUS === "0") {
-            await this.processLoginResponse(result, userName);
-        } else if (result.STATUS === "71") {
-            this.deviceChange(result);
-        } else {
+        await ApiRequest.apiRequest.callApi(loginReq, {}).then(async result => {
+            console.log("responseVal", result);
+            this.setState({isProgress: false});
+            if (result.STATUS === "0") {
+                await this.processLoginResponse(result, userName);
+            } else if (result.STATUS === "71") {
+                this.deviceChange(result);
+            } else {
+                Alert.alert(
+                    Config.appName,
+                    result.MESSAGE,
+                    [
+                        {
+                            text: this.props.language.ok, onPress: () => {
+                                if (this.state.loginPref === "2") {
+                                    this.showAuthenticationDialog();
+                                }
+                            }
+                        },
+                    ]
+                );
+            }
+        }).catch(error => {
+            this.setState({isProgress: false});
             Alert.alert(
                 Config.appName,
-                result.MESSAGE,
+                this.props.language.somethingWrong,
                 [
                     {
                         text: this.props.language.ok, onPress: () => {
@@ -200,7 +216,8 @@ class PinLogin extends Component {
                     },
                 ]
             );
-        }
+        });
+
     }
 
     deviceChange(result) {

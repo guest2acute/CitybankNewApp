@@ -21,9 +21,10 @@ import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiar
 
 
 class BeneficiaryWithCityBank extends Component {
+
+
     constructor(props) {
         super(props);
-
         this.state = {
             isProgress: false,
             nickname: "",
@@ -38,14 +39,15 @@ class BeneficiaryWithCityBank extends Component {
             error_accountNo: "",
             stageVal: 0,
             accountDetails: null,
-            title:props.route.params.title
+            title: props.route.params.title
         }
+
+        this.resetScreen =  this.resetScreen.bind(this);
     }
 
     userInput(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
-
         this.setState({nickname: text, error_nickname: ""})
     }
 
@@ -92,7 +94,7 @@ class BeneficiaryWithCityBank extends Component {
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props,"A").then(response => {
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props, "A").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,

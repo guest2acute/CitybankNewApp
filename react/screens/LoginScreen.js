@@ -163,17 +163,21 @@ class LoginScreen extends Component {
             ...Config.commonReq
         };
         console.log("request", loginReq);
-        let result = await ApiRequest.apiRequest.callApi(loginReq, {});
-        console.log("result", result);
 
-        this.setState({isProgress: false});
-        if (result.STATUS === "0") {
-            await this.processLoginResponse(result);
-        } else if (result.STATUS === "71") {
-            this.deviceChange(result);
-        } else {
-            Utility.alert(result.MESSAGE);
-        }
+        await ApiRequest.apiRequest.callApi(loginReq, {}).then(async result => {
+            console.log("responseVal", result);
+            this.setState({isProgress: false});
+            if (result.STATUS === "0") {
+                await this.processLoginResponse(result);
+            } else if (result.STATUS === "71") {
+                this.deviceChange(result);
+            } else {
+                Utility.alert(result.MESSAGE);
+            }
+        }).catch(error => {
+            this.setState({isProgress: false});
+            Utility.alert(this.props.language.somethingWrong);
+        });
     }
 
     render() {
@@ -470,23 +474,23 @@ class LoginScreen extends Component {
 }
 
 const styles = {
-        optionText: {
-            fontFamily: fontStyle.RobotoMedium, fontSize: FontSize.getSize(12), color: themeStyle.THEME_COLOR
-        },
-        dashStyle: {
-            marginLeft: Utility.setWidth(20),
-            fontSize: FontSize.getSize(12),
-            marginRight: Utility.setWidth(20),
-            color: themeStyle.PLACEHOLDER_COLOR
-        },
-        rightReserved: {
-            marginTop: Utility.setHeight(30),
-            marginLeft: Utility.setWidth(10),
-            marginRight: Utility.setWidth(10),
-            marginBottom: Utility.setHeight(20),
-            fontFamily: fontStyle.RobotoRegular, fontSize: FontSize.getSize(9), color: themeStyle.PLACEHOLDER_COLOR
-        }
+    optionText: {
+        fontFamily: fontStyle.RobotoMedium, fontSize: FontSize.getSize(12), color: themeStyle.THEME_COLOR
+    },
+    dashStyle: {
+        marginLeft: Utility.setWidth(20),
+        fontSize: FontSize.getSize(12),
+        marginRight: Utility.setWidth(20),
+        color: themeStyle.PLACEHOLDER_COLOR
+    },
+    rightReserved: {
+        marginTop: Utility.setHeight(30),
+        marginLeft: Utility.setWidth(10),
+        marginRight: Utility.setWidth(10),
+        marginBottom: Utility.setHeight(20),
+        fontFamily: fontStyle.RobotoRegular, fontSize: FontSize.getSize(9), color: themeStyle.PLACEHOLDER_COLOR
     }
+}
 
 
 const mapStateToProps = (state) => {

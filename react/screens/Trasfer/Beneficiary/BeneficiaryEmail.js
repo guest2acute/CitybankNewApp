@@ -31,6 +31,8 @@ class BeneficiaryEmail extends Component {
             mobileNo: "",
             errorMobileNo: ""
         }
+
+        this.resetScreen =  this.resetScreen.bind(this);
     }
 
     onSubmit(language, navigation) {
