@@ -16,7 +16,7 @@ export default class Utility {
             msg,
             [
                 {
-                    text: language.ok, onPress: () => {
+                    text: text, onPress: () => {
                     }
                 },
             ]
