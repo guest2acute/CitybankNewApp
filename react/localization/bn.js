@@ -838,7 +838,7 @@ export default {
     other_bankAccount_note8: "এবং লেনদেনের জন্য সর্বাধিক বিডিটি 1 লক্ষ টাকা",
     other_bankAccount_note9: "৫. ক্রেডিট কার্ডের মাস্টার সীমা: সর্বনিম্ন স্থানান্তরযোগ্য পরিমাণ",
     other_bankAccount_note10: "বিডিটি 500 এবং মোট উপলব্ধ বিডিটি সীমা 50% অবধি to",
-    other_bankAccount_note11: "অন্যান্য_ব্যাঙ্কঅ্যাকউন্ট_নোট 10",
+    other_bankAccount_note11: "। প্রসেসিং ফি + ভ্যাট প্রযোজ্য হবে",
     other_bankAccount_note12: "একই অ্যাকাউন্টে 7 ক্রমাগত লেনদেনের জন্য 10 মিনিটের বিরতি লাগবে",
 
     beneficiary_otherBank_note1: "1. উপকারী ব্যাংক / শাখাগুলি প্রক্রিয়া করতে সক্ষম হতে হবে capable",
@@ -1194,5 +1194,31 @@ export default {
     selMfs:"এমএফএস নির্বাচন করুন",
     mfsTxt:"এমএফএস",
     mfsList:[{label:"বিকাশ অ্যাকাউন্ট",value:0}],
+
+    update_beneficiary_alert:"এই সুবিধাভোগী তথ্য আপডেট করুন",
+    settings:"সেটিংস",
+
+    error_select_to_type:"অ্যাকাউন্ট থেকে নির্বাচন করুন",
+    error_select_nickname_type:"নিক নাম নির্বাচন করুন",
+    fund_transfer_own_account:"তহবিল স্থানান্তর নিজস্ব অ্যাকাউন্ট",
+    fund_transfer_city_account:"তহবিল স্থানান্তর সিটি অ্যাকাউন্ট",
+    transfer:"স্থানান্তর",
+    fund_transfer_bank:"অন্যান্য ব্যাংক অ্যাকাউন্টে তহবিল স্থানান্তর",
+
+    error_grand_total_amount:"গ্র্যান্ড মোট পরিমাণ উপলব্ধ ব্যালেন্সের চেয়ে কম বা সমান হওয়া উচিত।",
+    enter_amount: "এখানে পরিমাণ লিখুন",
+
+    error_mobile_number:"মোবাইল নম্বরটি 11 ডিজিটের এবং 01 দিয়ে শুরু হওয়া উচিত",
+    payment_details:"পেমেন্ট বিবরণ",
+
+    /* Payments Details*/
+    merchant_name: "ব্যবসায়ীর নাম",
+    merchant_city: "মার্চেন্ট সিটি",
+    payment_amount: "প্রদানের পরিমাণ (বিডিটি)",
+    grandTotal_bdt: "গ্র্যান্ড টোটাল (বিডিটি)",
+    bill_number:"বিল নম্বর",
+    store_label: "স্টোর লেবেল",
+    terminal_label: "টার্মিনাল লেবেল",
+    payment_details_note1:"1. ক্রয়কৃত সামগ্রীর পরিমাণ বা বিলের মোট মূল্য প্রবেশ করান।"
 }
 

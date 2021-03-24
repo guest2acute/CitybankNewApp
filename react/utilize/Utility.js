@@ -270,4 +270,10 @@ export default class Utility {
         return Math.round(Dimensions.get("window").height);
     }
 
+    static ValidateMobileNumber(text){
+        console.log("validate",text.startsWith("01"));
+        let checkMobile = text.startsWith("01")
+        return checkMobile(text);
+    }
+
 }

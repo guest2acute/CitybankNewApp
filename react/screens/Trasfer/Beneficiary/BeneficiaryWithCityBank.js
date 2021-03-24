@@ -89,24 +89,24 @@ class BeneficiaryWithCityBank extends Component {
         }
     }
 
-    beneficiaryAdd(language) {
-        const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
-        this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props,"A").then(response => {
-            console.log("response", response);
-            this.setState({
-                isProgress: false,
-            }, () => this.props.navigation.navigate("SecurityVerification", {
-                REQUEST_CD: response.REQUEST_CD,
-                transType: "I",
-                actNo: this.state.accountNo,
-                resetScreen: this.resetScreen
-            }));
-        }).catch(error => {
-            this.setState({isProgress: false});
-            console.log("error", error);
-        });
-    }
+        beneficiaryAdd(language) {
+            const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
+            this.setState({isProgress: true});
+            AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props,"A").then(response => {
+                console.log("response", response);
+                this.setState({
+                    isProgress: false,
+                }, () => this.props.navigation.navigate("SecurityVerification", {
+                    REQUEST_CD: response.REQUEST_CD,
+                    transType: "I",
+                    actNo: this.state.accountNo,
+                    resetScreen: this.resetScreen
+                }));
+            }).catch(error => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+        }
 
     getActDetails(language) {
         if (this.state.accountNo.length !== 13) {
@@ -127,7 +127,8 @@ class BeneficiaryWithCityBank extends Component {
     }
 
     accountNoOption(language, flag) {
-        return (<View>
+        return (
+            <View>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
