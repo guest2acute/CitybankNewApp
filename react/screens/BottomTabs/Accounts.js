@@ -22,6 +22,7 @@ import ApiRequest from "../../config/ApiRequest";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import themesStyle from "../../resources/theme.style";
 import Config from "../../config/Config";
+import {unicodeToChar} from "../Requests/CommonRequest";
 
 let balanceArr = [];
 let that;
@@ -81,7 +82,7 @@ class Accounts extends Component {
         return (
             <View key={"level1"} style={styles.level1}>
                 <Text
-                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{node.title}</Text>
+                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{unicodeToChar(node.title)}</Text>
             </View>)
     }
 
@@ -90,7 +91,7 @@ class Accounts extends Component {
         return (<View key={"level2"}>
             <View style={styles.level2}>
                 <Text
-                    style={[CommonStyle.midTextStyle, {flex: 1}]}>{node.title}</Text>
+                    style={[CommonStyle.midTextStyle, {flex: 1}]}>{unicodeToChar(node.title)}</Text>
                 <Text style={[CommonStyle.midTextStyle]}>{node.code==="CARD_ACCOUNT" || node.code==="LOAN_ACCOUNT"?this.props.language.outstanding_bal:this.props.language.avail_balance}</Text>
             </View>
         </View>)
@@ -101,7 +102,7 @@ class Accounts extends Component {
             <View key={"level3"}>
                 <TouchableOpacity disabled={true} onPress={() => this.props.navigation.navigate("AccountDetails")}>
                     <View style={styles.level3}>
-                        <Text style={CommonStyle.midTextStyle}>{account.PRODUCTNAME}</Text>
+                        <Text style={CommonStyle.midTextStyle}>{unicodeToChar(account.PRODUCTNAME)}</Text>
                         <View style={{flexDirection: "row", marginTop: 2}}>
                             <Text style={[CommonStyle.textStyle, {
                                 flex: 1,
@@ -133,6 +134,7 @@ class Accounts extends Component {
             ...Config.userRequest,
             ...Config.commonReq,
         }
+        console.log("actReq",actReq);
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
         if (result.STATUS === "0") {
             await this.processSummary(result.RESPONSE);

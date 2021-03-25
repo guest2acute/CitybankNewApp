@@ -23,7 +23,7 @@ import Config from "../config/Config";
 import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
 import ApiRequest from "../config/ApiRequest";
-import {unicodeToChar} from "./Requests/CommonRequest";
+import {DeviceChange, unicodeToChar} from "./Requests/CommonRequest";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -45,9 +45,9 @@ class LoginScreen extends Component {
         let userRes = Utility.verifyUserId(userID, language);
         if (userRes !== "") {
             this.setState({errorTextUid: userRes});
-        } else if (!Utility.validPassword(passwordTxt)) {
+        } /*else if (!Utility.validPassword(passwordTxt)) {
             this.setState({errorTextPwd: language.errorpassword});
-        } else {
+        } */else {
             await this.loginRequest(userID, passwordTxt);
         }
     }
@@ -106,26 +106,6 @@ class LoginScreen extends Component {
 
     }
 
-    deviceChange(result) {
-        let that = this;
-        Alert.alert(
-            Config.appName,
-            result.MESSAGE,
-            [
-                {
-                    text: that.props.language.no_txt
-                },
-                {
-                    text: that.props.language.yes_txt, onPress: () =>
-                        this.props.navigation.navigate("TermConditionScreen",
-                            {
-                                showButton: true,
-                                deviceChangeRes: result.RESPONSE[0],
-                            })
-                },
-            ]
-        );
-    }
 
     userInput(text) {
         if (text.indexOf(" ") !== -1)
@@ -171,9 +151,9 @@ class LoginScreen extends Component {
             if (result.STATUS === "0") {
                 await this.processLoginResponse(result);
             } else if (result.STATUS === "71") {
-                this.deviceChange(result);
+                DeviceChange(result,this.props);
             } else {
-                Utility.alert(unicodeToChar(result.MESSAGE),this.props.language.ok);
+                Utility.alert(result.MESSAGE,this.props.language.ok);
             }
         }).catch(error => {
             this.setState({isProgress: false});

@@ -69,7 +69,7 @@ class BeneficiaryEmail extends Component {
         const {mobileNo, nickname, emailTxt} = this.state;
         this.setState({isProgress: true});
         let accountDetails = {ACCOUNT: emailTxt, ADDRESS: "", CONTACTNUMBER: mobileNo, ACCOUNTNAME: nickname};
-        AddBeneficiary(accountDetails, "E", this.props.userDetails, nickname, mobileNo, emailTxt, "", this.props, "A").then(response => {
+        AddBeneficiary(accountDetails, "E", this.props.userDetails, nickname, mobileNo, emailTxt, "", this.props, "A","").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,

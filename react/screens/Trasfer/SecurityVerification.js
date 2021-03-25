@@ -21,6 +21,7 @@ import ApiRequest from "../../config/ApiRequest";
 import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
 import {actions} from "../../redux/actions";
+import {unicodeToChar} from "../Requests/CommonRequest";
 
 let transType = "", actNo = "", REQUEST_CD = "";
 
@@ -143,7 +144,7 @@ class SecurityVerification extends Component {
                         update_beneficiary: true
                     }
                 })
-                this.alertConfirm(response.MESSAGE);
+                this.alertConfirm(unicodeToChar(response.MESSAGE));
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);

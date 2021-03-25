@@ -1,6 +1,7 @@
 import axios from "axios";
 import Config from "./Config";
 import Utility from "../utilize/Utility";
+import {unicodeToChar} from "../screens/Requests/CommonRequest";
 
 export default class ApiRequest {
     callApi = (tokenReq, header) => {
@@ -98,7 +99,7 @@ export default class ApiRequest {
             let result = await ApiRequest.apiRequest.callApi(request, {});
             console.log("resultAPI", JSON.stringify(result));
             if (result.STATUS === "21" || result.STATUS === "0") {
-                return resolve(result.MESSAGE);
+                return resolve(unicodeToChar(result.MESSAGE));
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 return reject(result.STATUS);
