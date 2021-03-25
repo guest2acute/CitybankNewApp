@@ -25,7 +25,7 @@ export const GetUserAuthByUid = async (cityTouchUserId, props) => {
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -66,7 +66,7 @@ export const VerifyAccountCard = async (isCard, actNo, cardPin, expiryDate, otp_
                 return reject(result.STATUS);
             }
         }).catch(error => {
-            Utility.alert(props.language.somethingWrong,props.language.ok);
+            Utility.alert(props.language.somethingWrong, props.language.ok);
             console.log("error", error);
             return reject(error);
         });
@@ -102,6 +102,38 @@ export const blockProcess = async (ACCT_NO, userId, description, props, authFlag
             Utility.errorManage(result.STATUS, result.MESSAGE, props);
             return reject(result.STATUS);
         }
+    });
+
+}
+
+export const RESENDOTP = async (userDetails,otpType, props) => {
+    console.log("userDetails", userDetails);
+    return new Promise(async (resolve, reject) => {
+        let resendReq = {
+            USER_ID: userDetails.USER_ID,
+            ACTION: "RESENDOTP",
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            OTP_TYPE: otpType,
+            REQUEST_CD: userDetails.REQUEST_CD,
+            ...Config.commonReq
+        }
+        console.log("resendReq", resendReq);
+        await ApiRequest.apiRequest.callApi(resendReq, {}).then(result => {
+            console.log("resendReqVal", result);
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(props.language.somethingWrong, props.language.ok);
+            console.log("error", error);
+            return reject(error);
+        });
+
     });
 
 }

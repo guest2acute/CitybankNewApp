@@ -174,7 +174,7 @@ export default class Utility {
 
     static errorManage(status, message, props) {
         if (status === "99" || status === "1") {
-            Utility.alert(unicodeToChar(message),props.language.ok);
+            Utility.alert(unicodeToChar(message), props.language.ok);
         } else if (status === "9") {
             Utility.sessionTimeout(unicodeToChar(message), props.language, props.navigation);
         } else if (status === "999") {
@@ -183,12 +183,34 @@ export default class Utility {
 
     }
 
-    /*  static async makePostApiCall(url,postRequest) {
-        const response = await axios.post(Config.base_url+url, {
-          email : "cb@gmail.com",
-          password: '12346'
+    countDown(seconds) {
+        // Remove one second, set state so a re-render happens.
+        seconds = seconds - 1;
+        this.setState({
+            time: this.secondsToTime(seconds),
+            seconds: seconds,
         });
-      } */
+
+        // Check if we're at zero.
+        if (seconds === 0) {
+            clearInterval(this.timer);
+        }
+    }
+
+    static secondsToTime(secs) {
+        let divisor_for_minutes = secs % (60 * 60);
+        let minutes = Math.floor(divisor_for_minutes / 60);
+
+        let divisor_for_seconds = divisor_for_minutes % 60;
+        let seconds = Math.ceil(divisor_for_seconds);
+
+        let obj = {
+            "m": minutes,
+            "s": seconds
+        };
+        return obj;
+    }
+
 
     static userInput(text) {
         if (text.indexOf(" ") !== -1)
@@ -280,8 +302,8 @@ export default class Utility {
         return Math.round(Dimensions.get("window").height);
     }
 
-    static ValidateMobileNumber(text){
-        console.log("validate",text.startsWith("01"));
+    static ValidateMobileNumber(text) {
+        console.log("validate", text.startsWith("01"));
         let checkMobile = text.startsWith("01")
         return checkMobile(text);
     }

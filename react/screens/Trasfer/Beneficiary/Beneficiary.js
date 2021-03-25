@@ -88,7 +88,7 @@ class Beneficiary extends Component {
             addTitle = this.props.language.add_beneficiary_wob;
             title = this.props.language.manage_beneficiary_wob;
             benfType = "O";
-            screenName = "BeneficiaryOtherCard";
+            screenName = "BeneficiaryOtherBank";
         } else if (this.state.selectTypeVal === 3) {
             addTitle = this.props.language.add_beneficiary_email;
             title = this.props.language.manage_beneficiary_email;

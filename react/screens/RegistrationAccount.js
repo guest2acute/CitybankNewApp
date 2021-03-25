@@ -28,19 +28,19 @@ import MonthPicker from "react-native-month-year-picker";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
 import * as ReadSms from 'react-native-read-sms/ReadSms';
-import {blockProcess} from "./Requests/CommonRequest";
+import {blockProcess, RESENDOTP} from "./Requests/CommonRequest";
 
 class RegistrationAccount extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "",
+            accountNo: "2101636171001",
             disableButton: false,
             actName: "",
             placeMobile: "",
             placeEmail: "",
-            conf_mobile: "",
+            conf_mobile: "8801979247624",
             errorMobile: "",
             conf_email: "",
             cardExpiry: "",
@@ -66,8 +66,8 @@ class RegistrationAccount extends Component {
             transDate: "",
             dob: "",
             password: "",
-            fatherName: "",
-            motherName: "",
+            fatherName: "LATE YAKUB ALI KHAN",
+            motherName: "LATE MAHMUDA KHANAM",
             transPin: "",
             loginPin: "",
             errorTransPin: "",
@@ -85,8 +85,10 @@ class RegistrationAccount extends Component {
             showMonthPicker: false,
             signUpResponse: "",
             errorDCardNo: "",
-            debitCardNo: ""
+            debitCardNo: "",
+            seconds: 60
         }
+        this.timer = 0;
     }
 
 
@@ -114,6 +116,26 @@ class RegistrationAccount extends Component {
                     console.log("Great!! you have received new sms:", sms);
                 }
             });
+        }
+    }
+
+    startTimer() {
+        if (this.timer === 0 && this.state.seconds > 0) {
+            this.timer = setInterval(this.countDown, 1000);
+        }
+    }
+
+    countDown() {
+        // Remove one second, set state so a re-render happens.
+        let seconds = this.state.seconds - 1;
+        this.setState({
+            time: this.secondsToTime(seconds),
+            seconds: seconds,
+        });
+
+        // Check if we're at zero.
+        if (seconds === 0) {
+            clearInterval(this.timer);
         }
     }
 
@@ -356,6 +378,25 @@ class RegistrationAccount extends Component {
         </View>)
     }
 
+    async resendOtp() {
+        const {signUpResponse} = this.state;
+        console.log("signUpResponse", signUpResponse);
+        this.setState({isProgress: true});
+        let userDetails = {
+            USER_ID: signUpResponse.CUSTOMER_ID, ACTIVITY_CD: "",
+            CUSTOMER_ID: signUpResponse.CUSTOMER_ID,
+            REQUEST_CD: signUpResponse.ACTIVATION_CD
+        };
+        await RESENDOTP(userDetails, "USERREG", this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false,});
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
     otpEnter(language) {
         return (<View key={"otpEnter"}>
             <Text style={[CommonStyle.textStyle, {
@@ -402,10 +443,10 @@ class RegistrationAccount extends Component {
                 <Text style={[CommonStyle.textStyle, {
                     textAlign: "center"
                 }]}>{language.dnReceiveOTP}</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.resendOtp()}>
                     <Text style={[CommonStyle.midTextStyle, {
                         textDecorationLine: "underline"
-                    }]}>{language.sendAgain}
+                    }]}>{this.state.seconds>0?this.state.time:language.sendAgain}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -1268,7 +1309,7 @@ class RegistrationAccount extends Component {
                     this.setState({errorUserId: userRes});
                     return;
                 } else if (!this.state.isTerm) {
-                    Utility.alert(language.errorTerm,language.ok);
+                    Utility.alert(language.errorTerm, language.ok);
                     return;
                 }
                 await this.signupRequest();
@@ -1297,7 +1338,7 @@ class RegistrationAccount extends Component {
                     this.setState({errorUserId: userRes});
                     return;
                 } else if (!this.state.isTerm) {
-                    Utility.alert(language.errorTerm,language.ok);
+                    Utility.alert(language.errorTerm, language.ok);
                     return;
                 }
                 await this.signupRequest();
@@ -1305,7 +1346,7 @@ class RegistrationAccount extends Component {
 
         } else if (stateVal === 2) {
             if (this.state.otpVal.length !== 4) {
-                Utility.alert(language.errOTP,language.ok);
+                Utility.alert(language.errOTP, language.ok);
                 return;
             }
             await this.getOTP();
@@ -1313,7 +1354,7 @@ class RegistrationAccount extends Component {
         } else if (stateVal === 3) {
             if (this.state.transPin.length !== 4) {
                 this.setState({errorTransPin: language.errTransPin});
-            } else if (this.state.loginPin.length!==6) {
+            } else if (this.state.loginPin.length !== 6) {
                 this.setState({errorLoginPin: language.digits6LoginPin})
             } else if (!Utility.validPassword(this.state.password)) {
                 this.setState({errorpassword: language.errorpassword})
@@ -1330,7 +1371,7 @@ class RegistrationAccount extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
-                Utility.alert(description,this.props.language.ok);
+                Utility.alert(description, this.props.language.ok);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
