@@ -41,41 +41,54 @@ class PaymentDetails extends Component {
             remarks: "",
             error_remarks: "",
             errorPaymentAmount: "",
+            errorCardPin:"",
+            cardPin:"",
+            otp_type:0,
             data: [
                 {
-                    "cardName": "AMEX CITY MAXX DEBIT",
-                    "cardNumber": "371599****0857",
-                    "transfer_pay_props": [
-                        {value: 0}
-                    ],
-                    "images": "https:\/\/randomuser.me\/api\/portraits\/women\/68.jpg"
+                    cardName: "AMEX CITY MAXX DEBIT",
+                    cardNumber: "371599****0857",
+                    radio_props : [{ label:"",value: -1 }],
+                    images: "http://placehold.it/200x200"
                 },
                 {
-                    "cardName": "MASTER CARD DEBIT",
-                    "cardNumber": "371599****0857",
-                    "transfer_pay_props": [
-                        {value: 1}
-                    ],
-                    "images": "https:\/\/randomuser.me\/api\/portraits\/women\/44.jpg"
+                    cardName: "MASTER CARD DEBIT",
+                    cardNumber: "371599****0857",
+                    radio_props :  [{label:"", value: -1 }],
+                    images: "http://placehold.it/200x200"
                 },
                 {
-                    "cardName": "VISA PLATINUM",
-                    "cardNumber": "371599****0857",
-                    "transfer_pay_props": [
-                        {value: 1}
-                    ],
-                    "images": "https:\/\/randomuser.me\/api\/portraits\/women\/68.jpg"
-                },
-                {
-                    "cardName": "AMEX AGORA",
-                    "cardNumber": "371599****0857",
-                    "transfer_pay_props": [
-                        {value: 1}
-                    ],
-                    "images": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg"
+                    cardName: "VISA PLATINUM",
+                    cardNumber: "371599****0857",
+                    radio_props :[{label:"", value: -1 }],
+                    images: "http://placehold.it/200x200"
                 }
+
             ]
         }
+    }
+
+    otpUpdate(value,index){
+        console.log("value",index)
+        let counter=0;
+        let newArray=[];
+        let array=this.state.data;
+        array.map((item) => {
+            console.log(item)
+            if(counter===index){
+                item={...item, radio_props:[{label:"",value:0}]}
+            }else{
+                item={...item, radio_props:[{label:"",value:-1}]}
+            }
+            console.log("item",item)
+            newArray.push(item)
+            counter++;
+        })
+        console.log("newArray",newArray);
+        this.setState({
+            data:newArray,
+        })
+
     }
 
     onSubmit(language, navigation) {
@@ -356,17 +369,17 @@ class PaymentDetails extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        console.log(item.images)
+       console.log(console.log("otp type is this",item.radio_props));
         return (
-            <TouchableOpacity onPress={() => this.moveScreen(item)}>
+            <TouchableOpacity onPress={() => {}}>
                 <View style={[styles.renderView, {height: Utility.setHeight(50)}]}>
                     <Image style={{
                         height: Utility.setHeight(50),
-                        width: Utility.setWidth(80),
+                        width: Utility.setWidth(60),
                         alignSelf: "flex-start"
                     }} resizeMode={"contain"}
                            source={{uri: item.images}}/>
-                    <View style={{flexDirection: "column", justifyContent: "center"}}>
+                    <View style={{paddingLeft:10,flexDirection: "column", justifyContent: "center"}}>
                         <Text style={[CommonStyle.labelStyle, {
                             color: themeStyle.BLACK,
                             fontSize: FontSize.getSize(12),
@@ -378,8 +391,8 @@ class PaymentDetails extends Component {
                     </View>
 
                     <RadioForm
-                        radio_props={item.transfer_pay_props}
-                        initial={0}
+                        radio_props={item.radio_props}
+                        initial={item.radio_props[0].value}
                         buttonSize={9}
                         selectedButtonColor={themeStyle.THEME_COLOR}
                         formHorizontal={true}
@@ -391,7 +404,7 @@ class PaymentDetails extends Component {
                         style={{ marginTop: 10}}
                         animation={true}
                         onPress={(value) => {
-                            this.setState({otp_type: value});
+                            this.otpUpdate(value,index)
                         }}
                     />
                 </View>
@@ -409,10 +422,17 @@ class PaymentDetails extends Component {
 
     }
 
-    nextPaymentDetails() {
+    nextPaymentDetails(language) {
         return (
             <View>
-            <FlatList scrollEnabled={true}
+                <View style={[ {backgroundColor:themeStyle.PLACEHOLDER_COLOR,height: Utility.setHeight(50),justifyContent:"center",alignItems:"center"}]}>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.THEME_COLOR,
+                        fontSize: FontSize.getSize(12),
+                        textAlign:"center"
+                    }]}>Select Card *</Text>
+                </View>
+            <FlatList scrollEnabled={false}
                       data={this.state.data}
                       renderItem={this._renderItem}
                 // ItemSeparatorComponent={() => this.bottomLine()}
@@ -452,6 +472,44 @@ class PaymentDetails extends Component {
                 {this.state.errorPaymentAmount !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.errorPaymentAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={CommonStyle.textStyle}>
+                        {language.cardPin}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
+                    <TextInput
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.et_TransPlaceholder}
+                        onChangeText={text => this.setState({
+                            errorCardPin: "",
+                            cardPin: Utility.userInput(text)
+                        })}
+                        value={this.state.cardPin}
+                        multiline={false}
+                        numberOfLines={1}
+                        contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        secureTextEntry={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        maxLength={4}/>
+                </View>
+                {this.state.errorCardPin !== "" ?
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorCardPin}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <Text
+                    style={CommonStyle.mark_mandatory
+                    }>*{language.mark_field_mandatory}
+                </Text>
             </View>
         )
     }
@@ -572,7 +630,6 @@ const styles = {
         flex:1,
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: themeStyle.PLACEHOLDER_COLOR,
         marginTop: 5,
         marginBottom: 5,
         //alignItems: "center",
