@@ -211,9 +211,10 @@ class BeneficiaryOtherCard extends Component {
                         editable={false}
                         autoCorrect={false}/>
                 </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View>:
                 null}
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            {/*<View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>*/}
             <View>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
