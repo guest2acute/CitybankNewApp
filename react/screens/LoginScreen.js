@@ -45,9 +45,9 @@ class LoginScreen extends Component {
         let userRes = Utility.verifyUserId(userID, language);
         if (userRes !== "") {
             this.setState({errorTextUid: userRes});
-        } /*else if (!Utility.validPassword(passwordTxt)) {
+        } else if (!Utility.validPassword(passwordTxt)) {
             this.setState({errorTextPwd: language.errorpassword});
-        } */else {
+        } else {
             await this.loginRequest(userID, passwordTxt);
         }
     }
@@ -151,13 +151,13 @@ class LoginScreen extends Component {
             if (result.STATUS === "0") {
                 await this.processLoginResponse(result);
             } else if (result.STATUS === "71") {
-                DeviceChange(result,this.props);
+                DeviceChange(result, this.props);
             } else {
-                Utility.alert(result.MESSAGE,this.props.language.ok);
+                Utility.alert(result.MESSAGE, this.props.language.ok);
             }
         }).catch(error => {
             this.setState({isProgress: false});
-            Utility.alert(this.props.language.somethingWrong,this.props.language.ok);
+            Utility.alert(this.props.language.somethingWrong, this.props.language.ok);
         });
     }
 

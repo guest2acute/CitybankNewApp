@@ -5,6 +5,7 @@ import {unicodeToChar} from "../screens/Requests/CommonRequest";
 
 export default class ApiRequest {
     callApi = (tokenReq, header) => {
+        tokenReq = {...tokenReq,...Config.commonReq};
         return new Promise((resolve, reject) => {
             axios.post(Config.base_url, tokenReq, {
                 headers: {

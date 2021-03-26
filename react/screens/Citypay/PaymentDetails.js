@@ -49,7 +49,18 @@ class PaymentDetails extends Component {
                     cardName: "AMEX CITY MAXX DEBIT",
                     cardNumber: "371599****0857",
                     isSelected:true,
-                    radio_props: [{label: "", value: 0}],
+                    images: "http://placehold.it/200x200"
+                },
+                {
+                    cardName: "MASTER CARD DEBIT",
+                    cardNumber: "371599****0857",
+                    isSelected:false,
+                    images: "http://placehold.it/200x200"
+                },
+                {
+                    cardName: "VISA PLATINUM",
+                    cardNumber: "371599****0857",
+                    isSelected:false,
                     images: "http://placehold.it/200x200"
                 },
                 {
@@ -63,21 +74,6 @@ class PaymentDetails extends Component {
                     cardName: "VISA PLATINUM",
                     cardNumber: "371599****0857",
                     isSelected:false,
-                    radio_props: [{label: "", value: 0}],
-                    images: "http://placehold.it/200x200"
-                },
-                {
-                    cardName: "MASTER CARD DEBIT",
-                    cardNumber: "371599****0857",
-                    isSelected:false,
-                    radio_props: [{label: "", value: 0}],
-                    images: "http://placehold.it/200x200"
-                },
-                {
-                    cardName: "VISA PLATINUM",
-                    cardNumber: "371599****0857",
-                    isSelected:false,
-                    radio_props: [{label: "", value: 0}],
                     images: "http://placehold.it/200x200"
                 }
             ]
@@ -100,7 +96,7 @@ class PaymentDetails extends Component {
             newArray.push(item)
             counter++;
         })
-        console.log("newArray", newArray);
+
         this.setState({
             data: newArray,
         })
@@ -396,6 +392,7 @@ class PaymentDetails extends Component {
             <TouchableOpacity onPress={() => { this.otpUpdate(index)
             }}>
                 <View style={[styles.renderView, {height: Utility.setHeight(55), backgroundColor:item.isSelected?"#f5dbdc":"#b2b8ba"}]}>
+
                     <Image style={{
                         height: Utility.setHeight(55),
                         width: Utility.setWidth(63),
@@ -560,7 +557,7 @@ class PaymentDetails extends Component {
                         }} source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
+
                     {this.state.isMainScreen ? this.paymentDetails(language) : this.nextPaymentDetails(language)}
                     <View style={{
                         flexDirection: "row",
@@ -600,7 +597,6 @@ class PaymentDetails extends Component {
                         </TouchableOpacity>
                     </View>
 
-                </ScrollView>
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )

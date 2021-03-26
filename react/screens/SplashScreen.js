@@ -62,6 +62,7 @@ class SplashScreen extends Component {
             DEVICE_USER_NM: await DeviceInfo.getCarrier(),
             VERSION: Config.apiVersion,
             DISPLAY_LANGUAGE: this.props.langId,
+            DEVICE_ID: await Utility.getDeviceID(),
         }
         console.log("Config.commonReq ", Config.commonReq);
     }
