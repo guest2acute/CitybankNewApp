@@ -38,7 +38,7 @@ class FundTransfer extends Component {
             focusPwd: false,
             isProgress: false,
             selectNicknameType: props.language.select_nickname,
-            selectAcctType: props.language.fund_select_acct,
+            selectAcctType: props.language.select_from_account,
             selectToAcctType: props.language.select_to_acct,
             selectPaymentType: props.language.select_payment,
             selectDistrictType: props.language.select_district_type,
@@ -600,7 +600,7 @@ class FundTransfer extends Component {
                         onPress={() => this.openModal("fromAccountType", language.bkash_selectfrom_acct, language.cardNumber, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.selectAcctType === language.fund_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                color: this.state.selectAcctType === language.select_from_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectAcctType}

@@ -114,7 +114,7 @@ class SecurityVerification extends Component {
             if (selectTypeVal === -1) {
                 Utility.alert(language.errorSelectCard,language.ok);
             } else if (cardPin === "") {
-                this.setState({errorCardPin: language.errSecurity})
+                this.setState({errorCardPin: language.error_card_pin})
             } else {
                 await this.processVerification();
             }

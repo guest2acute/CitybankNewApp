@@ -301,7 +301,7 @@ class OtherBankAccount extends Component {
                     </Text>
                     }
                     <TouchableOpacity
-                        onPress={() => this.openModal("bankType", language.bkash_selectfrom_acct, language.cardNumber, language)}>
+                        onPress={() => this.openModal("bankType", language.select_from_account, language.cardNumber, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectAcctType === language.bkash_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,

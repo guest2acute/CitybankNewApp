@@ -632,7 +632,6 @@ export default {
     bkash_name: "Name",
     fromAccount: "From Account",
     bkash_select_acct: "Select Account",
-    bkash_selectfrom_acct: "Select From Account",
     available_bal: "Available Balance",
     transfer_amount: "Transfer Amount",
     services_charge: "Services Charge",
@@ -682,11 +681,7 @@ export default {
     ],
     select_from_account: "Select From Account",
     to_account: "To Account",
-    select_acct: "Select From Account",
     vat: "VAT",
-
-
-    fund_select_acct: "Select From Account",
     select_to_acct: "Select To Account",
     to_acct: "To Account",
     balanceTypeArr: [
@@ -782,7 +777,6 @@ export default {
         {label: "Postpaid", value: 1},
     ],
     fromAccount: "From Account",
-    selectAccountType: "Select From Account",
     totalAmount: "Total Amount",
     totalServicesCharge: "Total Services Charge",
     grandTotal: "Grand Total",
@@ -1228,5 +1222,29 @@ export default {
     payment_details_note1:"1. Enter Amount or the total bill value of the goods purchased.",
     somethingWrong: "Something wrong please try after sometime",
 
+    payment_card: "Select Card *",
+    error_card_pin:"Card pin is Required",
+    receipt:"Receipt",
+    thank_you:"Thank You!",
+    transaction_success: "Transaction Successfully",
+    approval_id: "Approval ID 108417268210",
+    customer_name: "Customer Name",
+    source_account:"Source Account",
+    receipt_amount:"Amount (BDT)",
+    type:"Type",
+    transaction_date:"Transaction Date & Time",
+    another_qr_payment:"Another Qr Payment",
+    save_share:"Save/Share",
+
+    /*Qr Merchant Payment*/
+        type_selection:"Type of Selection",
+        select_card_qr:"Select the card(s) to perform QR Merchant Payment",
+    typeOfSelection_props: [
+        {label: "Transaction with login only", value: 0},
+        {label: "Set up to 99 transaction limits without login", value: 1},
+    ],
+    qr_notes:"1. if option 2 is selected,upon each successfully",
+    qr_notes1:"transaction the total limit will be reduce by one",
+    errorTransactionLimit: "Setup to 99 transaction limit without login"
 
 }
