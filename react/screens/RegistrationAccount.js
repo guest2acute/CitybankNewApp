@@ -35,12 +35,12 @@ class RegistrationAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountNo: "2101636171001",
+            accountNo: "",
             disableButton: false,
             actName: "",
             placeMobile: "",
             placeEmail: "",
-            conf_mobile: "8801979247624",
+            conf_mobile: "",
             errorMobile: "",
             conf_email: "",
             cardExpiry: "",
@@ -66,8 +66,8 @@ class RegistrationAccount extends Component {
             transDate: "",
             dob: "",
             password: "",
-            fatherName: "LATE YAKUB ALI KHAN",
-            motherName: "LATE MAHMUDA KHANAM",
+            fatherName: "",
+            motherName: "",
             transPin: "",
             loginPin: "",
             errorTransPin: "",

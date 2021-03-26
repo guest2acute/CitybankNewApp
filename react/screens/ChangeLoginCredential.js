@@ -20,6 +20,7 @@ import MonthPicker from "react-native-month-year-picker";
 import Config from "../config/Config";
 import RadioForm from "react-native-simple-radio-button";
 import * as ReadSms from "react-native-read-sms/ReadSms";
+import {RESENDOTP} from "./Requests/CommonRequest";
 
 class ChangeLoginCredential extends Component {
     constructor(props) {
@@ -100,6 +101,26 @@ class ChangeLoginCredential extends Component {
                 this.setState({showMonthPicker: false});
         }
     }
+
+    async resendOtp() {
+        const {signUpResponse} = this.state;
+        console.log("signUpResponse", signUpResponse);
+        this.setState({isProgress: true});
+        let userDetails = {
+            USER_ID: signUpResponse.CUSTOMER_ID, ACTIVITY_CD: "",
+            CUSTOMER_ID: signUpResponse.CUSTOMER_ID,
+            REQUEST_CD: signUpResponse.ACTIVATION_CD
+        };
+        await RESENDOTP(userDetails, "RESETPWD", this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false,});
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
 
     selectOtpView(language) {
         return (<View key={"selectOtpView"}>
@@ -633,7 +654,7 @@ class ChangeLoginCredential extends Component {
                 <Text style={[CommonStyle.textStyle, {
                     textAlign: "center"
                 }]}>{language.dnReceiveOTP}</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.resendOtp()}>
                     <Text style={[CommonStyle.midTextStyle, {
                         textDecorationLine: "underline"
                     }]}>{language.sendAgain}

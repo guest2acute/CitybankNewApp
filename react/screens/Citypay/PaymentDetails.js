@@ -48,19 +48,19 @@ class PaymentDetails extends Component {
                 {
                     cardName: "AMEX CITY MAXX DEBIT",
                     cardNumber: "371599****0857",
-                    radio_props : [{ label:"",value: -1 }],
+                    radio_props : [{ label:"",value: 0,isSelected:false }],
                     images: "http://placehold.it/200x200"
                 },
                 {
                     cardName: "MASTER CARD DEBIT",
                     cardNumber: "371599****0857",
-                    radio_props :  [{label:"", value: -1 }],
+                    radio_props :  [{label:"", value: 0,isSelected:false}],
                     images: "http://placehold.it/200x200"
                 },
                 {
                     cardName: "VISA PLATINUM",
                     cardNumber: "371599****0857",
-                    radio_props :[{label:"", value: -1 }],
+                    radio_props :[{label:"", value: 0,isSelected:false}],
                     images: "http://placehold.it/200x200"
                 }
 
@@ -84,7 +84,7 @@ class PaymentDetails extends Component {
             newArray.push(item)
             counter++;
         })
-        console.log("newArray",newArray);
+        console.log("newArray",JSON.stringify(newArray));
         this.setState({
             data:newArray,
         })
@@ -371,7 +371,7 @@ class PaymentDetails extends Component {
     _renderItem = ({item, index}) => {
        console.log(console.log("otp type is this",item.radio_props));
         return (
-            <TouchableOpacity onPress={() => {}}>
+
                 <View style={[styles.renderView, {height: Utility.setHeight(50)}]}>
                     <Image style={{
                         height: Utility.setHeight(50),
@@ -392,7 +392,7 @@ class PaymentDetails extends Component {
 
                     <RadioForm
                         radio_props={item.radio_props}
-                        initial={item.radio_props[0].value}
+                        isSelected={false}
                         buttonSize={9}
                         selectedButtonColor={themeStyle.THEME_COLOR}
                         formHorizontal={true}
@@ -404,11 +404,11 @@ class PaymentDetails extends Component {
                         style={{ marginTop: 10}}
                         animation={true}
                         onPress={(value) => {
+                            console.log("called",value);
                             this.otpUpdate(value,index)
                         }}
                     />
                 </View>
-            </TouchableOpacity>
         )
     }
 
@@ -541,7 +541,7 @@ class PaymentDetails extends Component {
                         }} source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
+
                     {this.state.isMainScreen ? this.paymentDetails(language) : this.nextPaymentDetails(language)}
                     <View style={{
                         flexDirection: "row",
@@ -581,7 +581,6 @@ class PaymentDetails extends Component {
                         </TouchableOpacity>
                     </View>
 
-                </ScrollView>
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
