@@ -610,7 +610,6 @@ export default {
     errorSelMFSVal: "Please select MFS",
     error_select_reason: "Please Select Reason",
     type_Branch: "Branch Name",
-    select_brach: "select branch",
     select_branch_name: "Select Branch Name",
 
     notes: "Notes",
@@ -650,8 +649,8 @@ export default {
         value: 4567890123456123
     }],
 
-    /*error message*/
-    errtransferammt: "Transfer Amount is Required",
+    /*error message*
+    errTransferAmt: "Transfer Amount should be more than 0",
     errRemarks: "Remarks is Required",
 
     /*Cash By Code message*/
@@ -685,7 +684,6 @@ export default {
     select_acct: "Select From Account",
     vat: "VAT",
 
-
     fund_select_acct: "Select From Account",
     select_to_acct: "Select To Account",
     to_acct: "To Account",
@@ -716,7 +714,6 @@ export default {
 
     own_accountt: "OWN ACCOUNT",
     city_accountt: "CITY ACCOUNT",
-    to_account: "To Account",
 
     /*Transfer to bkash screen message*/
     other_bank_account_title: "Other Bank Account Fund Transfer",
@@ -1205,28 +1202,33 @@ export default {
     update_beneficiary_alert: "Please update this beneficiary information",
     settings: "Settings",
 
-    error_select_to_type:"Please Select To Account",
-    error_select_nickname_type:"select nick name",
-    fund_transfer_own_account:"Fund Transfer Own Account",
-    fund_transfer_city_account:"Fund Transfer City Account",
-    transfer:"Transfer",
-    fund_transfer_bank:"Fund Transfer Other Bank Account",
+    error_account_same: "From and To account should not be same",
+    error_select_to_type: "Please Select To Account",
+    error_select_nickname_type: "select nick name",
+    fund_transfer_own_account: "Fund Transfer Own Account",
+    fund_transfer_city_account: "Fund Transfer City Account",
+    transfer: "Transfer",
+    fund_transfer_bank: "Fund Transfer Other Bank Account",
 
-    error_grand_total_amount:"Grand total amount should be less than or equal to  available balance.",
+    error_grand_total_amount: "Grand total amount should be less than or equal to  available balance.",
     enter_amount: "Enter amount here",
-    error_mobile_number:"Mobile number should be 11 digit and start with 01",
-    payment_details:"Payment Details",
+    error_mobile_number: "Mobile number should be 11 digit and start with 01",
+    payment_details: "Payment Details",
 
     /* Payments Details*/
     merchant_name: "Merchant Name",
     merchant_city: "Merchant City",
     payment_amount: "Payment Amount(BDT)",
     grandTotal_bdt: "Grand Total (BDT)",
-    bill_number:"Bill Number",
+    bill_number: "Bill Number",
     store_label: "Store Label",
     terminal_label: "Terminal Label",
-    payment_details_note1:"1. Enter Amount or the total bill value of the goods purchased.",
+    payment_details_note1: "1. Enter Amount or the total bill value of the goods purchased.",
     somethingWrong: "Something wrong please try after sometime",
-
-
+    insufficientBal: "Insufficient balance to transfer money",
+    success_transfer: "Successfully transferred",
+    transferCity_props: [
+        {label: "Single Fund Transfer", value: 0},
+        {label: "Transfer from Beneficiary", value: 1}
+    ],
 }

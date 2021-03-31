@@ -69,8 +69,7 @@ import OtpLockUnlock from "./react/screens/More/OtpLockUnlock";
 import ViewDeleteBeneficiary from "./react/screens/Trasfer/Beneficiary/ViewDeleteBeneficiary";
 import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
 import BeneficiaryEmail from "./react/screens/Trasfer/Beneficiary/BeneficiaryEmail";
-
-
+import PaymentDetails from "./react/screens/Citypay/PaymentDetails";
 
 const store = configureStore(window.__State__);
 const Stack = createStackNavigator();
@@ -183,6 +182,17 @@ function PaymentTab() {
         </Stack.Navigator>);
 }
 
+function CityPayTab() {
+    return (
+        <Stack.Navigator initialRouteName={"Payments"} mode={"modal"} screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}>
+            <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
+            <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
+        </Stack.Navigator>);
+}
+
+
 function AccountTab() {
     return (
         <Stack.Navigator initialRouteName={"Accounts"} mode={"modal"} screenOptions={{
@@ -237,7 +247,7 @@ function Root() {
             <Stack.Screen name="LoginConfigureProfile" component={LoginConfigureProfile}
                           options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
-            <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
+            <Stack.Screen name="CityPayTab" component={CityPayTab} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

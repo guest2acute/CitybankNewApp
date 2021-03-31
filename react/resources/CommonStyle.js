@@ -133,5 +133,14 @@ export default StyleSheet.create({
         fontFamily:fontStyle.RobotoRegular,
         fontSize:FontSize.getSize(11),
         color: themeStyle.THEME_COLOR
+    },
+    viewText:{
+        alignItems: "flex-end",
+        textAlign: 'right',
+        marginLeft: 10,
+        flex: 1,
+        fontFamily: fontStyle.RobotoRegular,
+        fontSize: FontSize.getSize(13),
+        color: themeStyle.BLACK
     }
 });

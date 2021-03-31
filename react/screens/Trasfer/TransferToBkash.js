@@ -95,7 +95,7 @@ class TransferToBkash extends Component {
             return;
         }
         else if(this.state.transferamt===""){
-            this.setState({error_transferamt:language.errtransferammt})
+            this.setState({error_transferamt:language.errTransferAmt})
             return;
         }else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})

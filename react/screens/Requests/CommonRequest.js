@@ -139,6 +139,40 @@ export const RESENDOTP = async (userDetails,otpType, props) => {
 }
 
 
+export const GETBALANCE = async (accountNo,SOURCE,APPCUSTOMER_ID, props) => {
+    return new Promise(async (resolve, reject) => {
+        let balanceReq = {
+            ACCT_NO: accountNo,
+            ACTION: "GETACCTBALDETAIL",
+            SOURCE:SOURCE,
+            RES_FLAG: "B",
+            CURRENCYCODE: "BDT",
+            APPCUSTOMER_ID: APPCUSTOMER_ID,
+            ...Config.commonReq,
+        }
+
+        console.log("balanceReq", balanceReq);
+        await ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
+            console.log("resendReqVal", result);
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result.RESPONSE[0]);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(props.language.somethingWrong, props.language.ok);
+            console.log("error", error);
+            return reject(error);
+        });
+
+    });
+
+}
+
+
 export const MoreDetails = (language) => {
     return [
         {
