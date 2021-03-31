@@ -16,7 +16,6 @@ import CityPay from "./react/screens/BottomTabs/CityPay";
 import More from "./react/screens/BottomTabs/More";
 import {Image} from "react-native";
 import themeStyle from "./react/resources/theme.style";
-import CommonStyle from "./react/resources/CommonStyle";
 import fontStyle from "./react/resources/FontStyle";
 import RegistrationAccount from "./react/screens/RegistrationAccount";
 import RegistrationCard from "./react/screens/RegistrationCard";
@@ -73,7 +72,6 @@ import BeneficiaryEmail from "./react/screens/Trasfer/Beneficiary/BeneficiaryEma
 import PaymentDetails from "./react/screens/Citypay/PaymentDetails";
 import Receipt from "./react/screens/Citypay/Receipt";
 import QRMerchantPayment from "./react/screens/More/QRMerchantPayment";
-
 
 
 const store = configureStore(window.__State__);
@@ -188,6 +186,17 @@ function PaymentTab() {
         </Stack.Navigator>);
 }
 
+function CityPayTab() {
+    return (
+        <Stack.Navigator initialRouteName={"Payments"} mode={"modal"} screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}>
+            <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
+            <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
+        </Stack.Navigator>);
+}
+
+
 function AccountTab() {
     return (
         <Stack.Navigator initialRouteName={"Accounts"} mode={"modal"} screenOptions={{
@@ -246,7 +255,7 @@ function Root() {
             <Stack.Screen name="LoginConfigureProfile" component={LoginConfigureProfile}
                           options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
-            <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
+            <Stack.Screen name="CityPayTab" component={CityPayTab} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

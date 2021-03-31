@@ -81,7 +81,7 @@ class FavTransferBkash extends Component {
             return;
         }
         else if(this.state.transferAmount===""){
-            this.setState({errorTransferAmount:language.errtransferammt})
+            this.setState({errorTransferAmount:language.errTransferAmt})
             return;
         }else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})

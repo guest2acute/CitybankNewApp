@@ -589,6 +589,7 @@ export default {
     select_type_account: "অ্যাকাউন্টের ধরণ নির্বাচন করুন",
     select_district_type: "জেলার নাম নির্বাচন করুন",
     select_branch_type: "শাখার নাম নির্বাচন করুন",
+    error_account_same:"থেকে এবং অ্যাকাউন্টে এক হওয়া উচিত নয়",
     error_select_bank_name: "দয়া করে ব্যাঙ্কের নাম নির্বাচন করুন",
     error_select_district_name: "জেলার নাম নির্বাচন করুন",
     error_select_branch_name: "শাখার নাম নির্বাচন করুন",
@@ -611,7 +612,7 @@ export default {
         {key: "6", label: "চাঁদপুর", value: 6},
         {key: "7", label: "COMILLA", value: 7},
     ],
-    select_brach: "শাখা নির্বাচন করুন",
+
     select_branch_name: "শাখার নাম নির্বাচন করুন",
 
     notes: "মন্তব্য",
@@ -1213,7 +1214,13 @@ export default {
     terminal_label: "টার্মিনাল লেবেল",
     payment_details_note1:"1. ক্রয়কৃত সামগ্রীর পরিমাণ বা বিলের মোট মূল্য প্রবেশ করান।",
     somethingWrong: "কিছু ভুল হয়েছে দয়া করে কিছুক্ষণ পরে চেষ্টা করুন",
-
+    insufficientBal:"অর্থ স্থানান্তর করতে অপর্যাপ্ত ভারসাম্য",
+    errTransferAmt: "স্থানান্তর পরিমাণ 0 এর বেশি হওয়া উচিত",
+    success_transfer: "সাফল্যের সাথে স্থানান্তরিত হয়েছে",
+    transferCity_props: [
+        {label: "একক তহবিল স্থানান্তর", value: 0},
+        {label: "সুবিধাভোগী থেকে স্থানান্তর", value: 1}
+    ],
 
     payment_card: "কার্ড নির্বাচন করুন *",
     error_card_pin:"কার্ড পিন প্রয়োজন",
@@ -1249,7 +1256,5 @@ export default {
     reclaim_money_to:"টাকা পুনরায় দাবি",
     select_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন",
     error_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন"
-
-
 }
 

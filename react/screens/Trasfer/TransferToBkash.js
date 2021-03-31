@@ -44,14 +44,12 @@ class TransferToBkash extends Component {
             modalTitle: "",
             modalData: [],
             otp_type: 0,
-            availablebalance:"",
-            error_availablebal:"",
-            transferamt:"",
-            error_transferamt:"",
-            servicescharge:"00.00",
-            error_servicescharge:"",
-            grandtotal:"",
-            error_grandtotal:"",
+            availableBalance:"",
+            error_availableBal:"",
+            transferAmount:"",
+            error_transferAmount:"",
+            servicesCharge:"",
+            grandTotal:"",
             remarks:"",
             error_remarks:""
         }
@@ -94,8 +92,8 @@ class TransferToBkash extends Component {
             Utility.alert(language.error_select_from_type,language.ok);
             return;
         }
-        else if(this.state.transferamt===""){
-            this.setState({error_transferamt:language.errtransferammt})
+        else if(this.state.transferAmount===""){
+            this.setState({error_transferAmount:language.errTransferAmt})
             return;
         }else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})
@@ -235,28 +233,22 @@ class TransferToBkash extends Component {
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_availablebal: "",
-                        availablebalance: Utility.userInput(text)
+                        error_availableBal: "",
+                        availableBalance: Utility.userInput(text)
                     })}
-                    value={this.state.availablebalance}
+                    value={this.state.availableBalance}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
-                    returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
-                        this.transferamtRef.focus();
-                    }}
                     maxLength={13}/>
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
-            {this.state.error_availablebal !==  "" ?
+            {this.state.error_availableBal !==  "" ?
                 <Text style={CommonStyle.errorStyle
-                }>{this.state.error_availablebal}</Text> : null}
+                }>{this.state.error_availableBal}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -265,21 +257,20 @@ class TransferToBkash extends Component {
             }}>
                 <Text style={[CommonStyle.textStyle]}>
                     {language.transfer_amount}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
-                    ref={(ref) => this.transferamtRef = ref}
+                    ref={(ref) => this.transferAmountRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_transferamt: "",
-                        transferamt: Utility.userInput(text)
+                        error_transferAmount: "",
+                        transferAmount: Utility.userInput(text)
                     })}
-                    value={this.state.transferamt}
+                    value={this.state.transferAmount}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
@@ -291,12 +282,10 @@ class TransferToBkash extends Component {
                     maxLength={13}/>
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
-            {this.state.error_transferamt !==  "" ?
+            {this.state.error_transferAmount !==  "" ?
                 <Text style={CommonStyle.errorStyle
-                }>{this.state.error_transferamt}</Text> : null}
+                }>{this.state.error_transferAmount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-
 
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -305,37 +294,9 @@ class TransferToBkash extends Component {
                 <Text style={[CommonStyle.textStyle,{flex:1}]}>
                     {language.services_charge}
                 </Text>
-                <Text style={CommonStyle.viewText}>{this.state.servicescharge}</Text>
-{/*
-                <TextInput
-                    ref={(ref) => this.serviceschargeRef = ref}
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',marginLeft:10}]}
-                    placeholder={"00.00"}
-                    onChangeText={text => this.setState({
-                        error_servicescharge: "",
-                        servicescharge: Utility.userInput(text)
-                    })}
-                    value={this.state.servicescharge}
-                    multiline={false}
-                    numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
-                    contextMenuHidden={true}
-                    keyboardType={"number-pad"}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
-                        this.grandtotalRef.focus();
-                    }}
-                    maxLength={13}/>
-*/}
-                <Text style={{paddingLeft:5}}>BDT</Text>
+                <Text style={CommonStyle.viewText}>{this.state.servicesCharge}</Text>
+                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
-            {this.state.error_servicescharge !==  "" ?
-                <Text style={CommonStyle.errorStyle
-                }>{this.state.error_servicescharge}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -345,32 +306,10 @@ class TransferToBkash extends Component {
                 <Text style={[CommonStyle.textStyle,{flex:1}]}>
                     {language.vat}
                 </Text>
-                <TextInput
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        marginLeft: 10
-                    }]}
-                    placeholder={"00.00"}
-                    onChangeText={text => this.setState({
-                        error_vat: "",
-                        vat: Utility.userInput(text)
-                    })}
-                    value={this.state.vat}
-                    multiline={false}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    keyboardType={"number-pad"}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    editable={false}
-                    maxLength={13}/>
+                <Text style={CommonStyle.viewText}>{this.state.vat}</Text>
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
@@ -378,34 +317,9 @@ class TransferToBkash extends Component {
                 <Text style={[CommonStyle.textStyle]}>
                     {language.grand_total}
                 </Text>
-                <TextInput
-                    ref={(ref) => this.grandtotalRef = ref}
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
-                    placeholder={"00.00"}
-                    onChangeText={text => this.setState({
-                        error_grandtotal: "",
-                        grandtotal: Utility.userInput(text)
-                    })}
-                    value={this.state.grandtotal}
-                    multiline={false}
-                    numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
-                    contextMenuHidden={true}
-                    keyboardType={"number-pad"}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
-                        this.grandtotalRef.focus();
-                    }}
-                    maxLength={13}/>
+                <Text style={CommonStyle.viewText}>{this.state.grandTotal}</Text>
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
-            {this.state.error_grandtotal !==  "" ?
-                <Text style={CommonStyle.errorStyle
-                }>{this.state.error_grandtotal}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
             <View style={{
@@ -417,7 +331,6 @@ class TransferToBkash extends Component {
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TextInput
-                    ref={(ref) => this.grandtotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={language.et_placeholder}
@@ -428,8 +341,6 @@ class TransferToBkash extends Component {
                     value={this.state.remarks}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}

@@ -147,7 +147,7 @@ class OtherBankAccount extends Component {
             } else if (this.state.selectNicknameType === language.selectNickType) {
                 Utility.alert(language.error_select_nickname, language.ok);
             } else if (this.state.transferAmount === "") {
-                this.setState({errorTransferAmount: language.errtransferammt})
+                this.setState({errorTransferAmount: language.errTransferAmt})
             } else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
             } else if (this.state.otp_type === 1) {
