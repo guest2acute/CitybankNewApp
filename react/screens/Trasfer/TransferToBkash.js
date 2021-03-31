@@ -48,7 +48,7 @@ class TransferToBkash extends Component {
             error_availablebal:"",
             transferamt:"",
             error_transferamt:"",
-            servicescharge:"",
+            servicescharge:"00.00",
             error_servicescharge:"",
             grandtotal:"",
             error_grandtotal:"",
