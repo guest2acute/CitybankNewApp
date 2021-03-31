@@ -33,7 +33,6 @@ export default {
     changeIn: "Change in",
     actNo: "Account Number",
     actName: "Account Name",
-    actHolderName: "Account Holder Name",
     actNo_here: "Enter account number here",
     errorActNo: "Please enter account number",
     selectCard: "Select Card",

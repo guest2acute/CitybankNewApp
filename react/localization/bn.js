@@ -32,7 +32,6 @@ export default {
     changeIn: "পরিবর্তন",
     actNo: "হিসাব নাম্বার",
     actName: "হিসাবের নাম",
-    actHolderName: "হিসাব দাতার নাম",
     actNo_here: "এখানে অ্যাকাউন্ট নম্বর প্রবেশ করান",
     errorActNo: "অ্যাকাউন্ট নম্বর লিখুন দয়া করে",
     selectCard: "কার্ড নির্বাচন করুন",

@@ -306,7 +306,7 @@ class BeneficiaryOtherBank extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {this.state.selectTypeVal === 1 ? language.cardHolderName : language.actHolderName}
+                        {this.state.selectTypeVal === 1 ? language.cardHolderName : language.account_holder_name}
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
