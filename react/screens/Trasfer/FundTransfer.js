@@ -71,6 +71,7 @@ class FundTransfer extends Component {
             VAT_AMT_LABEL: "",
             CHARGE_AMT_LABEL: "",
             focusAmount: false,
+            account_holder_name: ""
         }
     }
 
@@ -188,7 +189,7 @@ class FundTransfer extends Component {
     }
 
     async onSubmit(language, navigation) {
-        console.log("stateVal is this",this.state.stateVal)
+        console.log("stateVal is this", this.state.stateVal)
         if (this.state.stateVal === 0) {
             if (this.state.selectFromActVal === -1) {
                 Utility.alert(language.error_select_from_type, language.ok);
@@ -517,7 +518,7 @@ class FundTransfer extends Component {
         });
     }
 
-    beneficiaryTransfer() {
+    beneficiaryTransfer(language) {
         return (
             <View key={"beneficiaryTransfer"}>
                 <View style={{flex: 1}}>
@@ -561,14 +562,14 @@ class FundTransfer extends Component {
             </View>)
     }
 
-    singleTransfer() {
+    singleTransfer(language) {
         return (<View key={"singleTransfer"}>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.labelStyle]}>
-                    {language.toAccount}
+                <Text style={CommonStyle.textStyle}>
+                    {language.to_acct}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
 
@@ -591,11 +592,33 @@ class FundTransfer extends Component {
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
+                    keyboardType={"number-pad"}
+                    onFocus={() => this.setState({focusAmount: true})}
+                    onBlur={() => {
+                        if (this.state.focusAmount) {
+                            this.setState({focusAmount: false}, async () => {
+                                await this.calculateVat();
+                            });
+                        }
+                    }}
                     returnKeyType={"next"}
                     onSubmitEditing={(event) => {
                         this.accountNoRef.focus();
                     }}
                 />
+            </View>
+            {this.state.errorToAct !== "" ?
+                <Text style={CommonStyle.errorStyle}>{this.state.errorToAct}</Text> : null}
+
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={CommonStyle.textStyle}>
+                    {language.account_holder_name}
+                </Text>
+                <Text
+                    style={CommonStyle.viewText}>{this.state.account_holder_name}</Text>
             </View>
             {this.state.errorToAct !== "" ?
                 <Text style={CommonStyle.errorStyle}>{this.state.errorToAct}</Text> : null}
@@ -743,7 +766,7 @@ class FundTransfer extends Component {
 
                     </View>
                     :
-                    this.state.cityTransVal === 0 ? this.singleTransfer() : this.beneficiaryTransfer()
+                    this.state.cityTransVal === 0 ? this.singleTransfer(language) : this.beneficiaryTransfer(language)
                 }
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <FlatList horizontal={true}
@@ -1175,7 +1198,7 @@ class FundTransfer extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{ this.state.stateVal === 2 || this.state.stateVal === 4 ? language.transfer : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 2 || this.state.stateVal === 4 ? language.transfer : language.next}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
