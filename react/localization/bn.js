@@ -635,7 +635,6 @@ export default {
     bkash_name: "নাম",
     fromAccount: "হিসাব থেকে",
     bkash_select_acct: "নির্বাচন অ্যাকাউন্ট",
-    bkash_selectfrom_acct: "অ্যাকাউন্ট থেকে নির্বাচন করুন",
     available_bal: "পর্যাপ্ত টাকা",
     transfer_amount: "স্থানান্তর পরিমাণ",
     services_charge: "পরিষেবা চার্জ",
@@ -685,11 +684,7 @@ export default {
     ],
     select_from_account: "অ্যাকাউন্ট থেকে নির্বাচন করুন",
     to_account: "হিসাবে",
-    select_acct: "অ্যাকাউন্ট থেকে নির্বাচন করুন",
     vat: "ভ্যাট",
-
-
-    fund_select_acct: "অ্যাকাউন্ট থেকে নির্বাচন করুন",
     select_to_acct: "অ্যাকাউন্টে নির্বাচন করুন",
     to_acct: "হিসাবে",
     balanceTypeArr: [
@@ -784,7 +779,6 @@ export default {
         {label: "পোস্টপেইড", value: 1},
     ],
     fromAccount: "হিসাব থেকে",
-    selectAccountType: "অ্যাকাউন্ট থেকে নির্বাচন করুন",
     totalAmount: "সর্বমোট পরিমাণ",
     totalServicesCharge: "মোট পরিষেবা চার্জ",
     grandTotal: "সর্বমোট",
@@ -1227,5 +1221,40 @@ export default {
         {label: "একক তহবিল স্থানান্তর", value: 0},
         {label: "সুবিধাভোগী থেকে স্থানান্তর", value: 1}
     ],
+
+    payment_card: "কার্ড নির্বাচন করুন *",
+    error_card_pin:"কার্ড পিন প্রয়োজন",
+    receipt:"প্রাপ্তি",
+    thank_you:"ধন্যবাদ!",
+    transaction_success: "সফলভাবে লেনদেন",
+    approval_id: "অনুমোদনের আইডি 108417268210",
+    customer_name: "ক্রেতার নাম",
+    source_account:"উত্স অ্যাকাউন্ট",
+    receipt_amount:"পরিমাণ (বিডিটি)",
+    type:"প্রকার",
+    transaction_date:"লেনদেনের তারিখ এবং সময়",
+    another_qr_payment:"আরেকটি কিউআর পেমেন্ট",
+    save_share:"সংরক্ষণ / ভাগ করুন",
+
+    /*Qr Merchant Payment*/
+    type_selection:"নির্বাচনের ধরণ",
+    select_card_qr:"কিউআর মার্চেন্ট পেমেন্ট সম্পাদনের জন্য কার্ড (গুলি) নির্বাচন করুন",
+    typeOfSelection_props: [
+        {label: "লগইন সঙ্গে লেনদেন শুধুমাত্র", value: 0},
+        {label: "লগইন ছাড়াই 99 টি লেনদেন সীমা সেট করুন", value: 1},
+    ],
+    qr_notes:"1. যদি বিকল্প 2 নির্বাচিত হয়, প্রতিটি সফলভাবে",
+    qr_notes1:"লেনদেন মোট সীমা এক দ্বারা হ্রাস করা হবে",
+    errorTransactionLimit: "লগইন ছাড়াই 99 লেনদেনের সীমাতে সেটআপ করুন",
+    status:"স্থিতি",
+    waiting:"অপেক্ষা করছি",
+    reference_number:"পরিচিত সংখ্যা",
+    valid_till:"বৈধ টাল",
+    resend_notification:"বিজ্ঞপ্তি পুনরায় প্রেরণ",
+    cancel_transfer:"স্থানান্তর বাতিল করুন",
+    email_transfer_details:"ইমেল স্থানান্তর বিশদ",
+    reclaim_money_to:"টাকা পুনরায় দাবি",
+    select_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন",
+    error_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন"
 }
 

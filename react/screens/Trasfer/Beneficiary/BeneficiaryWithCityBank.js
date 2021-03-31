@@ -210,7 +210,7 @@ class BeneficiaryWithCityBank extends Component {
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle]}>
+                    <Text style={[CommonStyle.textStyle,{ flex: 1}]}>
                         {language.account_holder_name}
                     </Text>
                     <TextInput
@@ -218,7 +218,6 @@ class BeneficiaryWithCityBank extends Component {
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
                             textAlign: 'right',
-                            flex: 1,
                             marginLeft: 10
                         }]}
                         // placeholder={language.et_placeholder}
@@ -238,7 +237,7 @@ class BeneficiaryWithCityBank extends Component {
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={CommonStyle.textStyle}>
+                    <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                         {language.currency}
                     </Text>
                     <TextInput
@@ -246,7 +245,6 @@ class BeneficiaryWithCityBank extends Component {
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
                             textAlign: 'right',
-                            flex: 1,
                             marginLeft: 10
                         }]}
                         //placeholder={language.et_placeholder}

@@ -135,12 +135,12 @@ class TransferToBkash extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex:1}]}>
                     {language.bkash_account}
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',marginLeft:10}]}
                     placeholder={""}
                     onChangeText={text => this.setState({
                         error_accountNo: "",
@@ -149,8 +149,6 @@ class TransferToBkash extends Component {
                     value={this.state.accountNo}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
@@ -170,7 +168,7 @@ class TransferToBkash extends Component {
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle]}>
+                    <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                         {language.bkash_name}
                     </Text>
                     <TextInput
@@ -179,7 +177,6 @@ class TransferToBkash extends Component {
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
                             textAlign: 'right',
-                            flex: 1,
                             marginLeft: 10
                         }]}
                         placeholder={""}
@@ -305,13 +302,15 @@ class TransferToBkash extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex:1}]}>
                     {language.services_charge}
                 </Text>
+                <Text style={CommonStyle.viewText}>{this.state.servicescharge}</Text>
+{/*
                 <TextInput
                     ref={(ref) => this.serviceschargeRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',marginLeft:10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
                         error_servicescharge: "",
@@ -331,12 +330,46 @@ class TransferToBkash extends Component {
                         this.grandtotalRef.focus();
                     }}
                     maxLength={13}/>
+*/}
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
             {this.state.error_servicescharge !==  "" ?
                 <Text style={CommonStyle.errorStyle
                 }>{this.state.error_servicescharge}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle,{flex:1}]}>
+                    {language.vat}
+                </Text>
+                <TextInput
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        marginLeft: 10
+                    }]}
+                    placeholder={"00.00"}
+                    onChangeText={text => this.setState({
+                        error_vat: "",
+                        vat: Utility.userInput(text)
+                    })}
+                    value={this.state.vat}
+                    multiline={false}
+                    numberOfLines={1}
+                    contextMenuHidden={true}
+                    keyboardType={"number-pad"}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    autoCorrect={false}
+                    editable={false}
+                    maxLength={13}/>
+                <Text style={{paddingLeft:5}}>BDT</Text>
+            </View>
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
 
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -483,7 +516,6 @@ class TransferToBkash extends Component {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
                         {this.accountNoOption(language)}
-
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),

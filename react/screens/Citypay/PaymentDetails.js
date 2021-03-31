@@ -41,57 +41,70 @@ class PaymentDetails extends Component {
             remarks: "",
             error_remarks: "",
             errorPaymentAmount: "",
-            errorCardPin:"",
-            cardPin:"",
-            otp_type:0,
+            errorCardPin: "",
+            cardPin: "",
+            otp_type: 0,
             data: [
                 {
                     cardName: "AMEX CITY MAXX DEBIT",
                     cardNumber: "371599****0857",
-                    radio_props : [{ label:"",value: 0,isSelected:false }],
+                    isSelected:true,
                     images: "http://placehold.it/200x200"
                 },
                 {
                     cardName: "MASTER CARD DEBIT",
                     cardNumber: "371599****0857",
-                    radio_props :  [{label:"", value: 0,isSelected:false}],
+                    isSelected:false,
                     images: "http://placehold.it/200x200"
                 },
                 {
                     cardName: "VISA PLATINUM",
                     cardNumber: "371599****0857",
-                    radio_props :[{label:"", value: 0,isSelected:false}],
+                    isSelected:false,
+                    images: "http://placehold.it/200x200"
+                },
+                {
+                    cardName: "MASTER CARD DEBIT",
+                    cardNumber: "371599****0857",
+                    isSelected:false,
+                    radio_props: [{label: "", value: 0}],
+                    images: "http://placehold.it/200x200"
+                },
+                {
+                    cardName: "VISA PLATINUM",
+                    cardNumber: "371599****0857",
+                    isSelected:false,
                     images: "http://placehold.it/200x200"
                 }
-
             ]
         }
     }
 
-    otpUpdate(value,index){
-        console.log("value",index)
-        let counter=0;
-        let newArray=[];
-        let array=this.state.data;
+    otpUpdate( index) {
+        console.log("value", index)
+        let counter = 0;
+        let newArray = [];
+        let array = this.state.data;
         array.map((item) => {
-            console.log(item)
-            if(counter===index){
-                item={...item, radio_props:[{label:"",value:0}]}
-            }else{
-                item={...item, radio_props:[{label:"",value:-1}]}
+            console.log("test count",counter === index)
+            if (counter === index) {
+                item = {...item, isSelected:true}
+            } else {
+                item = {...item, isSelected:false}
             }
-            console.log("item",item)
+            console.log("item", item)
             newArray.push(item)
             counter++;
         })
-        console.log("newArray",JSON.stringify(newArray));
+
         this.setState({
-            data:newArray,
+            data: newArray,
         })
 
     }
 
     onSubmit(language, navigation) {
+        console.log("submit")
         if (this.state.isMainScreen) {
             if (this.state.paymentAmount === "") {
                 console.log("is main screen")
@@ -101,7 +114,12 @@ class PaymentDetails extends Component {
                     isMainScreen: false
                 })
             }
-        } else {
+        } else{
+            if (this.state.cardPin === "") {
+                this.setState({errorCardPin: language.error_card_pin})
+            }else{
+                this.props.navigation.navigate("Receipt")
+            }
 
         }
     }
@@ -369,46 +387,40 @@ class PaymentDetails extends Component {
     }
 
     _renderItem = ({item, index}) => {
-       console.log(console.log("otp type is this",item.radio_props));
+        console.log(console.log("otp type is this", item.radio_props));
         return (
+            <TouchableOpacity onPress={() => { this.otpUpdate(index)
+            }}>
+                <View style={[styles.renderView, {height: Utility.setHeight(55), backgroundColor:item.isSelected?"#f5dbdc":"#b2b8ba"}]}>
 
-                <View style={[styles.renderView, {height: Utility.setHeight(50)}]}>
                     <Image style={{
-                        height: Utility.setHeight(50),
-                        width: Utility.setWidth(60),
-                        alignSelf: "flex-start"
+                        height: Utility.setHeight(55),
+                        width: Utility.setWidth(63),
+                        borderRadius:5
                     }} resizeMode={"contain"}
                            source={{uri: item.images}}/>
-                    <View style={{paddingLeft:10,flexDirection: "column", justifyContent: "center"}}>
+                    <View style={{ flex:1,flexDirection: "column", justifyContent: "center"}}>
                         <Text style={[CommonStyle.labelStyle, {
                             color: themeStyle.BLACK,
                             fontSize: FontSize.getSize(12),
+                            paddingLeft:10,
                         }]}>{item.cardName}</Text>
                         <Text style={[CommonStyle.labelStyle, {
                             color: themeStyle.BLACK,
                             fontSize: FontSize.getSize(12),
+                            paddingLeft:10,
                         }]}>{item.cardNumber}</Text>
                     </View>
 
-                    <RadioForm
-                        radio_props={item.radio_props}
-                        isSelected={false}
-                        buttonSize={9}
-                        selectedButtonColor={themeStyle.THEME_COLOR}
-                        formHorizontal={true}
-                        labelHorizontal={true}
-                        borderWidth={1}
-                        buttonColor={themeStyle.GRAY_COLOR}
-                        labelColor={themeStyle.BLACK}
-                        labelStyle={[CommonStyle.textStyle ]}
-                        style={{ marginTop: 10}}
-                        animation={true}
-                        onPress={(value) => {
-                            console.log("called",value);
-                            this.otpUpdate(value,index)
-                        }}
-                    />
+                    <Image style={{
+                        height: Utility.setHeight(20),
+                        width: Utility.setWidth(20),
+                        marginEnd:10,
+                        tintColor:themeStyle.THEME_COLOR,
+                    }} resizeMode={"contain"}
+                           source={item.isSelected?require("../../resources/images/check.png"):require("../../resources/images/uncheck.png")}/>
                 </View>
+            </TouchableOpacity>
         )
     }
 
@@ -425,27 +437,30 @@ class PaymentDetails extends Component {
     nextPaymentDetails(language) {
         return (
             <View>
-                <View style={[ {backgroundColor:themeStyle.PLACEHOLDER_COLOR,height: Utility.setHeight(50),justifyContent:"center",alignItems:"center"}]}>
+                <View style={[{
+                    backgroundColor:"#b2b8ba",
+                    height: Utility.setHeight(50),
+                    justifyContent: "center",
+                    alignItems: "center"
+                }]}>
                     <Text style={[CommonStyle.labelStyle, {
                         color: themeStyle.THEME_COLOR,
                         fontSize: FontSize.getSize(12),
-                        textAlign:"center"
-                    }]}>Select Card *</Text>
+                    }]}>{language.payment_card}</Text>
                 </View>
-            <FlatList scrollEnabled={false}
-                      data={this.state.data}
-                      renderItem={this._renderItem}
-                // ItemSeparatorComponent={() => this.bottomLine()}
-                // ListFooterComponent={this.bottomLine()}
-                      keyExtractor={(item, index) => index + ""}
-            />
+                <FlatList scrollEnabled={false}
+                          data={this.state.data}
+                          renderItem={this._renderItem}
+                    // ItemSeparatorComponent={() => this.bottomLine()}
+                    // ListFooterComponent={this.bottomLine()}
+                          keyExtractor={(item, index) => index + ""}
+                />
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.payment_amount}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -467,6 +482,7 @@ class PaymentDetails extends Component {
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
+                        editable={false}
                     />
                 </View>
                 {this.state.errorPaymentAmount !== "" ?
@@ -576,7 +592,7 @@ class PaymentDetails extends Component {
                                 borderRadius: Utility.setHeight(23),
                                 backgroundColor: themeStyle.THEME_COLOR
                             }}><Text
-                                style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.isMainScreen ? language.next : language.confirm}</Text>
+                                style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}> {language.next} </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -626,12 +642,12 @@ class PaymentDetails extends Component {
 
 const styles = {
     renderView: {
-        flex:1,
+        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 5,
         marginBottom: 5,
-        //alignItems: "center",
+        alignItems: "center",
     }
 }
 

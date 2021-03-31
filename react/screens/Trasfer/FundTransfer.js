@@ -32,7 +32,7 @@ class FundTransfer extends Component {
             isProgress: false,
             cityTransVal: 0,
             selectNicknameType: props.language.select_nickname,
-            selectAcctType: props.language.fund_select_acct,
+            selectAcctType: props.language.select_from_account,
             selectToAcctType: props.language.select_to_acct,
             selectPaymentType: props.language.select_payment,
             selectFromActVal: -1,
@@ -188,6 +188,7 @@ class FundTransfer extends Component {
     }
 
     async onSubmit(language, navigation) {
+        console.log("stateVal is this",this.state.stateVal)
         if (this.state.stateVal === 0) {
             if (this.state.selectFromActVal === -1) {
                 Utility.alert(language.error_select_from_type, language.ok);
@@ -650,7 +651,7 @@ class FundTransfer extends Component {
                         onPress={() => this.openModal("fromAccountType", language.select_from_account, this.state.accountArr, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.selectAcctType === language.fund_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                color: this.state.selectAcctType === language.select_from_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectAcctType}
@@ -1174,7 +1175,7 @@ class FundTransfer extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : this.state.stateVal === 2 || this.state.stateVal === 4 ? language.transfer : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{ this.state.stateVal === 2 || this.state.stateVal === 4 ? language.transfer : language.next}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

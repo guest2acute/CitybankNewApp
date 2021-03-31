@@ -32,13 +32,8 @@ class OtherBankAccount extends Component {
         this.state = {
             nickname: "",
             accountNo: "2101636171001",
-            mobile_number: "",
-            emailTxt: "",
-            errorEmail: "",
             error_nickname: "",
             error_accountNo: "",
-            focusUid: false,
-            focusPwd: false,
             isProgress: false,
             selectNicknameType: props.language.select_nickname,
             selectAcctType: props.language.bkash_select_acct,
@@ -71,6 +66,7 @@ class OtherBankAccount extends Component {
             selected: false,
             stageVal: 0,
             transferMode: false,
+            transferBEFTMode:false,
             accountDetails: "",
             type_act: "",
             account_holder_name: "",
@@ -78,10 +74,6 @@ class OtherBankAccount extends Component {
         }
     }
 
-    backAction = () => {
-        this.backEvent();
-        return true;
-    }
 
     backEvent() {
         const {stageVal} = this.state;
@@ -92,11 +84,6 @@ class OtherBankAccount extends Component {
             this.setState({stageVal: stageVal - 1});
     }
 
-    componentWillUnmount() {
-        if (Platform.OS === "android") {
-            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
-        }
-    }
 
     showDatepicker = (id) => {
         console.log("click");
@@ -128,18 +115,11 @@ class OtherBankAccount extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        if (modelSelection === "type") {
-            console.log("selected value is this", item.value)
+        if (modelSelection === "nickNameType") {
             this.setState({selectNicknameType: item.label, selectTypeVal: item.value, modalVisible: false})
             this.alertToNavigate();
-        } else if (modelSelection === "bankType") {
+        } else if (modelSelection === "accountType") {
             this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
-        } else if (modelSelection === "district_type") {
-            this.setState({selectDistrictType: item.label, selectTypeVal: item.value, modalVisible: false})
-        } else if (modelSelection === "branch_type") {
-            this.setState({selectBranchType: item.label, selectTypeVal: item.value, modalVisible: false})
-        } else if (modelSelection === "paymentType") {
-            this.setState({selectPaymentType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
 
@@ -155,18 +135,6 @@ class OtherBankAccount extends Component {
                 {text: this.props.language.no_txt},
             ]
         );
-    }
-
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({nickname: text, error_nickname: ""})
-    }
-
-    accountchange(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({accountNo: text, error_accountNo: ""})
     }
 
     async onSubmit(language, navigation) {
@@ -232,8 +200,6 @@ class OtherBankAccount extends Component {
                 currency: "",
                 accountNo: "",
                 type_act: "",
-                mobile_number: "",
-                emailTxt: "",
                 stageVal: 0,
                 accountDetails: null,
             })
@@ -260,7 +226,7 @@ class OtherBankAccount extends Component {
         if (text.length !== 0) {
             this.setState({
                 transferAmount: text,
-                transferMode: true
+                transferBEFTMode: true
             })
         } else if (text > 100000 || text <= 100000) {
             console.log("text is this", text)
@@ -271,17 +237,9 @@ class OtherBankAccount extends Component {
         } else {
             this.setState({
                 transferAmount: text,
-                transferMode: true
+                transferBEFTMode: true
             })
         }
-    }
-
-    otherBankAccount(language) {
-        return (
-            <View>
-                <Text>other bank account</Text>
-            </View>
-        )
     }
 
     accountNoOption(language, flag) {
@@ -301,7 +259,7 @@ class OtherBankAccount extends Component {
                     </Text>
                     }
                     <TouchableOpacity
-                        onPress={() => this.openModal("bankType", language.bkash_selectfrom_acct, language.cardNumber, language)}>
+                        onPress={() => this.openModal("accountType", language.select_from_account, language.cardNumber, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectAcctType === language.bkash_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -349,7 +307,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                     {language.available_bal}
                 </Text>
                 <TextInput
@@ -357,7 +315,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={"00.00"}
@@ -379,7 +336,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                     {language.currency}
                 </Text>
                 <TextInput
@@ -387,7 +344,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={""}
@@ -417,7 +373,7 @@ class OtherBankAccount extends Component {
                             <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                         </Text>
                         <TouchableOpacity
-                            onPress={() => this.openModal("type", language.selectNickType, language.nickTypeArr, language)}>
+                            onPress={() => this.openModal("nickNameType", language.selectNickType, language.nickTypeArr, language)}>
                             <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
                                     color: this.state.selectNicknameType === language.select_nickname ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -533,7 +489,7 @@ class OtherBankAccount extends Component {
                         borderColor={themeStyle.PLACEHOLDER_COLOR}
                         buttonColor={themeStyle.GRAY_COLOR}
                         labelColor={themeStyle.PLACEHOLDER_COLOR}
-                        labelStyle={[CommonStyle.textStyle, {color: this.state.transferMode ? themeStyle.BLACK : themeStyle.PLACEHOLDER_COLOR}]}
+                        labelStyle={[CommonStyle.textStyle, {color: this.state.transferBEFTMode ? themeStyle.BLACK : themeStyle.PLACEHOLDER_COLOR}]}
                         style={{marginStart: 15, marginTop: 10, marginBottom: 10}}
                         animation={true}
                         onPress={(value) => {
@@ -571,7 +527,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                     {language.to_account}
                 </Text>
                 <TextInput
@@ -580,7 +536,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={""}
@@ -603,7 +558,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle, {flex: 1}]}>
                     {language.bank_name}
                 </Text>
                 <TextInput
@@ -611,7 +566,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={""}
@@ -633,7 +587,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex:1}]}>
                     {language.account_type}
                 </Text>
                 <TextInput
@@ -641,7 +595,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={""}
@@ -662,7 +615,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                     {language.district_type}
                 </Text>
                 <TextInput
@@ -670,7 +623,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={""}
@@ -680,8 +632,6 @@ class OtherBankAccount extends Component {
                     value={this.state.districtName}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
@@ -693,7 +643,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{ flex: 1}]}>
                     {language.branch_name}
                 </Text>
                 <TextInput
@@ -701,7 +651,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={""}
@@ -722,7 +671,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                     {language.services_charge}
                 </Text>
                 <TextInput
@@ -730,7 +679,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={"00.00"}
@@ -754,7 +702,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex:1}]}>
                     {language.vat}
                 </Text>
                 <TextInput
@@ -762,7 +710,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={"00.00"}
@@ -786,7 +733,7 @@ class OtherBankAccount extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1,}]}>
                     {language.grand_total}
                 </Text>
                 <TextInput
@@ -794,7 +741,6 @@ class OtherBankAccount extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={"00.00"}
@@ -837,8 +783,6 @@ class OtherBankAccount extends Component {
                     value={this.state.remarks}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}

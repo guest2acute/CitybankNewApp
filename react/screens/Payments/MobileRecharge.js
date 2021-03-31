@@ -26,7 +26,7 @@ class MobileRecharge extends Component {
         this.state = {
             isProgress: false,
             SelectOperator: props.language.SelectOperator,
-            SelectFromAccount: props.language.selectAccountType,
+            SelectFromAccount: props.language.select_from_account,
             SelectName: props.language.selectNickType,
             selectTypeVal: -1,
             selectActCard: props.language.TypeOfTransferArr[0],
@@ -94,7 +94,7 @@ class MobileRecharge extends Component {
             Utility.alert(language.error_select_operator,language.ok);
         }else if (this.state.SelectName === language.selectNickType) {
             Utility.alert(language.error_select_nickname,language.ok);
-        }  else if (this.state.SelectFromAccount === language.selectAccountType) {
+        }  else if (this.state.SelectFromAccount === language.select_from_account) {
             Utility.alert(language.error_select_from_type,language.ok);
         }else if (this.state.transferAmount === "") {
             this.setState({error_transferAmount: language.errPaymentAmount})
@@ -178,10 +178,10 @@ class MobileRecharge extends Component {
                     </Text>
                     }
                     <TouchableOpacity
-                        onPress={() => this.openModal("accountType", language.selectAccountType, language.cardNumber, language)}>
+                        onPress={() => this.openModal("accountType", language.select_from_account, language.cardNumber, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.SelectFromAccount === language.selectAccountType ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                color: this.state.SelectFromAccount === language.select_from_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.SelectFromAccount}
