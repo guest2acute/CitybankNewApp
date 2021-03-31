@@ -47,6 +47,7 @@ import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 
 import EmailTransfer from "./react/screens/Trasfer/Beneficiary/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/Beneficiary/EmailTransferScreen";
+import EmailTransferDetails from "./react/screens/Trasfer/Beneficiary/EmailTransferDetails";
 
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
@@ -69,6 +70,9 @@ import OtpLockUnlock from "./react/screens/More/OtpLockUnlock";
 import ViewDeleteBeneficiary from "./react/screens/Trasfer/Beneficiary/ViewDeleteBeneficiary";
 import BeneficiaryOtherCard from "./react/screens/Trasfer/Beneficiary/BeneficiaryOtherCard";
 import BeneficiaryEmail from "./react/screens/Trasfer/Beneficiary/BeneficiaryEmail";
+import PaymentDetails from "./react/screens/Citypay/PaymentDetails";
+import Receipt from "./react/screens/Citypay/Receipt";
+import QRMerchantPayment from "./react/screens/More/QRMerchantPayment";
 
 
 
@@ -161,6 +165,7 @@ function TransferTab() {
             <Stack.Screen name="Favorite" component={Favorite} options={{headerShown: false}}/>
             <Stack.Screen name="EmailTransfer" component={EmailTransfer} options={{headerShown: false}}/>
             <Stack.Screen name="EmailTransferScreen" component={EmailTransferScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="EmailTransferDetails" component={EmailTransferDetails} options={{headerShown: false}}/>
             <Stack.Screen name="SelectBeneficiary" component={SelectBeneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="ViewBeneficiaryOtherBank" component={ViewBeneficiaryOtherBank}
                           options={{headerShown: false}}/>
@@ -225,6 +230,10 @@ function Root() {
         <Stack.Navigator initialRouteName={"SplashScreen"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
+
+            <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
+            <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
+            <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>
