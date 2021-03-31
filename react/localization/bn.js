@@ -1238,7 +1238,18 @@ export default {
     ],
     qr_notes:"1. যদি বিকল্প 2 নির্বাচিত হয়, প্রতিটি সফলভাবে",
     qr_notes1:"লেনদেন মোট সীমা এক দ্বারা হ্রাস করা হবে",
-    errorTransactionLimit: "লগইন ছাড়াই 99 লেনদেনের সীমাতে সেটআপ করুন"
+    errorTransactionLimit: "লগইন ছাড়াই 99 লেনদেনের সীমাতে সেটআপ করুন",
+    status:"স্থিতি",
+    waiting:"অপেক্ষা করছি",
+    reference_number:"পরিচিত সংখ্যা",
+    valid_till:"বৈধ টাল",
+    resend_notification:"বিজ্ঞপ্তি পুনরায় প্রেরণ",
+    cancel_transfer:"স্থানান্তর বাতিল করুন",
+    email_transfer_details:"ইমেল স্থানান্তর বিশদ",
+    reclaim_money_to:"টাকা পুনরায় দাবি",
+    select_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন",
+    error_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন"
+
 
 }
 

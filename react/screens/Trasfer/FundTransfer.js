@@ -121,18 +121,6 @@ class FundTransfer extends Component {
         }
     }
 
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({nickname: text, error_nickname: ""})
-    }
-
-    accountchange(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({accountNo: text, error_accountNo: ""})
-    }
-
     getListViewItem = (item) => {
         this.setState({transferAmount: item.label})
     }
@@ -163,6 +151,7 @@ class FundTransfer extends Component {
     }
 
     async onSubmit(language, navigation) {
+        console.log("stateVal is this",this.state.stateVal)
         if (this.state.stateVal === 0) {
             if (this.state.selectAcctType === language.selectAccountType) {
                 Utility.alert(language.error_select_from_type,language.ok);
@@ -1267,7 +1256,7 @@ class FundTransfer extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : this.state.stateVal === 2 || this.state.stateVal === 4 ? language.transfer : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{ this.state.stateVal === 2 || this.state.stateVal === 4 ? language.transfer : language.next}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

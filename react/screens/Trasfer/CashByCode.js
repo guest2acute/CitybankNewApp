@@ -84,6 +84,7 @@ class CashByCode extends Component {
     }
 
     async onSubmit(language, navigation) {
+        console.log("submit")
         if (this.state.selectDebitType === language.cash_select_acct) {
             Utility.alert(language.error_debit_card,language.ok);
             return;
@@ -94,17 +95,37 @@ class CashByCode extends Component {
         }else if(this.state.mobileNumber===""){
             this.setState({errorMobile:language.error_mobile})
             return;
-        }else if(this.state.mobile_number.length > 11){
-            this.setState({errorMobile:language.error_mobile_number})
-            return;
-        }else if(this.state.remarks === "") {
+        }
+        else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})
             return;
         }else{
-
+            console.log("else part")
         }
-        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+        this.props.navigation.navigate("SecurityVerification", {
+            REQUEST_CD: "",
+            transType: "O",
+            actNo: this.state.accountNo,
+            resetScreen: this.resetScreen
+        })
+      /*  Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)*/
     }
+
+    resetScreen = (flag) => {
+        console.log("flag", flag);
+        if (flag) {
+            this.setState({
+                nickname: "",
+                account_holder_name: "",
+                currency: "",
+                accountNo: "",
+                type_act: "",
+                stageVal: 0,
+                accountDetails: null,
+            })
+        }
+    }
+
 
     accountNoOption(language) {
         return (<View>
@@ -163,6 +184,7 @@ class CashByCode extends Component {
                     onSubmitEditing={(event) => {
                         this.amountRef.focus();
                     }}
+                    maxLength={10}
                     />
                 <Text style={{paddingLeft:5}}>BDT</Text>
             </View>
@@ -242,7 +264,7 @@ class CashByCode extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={"01********"}
-                        onChangeText={text => this.setState({errorMobile:"",mobileNumber: Utility.ValidateMobileNumber(text, "0123456789")})}
+                        onChangeText={text => this.setState({errorMobile:"",mobileNumber: Utility.userInput(text)})}
                         value={this.state.mobileNumber}
                         multiline={false}
                         numberOfLines={1}
@@ -252,7 +274,7 @@ class CashByCode extends Component {
                         autoCorrect={false}
                         returnKeyType={"next"}
                         onSubmitEditing={(event) => {
-                            this.emailRef.focus();
+                            this.remarksRef.focus();
                         }}
                         maxLength={11}/>
                 </View>
@@ -269,7 +291,7 @@ class CashByCode extends Component {
                     {language.remarks}
                 </Text>
                 <TextInput
-                    ref={(ref) => this.emailRef = ref}
+                    ref={(ref) => this.remarksRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
                     placeholder={language.et_placeholder}
@@ -280,8 +302,6 @@ class CashByCode extends Component {
                     value={this.state.remarks}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
@@ -351,7 +371,7 @@ class CashByCode extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{ flex: 1,}]}>
                     {language.services_charge}
                 </Text>
                 <TextInput
@@ -359,7 +379,6 @@ class CashByCode extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={"00.00"}
@@ -382,7 +401,7 @@ class CashByCode extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                     {language.vat}
                 </Text>
                 <TextInput
@@ -390,7 +409,6 @@ class CashByCode extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={"00.00"}
@@ -413,7 +431,7 @@ class CashByCode extends Component {
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
             }}>
-                <Text style={[CommonStyle.textStyle]}>
+                <Text style={[CommonStyle.textStyle,{flex: 1}]}>
                     {language.grand_total}
                 </Text>
                 <TextInput
@@ -421,7 +439,6 @@ class CashByCode extends Component {
                     style={[CommonStyle.textStyle, {
                         alignItems: "flex-end",
                         textAlign: 'right',
-                        flex: 1,
                         marginLeft: 10
                     }]}
                     placeholder={"00.00"}

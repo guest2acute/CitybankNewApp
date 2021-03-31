@@ -1245,6 +1245,15 @@ export default {
     ],
     qr_notes:"1. if option 2 is selected,upon each successfully",
     qr_notes1:"transaction the total limit will be reduce by one",
-    errorTransactionLimit: "Setup to 99 transaction limit without login"
-
+    errorTransactionLimit: "Setup to 99 transaction limit without login",
+    status:"Status",
+    waiting:"Waiting",
+    reference_number:"Reference Number",
+    valid_till:"valid Till",
+    resend_notification:"Re-send Notification",
+    cancel_transfer:"Cancel Transfer",
+    email_transfer_details:"Email Transfer Details",
+    reclaim_money_to:"Reclaim Money To",
+    select_reclaim_money:"Select Reclaim Money",
+    error_reclaim_money:"Select Reclaim Money"
 }
