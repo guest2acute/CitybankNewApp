@@ -21,57 +21,64 @@ import RadioForm from "react-native-simple-radio-button";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import {CHARGEVATAMT, FUNDTRF, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
-import {GETBENF} from "../Requests/RequestBeneficiary";
+import {GETACCTBALDETAIL, GETBENF} from "../Requests/RequestBeneficiary";
 import {GETBALANCE, unicodeToChar} from "../Requests/CommonRequest";
+
+
+let initialVar = {
+    currency: "",
+    isProgress: false,
+    selectFromActVal: -1,
+    selectToActVal: -1,
+    selectPaymentVal: -1,
+    selectNickVal: -1,
+    modelSelection: "",
+    modalVisible: false,
+    modalTitle: "",
+    modalData: [],
+    transfer_type: 0,
+    toBalance: "",
+    toCurrency: "",
+    transferAmount: "",
+    servicesCharge: "",
+    grandTotal: "",
+    remarks: "",
+    vat: "",
+    paymentDate: "",
+    numberPayment: "",
+    toAccount: "2101084528001",
+    fromBalance: "",
+    VAT_AMT_LABEL: "",
+    CHARGE_AMT_LABEL: "",
+    error_transferAmount: "",
+    error_grandTotal: "",
+    error_remarks: "",
+    error_vat: "",
+    errorPaymentDate: "",
+    error_numberPayment: "",
+    errorToAct: "",
+    focusAmount: false,
+    focusAccount: false,
+    account_holder_name: "",
+    otp_type: 0,
+    accountRes: null
+};
 
 class FundTransfer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currency: "",
-            isProgress: false,
             cityTransVal: 0,
+            selectNickArr: [],
             selectNicknameType: props.language.select_nickname,
             selectAcctType: props.language.select_from_account,
             selectToAcctType: props.language.select_to_acct,
             selectPaymentType: props.language.select_payment,
-            selectFromActVal: -1,
-            selectToActVal: -1,
-            selectPaymentVal: -1,
-            selectNickVal: -1,
-            selectNickArr: [],
-            modelSelection: "",
-            modalVisible: false,
-            modalTitle: "",
-            modalData: [],
-            transfer_type: 0,
-            toBalance: "",
-            toCurrency: "",
-            transferAmount: "",
-            error_transferAmount: "",
-            servicesCharge: "",
-            grandTotal: "",
-            error_grandTotal: "",
-            remarks: "",
-            error_remarks: "",
-            error_vat: "",
-            vat: "",
             show: false,
             mode: "date",
             dateVal: new Date(),
-            errorPaymentDate: "",
-            paymentDate: "",
-            numberPayment: "",
-            error_numberPayment: "",
             stateVal: 0,
-            toAccount: "",
-            errorToAct: "",
-            fromBalance: "",
-            accountArr: [],
-            VAT_AMT_LABEL: "",
-            CHARGE_AMT_LABEL: "",
-            focusAmount: false,
-            account_holder_name: ""
+            accountArr: [], ...initialVar
         }
     }
 
@@ -110,7 +117,8 @@ class FundTransfer extends Component {
                 selectNicknameType: item.label,
                 selectNickVal: item.value,
                 modalVisible: false,
-                toAccount: item.value.TO_ACCT_NM
+                toAccount: item.value.TO_ACCT_NM,
+                accountRes: item
             })
         } else if (modelSelection === "fromAccountType") {
             this.setState({
@@ -189,46 +197,81 @@ class FundTransfer extends Component {
     }
 
     async onSubmit(language, navigation) {
-        console.log("stateVal is this", this.state.stateVal)
-        if (this.state.stateVal === 0) {
-            if (this.state.selectFromActVal === -1) {
+        console.log("stateVal is this", this.state.stateVal);
+        const {
+            selectNickVal,
+            accountRes,
+            numberPayment,
+            selectPaymentType,
+            paymentDate,
+            transfer_type,
+            fromBalance,
+            grandTotal,
+            toAccount,
+            selectAcctType,
+            selectNicknameType,
+            stateVal,
+            selectToActVal,
+            selectFromActVal,
+            cityTransVal,
+            transferAmount,
+            remarks
+        } = this.state;
+        if (stateVal === 0) {
+            if (selectFromActVal === -1) {
                 Utility.alert(language.error_select_from_type, language.ok);
-            } else if (this.state.selectToActVal === -1) {
+            } else if (selectToActVal === -1) {
                 Utility.alert(language.error_select_to_type, language.ok);
-            } else if (this.state.selectFromActVal === this.state.selectToActVal) {
+            } else if (selectFromActVal === selectToActVal) {
                 Utility.alert(language.error_account_same, language.ok);
-            } else if (this.state.transferAmount === "") {
+            } else if (transferAmount === "") {
                 this.setState({error_transferAmount: language.errTransferAmt});
-            } else if (this.state.remarks === "") {
+            } else if (remarks === "") {
                 this.setState({error_remarks: language.errRemarks});
             } else {
-                this.setState({stateVal: this.state.stateVal + 2});
+                this.setState({stateVal: stateVal + 2});
             }
-        } else if (this.state.stateVal === 1) {
-            if (this.state.selectAcctType === language.selectAccountType) {
+        } else if (stateVal === 1) {
+            if (selectAcctType === language.selectAccountType) {
                 Utility.alert(language.error_select_from_type, language.ok);
-            } else if (this.state.selectNicknameType === language.select_nickname) {
+            } else if (cityTransVal === 1 && selectNicknameType === language.select_nickname) {
                 Utility.alert(language.error_select_nickname_type, language.ok);
-            } else if (this.state.transferAmount === "") {
+            } else if (cityTransVal === 0 && toAccount.length === 0) {
+                this.setState({errorToAct: language.require_accnumber});
+            } else if (transferAmount === "") {
                 this.setState({error_transferAmount: language.errTransferAmt});
-            } else if (this.state.remarks === "") {
+            } else if (remarks === "") {
                 this.setState({error_remarks: language.errRemarks});
-            } else if (this.state.grandTotal !== "" && parseFloat(this.state.fromBalance) < parseFloat(this.state.grandTotal)) {
+            } else if (grandTotal !== "" && parseFloat(fromBalance) < parseFloat(grandTotal)) {
                 Utility.alert(this.props.language.insufficientBal, this.props.language.ok);
             } else {
-                this.setState({stateVal: this.state.stateVal + 3});
+                this.setState({stateVal: stateVal + 3});
             }
-        } else if (this.state.transfer_type === 1) {
-            console.log(this.state.paymentDate);
-            if (this.state.paymentDate === "") {
+        } else if (transfer_type === 1) {
+            if (paymentDate === "") {
                 this.setState({errorPaymentDate: language.error_payment_date});
-            } else if (this.state.selectPaymentType === language.select_payment) {
+            } else if (selectPaymentType === language.select_payment) {
                 Utility.alert(language.select_payment, language.ok);
-            } else if (this.state.numberPayment === "") {
+            } else if (numberPayment === "") {
                 this.setState({error_numberPayment: language.error_numberPayment})
             }
-        } else if (this.state.stateVal === 2) {
-            await this.transferFundOwnAccounts();
+        } else if (stateVal === 2) {
+            await this.transferFundOwnAccounts(selectToActVal.ACCT_UNMASK,
+                selectFromActVal.ACCT_UNMASK, "", selectToActVal.EMAIL_ID, "",
+                selectToActVal.MOBILE_NO, "I",
+                "CBLOA", selectFromActVal.APP_INDICATOR);
+        } else if (stateVal === 4) {
+            if (cityTransVal === 0) {
+                await this.transferFundOwnAccounts(accountRes.ACCOUNT,
+                    selectFromActVal.ACCT_UNMASK, "", "", "",
+                    accountRes.CONTACTNUMBER, "I",
+                    "CBLTA", selectFromActVal.APP_INDICATOR);
+            } else {
+                await this.transferFundOwnAccounts(selectNickVal.TO_ACCT_NO,
+                    selectFromActVal.ACCT_UNMASK, selectNickVal.NICK_NAME, selectNickVal.TO_EMAIL_ID, selectNickVal.TO_IFSCODE,
+                    selectNickVal.TO_CONTACT_NO, "I",
+                    "CBLTA", selectFromActVal.APP_INDICATOR)
+            }
         }
     }
 
@@ -273,7 +316,10 @@ class FundTransfer extends Component {
                 {this.state.stateVal === 2 ?
                     <View>
                         <View style={{
-                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            flexDirection: "row",
+                            height: Utility.setHeight(50),
+                            marginStart: 10,
+                            alignItems: "center",
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle, {flex: 1}]}>
@@ -284,7 +330,10 @@ class FundTransfer extends Component {
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         <View style={{
-                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            flexDirection: "row",
+                            height: Utility.setHeight(50),
+                            marginStart: 10,
+                            alignItems: "center",
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle, {flex: 1}]}>
@@ -296,7 +345,10 @@ class FundTransfer extends Component {
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         <View style={{
-                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            flexDirection: "row",
+                            height: Utility.setHeight(50),
+                            marginStart: 10,
+                            alignItems: "center",
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle, {flex: 1}]}>
@@ -309,8 +361,11 @@ class FundTransfer extends Component {
                     </View>
                     :
                     <View>
-                        <View style={{
-                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        {this.state.cityTransVal === 1 ? <View style={{
+                            flexDirection: "row",
+                            height: Utility.setHeight(50),
+                            marginStart: 10,
+                            alignItems: "center",
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle, {flex: 1}]}>
@@ -318,10 +373,13 @@ class FundTransfer extends Component {
                             </Text>
                             <Text
                                 style={CommonStyle.viewText}>{this.state.selectNicknameType}</Text>
-                        </View>
+                        </View> : null}
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         <View style={{
-                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                            flexDirection: "row",
+                            height: Utility.setHeight(50),
+                            marginStart: 10,
+                            alignItems: "center",
                             marginEnd: 10,
                         }}>
                             <Text style={[CommonStyle.textStyle, {flex: 1}]}>
@@ -384,11 +442,22 @@ class FundTransfer extends Component {
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                    <Text style={[CommonStyle.textStyle]}>
                         {language.remarks}
                     </Text>
                     <Text
                         style={CommonStyle.viewText}>{this.state.remarks}</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.otpType.replace(":", "")}
+                    </Text>
+                    <Text
+                        style={CommonStyle.viewText}>{language.otp_props[this.state.otp_type].label}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View>
@@ -397,60 +466,37 @@ class FundTransfer extends Component {
 
     async getOwnAccounts() {
         this.setState({isProgress: true});
-        await OPERATIVETRNACCT(
-            this.props.userDetails, this.props).then((response) => {
-            console.log("response", response);
-            let resArr = [];
-            response.map((account) => {
-                resArr.push({
-                    label: account.ACCT_CD + "-" + account.ACCT_TYPE_NAME,
-                    value: account
+        await OPERATIVETRNACCT(this.props.userDetails, this.props).then((response) => {
+                let resArr = [];
+                response.map((account) => {
+                    resArr.push({
+                        label: account.ACCT_CD + "-" + account.ACCT_TYPE_NAME,
+                        value: account
+                    });
                 });
-            });
-            this.setState({isProgress: false, accountArr: resArr});
-        }, (error) => {
-            this.setState({isProgress: false});
-            console.log("error", error);
-        });
+                this.setState({isProgress: false, accountArr: resArr});
+            },
+            (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            }
+        );
     }
+
 
     resetData(props) {
         this.setState({
-            currency: "",
             selectNicknameType: props.language.select_nickname,
-            selectAcctType: props.language.fund_select_acct,
+            selectAcctType: props.language.select_from_account,
             selectToAcctType: props.language.select_to_acct,
             selectPaymentType: props.language.select_payment,
-            selectFromActVal: -1,
-            selectToActVal: -1,
-            selectPaymentVal: -1,
-            selectNickVal: -1,
-            modelSelection: "",
-            modalVisible: false,
-            modalTitle: "",
-            modalData: [],
-            transfer_type: 0,
-            toBalance: "",
-            toCurrency: "",
-            transferAmount: "",
-            servicesCharge: "",
-            grandTotal: "",
-            remarks: "",
-            vat: "",
-            paymentDate: "",
-            numberPayment: "",
-            toAccount: "",
-            fromBalance: "",
-            VAT_AMT_LABEL: "",
-            CHARGE_AMT_LABEL: "",
+            ...initialVar
         });
     }
 
-    async transferFundOwnAccounts() {
+    async transferFundOwnAccounts(TO_ACCT_NO, From_ACCT_NO, nickName, emailId, ifscCode, mobileNo, beneType, transType, appIndicator) {
         const {
             stateVal,
-            selectToActVal,
-            selectFromActVal,
             servicesCharge,
             transferAmount,
             remarks,
@@ -458,13 +504,25 @@ class FundTransfer extends Component {
         } = this.state;
         this.setState({isProgress: true});
         await FUNDTRF(
-            this.props.userDetails, selectToActVal.ACCT_UNMASK, servicesCharge, transferAmount,
-            remarks, selectFromActVal.ACCT_UNMASK, "", selectToActVal.EMAIL_ID,
-            vat, "", selectToActVal.MOBILE_NO, "I", "CBLOA",
-            selectToActVal.APP_INDICATOR, this.props).then((response) => {
-            Utility.alert(this.props.language.success_transfer, this.props.language.ok);
+            this.props.userDetails, TO_ACCT_NO, servicesCharge, transferAmount,
+            remarks, From_ACCT_NO, nickName, emailId,
+            vat, ifscCode, mobileNo, beneType, transType,
+            appIndicator, this.state.OTP_TYPE === 0 ? "S" : "E", this.props).then((response) => {
+            console.log("response", response);
             this.setState({isProgress: false, stateVal: stateVal - 2},
-                () => this.resetData(this.props))
+                () => {
+                    if (this.state.stateVal === 2) {
+                        this.resetData(this.props);
+                        Utility.alert(this.props.language.success_transfer, this.props.language.ok);
+                    } else {
+                        this.props.navigation.navigate("SecurityVerification", {
+                            REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
+                            transType: "fund",
+                            routeVal: [{name: 'Transfer'}, {name: 'FundTransfer'}],
+                            routeIndex: 1
+                        })
+                    }
+                })
         }, (error) => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -562,6 +620,23 @@ class FundTransfer extends Component {
             </View>)
     }
 
+    getActDetails(language) {
+        if (this.state.toAccount.length === 0) {
+            this.setState({errorToAct: language.require_accnumber})
+            return;
+        }
+        this.setState({isProgress: true});
+        GETACCTBALDETAIL(this.state.toAccount, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false, account_holder_name: response.ACCOUNTNAME, otp_type: 0, accountRes: response
+            });
+        }).catch(error => {
+            this.setState({isProgress: false, errorToAct: language.require_valid_actNumber});
+            console.log("error", error);
+        });
+    }
+
     singleTransfer(language) {
         return (<View key={"singleTransfer"}>
             <View style={{
@@ -593,18 +668,15 @@ class FundTransfer extends Component {
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
                     keyboardType={"number-pad"}
-                    onFocus={() => this.setState({focusAmount: true})}
+                    onFocus={() => this.setState({focusAccount: true})}
                     onBlur={() => {
-                        if (this.state.focusAmount) {
-                            this.setState({focusAmount: false}, async () => {
-                                await this.calculateVat();
+                        if (this.state.focusAccount) {
+                            this.setState({focusAccount: false}, async () => {
+                                await this.getActDetails(language);
                             });
                         }
                     }}
-                    returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
-                        this.accountNoRef.focus();
-                    }}
+                    returnKeyType={"done"}
                 />
             </View>
             {this.state.errorToAct !== "" ?
@@ -620,8 +692,6 @@ class FundTransfer extends Component {
                 <Text
                     style={CommonStyle.viewText}>{this.state.account_holder_name}</Text>
             </View>
-            {this.state.errorToAct !== "" ?
-                <Text style={CommonStyle.errorStyle}>{this.state.errorToAct}</Text> : null}
 
         </View>)
     }
@@ -653,6 +723,9 @@ class FundTransfer extends Component {
                                     style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
                                     animation={true}
                                     onPress={(value) => {
+                                        if (this.state.cityTransVal !== value) {
+                                            this.resetData(this.props);
+                                        }
                                         this.setState({cityTransVal: value});
                                     }}
                                 />
@@ -763,9 +836,7 @@ class FundTransfer extends Component {
                                 style={CommonStyle.viewText}>{this.state.toCurrency}</Text>
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-                    </View>
-                    :
+                    </View> :
                     this.state.cityTransVal === 0 ? this.singleTransfer(language) : this.beneficiaryTransfer(language)
                 }
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
@@ -1084,6 +1155,9 @@ class FundTransfer extends Component {
 
     async changeCard(cardCode) {
         console.log("cardCode", cardCode);
+        if (this.state.stateVal !== cardCode) {
+            this.resetData(this.props);
+        }
         if (cardCode === 1 && this.state.selectNickArr.length === 0) {
             this.getNickList();
         }
@@ -1280,8 +1354,8 @@ class FundTransfer extends Component {
 
 }
 
-const
-    styles = {
+const styles =
+    {
         headerLabel: {
             flexDirection: "row",
             height: Utility.setHeight(40),
@@ -1289,7 +1363,7 @@ const
             borderWidth: 1,
             borderColor: themeStyle.WHITE,
             overflow: "hidden"
-        },
+        }
     }
 
 const mapStateToProps = (state) => {

@@ -45,8 +45,8 @@ class LoginScreen extends Component {
         let userRes = Utility.verifyUserId(userID, language);
         if (userRes !== "") {
             this.setState({errorTextUid: userRes});
-        } else if (!Utility.validPassword(passwordTxt)) {
-            this.setState({errorTextPwd: language.errorpassword});
+        } else if (passwordTxt === "") {
+            this.setState({errorTextPwd: language.errorPwd});
         } else {
             await this.loginRequest(userID, passwordTxt);
         }

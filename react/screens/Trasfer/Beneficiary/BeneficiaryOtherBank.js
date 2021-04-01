@@ -62,7 +62,7 @@ class BeneficiaryOtherBank extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord,language.ok);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -131,30 +131,24 @@ class BeneficiaryOtherBank extends Component {
         console.log("selectType value", this.state.selectTypeVal);
         if (this.state.nickname === "") {
             this.setState({error_nickname: language.require_nickname});
-            return;
         } else if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.select_type_account,language.ok);
-            return
-        } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length < 13) {
-            this.setState({error_accountNo: language.require_valid_actNumber})
-            return;
-        } else if (this.state.selectTypeVal === 1 && (this.state.accountNo.length < 15)) {
+            Utility.alert(language.select_type_account, language.ok);
+        } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length === 0) {
+            this.setState({error_accountNo: language.require_accnumber})
+        } else if (this.state.selectTypeVal === 1 && this.state.accountNo.length === 0) {
+            this.setState({error_accountNo: language.require_cardnumber})
+        } else if (this.state.selectTypeVal === 1 && !this.validateCard(this.state.accountNo)) {
             this.setState({error_accountNo: language.invalid_cardNumber})
-            return;
         } else if (this.state.account_card_name === "") {
             this.setState({error_cardName: this.state.selectTypeVal === 1 ? language.require_cardname : language.require_actName});
-            return;
         } else if (this.state.selectBankType === language.select_bank_type) {
-            Utility.alert(language.error_select_bank_name,language.ok);
-            return;
+            Utility.alert(language.error_select_bank_name, language.ok);
         } else if (this.state.selectTypeVal === 0 && this.state.selectDistrictType === language.select_district_type) {
-            Utility.alert(language.error_select_district_name,language.ok);
-            return;
+            Utility.alert(language.error_select_district_name, language.ok);
         } else if (this.state.selectTypeVal === 0 && this.state.selectBranchType === language.select_branch_type) {
-            Utility.alert(language.error_select_branch_name,language.ok);
-            return;
-        }
-        this.getActDetails(language);
+            Utility.alert(language.error_select_branch_name, language.ok);
+        } else
+            this.getActDetails(language);
     }
 
     resetScreen = (flag) => {
@@ -296,7 +290,7 @@ class BeneficiaryOtherBank extends Component {
                         onSubmitEditing={(event) => {
                             this.cardNameRef.focus();
                         }}
-                        maxLength={this.state.selectTypeVal === 1 ? 16 : 13}/>
+                        maxLength={35}/>
                 </View>
                 {this.state.error_accountNo !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.error_accountNo}</Text> : null}

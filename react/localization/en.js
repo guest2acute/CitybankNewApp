@@ -262,11 +262,12 @@ export default {
     errCardPin: "Please enter 4 digits card PIN",
     errorUserId: "Please enter User ID ",
     errOTP: "Please enter 4 digit OTP",
+    errorPwd: "Please enter password",
     errorpassword: "Your password should contain at least one character of a-z, A-Z and 0-9",
     errorMother: "Please enter Mother Name",
     errorDob: "Please select Date Of Birth",
     errorTransDate: "Please enter Transfer Date",
-    errorTransAmt: "Please enter Transfer Ammount",
+    errorTransAmt: "Please enter Transfer Amount",
     errAccountMatch: "Account Number does not match with given CityTouch User ID",
     errCardMatch: "Card Number does not match with given CityTouch User ID",
     /*confirmation message*/
@@ -575,13 +576,12 @@ export default {
     et_name_number: "Enter name or number",
     scanQrCode: "Scan QR Code",
     require_nickname: "Nick Name is Required",
-    require_accnumber: "Account Number is  Required",
+    require_accnumber: "Account Number is required",
     require_valid_actNumber: "Invalid Account Number",
     invalid_cardNumber: "Invalid Card Number",
     require_cardname: "Card Holder Name is Required",
     require_actName: "Account Holder Name is Required",
-    require_actnumber: "Card number is Required",
-    require_cardnumber: "Account number is Required",
+    require_cardnumber: "Card number is required",
     require_bkash: "Bkash Account is required",
     require_name: "Name is required",
     require_bname: "Beneficiary Name is required",
@@ -1263,5 +1263,7 @@ export default {
     enter_otp: "Enter Otp",
     transfer_type: "Transfer Type",
     single_transfer: "Single Transfer",
-    transfer_from_beneficiary:"Transfer From Beneficiary"
+    transfer_from_beneficiary:"Transfer From Beneficiary",
+    verifyOtp:"Verify OTP"
+
 }

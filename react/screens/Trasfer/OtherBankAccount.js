@@ -286,7 +286,6 @@ class OtherBankAccount extends Component {
         this.props.navigation.navigate("SecurityVerification", {
             REQUEST_CD: "",
             transType: "O",
-            actNo: this.state.accountNo,
             resetScreen: this.resetScreen
         })
     }

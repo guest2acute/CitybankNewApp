@@ -77,7 +77,6 @@ class BeneficiaryTransferMFS extends Component {
             }, () => this.props.navigation.navigate("SecurityVerification", {
                 REQUEST_CD: response.REQUEST_CD,
                 transType: "W",
-                actNo: accountNo,
                 resetScreen: this.resetScreen
             }));
         }).catch(error => {

@@ -261,6 +261,7 @@ export default {
     errCardPin: "দয়া করে 4 অঙ্কের কার্ডের পিন প্রবেশ করুন",
     errorUserId: "দয়া করে ব্যবহারকারীর আইডি লিখুন ",
     errOTP: "দয়া করে 4 ডিজিটের ওটিপি প্রবেশ করুন",
+    errorPwd: "পাসওয়ার্ড লিখুন",
     errorpassword: "আপনার পাসওয়ার্ডে কমপক্ষে a-z, A-Z এবং 0-9 এর একটি অক্ষর থাকা উচিত",
     errorMother: "মায়ের নাম লিখুন দয়া করে",
     errorDob: "জন্ম তারিখ নির্বাচন করুন",
@@ -572,8 +573,7 @@ export default {
     invalid_cardNumber: "Invalid Card Number",
     require_cardname: "কার্ডধারীর নাম আবশ্যক",
     require_actName: "অ্যাকাউন্টধারীর নাম আবশ্যক",
-    require_actnumber: "কার্ড নম্বর প্রয়োজনীয়",
-    require_cardnumber: "অ্যাকাউন্ট নম্বর আবশ্যক",
+    require_cardnumber: "কার্ড নম্বর প্রয়োজন",
     require_bkash: "বিকাশ অ্যাকাউন্ট প্রয়োজন",
     require_name: "নাম প্রয়োজন",
     require_bname: "উপকারকারীর নাম প্রয়োজন",
@@ -1268,6 +1268,7 @@ export default {
     from_account_card: "অ্যাকাউন্ট / কার্ড থেকে",
     enter_otp: "ওটিপি প্রবেশ করান",
     transfer_type: "স্থানান্তর প্রকার",
+    verifyOtp:"OTP যাচাই করুন"
 
 }
 

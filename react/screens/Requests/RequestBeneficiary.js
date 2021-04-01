@@ -125,7 +125,6 @@ export const GETBANKDETAILS = async (userDetails, props, requestType, isCard) =>
 
 export const ADDBENFVERIFY = async (userDetails, REQUEST_CD, props, transType, actNo, authFlag, cPin, tPin) => {
     let request = {
-        ACCT_NO: actNo,
         ACTION: "ADDBENFVERIFY",
         TRN_TYPE: transType,
         ACTIVITY_CD: userDetails.ACTIVITY_CD,

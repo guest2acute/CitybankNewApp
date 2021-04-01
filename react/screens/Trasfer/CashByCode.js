@@ -105,7 +105,6 @@ class CashByCode extends Component {
         this.props.navigation.navigate("SecurityVerification", {
             REQUEST_CD: "",
             transType: "O",
-            actNo: this.state.accountNo,
             resetScreen: this.resetScreen
         })
       /*  Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)*/

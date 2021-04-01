@@ -143,6 +143,7 @@ function TransferTab() {
         <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
+            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
             <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
             <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryEmail" component={BeneficiaryEmail} options={{headerShown: false}}/>

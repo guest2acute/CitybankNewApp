@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
 import {
-    I18nManager,
     Modal,
     SafeAreaView,
     ScrollView,
@@ -22,14 +21,14 @@ import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
 import {actions} from "../../redux/actions";
 import {unicodeToChar} from "../Requests/CommonRequest";
+import {FUNDTRFOTP} from "../Requests/FundsTransferRequest";
 
-let transType = "", actNo = "", REQUEST_CD = "";
+let transType = "", REQUEST_CD = "";
 
 class SecurityVerification extends Component {
     constructor(props) {
         super(props);
         transType = props.route.params.transType;
-        actNo = props.route.params.actNo;
         REQUEST_CD = props.route.params.REQUEST_CD;
         this.state = {
             isProgress: false,
@@ -94,7 +93,7 @@ class SecurityVerification extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord,language.ok);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -107,34 +106,41 @@ class SecurityVerification extends Component {
     }
 
     async submit(language, navigation) {
-        let otpMsg = "", successMsg = "";
-        const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
+        const {authFlag, selectTypeVal, cardPin,transactionPin} = this.state;
         console.log("authFlag", authFlag);
         if (authFlag === "CP") {
             if (selectTypeVal === -1) {
-                Utility.alert(language.errorSelectCard,language.ok);
+                Utility.alert(language.errorSelectCard, language.ok);
             } else if (cardPin === "") {
                 this.setState({errorCardPin: language.error_card_pin})
             } else {
-                await this.processVerification();
+                await this.processApi();
             }
-        } else if (this.state.authFlag === "TP") {
-            if (this.state.transactionPin === "") {
+        } else if (authFlag === "TP") {
+            if (transactionPin === "") {
                 this.setState({
                     errorTransactionPin: language.errorTransactionPin
                 })
             } else {
-                await this.processVerification();
+                await this.processApi();
             }
         }
     }
 
+    async processApi() {
+        if (transType === "fund") {
+            await this.processFundVerification();
+        } else {
+            await this.processVerification();
+        }
+    }
 
+    //beneficiary verification
     async processVerification() {
         this.setState({isProgress: true});
         const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
         await ADDBENFVERIFY(
-            this.props.userDetails, REQUEST_CD, this.props, transType, authFlag === "CP" ? selectTypeVal : actNo, authFlag, cardPin, transactionPin)
+            this.props.userDetails, REQUEST_CD, this.props, transType, authFlag === "CP" ? selectTypeVal : "", authFlag, cardPin, transactionPin)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -145,6 +151,25 @@ class SecurityVerification extends Component {
                     }
                 })
                 this.alertConfirm(unicodeToChar(response.MESSAGE));
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    async processFundVerification() {
+        this.setState({isProgress: true});
+        const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
+        await FUNDTRFOTP(
+            this.props.userDetails, REQUEST_CD, authFlag, authFlag === "CP" ? selectTypeVal : "", cardPin, transactionPin, this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                this.props.navigation.navigate("Otp",
+                    {
+                        routeVal: this.props.route.params.routeVal,
+                        routIndex: this.props.route.params.routIndex, REQUEST_CD: REQUEST_CD
+                    });
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -284,11 +309,11 @@ class SecurityVerification extends Component {
                 {this.state.errorTransactionPin !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.errorTransactionPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
-                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
-                <Text style={CommonStyle.themeTextStyle}>1.{language.notePin4Digits}</Text>
-                <Text style={CommonStyle.themeTextStyle}>2.{language.noteLock3Attempt}</Text>
-                <Text style={CommonStyle.themeTextStyle}>{language.noteCallTPin}</Text>
+                <Text style={[CommonStyle.mark_mandatory,{marginStart:10, marginEnd: 10}]}>*{language.mark_field_mandatory}</Text>
+                <Text style={[CommonStyle.themeMidTextStyle,{marginStart:10, marginEnd: 10}]}>{language.notes}:</Text>
+                <Text style={[CommonStyle.themeTextStyle,{marginStart:10, marginEnd: 10}]}>1.{language.notePin4Digits}</Text>
+                <Text style={[CommonStyle.themeTextStyle,{marginStart:10, marginEnd: 10}]}>2.{language.noteLock3Attempt}</Text>
+                <Text style={[CommonStyle.themeTextStyle,{marginStart:10, marginEnd: 10}]}>{language.noteCallTPin}</Text>
             </View>
         )
     }
@@ -312,8 +337,7 @@ class SecurityVerification extends Component {
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -356,7 +380,7 @@ class SecurityVerification extends Component {
                                 backgroundColor: themeStyle.THEME_COLOR
                             }}>
                                 <Text
-                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.add}</Text>
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{transType === "fund" ? language.next : language.add}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
