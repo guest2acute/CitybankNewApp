@@ -72,6 +72,7 @@ import BeneficiaryEmail from "./react/screens/Trasfer/Beneficiary/BeneficiaryEma
 import PaymentDetails from "./react/screens/Citypay/PaymentDetails";
 import Receipt from "./react/screens/Citypay/Receipt";
 import QRMerchantPayment from "./react/screens/More/QRMerchantPayment";
+import Otp from "./react/screens/Trasfer/Otp";
 
 
 const store = configureStore(window.__State__);
@@ -142,6 +143,7 @@ function TransferTab() {
         <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
+            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
             <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
             <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryEmail" component={BeneficiaryEmail} options={{headerShown: false}}/>

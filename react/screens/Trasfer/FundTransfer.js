@@ -508,20 +508,19 @@ class FundTransfer extends Component {
             remarks, From_ACCT_NO, nickName, emailId,
             vat, ifscCode, mobileNo, beneType, transType,
             appIndicator, this.state.OTP_TYPE === 0 ? "S" : "E", this.props).then((response) => {
-                console.log("response",response);
+            console.log("response", response);
             this.setState({isProgress: false, stateVal: stateVal - 2},
                 () => {
-                    if(this.state.stateVal === 2){
+                    if (this.state.stateVal === 2) {
                         this.resetData(this.props);
                         Utility.alert(this.props.language.success_transfer, this.props.language.ok);
-                    }
-                    else
-                    {
+                    } else {
                         this.props.navigation.navigate("SecurityVerification", {
-                            REQUEST_CD: response.REQUEST_CD,
-                            transType: "I",
+                            REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
+                            transType: "fund",
                             actNo: "",
-                            resetScreen: this.resetScreen
+                            routeVal: [{name: 'Transfer'}, {name: 'FundTransfer'}],
+                            routIndex: 1
                         })
                     }
                 })
@@ -1356,32 +1355,24 @@ class FundTransfer extends Component {
 
 }
 
-const
-    styles =
-        {
-            headerLabel: {
-                flexDirection: "row",
-                height: Utility.setHeight(40),
-                borderRadius: 5,
-                borderWidth: 1,
-                borderColor: themeStyle.WHITE,
-                overflow: "hidden"
-            }
+const styles =
+    {
+        headerLabel: {
+            flexDirection: "row",
+            height: Utility.setHeight(40),
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: themeStyle.WHITE,
+            overflow: "hidden"
         }
-
-const
-    mapStateToProps = (state) => {
-        return {
-            userDetails: state.accountReducer.userDetails,
-            langId: state.accountReducer.langId,
-            language: state.accountReducer.language,
-        };
     }
-;
 
-export default connect(mapStateToProps)
+const mapStateToProps = (state) => {
+    return {
+        userDetails: state.accountReducer.userDetails,
+        langId: state.accountReducer.langId,
+        language: state.accountReducer.language,
+    };
+};
 
-(
-    FundTransfer
-)
-;
+export default connect(mapStateToProps)(FundTransfer);

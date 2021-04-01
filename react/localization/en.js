@@ -1261,5 +1261,6 @@ export default {
     from_account_card: "From Account/Card",
     enter_otp: "Enter Otp",
     transfer_type: "Transfer Type",
+    verifyOtp:"Verify OTP"
 
 }

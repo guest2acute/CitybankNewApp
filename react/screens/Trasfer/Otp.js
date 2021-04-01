@@ -7,72 +7,46 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    ScrollView,
     SafeAreaView,
-    BackHandler
+    BackHandler, Alert
 } from "react-native";
 
-import {actions} from "../../redux/actions";
 import {connect} from "react-redux";
 import themeStyle from "../../resources/theme.style";
 import Utility from "../../utilize/Utility";
-import {StackActions} from "@react-navigation/native";
-import StorageClass from "../../utilize/StorageClass";
-import * as DeviceInfo from "react-native-device-info";
+import {CommonActions} from "@react-navigation/native";
 import CommonStyle from "../../resources/CommonStyle";
 import {BusyIndicator} from "../../resources/busy-indicator";
-import {resetAndNavigate} from "../../redux/navigation-service";
+import {FUNDTRFVERIFY} from "../Requests/FundsTransferRequest";
+import Config from "../../config/Config";
 
-/**
- * splash page
- */
-let imeiNo = "";
 
 class Otp extends Component {
 
     constructor(props) {
         super(props);
-        this.state={
-            stageVal:0,
-            otp_type: 0,
+        this.state = {
             otpVal: "",
         }
     }
 
-    /**
-     * redirect to landing screen
-     */
-
-    async componentDidMount() {
-        if (Platform.OS === "android") {
-            this.focusListener = this.props.navigation.addListener("focus", () => {
-                StatusBar.setTranslucent(false);
-                StatusBar.setBackgroundColor(themeStyle.WHITE);
-                StatusBar.setBarStyle("dark-content");
-            });
-        }
-    }
-
-    async submit(language, navigation) {
-         if (this.state.otpVal.length !== 4) {
-            Utility.alert(language.errOTP,language.ok);
+    async submit(language) {
+        if (this.state.otpVal.length !== 4) {
+            Utility.alert(language.errOTP, language.ok);
         } else {
-             this.props.navigation.reset({
-                 index: 0,
-                 routes: [{ name: 'TransferToBkash' }]
-             })
+           await this.verifyOTP();
         }
     }
 
     otpEnter(language) {
         return (
-            <View>
+            <View key={"otpEnter"}>
                 <Text style={[CommonStyle.textStyle, {
                     marginStart: Utility.setWidth(10),
                     marginEnd: Utility.setWidth(10),
                     marginTop: Utility.setHeight(10),
                     marginBottom: Utility.setHeight(20),
-                }]}> {language.otp_description + language.otp_activate}</Text>
+                }]}> {language.otp_description}</Text>
                 <View style={{
                     borderColor: themeStyle.BORDER,
                     width: Utility.getDeviceWidth() - 30,
@@ -124,6 +98,37 @@ class Otp extends Component {
             </View>)
     }
 
+    async verifyOTP() {
+        this.setState({isProgress: true});
+        await FUNDTRFVERIFY(
+            this.props.userDetails, this.props.route.params.REQUEST_CD,this.state.otpVal,this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                this.alertConfirm(response.MESSAGE);
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    alertConfirm(msg) {
+        Alert.alert(
+            Config.appName,
+            msg,
+            [
+                {
+                    text: this.props.language.ok, onPress: () => {
+                        this.props.navigation.reset({
+                            index: this.props.route.params.routIndex,
+                            routes: this.props.route.params.routeVal
+                        });
+                    }
+                },
+            ]
+        );
+    }
+
     render() {
         let language = this.props.language;
         return (
@@ -137,11 +142,11 @@ class Otp extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.otp_sent}</Text>
+                    <Text style={CommonStyle.title}>{language.verifyOtp}</Text>
                 </View>
                 {this.otpEnter(language)}
                 <TouchableOpacity
-                    onPress={() => this.submit(language, this.props.navigation)}>
+                    onPress={() => this.submit(language)}>
                     <View style={{
                         marginTop: 20,
                         alignSelf: "center",
@@ -155,7 +160,7 @@ class Otp extends Component {
                             style={[CommonStyle.midTextStyle, {
                                 color: themeStyle.WHITE,
                                 textAlign: "center"
-                            }]}>{language.continue_txt}</Text>
+                            }]}>{language.submit_txt}</Text>
                     </View>
                 </TouchableOpacity>
                 <BusyIndicator visible={this.state.isProgress}/>
@@ -197,6 +202,7 @@ class Otp extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

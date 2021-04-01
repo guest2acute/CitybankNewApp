@@ -22,6 +22,7 @@ import {ADDBENFVERIFY} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
 import {actions} from "../../redux/actions";
 import {unicodeToChar} from "../Requests/CommonRequest";
+import {FUNDTRFOTP} from "../Requests/FundsTransferRequest";
 
 let transType = "", actNo = "", REQUEST_CD = "";
 
@@ -94,7 +95,7 @@ class SecurityVerification extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord,language.ok);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -107,16 +108,15 @@ class SecurityVerification extends Component {
     }
 
     async submit(language, navigation) {
-        let otpMsg = "", successMsg = "";
         const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
         console.log("authFlag", authFlag);
         if (authFlag === "CP") {
             if (selectTypeVal === -1) {
-                Utility.alert(language.errorSelectCard,language.ok);
+                Utility.alert(language.errorSelectCard, language.ok);
             } else if (cardPin === "") {
                 this.setState({errorCardPin: language.error_card_pin})
             } else {
-                await this.processVerification();
+                await this.processApi();
             }
         } else if (this.state.authFlag === "TP") {
             if (this.state.transactionPin === "") {
@@ -124,12 +124,20 @@ class SecurityVerification extends Component {
                     errorTransactionPin: language.errorTransactionPin
                 })
             } else {
-                await this.processVerification();
+                await this.processApi();
             }
         }
     }
 
+    async processApi() {
+        if (transType === "fund") {
+            await this.processFundVerification();
+        } else {
+            await this.processVerification();
+        }
+    }
 
+    //beneficiary verification
     async processVerification() {
         this.setState({isProgress: true});
         const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
@@ -145,6 +153,25 @@ class SecurityVerification extends Component {
                     }
                 })
                 this.alertConfirm(unicodeToChar(response.MESSAGE));
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    async processFundVerification() {
+        this.setState({isProgress: true});
+        const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
+        await FUNDTRFOTP(
+            this.props.userDetails, REQUEST_CD, authFlag, authFlag === "CP" ? selectTypeVal : "", cardPin, transactionPin, this.props)
+            .then((response) => {
+                console.log(response);
+                this.setState({isProgress: false});
+                this.props.navigation.navigate("Otp",
+                    {
+                        routeVal: this.props.route.params.routeVal,
+                        routIndex: this.props.route.params.routIndex, REQUEST_CD: REQUEST_CD
+                    });
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -356,7 +383,7 @@ class SecurityVerification extends Component {
                                 backgroundColor: themeStyle.THEME_COLOR
                             }}>
                                 <Text
-                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.add}</Text>
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{transType === "fund" ? language.next : language.add}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
