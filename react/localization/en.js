@@ -381,7 +381,6 @@ export default {
 
     et_pin: "Enter PIN",
     et_card_pin: "Enter card PIN",
-
     acc_no: "Enter Account Number",
     card_no: "Enter Card Number",
 
@@ -851,15 +850,14 @@ export default {
     beneficiary_otherBank_note15: "need to be added before the 13-digit card number.",
 
     transferTo_bkash_note1: "1. Transfer and transaction limit for a single bkash account.",
-    transferTo_bkash_note2: "5 transaction per day and 25 per month.",
-    transferTo_bkash_note3: "Transfer amount is BDT 50 to BDT 30000 per day and BDT 2",
-    transferTo_bkash_note4: "lacs per month.",
-    transferTo_bkash_note5: "2. CityToch to bkash transfer limit: Up to BDT 60000 per day.",
-    transferTo_bkash_note6: "3. Credit card transfer limit: minimum transferble amount is",
-    transferTo_bkash_note7: "BDT 500 and up to 50% of total available BDT limit.",
-    transferTo_bkash_note8: "4. Processing fee +VAT will be applicable",
-    transferTo_bkash_note9: "5. consecutive transfer in the same bkash account require",
-    transferTo_bkash_note10: "minimum 10 minutes interval.",
+    transferTo_bkash_note2: "5 transaction per day and 25 per month. Transfer",
+    transferTo_bkash_note3: "amount is BDT 50 to BDT 30000 per day and BDT 2 lacs per month.",
+    transferTo_bkash_note4: "2. CityTouch to bkash transfer limit: Up to BDT 60000 per day.",
+    transferTo_bkash_note5: "3. Credit card transfer limit: minimum transferable",
+    transferTo_bkash_note6: "amount is BDT 500 and up to 50% of total available BDT limit.",
+    transferTo_bkash_note7: "4. Processing fee +VAT will be applicable",
+    transferTo_bkash_note8: "5. consecutive transfer in the same bkash account",
+    transferTo_bkash_note9: "require minimum 10 minutes interval.",
 
     cashBy_code_notes1: "1. Minimum Transfer Amount: Tk.500 per transaction..",
     cashBy_code_notes2: "2. Maximum Transfer Amount: Tk. 100,000 per day.",
@@ -1259,5 +1257,9 @@ export default {
     email_transfer_details:"Email Transfer Details",
     reclaim_money_to:"Reclaim Money To",
     select_reclaim_money:"Select Reclaim Money",
-    error_reclaim_money:"Select Reclaim Money"
+    error_reclaim_money:"Select Reclaim Money",
+    from_account_card: "From Account/Card",
+    enter_otp: "Enter Otp",
+    transfer_type: "Transfer Type",
+
 }

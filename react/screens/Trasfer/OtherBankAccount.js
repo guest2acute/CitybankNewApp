@@ -46,6 +46,8 @@ class OtherBankAccount extends Component {
             modalTitle: "",
             modalData: [],
             otp_type: 0,
+            transferModeType: 0,
+            transferType:0,
             availableBalance: "",
             transferAmount: "",
             errorTransferAmount: "",
@@ -120,6 +122,8 @@ class OtherBankAccount extends Component {
             this.alertToNavigate();
         } else if (modelSelection === "accountType") {
             this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
+        }else if (modelSelection === "paymentType") {
+            this.setState({selectPaymentType: item.label, modalVisible: false})
         }
     }
 
@@ -138,7 +142,6 @@ class OtherBankAccount extends Component {
     }
 
     async onSubmit(language, navigation) {
-
         console.log("stageVal next screen", this.state.stageVal)
         console.log("otp_type is this", this.state.otp_type)
         if (this.state.stageVal === 0) {
@@ -150,7 +153,7 @@ class OtherBankAccount extends Component {
                 this.setState({errorTransferAmount: language.errTransferAmt})
             } else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
-            } else if (this.state.otp_type === 1) {
+            } else if (this.state.transferType === 1) {
                 console.log("payment date is this", this.state.paymentdate)
                 if (this.state.paymentdate === "") {
                     this.setState({errorPaymentDate: language.error_payment_date});
@@ -158,6 +161,9 @@ class OtherBankAccount extends Component {
                     Utility.alert(language.select_payment, language.ok);
                 } else if (this.state.numberPayment === "") {
                     this.setState({error_numberPayment: language.error_numberPayment})
+                }else{
+                    this.getActDetails(language);
+                    this.beneficiaryAdd(language);
                 }
             } else {
                 //this.setState({stageVal: this.state.stageVal + 1});
@@ -175,7 +181,6 @@ class OtherBankAccount extends Component {
         console.log("get account details", this.state.accountNo)
         if (this.state.accountNo.length !== 13) {
             this.setState({error_accountNo: language.require_accnumber})
-
             return;
         }
         this.setState({isProgress: true});
@@ -493,7 +498,7 @@ class OtherBankAccount extends Component {
                         style={{marginStart: 15, marginTop: 10, marginBottom: 10}}
                         animation={true}
                         onPress={(value) => {
-                            this.setState({otp_type: value});
+                            this.setState({transferModeType: value});
                         }}
                     />
                 </View>
@@ -845,7 +850,7 @@ class OtherBankAccount extends Component {
                             style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
                             animation={true}
                             onPress={(value) => {
-                                this.setState({otp_type: value});
+                                this.setState({transferType: value});
                             }}
                         />
                     </View>
@@ -906,8 +911,7 @@ class OtherBankAccount extends Component {
                 </>
 
             }
-
-            {this.state.otp_type === 1 ?
+            {this.state.transferType === 1 ?
                 <View>
                     <View style={{
                         flexDirection: "row",
