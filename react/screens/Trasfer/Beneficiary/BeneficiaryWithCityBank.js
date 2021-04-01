@@ -42,7 +42,7 @@ class BeneficiaryWithCityBank extends Component {
             title: props.route.params.title
         }
 
-        this.resetScreen =  this.resetScreen.bind(this);
+        this.resetScreen = this.resetScreen.bind(this);
     }
 
     userInput(text) {
@@ -94,16 +94,16 @@ class BeneficiaryWithCityBank extends Component {
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props, "A",this.state.currency).then(response => {
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props, "A", this.state.currency).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
-            }, () => this.props.navigation.navigate("SecurityVerification", {
-                REQUEST_CD: response.REQUEST_CD,
-                transType: "I",
-                actNo: this.state.accountNo,
-                resetScreen: this.resetScreen
-            }));
+            }, () =>
+                this.props.navigation.navigate("SecurityVerification", {
+                    REQUEST_CD: response.REQUEST_CD,
+                    transType: "I",
+                    resetScreen: this.resetScreen
+                }));
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -132,173 +132,173 @@ class BeneficiaryWithCityBank extends Component {
     accountNoOption(language, flag) {
         return (
             <View>
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.nick_name}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>{flag ? "*" : ""}</Text>
-                </Text>
-                <TextInput
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        flex: 1,
-                        marginLeft: 10
-                    }]}
-                    placeholder={language.et_placeholder}
-                    onChangeText={text => this.setState({
-                        error_nickname: "",
-                        nickname: text
-                    })}
-                    value={this.state.nickname}
-                    multiline={false}
-                    numberOfLines={1}
-                    editable={flag}
-                    contextMenuHidden={true}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
-                        this.accountNoRef.focus();
-                    }}
-                />
-            </View>
-            {this.state.error_nickname !== "" ?
-                <Text style={CommonStyle.errorStyle}>{this.state.error_nickname}</Text> : null}
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.actNo}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>{flag ? "*" : ""}</Text>
-                </Text>
-                <TextInput
-                    ref={(ref) => this.accountNoRef = ref}
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        flex: 1,
-                        marginLeft: 10
-                    }]}
-                    placeholder={language.et_placeholder}
-                    onChangeText={text => this.accountChange(text)}
-                    value={this.state.accountNo}
-                    multiline={false}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    keyboardType={"number-pad"}
-                    editable={flag}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    onSubmitEditing={(event) => {
-                        this.getActDetails(language);
-                    }}
-                    maxLength={13}/>
-            </View>
-            {this.state.error_accountNo !== "" ?
-                <Text style={CommonStyle.errorStyle}>{this.state.error_accountNo}</Text> : null}
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle,{ flex: 1}]}>
-                        {language.account_holder_name}
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.nick_name}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>{flag ? "*" : ""}</Text>
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
                             textAlign: 'right',
+                            flex: 1,
                             marginLeft: 10
                         }]}
-                        // placeholder={language.et_placeholder}
-                        onChangeText={text => this.setState({account_holder_name: Utility.userInput(text)})}
-                        value={this.state.account_holder_name}
+                        placeholder={language.et_placeholder}
+                        onChangeText={text => this.setState({
+                            error_nickname: "",
+                            nickname: text
+                        })}
+                        value={this.state.nickname}
+                        multiline={false}
+                        numberOfLines={1}
+                        editable={flag}
+                        contextMenuHidden={true}
+                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        autoCorrect={false}
+                        returnKeyType={"next"}
+                        onSubmitEditing={(event) => {
+                            this.accountNoRef.focus();
+                        }}
+                    />
+                </View>
+                {this.state.error_nickname !== "" ?
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_nickname}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.actNo}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>{flag ? "*" : ""}</Text>
+                    </Text>
+                    <TextInput
+                        ref={(ref) => this.accountNoRef = ref}
+                        selectionColor={themeStyle.THEME_COLOR}
+                        style={[CommonStyle.textStyle, {
+                            alignItems: "flex-end",
+                            textAlign: 'right',
+                            flex: 1,
+                            marginLeft: 10
+                        }]}
+                        placeholder={language.et_placeholder}
+                        onChangeText={text => this.accountChange(text)}
+                        value={this.state.accountNo}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
+                        keyboardType={"number-pad"}
+                        editable={flag}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        editable={false}
-                        autoCorrect={false}/>
+                        autoCorrect={false}
+                        onSubmitEditing={(event) => {
+                            this.getActDetails(language);
+                        }}
+                        maxLength={13}/>
                 </View>
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
+                {this.state.error_accountNo !== "" ?
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_accountNo}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                            {language.account_holder_name}
+                        </Text>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                marginLeft: 10
+                            }]}
+                            // placeholder={language.et_placeholder}
+                            onChangeText={text => this.setState({account_holder_name: Utility.userInput(text)})}
+                            value={this.state.account_holder_name}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            editable={false}
+                            autoCorrect={false}/>
+                    </View>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle, {flex: 1}]}>
+                            {language.currency}
+                        </Text>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                marginLeft: 10
+                            }]}
+                            //placeholder={language.et_placeholder}
+                            onChangeText={text => this.setState({currency: Utility.input(text, "0123456789")})}
+                            value={this.state.currency}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            editable={false}
+                            maxLength={13}/>
+                    </View>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle,{flex: 1}]}>
-                        {language.currency}
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.type_act}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
                             textAlign: 'right',
+                            flex: 1,
                             marginLeft: 10
                         }]}
-                        //placeholder={language.et_placeholder}
-                        onChangeText={text => this.setState({currency: Utility.input(text, "0123456789")})}
-                        value={this.state.currency}
+                        onChangeText={text => this.setState({type_act: text})}
+                        value={this.state.type_act}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         editable={false}
-                        maxLength={13}/>
+                    />
                 </View>
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10,
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.type_act}
-                </Text>
-                <TextInput
-                    selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {
-                        alignItems: "flex-end",
-                        textAlign: 'right',
-                        flex: 1,
-                        marginLeft: 10
-                    }]}
-                    onChangeText={text => this.setState({type_act: text})}
-                    value={this.state.type_act}
-                    multiline={false}
-                    numberOfLines={1}
-                    contextMenuHidden={true}
-                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                    autoCorrect={false}
-                    editable={false}
-                />
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.beneficiary_mobile_number}
-                    </Text>
-                    {/*<TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.beneficiary_mobile_number}
+                        </Text>
+                        {/*<TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
                     <Image style={{
                         height: Utility.setHeight(20),
                         width: Utility.setWidth(20),
@@ -307,84 +307,84 @@ class BeneficiaryWithCityBank extends Component {
                     }} resizeMode={"contain"}
                            source={require("../../resources/images/ic_beneficiary.png")}/>
                 </TouchableOpacity>*/}
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={flag ? "01********" : ""}
-                        onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
-                        value={this.state.mobile_number}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        editable={flag}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.emailRef.focus();
-                        }}
-                        maxLength={14}/>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={flag ? "01********" : ""}
+                            onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
+                            value={this.state.mobile_number}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            keyboardType={"number-pad"}
+                            editable={flag}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            returnKeyType={"next"}
+                            onSubmitEditing={(event) => {
+                                this.emailRef.focus();
+                            }}
+                            maxLength={14}/>
+                    </View>
                 </View>
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <View>
-                <View style={{
-                    flexDirection: "row",
-                    marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.beneficiary_Email_Address}
-                    </Text>
-                    <TextInput
-                        ref={(ref) => this.emailRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={flag ? "a********@gmail.com" : ""}
-                        onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
-                        value={this.state.emailTxt}
-                        multiline={false}
-                        numberOfLines={1}
-                        editable={flag}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}/>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.beneficiary_Email_Address}
+                        </Text>
+                        <TextInput
+                            ref={(ref) => this.emailRef = ref}
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={flag ? "a********@gmail.com" : ""}
+                            onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
+                            value={this.state.emailTxt}
+                            multiline={false}
+                            numberOfLines={1}
+                            editable={flag}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}/>
+                    </View>
+                    {this.state.errorEmail !== "" ?
+                        <Text style={{
+                            marginLeft: 5,
+                            marginRight: 10,
+                            color: themeStyle.THEME_COLOR,
+                            fontSize: FontSize.getSize(11),
+                            fontFamily: fontStyle.RobotoRegular,
+                            alignSelf: "flex-end",
+                            marginBottom: 10,
+                        }}>{this.state.errorEmail}</Text> : null}
                 </View>
-                {this.state.errorEmail !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorEmail}</Text> : null}
-            </View>
-            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <Text
-                style={{
-                    display: flag ? "flex" : "none",
-                    marginStart: 10,
-                    marginTop: 20,
-                    color: themeStyle.THEME_COLOR
-                }}>*{language.mark_field_mandatory}
-            </Text>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <Text
+                    style={{
+                        display: flag ? "flex" : "none",
+                        marginStart: 10,
+                        marginTop: 20,
+                        color: themeStyle.THEME_COLOR
+                    }}>*{language.mark_field_mandatory}
+                </Text>
 
-        </View>)
+            </View>)
     }
 
 

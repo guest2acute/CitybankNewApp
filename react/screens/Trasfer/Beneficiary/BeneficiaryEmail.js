@@ -76,7 +76,6 @@ class BeneficiaryEmail extends Component {
             }, () => this.props.navigation.navigate("SecurityVerification", {
                 REQUEST_CD: response.REQUEST_CD,
                 transType: "E",
-                actNo: emailTxt,
                 resetScreen: this.resetScreen
             }));
         }).catch(error => {

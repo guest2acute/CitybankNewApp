@@ -262,11 +262,12 @@ export default {
     errCardPin: "Please enter 4 digits card PIN",
     errorUserId: "Please enter User ID ",
     errOTP: "Please enter 4 digit OTP",
+    errorPwd: "Please enter password",
     errorpassword: "Your password should contain at least one character of a-z, A-Z and 0-9",
     errorMother: "Please enter Mother Name",
     errorDob: "Please select Date Of Birth",
     errorTransDate: "Please enter Transfer Date",
-    errorTransAmt: "Please enter Transfer Ammount",
+    errorTransAmt: "Please enter Transfer Amount",
     errAccountMatch: "Account Number does not match with given CityTouch User ID",
     errCardMatch: "Card Number does not match with given CityTouch User ID",
     /*confirmation message*/

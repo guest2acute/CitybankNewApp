@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
 import {
-    I18nManager,
     Modal,
     SafeAreaView,
     ScrollView,
@@ -24,13 +23,12 @@ import {actions} from "../../redux/actions";
 import {unicodeToChar} from "../Requests/CommonRequest";
 import {FUNDTRFOTP} from "../Requests/FundsTransferRequest";
 
-let transType = "", actNo = "", REQUEST_CD = "";
+let transType = "", REQUEST_CD = "";
 
 class SecurityVerification extends Component {
     constructor(props) {
         super(props);
         transType = props.route.params.transType;
-        actNo = props.route.params.actNo;
         REQUEST_CD = props.route.params.REQUEST_CD;
         this.state = {
             isProgress: false,
@@ -108,7 +106,7 @@ class SecurityVerification extends Component {
     }
 
     async submit(language, navigation) {
-        const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
+        const {authFlag, selectTypeVal, cardPin,transactionPin} = this.state;
         console.log("authFlag", authFlag);
         if (authFlag === "CP") {
             if (selectTypeVal === -1) {
@@ -118,8 +116,8 @@ class SecurityVerification extends Component {
             } else {
                 await this.processApi();
             }
-        } else if (this.state.authFlag === "TP") {
-            if (this.state.transactionPin === "") {
+        } else if (authFlag === "TP") {
+            if (transactionPin === "") {
                 this.setState({
                     errorTransactionPin: language.errorTransactionPin
                 })
@@ -142,7 +140,7 @@ class SecurityVerification extends Component {
         this.setState({isProgress: true});
         const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;
         await ADDBENFVERIFY(
-            this.props.userDetails, REQUEST_CD, this.props, transType, authFlag === "CP" ? selectTypeVal : actNo, authFlag, cardPin, transactionPin)
+            this.props.userDetails, REQUEST_CD, this.props, transType, authFlag === "CP" ? selectTypeVal : "", authFlag, cardPin, transactionPin)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -311,11 +309,11 @@ class SecurityVerification extends Component {
                 {this.state.errorTransactionPin !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.errorTransactionPin}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
-                <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
-                <Text style={CommonStyle.themeTextStyle}>1.{language.notePin4Digits}</Text>
-                <Text style={CommonStyle.themeTextStyle}>2.{language.noteLock3Attempt}</Text>
-                <Text style={CommonStyle.themeTextStyle}>{language.noteCallTPin}</Text>
+                <Text style={[CommonStyle.mark_mandatory,{marginStart:10, marginEnd: 10}]}>*{language.mark_field_mandatory}</Text>
+                <Text style={[CommonStyle.themeMidTextStyle,{marginStart:10, marginEnd: 10}]}>{language.notes}:</Text>
+                <Text style={[CommonStyle.themeTextStyle,{marginStart:10, marginEnd: 10}]}>1.{language.notePin4Digits}</Text>
+                <Text style={[CommonStyle.themeTextStyle,{marginStart:10, marginEnd: 10}]}>2.{language.noteLock3Attempt}</Text>
+                <Text style={[CommonStyle.themeTextStyle,{marginStart:10, marginEnd: 10}]}>{language.noteCallTPin}</Text>
             </View>
         )
     }
@@ -339,8 +337,7 @@ class SecurityVerification extends Component {
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),

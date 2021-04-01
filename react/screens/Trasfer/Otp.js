@@ -120,7 +120,7 @@ class Otp extends Component {
                 {
                     text: this.props.language.ok, onPress: () => {
                         this.props.navigation.reset({
-                            index: this.props.route.params.routIndex,
+                            index: this.props.route.params.routeIndex,
                             routes: this.props.route.params.routeVal
                         });
                     }

@@ -518,9 +518,8 @@ class FundTransfer extends Component {
                         this.props.navigation.navigate("SecurityVerification", {
                             REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
                             transType: "fund",
-                            actNo: "",
                             routeVal: [{name: 'Transfer'}, {name: 'FundTransfer'}],
-                            routIndex: 1
+                            routeIndex: 1
                         })
                     }
                 })
