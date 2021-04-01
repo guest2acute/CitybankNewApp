@@ -134,7 +134,8 @@ class OTPVerification extends Component {
 
 
     otpEnter(language) {
-        return (<View>
+        return (
+            <View>
             <Text style={[CommonStyle.textStyle, {
                 marginStart: Utility.setWidth(10),
                 marginEnd: Utility.setWidth(10),

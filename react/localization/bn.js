@@ -850,7 +850,7 @@ export default {
     beneficiary_otherBank_note15: "13-সংখ্যার কার্ড নম্বর আগে।",
 
 
-    transferTo_bkash_note1: "1. একক বিকাশ অ্যাকাউন্টের জন্য স্থানান্তর এবং লেনদেনের সীমা।",
+   /* transferTo_bkash_note1: "1. একক বিকাশ অ্যাকাউন্টের জন্য স্থানান্তর এবং লেনদেনের সীমা।",
     transferTo_bkash_note2: "5 প্রতি দিন এবং 25 মাসে প্রতি লেনদেন।",
     transferTo_bkash_note3: "স্থানান্তর পরিমাণ প্রতিদিন 50 টাকা থেকে 30000 টাকা এবং 2 টাকা হয়",
     transferTo_bkash_note4: "প্রতি মাসে লক্ষ",
@@ -859,7 +859,17 @@ export default {
     transferTo_bkash_note7: "বিডিটি 500 এবং মোট উপলব্ধ বিডিটি সীমাতে 50% অবধি",
     transferTo_bkash_note8: "৪. প্রক্রিয়াকরণ ফি + ভ্যাট প্রযোজ্য হবে",
     transferTo_bkash_note9: "৫. একই বিকাশ অ্যাকাউন্টে একটানা ট্রান্সফার করতে হয়",
-    transferTo_bkash_note10: "সর্বনিম্ন 10 মিনিটের ব্যবধান।",
+    transferTo_bkash_note10: "সর্বনিম্ন 10 মিনিটের ব্যবধান।",*/
+
+    transferTo_bkash_note1: "1. একক বিকাশ অ্যাকাউন্টের জন্য স্থানান্তর এবং লেনদেনের সীমা।",
+    transferTo_bkash_note2: "5 প্রতি দিন এবং 25 মাসে প্রতি লেনদেন। স্থানান্তর",
+    transferTo_bkash_note3: "পরিমাণটি প্রতিদিন 50 টাকা থেকে 30000 টাকা এবং মাসে মাসে 2 লক্ষ টাকা হয়।",
+    transferTo_bkash_note4: "২. বিকাশ স্থানান্তর সীমাতে সিটিটিচ: প্রতিদিন 60000 টাকা পর্যন্ত।",
+    transferTo_bkash_note5: "৩. ক্রেডিট কার্ড স্থানান্তর সীমা: সর্বনিম্ন স্থানান্তরযোগ্য",
+    transferTo_bkash_note6: "পরিমাণ 500 টাকা এবং মোট উপলব্ধ বিডিটি সীমা 50% অবধি।",
+    transferTo_bkash_note7: "৪. প্রক্রিয়াকরণ ফি + ভ্যাট প্রযোজ্য হবে",
+    transferTo_bkash_note8: "৫. একই বিকাশ অ্যাকাউন্টে পরপর স্থানান্তর",
+    transferTo_bkash_note9: "সর্বনিম্ন 10 মিনিটের ব্যবধান প্রয়োজন।",
 
     cashBy_code_notes1: "1. সর্বনিম্ন স্থানান্তর পরিমাণ: প্রতি লেনদেনের জন্য 500 টাকা।",
     cashBy_code_notes2: "২. সর্বাধিক স্থানান্তর পরিমাণ: টাকা প্রতিদিন 100,000",
@@ -1254,6 +1264,10 @@ export default {
     email_transfer_details:"ইমেল স্থানান্তর বিশদ",
     reclaim_money_to:"টাকা পুনরায় দাবি",
     select_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন",
-    error_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন"
+    error_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন",
+    from_account_card: "অ্যাকাউন্ট / কার্ড থেকে",
+    enter_otp: "ওটিপি প্রবেশ করান",
+    transfer_type: "স্থানান্তর প্রকার",
+
 }
 
