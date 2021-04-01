@@ -791,7 +791,8 @@ class ChangeContactDetails extends Component {
             </TouchableOpacity>
 
 
-            {this.state.select_contact_type.value !== -1 ? <View>
+            {this.state.select_contact_type.value !== -1 ?
+                <View>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
                     marginStart: 10,

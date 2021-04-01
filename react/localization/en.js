@@ -1262,5 +1262,6 @@ export default {
     from_account_card: "From Account/Card",
     enter_otp: "Enter Otp",
     transfer_type: "Transfer Type",
-
+    single_transfer: "Single Transfer",
+    transfer_from_beneficiary:"Transfer From Beneficiary"
 }

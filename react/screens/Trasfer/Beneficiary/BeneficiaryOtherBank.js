@@ -362,7 +362,8 @@ class BeneficiaryOtherBank extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                {this.state.selectTypeVal !== 1 ? <View>
+                {this.state.selectTypeVal !== 1 ?
+                    <View>
                     <View style={{flex: 1}}>
                         <Text style={[CommonStyle.labelStyle, {
                             color: themeStyle.THEME_COLOR,

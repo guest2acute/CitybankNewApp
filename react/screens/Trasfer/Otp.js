@@ -16,13 +16,12 @@ import {actions} from "../../redux/actions";
 import {connect} from "react-redux";
 import themeStyle from "../../resources/theme.style";
 import Utility from "../../utilize/Utility";
-import {StackActions} from "@react-navigation/native";
 import StorageClass from "../../utilize/StorageClass";
 import * as DeviceInfo from "react-native-device-info";
 import CommonStyle from "../../resources/CommonStyle";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import {resetAndNavigate} from "../../redux/navigation-service";
-
+import { NavigationContainer, CommonActions } from '@react-navigation/native';
 /**
  * splash page
  */
@@ -57,9 +56,9 @@ class Otp extends Component {
          if (this.state.otpVal.length !== 4) {
             Utility.alert(language.errOTP,language.ok);
         } else {
-             this.props.navigation.reset({
-                 index: 0,
-                 routes: [{ name: 'TransferToBkash' }]
+             CommonActions.reset({
+                 index: 1,
+                 routes: [{ name: 'Transfer' }, { name: 'TransferToBkash' },]
              })
         }
     }
