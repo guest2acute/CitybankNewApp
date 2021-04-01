@@ -34,7 +34,7 @@ export const OPERATIVETRNACCT = async (userDetails, props) => {
 
 export const FUNDTRF = async (userDetails,TO_ACCT_NO, SERVICE_CHARGE, TRN_AMT,
                               REMARKS, ACCT_NO, NICK_NAME, TO_EMAIL_ID,
-                              VAT_CHARGE, TO_IFSCODE,TO_MOBILE_NO,BEN_TYPE,TRN_TYPE,APP_INDICATOR, props) => {
+                              VAT_CHARGE, TO_IFSCODE,TO_MOBILE_NO,BEN_TYPE,TRN_TYPE,APP_INDICATOR,OTP_TYPE, props) => {
     let request = {
         CUSTOMER_ID: userDetails.CUSTOMER_ID,
         USER_ID: userDetails.USER_ID,
@@ -56,7 +56,7 @@ export const FUNDTRF = async (userDetails,TO_ACCT_NO, SERVICE_CHARGE, TRN_AMT,
         TO_EMAIL_ID: TO_EMAIL_ID,
         VAT_CHARGE: VAT_CHARGE,
         TO_IFSCODE: TO_IFSCODE,
-        OTP_TYPE:"S",
+        OTP_TYPE:OTP_TYPE,
         ...Config.commonReq
     }
     console.log("request", request);

@@ -576,13 +576,12 @@ export default {
     et_name_number: "Enter name or number",
     scanQrCode: "Scan QR Code",
     require_nickname: "Nick Name is Required",
-    require_accnumber: "Account Number is  Required",
+    require_accnumber: "Account Number is required",
     require_valid_actNumber: "Invalid Account Number",
     invalid_cardNumber: "Invalid Card Number",
     require_cardname: "Card Holder Name is Required",
     require_actName: "Account Holder Name is Required",
-    require_actnumber: "Card number is Required",
-    require_cardnumber: "Account number is Required",
+    require_cardnumber: "Card number is required",
     require_bkash: "Bkash Account is required",
     require_name: "Name is required",
     require_bname: "Beneficiary Name is required",
@@ -647,7 +646,7 @@ export default {
         value: 4567890123456123
     }],
 
-    /*error message*
+    /*error message*/
     errTransferAmt: "Transfer Amount should be more than 0",
     errRemarks: "Remarks is Required",
 

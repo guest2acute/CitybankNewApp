@@ -24,7 +24,6 @@ export default class Config {
     static infoURl = "";
     static contactURl = "";
     static privacyURl = "";
-    static key = "ACUTEAMCBMOBIPRO";
     /**
      * App Version
      */
