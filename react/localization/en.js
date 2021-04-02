@@ -647,9 +647,11 @@ export default {
     }],
 
     /*error message*/
-    errTransferAmt: "Transfer Amount should be more than 0",
+    errAmt: "Require transfer amount",
+    errTransferAmt: "Minimum transfer limit is",
+    errMaxTransferAmt: "Maximum transfer limit is",
     errRemarks: "Remarks is Required",
-
+    errPrepaidStaff:"Transfer from prepaid card to staff account is not allowed",
     /*Cash By Code message*/
     cashbycode: "Cash By Code",
     select_debit_card: "Select Debit Card",

@@ -654,6 +654,7 @@ export default {
     /*error message*/
     errtransferammt: "স্থানান্তর পরিমাণ প্রয়োজন",
     errRemarks: "মন্তব্য প্রয়োজন",
+    errPrepaidStaff:"প্রিপেইড কার্ড অ্যাকাউন্ট থেকে স্টাফ অ্যাকাউন্টে স্থানান্তর অনুমোদিত নয়",
 
     /*Cash By Code message*/
     cashbycode: "কোড দ্বারা নগদ",
@@ -1224,7 +1225,9 @@ export default {
     payment_details_note1:"1. ক্রয়কৃত সামগ্রীর পরিমাণ বা বিলের মোট মূল্য প্রবেশ করান।",
     somethingWrong: "কিছু ভুল হয়েছে দয়া করে কিছুক্ষণ পরে চেষ্টা করুন",
     insufficientBal:"অর্থ স্থানান্তর করতে অপর্যাপ্ত ভারসাম্য",
-    errTransferAmt: "স্থানান্তর পরিমাণ 0 এর বেশি হওয়া উচিত",
+    errAmt: "স্থানান্তর পরিমাণ প্রয়োজন",
+    errTransferAmt: "ন্যূনতম স্থানান্তর  সীমা",
+    errMaxTransferAmt: "সর্বাধিক স্থানান্তর সীমা",
     success_transfer: "সাফল্যের সাথে স্থানান্তরিত হয়েছে",
     transferCity_props: [
         {label: "একক তহবিল স্থানান্তর", value: 0},

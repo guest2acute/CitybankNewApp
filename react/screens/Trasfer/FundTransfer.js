@@ -83,6 +83,12 @@ class FundTransfer extends Component {
     }
 
     openModal(option, title, data, language) {
+        console.log("data", data);
+        if (option === "fromAccountType") {
+            data = data.filter((e) => e.value.FROM_ALLOW === "Y");
+        } else if (option === "toAccountType") {
+            data = data.filter((e) => e.value.TO_ALLOW === "Y");
+        }
         if (data.length > 0) {
             this.setState({
                 modelSelection: option,
@@ -196,8 +202,7 @@ class FundTransfer extends Component {
         }
     }
 
-    async onSubmit(language, navigation) {
-        console.log("stateVal is this", this.state.stateVal);
+    async onSubmit(language) {
         const {
             selectNickVal,
             accountRes,
@@ -217,6 +222,7 @@ class FundTransfer extends Component {
             transferAmount,
             remarks
         } = this.state;
+
         if (stateVal === 0) {
             if (selectFromActVal === -1) {
                 Utility.alert(language.error_select_from_type, language.ok);
@@ -224,8 +230,14 @@ class FundTransfer extends Component {
                 Utility.alert(language.error_select_to_type, language.ok);
             } else if (selectFromActVal === selectToActVal) {
                 Utility.alert(language.error_account_same, language.ok);
+            } else if (selectToActVal.IS_STAFF_AC === "Y" && selectFromActVal.ACCT_TYPE === "PREPAID CARD") {
+                Utility.alert(language.errPrepaidStaff, language.ok);
             } else if (transferAmount === "") {
-                this.setState({error_transferAmount: language.errTransferAmt});
+                this.setState({error_transferAmount: language.errAmt});
+            } else if (parseFloat(transferAmount) < parseFloat(selectFromActVal.MIN_CARD_TRN_AMT)) {
+                this.setState({error_transferAmount: language.errTransferAmt + " " + selectFromActVal.MIN_CARD_TRN_AMT});
+            } else if (parseFloat(transferAmount) > (parseFloat(fromBalance) * parseFloat(selectFromActVal.MAX_WITHDRAW) / 100)) {
+                this.setState({error_transferAmount: language.errMaxTransferAmt + " " + (parseFloat(fromBalance) * parseFloat(selectFromActVal.MAX_WITHDRAW) / 100)});
             } else if (remarks === "") {
                 this.setState({error_remarks: language.errRemarks});
             } else {
@@ -239,21 +251,25 @@ class FundTransfer extends Component {
             } else if (cityTransVal === 0 && toAccount.length === 0) {
                 this.setState({errorToAct: language.require_accnumber});
             } else if (transferAmount === "") {
-                this.setState({error_transferAmount: language.errTransferAmt});
+                this.setState({error_transferAmount: language.errAmt});
+            } else if (parseFloat(transferAmount) < parseFloat(selectFromActVal.MIN_CARD_TRN_AM)) {
+                this.setState({error_transferAmount: language.errTransferAmt + " " + selectFromActVal.MIN_CARD_TRN_AM});
+            } else if (parseFloat(transferAmount) > (parseFloat(fromBalance) * parseFloat(selectFromActVal.MAX_WITHDRAW) / 100)) {
+                this.setState({error_transferAmount: language.errMaxTransferAmt + " " + (parseFloat(fromBalance) * parseFloat(selectFromActVal.MAX_WITHDRAW) / 100)});
             } else if (remarks === "") {
                 this.setState({error_remarks: language.errRemarks});
             } else if (grandTotal !== "" && parseFloat(fromBalance) < parseFloat(grandTotal)) {
                 Utility.alert(this.props.language.insufficientBal, this.props.language.ok);
+            } else if (transfer_type === 1) {
+                if (paymentDate === "") {
+                    this.setState({errorPaymentDate: language.error_payment_date});
+                } else if (selectPaymentType === language.select_payment) {
+                    Utility.alert(language.select_payment, language.ok);
+                } else if (numberPayment === "") {
+                    this.setState({error_numberPayment: language.error_numberPayment})
+                }
             } else {
                 this.setState({stateVal: stateVal + 3});
-            }
-        } else if (transfer_type === 1) {
-            if (paymentDate === "") {
-                this.setState({errorPaymentDate: language.error_payment_date});
-            } else if (selectPaymentType === language.select_payment) {
-                Utility.alert(language.select_payment, language.ok);
-            } else if (numberPayment === "") {
-                this.setState({error_numberPayment: language.error_numberPayment})
             }
         } else if (stateVal === 2) {
             await this.transferFundOwnAccounts(selectToActVal.ACCT_UNMASK,
@@ -275,7 +291,7 @@ class FundTransfer extends Component {
         }
     }
 
-    FundTransferDetails(language, flag) {
+    FundTransferDetails(language) {
         console.log("fund transfer details", this.state.stateVal)
         return (
             <View style={{flex: 1}}>
@@ -449,6 +465,54 @@ class FundTransfer extends Component {
                         style={CommonStyle.viewText}>{this.state.remarks}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                {this.state.stateVal === 0 || this.state.cityTransVal === 1 ? <View><View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.transfer}
+                    </Text>
+                    <Text
+                        style={CommonStyle.viewText}>{language.transfer_pay_props[this.state.transfer_type].label}</Text>
+                </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/></View> : null}
+
+                {this.state.cityTransVal === 1 && this.state.transfer_type === 1 ? <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.payment_date}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.paymentDate}</Text>
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.Frequency}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.selectPaymentType}</Text>
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.number_of_payment}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.numberPayment}</Text>
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                </View> : null}
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -464,9 +528,10 @@ class FundTransfer extends Component {
         )
     }
 
-    async getOwnAccounts() {
+    async getOwnAccounts(serviceType) {
         this.setState({isProgress: true});
-        await OPERATIVETRNACCT(this.props.userDetails, this.props).then((response) => {
+
+        await OPERATIVETRNACCT(this.props.userDetails, serviceType, this.props).then((response) => {
                 let resArr = [];
                 response.map((account) => {
                     resArr.push({
@@ -534,8 +599,8 @@ class FundTransfer extends Component {
             this.setState({transferAmount: ""})
             Utility.alert(this.props.language.error_select_from_type, this.props.language.ok);
             return;
-        } else if (parseFloat(this.state.transferAmount) === 0) {
-            this.setState({error_transferAmount: language.errTransferAmt});
+        } else if (this.state.transferAmount === "") {
+            this.setState({error_transferAmount: this.props.language.errAmt});
             return;
         }
         const {selectFromActVal, transferAmount} = this.state;
@@ -711,7 +776,7 @@ class FundTransfer extends Component {
                             }}>
                                 <RadioForm
                                     radio_props={language.transferCity_props}
-                                    initial={0}
+                                    initial={this.state.cityTransVal}
                                     buttonSize={9}
                                     selectedButtonColor={themeStyle.THEME_COLOR}
                                     formHorizontal={false}
@@ -988,7 +1053,7 @@ class FundTransfer extends Component {
                     }>{this.state.error_remarks}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-                <View style={{
+                {this.state.stateVal === 0 || this.state.cityTransVal === 1 ? <View><View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10
                 }}>
@@ -999,7 +1064,7 @@ class FundTransfer extends Component {
 
                     <RadioForm
                         radio_props={language.transfer_pay_props}
-                        initial={0}
+                        initial={this.state.transfer_type}
                         buttonSize={9}
                         selectedButtonColor={themeStyle.THEME_COLOR}
                         formHorizontal={true}
@@ -1011,12 +1076,15 @@ class FundTransfer extends Component {
                         style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
                         animation={true}
                         onPress={(value) => {
-                            this.setState({transfer_type: value});
+                            this.setState({
+                                transfer_type: value, paymentDate: "",
+                                selectPaymentType: language.select_payment, numberPayment: ""
+                            });
                         }}
                     />
                 </View>
 
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/></View> : null}
                 {this.state.transfer_type === 1 ?
                     <View>
                         <View style={{
@@ -1129,6 +1197,37 @@ class FundTransfer extends Component {
                     </View>
                     : null
                 }
+                {this.state.stateVal === 1 ? <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.otpType}
+                            <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                        </Text>
+
+                        <RadioForm
+                            radio_props={this.state.selectFromActVal == null || this.state.selectFromActVal.EMAIL_ID === "" ?
+                                language.otp_props_mobile : language.otp_props}
+                            initial={this.state.otp_type}
+                            buttonSize={9}
+                            selectedButtonColor={themeStyle.THEME_COLOR}
+                            formHorizontal={true}
+                            labelHorizontal={true}
+                            borderWidth={1}
+                            buttonColor={themeStyle.GRAY_COLOR}
+                            labelColor={themeStyle.BLACK}
+                            labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                            style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                            animation={true}
+                            onPress={(value) => {
+                                this.setState({otp_type: value});
+                            }}
+                        />
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                </View> : null}
                 <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
                 <View style={{marginStart: 10, marginEnd: 10}}>
                     <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
@@ -1155,15 +1254,20 @@ class FundTransfer extends Component {
 
     async changeCard(cardCode) {
         console.log("cardCode", cardCode);
-        if (this.state.stateVal !== cardCode) {
-            this.resetData(this.props);
-        }
-        if (cardCode === 1 && this.state.selectNickArr.length === 0) {
-            this.getNickList();
+        if (this.state.stateVal === cardCode) {
+            return;
         }
         this.setState({
             stateVal: cardCode
         })
+        this.resetData(this.props);
+        if (cardCode === 1 && this.state.selectNickArr.length === 0) {
+            await this.getOwnAccounts("IMT_FUND_TRANSFER");
+            this.getNickList();
+        } else if (cardCode === 0) {
+            await this.getOwnAccounts("OWN_FUND_TRANSFER");
+        }
+
     }
 
     render() {
@@ -1239,7 +1343,7 @@ class FundTransfer extends Component {
                 }
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.state.stateVal === 2 || this.state.stateVal === 4 ? this.FundTransferDetails(language, false) : this.accountNoOption(language)}
+                        {this.state.stateVal === 2 || this.state.stateVal === 4 ? this.FundTransferDetails(language) : this.accountNoOption(language)}
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),
@@ -1263,7 +1367,7 @@ class FundTransfer extends Component {
                             <View style={{width: Utility.setWidth(20)}}/>
 
                             <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.onSubmit(language, this.props.navigation)}>
+                                              onPress={() => this.onSubmit(language)}>
                                 <View style={{
                                     alignItems: "center",
                                     justifyContent: "center",
@@ -1322,6 +1426,7 @@ class FundTransfer extends Component {
                     <DateTimePicker
                         testID="dateTimePicker"
                         value={this.state.dateVal}
+                        minimumDate={new Date()}
                         mode={this.state.mode}
                         is24Hour={false}
                         display="default"
@@ -1345,11 +1450,10 @@ class FundTransfer extends Component {
                 this.backAction
             );
         }
-
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
-        await this.getOwnAccounts();
+        await this.getOwnAccounts("OWN_FUND_TRANSFER");
     }
 
 }
