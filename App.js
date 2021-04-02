@@ -173,6 +173,7 @@ function TransferTab() {
             <Stack.Screen name="BeneficiaryOtherCard" component={BeneficiaryOtherCard} options={{headerShown: false}}/>
             <Stack.Screen name="ViewDeleteBeneficiary" component={ViewDeleteBeneficiary}
                           options={{headerShown: false}}/>
+            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -242,9 +243,9 @@ function Root() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
 
-            <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
+            {/*  <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
             <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
-            <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>
+            <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>*/}
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>
@@ -258,6 +259,8 @@ function Root() {
                           options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
             <Stack.Screen name="CityPayTab" component={CityPayTab} options={{headerShown: false}}/>
+            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
+
         </Stack.Navigator>);
 }
 
