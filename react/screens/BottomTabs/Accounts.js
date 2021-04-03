@@ -202,8 +202,8 @@ class Accounts extends Component {
         console.log("mainArray",JSON.stringify(mainArray));
         this.setState({isProgress: false, dataList: mainArray}, async () => {
             console.log("actArr", actArr.length);
-            actArr.map((account) => {
-                this.getBalance(account);
+            actArr.map(async (account) => {
+               await this.getBalance(account);
             });
         });
     }

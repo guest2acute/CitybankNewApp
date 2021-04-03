@@ -11,7 +11,6 @@ import {
     SectionList, BackHandler, TextInput, TouchableWithoutFeedback
 } from "react-native";
 
-import {actions} from "../../redux/actions";
 import {connect} from "react-redux";
 import Config from "../../config/Config";
 import themeStyle from "../../resources/theme.style";
@@ -35,21 +34,14 @@ class QRMerchantPayment extends Component {
             error_limit: "",
             dataList: null,
             cardResult: null
-
         }
     }
 
-    checkBoxUpdate(item, index) {
-        console.log("index", item)
-        this.setState({
-            isSelected: !item,
-        })
-    }
 
     FlatListItemSeparator = () => {
         return (
             <View
-                style={{height: 1, width: '100%', backgroundColor: themeStyle.SEPARATOR}}
+                style={{height: 0.5, width: '100%', backgroundColor: "#D3D1D2"}}
             />
         );
     };
@@ -64,7 +56,6 @@ class QRMerchantPayment extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        console.log("index is", item);
         return (
             <View style={[{
                 flex: 1,
@@ -83,6 +74,7 @@ class QRMerchantPayment extends Component {
                 <CheckBox
                     disabled={false}
                     onValueChange={(newValue) => {
+                        this.updateItem(item, newValue);
                     }}
                     value={item.ACTIVE === "Y"}
                     style={CommonStyle.checkbox}
@@ -90,6 +82,7 @@ class QRMerchantPayment extends Component {
                     tintColors={{true: themeStyle.THEME_COLOR, false: themeStyle.GRAY_COLOR}}
                 />
             </View>
+
         )
     }
 
@@ -175,7 +168,7 @@ class QRMerchantPayment extends Component {
                             placeholder={""}
                             onChangeText={text => this.setState({
                                 error_limit: "",
-                                limit: Utility.userInput(text)
+                                limit: Utility.input(text, "0123456789")
                             })}
                             value={this.state.limit}
                             keyboardType={"number-pad"}
@@ -189,7 +182,7 @@ class QRMerchantPayment extends Component {
                     {this.state.error_limit !== "" ?
                         <Text style={CommonStyle.errorStyle}>{this.state.error_limit}</Text> : null}
                 </View>
-                <View style={{marginTop: 5, height: 10, backgroundColor: "#f5f4f4"}}/>
+                <View style={{marginTop: 5, height: 10, backgroundColor: themeStyle.FLAT_LIST_BG_COLOR}}/>
                 <View style={[{
                     height: Utility.setHeight(35),
                     marginHorizontal: 10,
@@ -199,9 +192,32 @@ class QRMerchantPayment extends Component {
                         fontSize: FontSize.getSize(12),
                     }]}>{language.select_card_qr}</Text>
                 </View>
-                <View style={{height: 10, backgroundColor: "#f5f4f4",}}/>
+                <View style={{height: 10, backgroundColor: themeStyle.FLAT_LIST_BG_COLOR}}/>
             </View>
         )
+    }
+
+    updateItem(item, newValue) {
+        console.log("newvalue", newValue);
+        const {dataList} = this.state;
+        let sectionIndex = -1;
+        let childIndex = -1;
+        let object = {};
+        for (let k = 0; k < dataList.length; k++) {
+            let index = dataList[k].data.indexOf(item);
+            if (index !== -1) {
+                sectionIndex = k;
+                childIndex = index;
+                object = {...dataList[k].data[childIndex], ACTIVE: newValue ? "Y" : "N"};
+                break;
+            }
+        }
+
+        let sectionObj = dataList[sectionIndex];
+        sectionObj.data[childIndex] = object;
+        dataList[sectionIndex] = {...sectionObj, data: sectionObj.data};
+        console.log("dataList", JSON.stringify(dataList));
+        this.setState({dataList:dataList});
     }
 
 
@@ -209,9 +225,10 @@ class QRMerchantPayment extends Component {
         this.setState({isProgress: true});
         await CARDINSERT(this.props.userDetails, this.props)
             .then((response) => {
-                console.log("response", response);
                 this.setState({
                     isProgress: false,
+                    limit: response.BEFORE_LOGIN_SCAN_CNT === null ? "" : response.BEFORE_LOGIN_SCAN_CNT.toString(),
+                    selection_type: response.ALLOW_AFTER_LOGIN === "N" ? 0 : 1, cardResult: response
                 });
                 this.processList(response);
 
@@ -227,13 +244,20 @@ class QRMerchantPayment extends Component {
             return;
         }
         this.setState({isProgress: true});
-        await CARDUPDATE(this.props.userDetails, this.state.cardResult, this.state.selection_type === 0 ? "Y" : "N", this.state.limit, this.props)
+        const {dataList} = this.state;
+        let cardItems = [];
+        dataList.map((dataItem) => {
+            cardItems = [...cardItems, ...dataItem.data];
+        });
+        let object = {...this.state.cardResult, CARD_LIST: cardItems};
+
+        await CARDUPDATE(this.props.userDetails, object, this.state.selection_type === 0 ? "N" : "Y", this.state.limit, this.props)
             .then((response) => {
                 console.log("response", response);
                 this.setState({
                     isProgress: false,
                 });
-                Utility.alert(language.success_updated,language.ok);
+                Utility.alert(language.success_updated, language.ok);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -241,7 +265,6 @@ class QRMerchantPayment extends Component {
     }
 
     processList(result) {
-
         if (result.CARD_LIST.length === 0) {
             this.setState({dataList: [], cardResult: result});
             return;
@@ -258,7 +281,7 @@ class QRMerchantPayment extends Component {
             dataArr.push({title: "Credit Card", data: creditCardList});
         }
 
-        this.setState({dataList: dataArr, cardResult: result}, () => {
+        this.setState({dataList: dataArr}, () => {
             console.log("dataList", JSON.stringify(this.state.dataList));
         });
     }
@@ -266,6 +289,10 @@ class QRMerchantPayment extends Component {
     footer = () => {
         let language = this.props.language;
         return (<View>
+            <View style={{
+                height: 0.5,
+                backgroundColor: "#D3D1D2"
+            }}/>
             <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
             <View style={{marginStart: 10, marginEnd: 10}}>
                 <Text style={CommonStyle.themeMidTextStyle}>{language.note}</Text>
@@ -385,7 +412,8 @@ const styles = {
         paddingBottom: 10,
         paddingLeft: 10,
         paddingRight: 10,
-        fontSize: 14,
+        fontSize: FontSize.getSize(14),
+        fontFamily: fontStyle.RobotoRegular
     }, item: {
         padding: 10,
         fontSize: 18,

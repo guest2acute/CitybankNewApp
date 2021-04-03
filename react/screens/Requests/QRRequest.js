@@ -75,7 +75,7 @@ export const CARDUPDATE = async (userDetails, details, ALLOW_AFTER_LOGIN, BEFORE
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         ALLOW_AFTER_LOGIN: ALLOW_AFTER_LOGIN,
         REQUEST_CD: details.REQUEST_CD,
-        BEFORE_LOGIN_SCAN_CNT: 0,
+        BEFORE_LOGIN_SCAN_CNT: BEFORE_LOGIN_SCAN_CNT,
         KEY_ID: "VIEW",
         CARD_LIST:details.CARD_LIST,
         ...Config.commonReq
