@@ -229,6 +229,7 @@ export default {
     success_fgt_uid: "User id has been sent via SMS/Email",
     success_msg: "Successfully done",
     success_saved: "Successfully Saved",
+    success_updated: "Successfully updated",
     success_register: "Successfully Registered",
 
 
@@ -1244,12 +1245,9 @@ export default {
     /*Qr Merchant Payment*/
         type_selection:"Type of Selection",
         select_card_qr:"Select the card(s) to perform QR Merchant Payment",
-    typeOfSelection_props: [
-        {label: "Transaction with login only", value: 0},
-        {label: "Set up to 99 transaction limits without login", value: 1},
-    ],
-    qr_notes:"1. if option 2 is selected,upon each successfully",
-    qr_notes1:"transaction the total limit will be reduce by one",
+    transLogin:"Transaction with login only",
+    transLimit:"Set up to 99 transaction limits without login",
+    qr_notes:"If option 2 is selected, upon each successfully transaction the total limit will reduce by one",
     errorTransactionLimit: "Setup to 99 transaction limit without login",
     status:"Status",
     waiting:"Waiting",

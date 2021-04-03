@@ -572,9 +572,9 @@ class FundTransfer extends Component {
             this.props.userDetails, TO_ACCT_NO, servicesCharge, transferAmount,
             remarks, From_ACCT_NO, nickName, emailId,
             vat, ifscCode, mobileNo, beneType, transType,
-            appIndicator, this.state.OTP_TYPE === 0 ? "S" : "E", this.props).then((response) => {
+            appIndicator, this.state.OTP_TYPE === 0 ? "S" : "E","", this.props).then((response) => {
             console.log("response", response);
-            this.setState({isProgress: false, stateVal: stateVal - 2},
+            this.setState({isProgress: false},
                 () => {
                     if (this.state.stateVal === 2) {
                         this.resetData(this.props);
