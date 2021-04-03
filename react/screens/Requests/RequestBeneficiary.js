@@ -51,11 +51,13 @@ export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOB
                 TO_ACCT_NO: accountRes.ACCOUNT,
                 NICK_NAME: NICK_NAME,
                 TO_ADD1: accountRes.ADDRESS,
-                TO_CONTACT_NO: accountRes.CONTACTNUMBER,
-                TO_MOBILE_NO: MOBILE_NO,
+                TO_CONTACT_NO: MOBILE_NO,
                 TO_EMAIL_ID: EMAIL_ID,
                 TO_IFSCODE: ifscCode,
-                TO_ACCT_NM: accountRes.ACCOUNTNAME
+                TO_ACCT_NM: accountRes.ACCOUNTNAME,
+                BANK_CD:"",
+                ACCT_TYPE:""
+
             }]
         }
         console.log("addBeneficiary", request);

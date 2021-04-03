@@ -20,6 +20,7 @@ import CommonStyle from "../../resources/CommonStyle";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import {FUNDTRFVERIFY} from "../Requests/FundsTransferRequest";
 import Config from "../../config/Config";
+import * as ReadSms from "react-native-read-sms/ReadSms";
 
 
 class Otp extends Component {
@@ -170,7 +171,7 @@ class Otp extends Component {
         );
     }
 
-    componentDidMount() {
+   async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -181,15 +182,29 @@ class Otp extends Component {
                 "hardwareBackPress",
                 this.backAction
             );
+            await this.startReadSMS();
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
     }
 
+    startReadSMS = async () => {
+        console.log("Great!! you have received new sms:");
+        const hasPermission = await ReadSms.requestReadSMSPermission();
+        if (hasPermission) {
+            await ReadSms.startReadSMS((status, sms, error) => {
+                if (status === "success") {
+                    console.log("Great!! you have received new sms:", sms);
+                }
+            });
+        }
+    }
+
     componentWillUnmount() {
         if (Platform.OS === "android") {
             BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+            ReadSms.stopReadSMS();
         }
     }
 

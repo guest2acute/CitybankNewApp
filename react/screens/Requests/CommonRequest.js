@@ -217,7 +217,7 @@ export const MoreDetails = (language) => {
                     id: "qrMerchantPayment",
                     title: language.qr_merchant_payment,
                     icon: require("../../resources/images/ic_qr_selected.png"),
-                    redirectScreen: ""
+                    redirectScreen: "QRMerchantPayment"
                 },
             ],
         },

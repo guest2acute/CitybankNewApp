@@ -87,7 +87,6 @@ class Accounts extends Component {
     }
 
     level2(node) {
-        console.log("node",node);
         return (<View key={"level2"}>
             <View style={styles.level2}>
                 <Text
@@ -231,7 +230,7 @@ class Accounts extends Component {
             if (result.STATUS === "0") {
                 let response = result.RESPONSE.filter((e) => e.ACCOUNTNUMBER === accountNo || e.ACCOUNT === accountNo);
                 if (response.length > 0)
-                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].hasOwnProperty("AVAILBALANCE")?response[0].AVAILBALANCE:response[0].BALANCE, accountNo, "");
+                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].hasOwnProperty("BALANCE")?response[0].BALANCE:response[0].AVAILBALANCE, accountNo, "");
                 else{
                     this.processBalance("", accountNo, "");
                 }
