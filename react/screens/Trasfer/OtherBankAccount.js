@@ -106,7 +106,7 @@ class OtherBankAccount extends Component {
         if (event.type !== "dismissed" && selectedDate !== undefined) {
             console.log("selectedDate-", selectedDate);
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
-            console.log("currentDate get date ",currentDate)
+            console.log("currentDate get date ",currentDate.getDate()+1)
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
             this.setState({dateVal: selectedDate, paymentdate: currentDate, show: false});
         } else {
@@ -203,6 +203,7 @@ class OtherBankAccount extends Component {
     }
 
     async onSubmit(language, navigation) {
+
         console.log("stageVal next screen", this.state.stageVal)
         console.log("otp_type is this", this.state.otp_type)
         if (this.state.cardCode === 0) {

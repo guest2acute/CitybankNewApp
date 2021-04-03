@@ -1266,6 +1266,10 @@ export default {
     transfer_type: "Transfer Type",
     single_transfer: "Single Transfer",
     transfer_from_beneficiary:"Transfer From Beneficiary",
-    verifyOtp:"Verify OTP"
+    verifyOtp:"Verify OTP",
+    Transaction_success: "Transaction Successfully",
+    trans_success_message:"Your fund has been transferred successfully, please check below details for reference.",
+    addToFavorite: "Add To Favorite",
+
 
 }

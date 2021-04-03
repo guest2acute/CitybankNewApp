@@ -114,6 +114,7 @@ class TransferToBkash extends Component {
     }
 
     async onSubmit(language, navigation) {
+        const {}=this.state;
         if (this.state.selectNicknameType === language.select_nickname) {
             Utility.alert(language.error_select_nickname, language.ok);
         } else if (this.state.selectAcctType === language.bkash_select_acct) {
