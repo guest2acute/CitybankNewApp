@@ -18,6 +18,7 @@ import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
+import {CommonActions} from "@react-navigation/native";
 
 class Receipt extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class Receipt extends Component {
         this.state = {
             data: this.props.route.params.transferArray,
             title:this.props.route.params.title,
+            screenName:this.props.route.params.screenName,
         }
     }
 
@@ -34,6 +36,18 @@ class Receipt extends Component {
 
         }
     }
+
+    resetVal(){
+        console.log("reset screen",this.state.screenName),
+            console.log("routeVal",this.props.route.params.routeVal),
+            console.log("routIndex",this.state.routIndex)
+        this.props.navigation.reset(this.state.screenName,
+            {
+                routeVal: this.props.route.params.routeVal,
+                routIndex: this.props.route.params.routIndex
+            });
+    }
+
 
     receiptView(language){
         return (
@@ -92,7 +106,7 @@ class Receipt extends Component {
                         marginTop: Utility.setHeight(20),
                         marginBottom:Utility.setHeight(20)
                     }}>
-                        <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
+                        <TouchableOpacity style={{flex: 1}} onPress={()=>{}}>
                             <View style={{
                                 flex: 1,
                                 alignItems: "center",
@@ -107,7 +121,6 @@ class Receipt extends Component {
                             </View>
                         </TouchableOpacity>
                         <View style={{width: Utility.setWidth(20)}}/>
-
                         <TouchableOpacity style={{flex: 1}}
                                           onPress={() => {}}>
                             <View style={{
@@ -122,6 +135,30 @@ class Receipt extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginStart: Utility.setWidth(10),
+                        marginRight: Utility.setWidth(10),
+                        marginTop: Utility.setHeight(10),
+                        marginBottom:Utility.setHeight(20)
+                    }}>
+                    <TouchableOpacity style={{flex: 1}} onPress={()=>{this.resetVal()}}>
+                        <View style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: Utility.setHeight(46),
+                            borderRadius: Utility.setHeight(23),
+                            borderWidth: 1,
+                            borderColor: themeStyle.THEME_COLOR
+                        }}>
+                            <Text
+                                style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.continue_txt}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    </View>
+
+
                 </ScrollView>
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
@@ -135,17 +172,22 @@ class Receipt extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
-
             BackHandler.addEventListener(
                 "hardwareBackPress",
                 this.backAction
             );
         }
 
+
+
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
 
+    }
+
+    backAction = () => {
+        return true;
     }
 
     componentWillUnmount() {

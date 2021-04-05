@@ -61,7 +61,8 @@ let initialVar = {
     focusAccount: false,
     account_holder_name: "",
     otp_type: 0,
-    accountRes: null
+    accountRes: null,
+    transferArray: []
 };
 
 class FundTransfer extends Component {
@@ -203,6 +204,8 @@ class FundTransfer extends Component {
     }
 
     async onSubmit(language) {
+        console.log("cityTransVal", this.state.cityTransVal)
+        console.log("transfer type", this.state.transfer_type)
         const {
             selectNickVal,
             accountRes,
@@ -223,6 +226,19 @@ class FundTransfer extends Component {
             remarks
         } = this.state;
 
+        let tempArr = [];
+        tempArr.push(
+            { key: language.fromAccount,value: this.state.selectFromActVal !== -1 ? this.state.selectFromActVal.ACCT_UNMASK : ""},
+            {key: language.available_bal, value: this.state.fromBalance},
+            {key: language.currency, value: this.state.currency},
+            {key: language.to_acct,value: this.state.selectToActVal !== -1 ? this.state.selectToActVal.ACCT_UNMASK : ""},
+            {key: language.transfer_amount, value: this.state.transferAmount},
+            {key: language.services_charge, value: this.state.servicesCharge},
+            {key: language.vat, value: this.state.vat},
+            {key: language.grand_total, value: this.state.grandTotal},
+            {key: language.remarks, value: this.state.remarks},
+        )
+
         if (stateVal === 0) {
             if (selectFromActVal === -1) {
                 Utility.alert(language.error_select_from_type, language.ok);
@@ -240,10 +256,33 @@ class FundTransfer extends Component {
                 this.setState({error_transferAmount: language.errMaxTransferAmt + " " + (parseFloat(fromBalance) * parseFloat(selectFromActVal.MAX_WITHDRAW) / 100)});
             } else if (remarks === "") {
                 this.setState({error_remarks: language.errRemarks});
+            } else if (this.state.transfer_type === 1) {
+                tempArr.push(
+                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
+                    {key: language.payment_date, value: this.state.paymentDate},
+                    {key: language.Frequency, value: this.state.selectPaymentType},
+                    {key: language.number_of_payment, value: this.state.numberPayment},
+                )
+                this.props.navigation.navigate("TransferConfirm", {
+                    title: language.fund_transfer_own_account,
+                    transferArray: tempArr
+                });
             } else {
-                this.setState({stateVal: stateVal + 2});
+                console.log("array is this type", this.state.transferArray)
+                tempArr.push(
+                    {key: language.available_bal, value: this.state.toBalance},
+                    {key: language.currency, value: this.state.currency},
+                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
+                )
+                this.props.navigation.navigate("TransferConfirm", {
+                    title: language.fund_transfer_own_account,
+                    transferArray: tempArr
+                });
+
+                // this.setState({stateVal: stateVal + 2});
             }
         } else if (stateVal === 1) {
+            console.log("1 state ",this.state.toAccount)
             if (selectAcctType === language.selectAccountType) {
                 Utility.alert(language.error_select_from_type, language.ok);
             } else if (cityTransVal === 1 && selectNicknameType === language.select_nickname) {
@@ -260,7 +299,16 @@ class FundTransfer extends Component {
                 this.setState({error_remarks: language.errRemarks});
             } else if (grandTotal !== "" && parseFloat(fromBalance) < parseFloat(grandTotal)) {
                 Utility.alert(this.props.language.insufficientBal, this.props.language.ok);
-            } else if (transfer_type === 1) {
+            } else if (this.state.cityTransVal === 0) {
+                tempArr.push(
+                    {key: language.account_holder_name, value: this.state.account_holder_name},
+                    {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
+                )
+                this.props.navigation.navigate("TransferConfirm", {
+                    title: language.fund_transfer_city_account,
+                    transferArray: tempArr
+                });
+            } else if (this.state.cityTransVal === 1 && this.state.transfer_type === 1) {
                 if (paymentDate === "") {
                     this.setState({errorPaymentDate: language.error_payment_date});
                 } else if (selectPaymentType === language.select_payment) {
@@ -268,14 +316,39 @@ class FundTransfer extends Component {
                 } else if (numberPayment === "") {
                     this.setState({error_numberPayment: language.error_numberPayment})
                 }
-            } else {
-                this.setState({stateVal: stateVal + 3});
+                console.log("valid is this")
+                tempArr.push(
+                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
+                    {key: language.payment_date, value: this.state.paymentDate},
+                    {key: language.Frequency, value: this.state.selectPaymentType},
+                    {key: language.number_of_payment, value: this.state.numberPayment},
+                    {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
+                )
+                console.log("temparray data", tempArr)
+                this.props.navigation.navigate("TransferConfirm", {
+                    title: language.fund_transfer_city_account,
+                    transferArray: tempArr
+                });
+            }
+            else {
+                tempArr.push(
+                    {key: language.currency, value: this.state.currency},
+                    {key: language.nick_name, value: this.state.selectNicknameType},
+                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
+                    {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
+                )
+                this.props.navigation.navigate("TransferConfirm", {
+                    title: language.fund_transfer_city_account,
+                    transferArray: tempArr
+                });
+                // this.setState({stateVal: stateVal + 3});
             }
         } else if (stateVal === 2) {
             await this.transferFundOwnAccounts(selectToActVal.ACCT_UNMASK,
                 selectFromActVal.ACCT_UNMASK, "", selectToActVal.EMAIL_ID, "",
                 selectToActVal.MOBILE_NO, "I",
                 "CBLOA", selectFromActVal.APP_INDICATOR);
+
         } else if (stateVal === 4) {
             if (cityTransVal === 0) {
                 await this.transferFundOwnAccounts(accountRes.ACCOUNT,
@@ -572,13 +645,14 @@ class FundTransfer extends Component {
             this.props.userDetails, TO_ACCT_NO, servicesCharge, transferAmount,
             remarks, From_ACCT_NO, nickName, emailId,
             vat, ifscCode, mobileNo, beneType, transType,
-            appIndicator, this.state.OTP_TYPE === 0 ? "S" : "E","", this.props).then((response) => {
+            appIndicator, this.state.OTP_TYPE === 0 ? "S" : "E", "", this.props).then((response) => {
             console.log("response", response);
             this.setState({isProgress: false},
                 () => {
                     if (this.state.stateVal === 2) {
                         this.resetData(this.props);
-                        Utility.alert(this.props.language.success_transfer, this.props.language.ok);
+                        // Utility.alert(this.props.language.success_transfer, this.props.language.ok);
+
                     } else {
                         this.props.navigation.navigate("SecurityVerification", {
                             REQUEST_CD: response.RESPONSE[0].REQUEST_CD,

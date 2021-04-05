@@ -83,6 +83,7 @@ class QRMerchantPayment extends Component {
                 <CheckBox
                     disabled={false}
                     onValueChange={(newValue) => {
+
                     }}
                     value={item.ACTIVE === "Y"}
                     style={CommonStyle.checkbox}
