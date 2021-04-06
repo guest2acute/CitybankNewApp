@@ -73,6 +73,8 @@ import PaymentDetails from "./react/screens/Citypay/PaymentDetails";
 import Receipt from "./react/screens/Citypay/Receipt";
 import QRMerchantPayment from "./react/screens/More/QRMerchantPayment";
 import Otp from "./react/screens/Trasfer/Otp";
+import TransferCompleted from "./react/screens/Trasfer/TransferCompleted";
+import TransferConfirm from "./react/screens/Trasfer/TransferConfirm";
 
 
 const store = configureStore(window.__State__);
@@ -143,7 +145,6 @@ function TransferTab() {
         <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
-            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
             <Stack.Screen name="Transfer" component={Transfer} options={{headerShown: false}}/>
             <Stack.Screen name="Beneficiary" component={Beneficiary} options={{headerShown: false}}/>
             <Stack.Screen name="BeneficiaryEmail" component={BeneficiaryEmail} options={{headerShown: false}}/>
@@ -174,6 +175,9 @@ function TransferTab() {
             <Stack.Screen name="ViewDeleteBeneficiary" component={ViewDeleteBeneficiary}
                           options={{headerShown: false}}/>
             <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferCompleted" component={TransferCompleted} options={{headerShown: false}}/>
+            <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferConfirm" component={TransferConfirm} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -242,7 +246,9 @@ function Root() {
         <Stack.Navigator initialRouteName={"SplashScreen"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
-
+          {/*  <Stack.Screen name="TransferTab" component={TransferTab} options={{headerShown: false}}/>
+*/}
+            {/*<Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>*/}
             {/*  <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
             <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
             <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>*/}
@@ -259,7 +265,7 @@ function Root() {
                           options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
             <Stack.Screen name="CityPayTab" component={CityPayTab} options={{headerShown: false}}/>
-            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
+        {/*    <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>*/}
 
         </Stack.Navigator>);
 }
