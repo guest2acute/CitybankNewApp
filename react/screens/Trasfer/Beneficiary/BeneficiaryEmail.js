@@ -16,6 +16,7 @@ import Utility from "../../../utilize/Utility";
 import {connect} from "react-redux";
 import {AddBeneficiary} from "../../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../../resources/busy-indicator";
+import {actions} from "../../../redux/actions";
 
 class BeneficiaryEmail extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class BeneficiaryEmail extends Component {
             errorMobileNo: ""
         }
 
-        this.resetScreen =  this.resetScreen.bind(this);
+        this.resetScreen = this.resetScreen.bind(this);
     }
 
     onSubmit(language, navigation) {
@@ -43,7 +44,7 @@ class BeneficiaryEmail extends Component {
                 this.setState({errorEmail: language.require_email})
             } else if (!Utility.validateEmail(this.state.emailTxt)) {
                 this.setState({errorEmail: language.email_not_valid})
-            } else if (this.state.mobileNo.length < 11) {
+            } else if (this.state.mobileNo !== "" && this.state.mobileNo.length < 11) {
                 this.setState({errorMobileNo: language.invalidMobile})
             } else {
                 this.setState({isMainScreen: false});
@@ -53,15 +54,13 @@ class BeneficiaryEmail extends Component {
         }
     }
 
-    resetScreen = (flag) => {
-        if (flag) {
-            this.setState({
-                nickname: "",
-                isMainScreen: true,
-                emailTxt: "",
-                mobileNo: "",
-            });
-        }
+    resetScreen = () => {
+        this.setState({
+            nickname: "",
+            isMainScreen: true,
+            emailTxt: "",
+            mobileNo: "",
+        });
     }
 
 
@@ -69,14 +68,13 @@ class BeneficiaryEmail extends Component {
         const {mobileNo, nickname, emailTxt} = this.state;
         this.setState({isProgress: true});
         let accountDetails = {ACCOUNT: emailTxt, ADDRESS: "", CONTACTNUMBER: mobileNo, ACCOUNTNAME: nickname};
-        AddBeneficiary(accountDetails, "E", this.props.userDetails, nickname, mobileNo, emailTxt, "", this.props, "A","").then(response => {
+        AddBeneficiary(accountDetails, "E", this.props.userDetails, nickname, mobileNo, emailTxt, "", "", this.props, "A", "").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
             }, () => this.props.navigation.navigate("SecurityVerification", {
                 REQUEST_CD: response.REQUEST_CD,
                 transType: "E",
-                resetScreen: this.resetScreen
             }));
         }).catch(error => {
             this.setState({isProgress: false});
@@ -211,8 +209,6 @@ class BeneficiaryEmail extends Component {
                         }}>
                             <Text style={[CommonStyle.textStyle]}>
                                 {language.mobile}
-                                <Text
-                                    style={{color: themeStyle.THEME_COLOR}}>{this.state.isMainScreen ? "*" : ""}</Text>
                             </Text>
                             <TextInput
                                 ref={(ref) => this.mobileRef = ref}
@@ -319,16 +315,28 @@ class BeneficiaryEmail extends Component {
                 tabBarLabel: this.props.language.transfer
             });
         }
+
+        if (this.props.isReset && this.props.beneType === "E") {
+            this.resetScreen();
+            this.props.dispatch({
+                type: actions.account.RESET_BENEFICIARY,
+                payload: {
+                    isReset: false,
+                    beneType: "",
+                },
+            });
+        }
     }
 }
 
 const mapStateToProps = (state) => {
-        return {
-            userDetails: state.accountReducer.userDetails,
-            langId: state.accountReducer.langId,
-            language: state.accountReducer.language,
-        };
-    }
-;
+    return {
+        beneType: state.accountReducer.beneType,
+        isReset: state.accountReducer.isReset,
+        userDetails: state.accountReducer.userDetails,
+        langId: state.accountReducer.langId,
+        language: state.accountReducer.language,
+    };
+};
 
 export default connect(mapStateToProps)(BeneficiaryEmail);

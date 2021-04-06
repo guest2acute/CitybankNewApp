@@ -73,13 +73,128 @@ class ViewDeleteBeneficiary extends Component {
         this.getBeneficiary();
     }
 
+    getBkash(item) {
+        let language = this.props.language;
+        return (<View style={{flex: 1}} key={"Bkash"}>
+            <Text style={CommonStyle.textStyle}><Text style={[CommonStyle.themeTextStyle]}>A/c
+                No.: </Text>{item.TO_ACCT_NO}</Text>
+            <Text style={CommonStyle.textStyle}><Text style={[CommonStyle.themeTextStyle]}>Nick
+                Name: </Text>{item.NICK_NAME}</Text>
+        </View>)
+    }
+
+    getCityAct(item) {
+        let language = this.props.language;
+        return (<View style={{flex: 1}} key={"cityAct"}>
+            <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.nick_name}</Text>
+                <Text style={CommonStyle.textStyle}>{item.NICK_NAME}</Text>
+            </View>
+            <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.ActNo}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_ACCT_NO}</Text>
+            </View>
+            {item.TO_ACCT_NM !== "" ?
+                <View style={{flexDirection: "row"}}>
+                    <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.name}</Text>
+                    <Text style={CommonStyle.textStyle}>{item.TO_ACCT_NM}</Text>
+                </View> : null}
+
+            {item.TO_EMAIL_ID !== "" ?
+                <View style={{flexDirection: "row"}}>
+                    <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.email}</Text>
+                    <Text style={CommonStyle.textStyle}>{item.TO_EMAIL_ID}</Text>
+                </View> : null}
+
+            {item.TO_CONTACT_NO !== "" ?
+                <View style={{flexDirection: "row"}}>
+                    <Text
+                        style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.mobileTxt}</Text>
+                    <Text style={CommonStyle.textStyle}>{item.TO_CONTACT_NO}</Text>
+                </View> : null}
+
+        </View>)
+    }
+
+    getEmailAct(item) {
+        let language = this.props.language;
+        return (<View style={{flex: 1}} key={"EmailAct"}>
+            <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.nick_name}</Text>
+                <Text style={CommonStyle.textStyle}>{item.NICK_NAME}</Text>
+            </View>
+
+            {item.TO_EMAIL_ID !== "" ? <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.email}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_EMAIL_ID}</Text>
+            </View> : null}
+
+            {item.TO_CONTACT_NO !== "" ? <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.mobileTxt}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_CONTACT_NO}</Text>
+            </View> : null}
+
+        </View>)
+    }
+
+    getOtherAct(item) {
+        console.log("item", item);
+        let language = this.props.language;
+        return (<View style={{flex: 1}} key={"cityAct"}>
+            <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.nick_name}</Text>
+                <Text style={CommonStyle.textStyle}>{item.NICK_NAME}</Text>
+            </View>
+            <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.ActNo}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_ACCT_NO}</Text>
+            </View>
+
+            {item.TO_ACCT_NM !== "" ? <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.name}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_ACCT_NM}</Text>
+            </View> : null}
+
+            {item.TO_IFSCODE !== "" ? <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.routingNo}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_IFSCODE}</Text>
+            </View> : null}
+
+            {item.BANK_CD !== "" ? <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.bankCode}</Text>
+                <Text style={CommonStyle.textStyle}>{item.BANK_CD}</Text>
+            </View> : null}
+
+            {item.TO_EMAIL_ID !== "" ? <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.email}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_EMAIL_ID}</Text>
+            </View> : null}
+
+            {item.TO_CONTACT_NO !== "" ? <View style={{flexDirection: "row"}}>
+                <Text style={[CommonStyle.themeMidTextStyle, {width: Utility.setWidth(90)}]}>{language.mobileTxt}</Text>
+                <Text style={CommonStyle.textStyle}>{item.TO_CONTACT_NO}</Text>
+            </View> : null}
+
+        </View>)
+    }
+
+    getView(item) {
+        switch (benfType) {
+            case "W":
+                return this.getBkash(item);
+            case "I":
+                return this.getCityAct(item);
+            case "E":
+                return this.getEmailAct(item);
+            case "O":
+                return this.getOtherAct(item);
+        }
+    }
+
     _renderItem = ({item}) => (
         <View style={styles.rowFront}>
-            <View style={{flexDirection: "row", justifyContent: "space-between", marginStart: 10, marginEnd: 10}}>
-                <Text style={CommonStyle.themeMidTextStyle}>{item.NICK_NAME}</Text>
-                <Text style={CommonStyle.themeMidTextStyle}>{item.CURRENCY}</Text>
-            </View>
-            <View style={{flexDirection: "column", justifyContent: "space-around", marginStart: 10, marginEnd: 10}}>
+            {this.getView(item)}
+            {/* <View style={{flexDirection: "column", justifyContent: "space-around", marginStart: 10, marginEnd: 10}}>
                 {benfType !== "E" && item.TO_ACCT_NM !== "" ?
                     <Text style={CommonStyle.midTextStyle}>{item.TO_ACCT_NM}</Text> : null}
                 {benfType !== "E" && item.TO_ACCT_NO !== "" ? <Text style={CommonStyle.textStyle}>{item.TO_ACCT_NO}</Text> : null}
@@ -87,12 +202,10 @@ class ViewDeleteBeneficiary extends Component {
                     <Text style={CommonStyle.textStyle}>{item.TO_EMAIL_ID}</Text> : null}
                 {item.TO_CONTACT_NO !== "" ?
                     <Text style={CommonStyle.textStyle}>{item.TO_CONTACT_NO}</Text> : null}
-            </View>
+            </View>*/}
             <TouchableOpacity onPress={() => this.deleteBeneficiary(item)} style={{
-                width: 25, position: "absolute",
-                right: Utility.setWidth(10),
-                top: Utility.setHeight(50),
-                height: 25
+                width: 25,
+                height: 25,
             }}>
                 <Image style={{
                     width: 20,
@@ -117,7 +230,7 @@ class ViewDeleteBeneficiary extends Component {
     }
 
     deleteValue(item) {
-        console.log("item",item);
+        console.log("item", item);
         this.setState({isProgress: true});
         DELETEBENF(this.props.userDetails, benfType, item, this.props).then(response => {
             console.log("response", response);
@@ -125,7 +238,7 @@ class ViewDeleteBeneficiary extends Component {
                 isProgress: false,
                 data: this.state.data.filter(e => e !== item)
             });
-            Utility.alert(response.MESSAGE,this.props.language.ok);
+            Utility.alert(response.MESSAGE, this.props.language.ok);
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
@@ -180,8 +293,7 @@ class ViewDeleteBeneficiary extends Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.props.update_beneficiary)
-        {
+        if (this.props.update_beneficiary) {
             this.props.dispatch({
                 type: actions.account.ADD_BENEFICIARY,
                 payload: {
@@ -213,10 +325,11 @@ const styles = {
         color: themeStyle.THEME_COLOR
     },
     rowFront: {
-        // alignItems: 'center',
+        alignItems: 'center',
+        flexDirection: "row",
         backgroundColor: themeStyle.WHITE,
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         paddingBottom: 10,
         paddingTop: 10,
         borderBottomColor: "#F5F5F5",

@@ -238,6 +238,7 @@ function MoreTab() {
             <Stack.Screen name="PayOrder" component={PayOrder} options={{headerShown: false}}/>
             <Stack.Screen name="RequestMonitor" component={RequestMonitor} options={{headerShown: false}}/>
             <Stack.Screen name="OtpLockUnlock" component={OtpLockUnlock} options={{headerShown: false}}/>
+            <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -246,12 +247,6 @@ function Root() {
         <Stack.Navigator initialRouteName={"SplashScreen"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
-          {/*  <Stack.Screen name="TransferTab" component={TransferTab} options={{headerShown: false}}/>
-*/}
-            {/*<Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>*/}
-            {/*  <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
-            <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
-            <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>*/}
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>

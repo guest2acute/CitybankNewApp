@@ -149,7 +149,14 @@ class SecurityVerification extends Component {
                     payload: {
                         update_beneficiary: true
                     }
-                })
+                });
+                this.props.dispatch({
+                    type: actions.account.RESET_BENEFICIARY,
+                    payload: {
+                        isReset: true,
+                        beneType:transType
+                    }
+                });
                 this.alertConfirm(unicodeToChar(response.MESSAGE));
             }, (error) => {
                 this.setState({isProgress: false});
@@ -183,7 +190,6 @@ class SecurityVerification extends Component {
             [
                 {
                     text: this.props.language.ok, onPress: () => {
-                        this.props.route.params.resetScreen(true);
                         this.props.navigation.goBack();
                     }
                 },

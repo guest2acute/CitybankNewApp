@@ -91,7 +91,8 @@ class Accounts extends Component {
             <View style={styles.level2}>
                 <Text
                     style={[CommonStyle.midTextStyle, {flex: 1}]}>{unicodeToChar(node.title)}</Text>
-                <Text style={[CommonStyle.midTextStyle]}>{node.code==="CARD_ACCOUNT" || node.code==="LOAN_ACCOUNT"?this.props.language.outstanding_bal:this.props.language.avail_balance}</Text>
+                <Text
+                    style={[CommonStyle.midTextStyle]}>{node.code === "CARD_ACCOUNT" || node.code === "LOAN_ACCOUNT" ? this.props.language.outstanding_bal : this.props.language.avail_balance}</Text>
             </View>
         </View>)
     }
@@ -107,7 +108,7 @@ class Accounts extends Component {
                                 flex: 1,
                                 color: themeStyle.DIMCOLOR
                             }]}>{account.ACCOUNTORCARDNO}</Text>
-                            {account.hasOwnProperty("BALANCE")? <Text style={[CommonStyle.textStyle, {
+                            {account.hasOwnProperty("BALANCE") ? <Text style={[CommonStyle.textStyle, {
                                     color: themeStyle.THEME_COLOR
                                 }]}>{account.BALANCE}</Text>
                                 : <View style={{
@@ -133,7 +134,7 @@ class Accounts extends Component {
             ...Config.userRequest,
             ...Config.commonReq,
         }
-        console.log("actReq",actReq);
+        console.log("actReq", actReq);
         let result = await ApiRequest.apiRequest.callApi(actReq, {});
         if (result.STATUS === "0") {
             await this.processSummary(result.RESPONSE);
@@ -199,12 +200,13 @@ class Accounts extends Component {
             }
 
         });
-        console.log("mainArray",JSON.stringify(mainArray));
-        this.setState({isProgress: false, dataList: mainArray}, async () => {
+        console.log("mainArray", JSON.stringify(mainArray));
+        this.setState({dataList: mainArray}, async () => {
             console.log("actArr", actArr.length);
             actArr.map(async (account) => {
-               await this.getBalance(account);
+                await this.getBalance(account);
             });
+            this.setState({isProgress: false});
         });
     }
 
@@ -226,26 +228,26 @@ class Accounts extends Component {
         }
 
         await ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
-            console.log("balance",JSON.stringify(result));
+            console.log("balance", JSON.stringify(result));
             if (result.STATUS === "0") {
                 let response = result.RESPONSE.filter((e) => e.ACCOUNTNUMBER === accountNo || e.ACCOUNT === accountNo);
                 if (response.length > 0)
-                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].hasOwnProperty("BALANCE")?response[0].BALANCE:response[0].AVAILBALANCE, accountNo, "");
-                else{
+                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].hasOwnProperty("BALANCE") ? response[0].BALANCE : response[0].AVAILBALANCE, accountNo, "");
+                else {
                     this.processBalance("", accountNo, "");
                 }
             } else {
                 this.processBalance("", accountNo, "");
             }
         }).catch(error => {
-            Utility.alert(error,this.props.language.ok);
+            Utility.alert(error, this.props.language.ok);
             console.log("error", error);
         });
 
     }
 
     processBalance(balance, accountNo, message) {
-      //  balance = balance === "" ? this.props.language.notAvailable : balance;
+        //  balance = balance === "" ? this.props.language.notAvailable : balance;
         let dataList = this.state.dataList;
         let objectPos = -1;
         let object;
@@ -325,33 +327,33 @@ class Accounts extends Component {
 
 
 const styles = StyleSheet.create({
-        header: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 5,
-            backgroundColor: "blue"
-        },
-        toolbar: {
-            justifyContent: "center",
-            backgroundColor: themeStyle.THEME_COLOR,
-            alignItems: "center",
-            paddingBottom: 7
-        },
-        title: {
-            fontFamily: fontStyle.RobotoMedium,
-            fontSize: FontSize.getSize(12),
-            color: themeStyle.WHITE
-        },
-        level1:{
-            backgroundColor: themeStyle.THEME_COLOR,
-            height: Utility.setHeight(35),
-            alignItems: "center",
-            paddingStart: 10,
-            paddingEnd: 10,
-            flexDirection: "row",
-            marginTop: 10,
-        },
-    level2:{
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 5,
+        backgroundColor: "blue"
+    },
+    toolbar: {
+        justifyContent: "center",
+        backgroundColor: themeStyle.THEME_COLOR,
+        alignItems: "center",
+        paddingBottom: 7
+    },
+    title: {
+        fontFamily: fontStyle.RobotoMedium,
+        fontSize: FontSize.getSize(12),
+        color: themeStyle.WHITE
+    },
+    level1: {
+        backgroundColor: themeStyle.THEME_COLOR,
+        height: Utility.setHeight(35),
+        alignItems: "center",
+        paddingStart: 10,
+        paddingEnd: 10,
+        flexDirection: "row",
+        marginTop: 10,
+    },
+    level2: {
         backgroundColor: themeStyle.TITLE_BG,
         height: Utility.setHeight(35),
         alignItems: "center",
@@ -359,14 +361,14 @@ const styles = StyleSheet.create({
         paddingEnd: 10,
         flexDirection: "row"
     },
-    level3:{
+    level3: {
         backgroundColor: themeStyle.WHITE,
         marginLeft: 10,
         marginRight: 10,
         marginTop: 13,
         marginBottom: 13
     }
-    });
+});
 
 
 const

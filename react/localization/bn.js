@@ -1270,7 +1270,14 @@ export default {
     from_account_card: "অ্যাকাউন্ট / কার্ড থেকে",
     enter_otp: "ওটিপি প্রবেশ করান",
     transfer_type: "স্থানান্তর প্রকার",
-    verifyOtp:"OTP যাচাই করুন"
+    verifyOtp:"OTP যাচাই করুন",
+    ActNo:"এ / সি নং",
+    mobileTxt:"মুঠোফোন",
+    routingNo:"রাউটিং নং",
+    bankCode:"ব্যাংেকর সংকেতলিপি",
+    Transaction_success: "সফলভাবে লেনদেন",
+    trans_success_message:"আপনার তহবিল সফলভাবে স্থানান্তরিত হয়েছে, দয়া করে রেফারেন্সের জন্য বিশদটি নীচে দেখুন check",
+    addToFavorite: "প্রিয়তে যুক্ত করুন",
 
 }
 

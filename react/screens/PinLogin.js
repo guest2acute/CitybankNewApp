@@ -182,11 +182,11 @@ class PinLogin extends Component {
 
         await ApiRequest.apiRequest.callApi(loginReq, {}).then(async result => {
             console.log("responseVal", result);
-            this.setState({isProgress: false});
+            this.setState({isProgress: false,});
             if (result.STATUS === "0") {
                 await this.processLoginResponse(result, userName);
             } else if (result.STATUS === "71") {
-                DeviceChange(result,this.props);
+                DeviceChange(result, this.props);
             } else {
                 Alert.alert(
                     Config.appName,
@@ -194,7 +194,22 @@ class PinLogin extends Component {
                     [
                         {
                             text: this.props.language.ok, onPress: () => {
-                                if (this.state.loginPref === "2") {
+                                if (this.state.loginPref === "0") {
+                                    this.setState({
+                                        passwordTxt: ""
+                                    });
+                                    this.passwordRef.focus();
+                                } else if (this.state.loginPref === "1") {
+                                    this.setState({
+                                        one: '',
+                                        two: '',
+                                        three: '',
+                                        four: '',
+                                        five: '',
+                                        six: ''
+                                    });
+                                    this.one.focus();
+                                } else if (this.state.loginPref === "2") {
                                     this.showAuthenticationDialog();
                                 }
                             }
@@ -220,7 +235,6 @@ class PinLogin extends Component {
         });
 
     }
-
 
 
     async processLoginResponse(result, userName) {
@@ -363,6 +377,7 @@ class PinLogin extends Component {
                 alignItems: "center",
             }}>
                 <TextInput
+                    ref={(ref) => this.passwordRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
                     style={{
                         fontSize: FontSize.getSize(13),
