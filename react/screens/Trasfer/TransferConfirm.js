@@ -20,8 +20,10 @@ class TransferConfirm extends Component {
         this.state = {
             data: this.props.route.params.transferArray,
             title:this.props.route.params.title,
-            screenSwitcher:false
+            screenName:this.props.route.params.screenName,
+            screenSwitcher:false,
         }
+
         console.log("transfer confirm",this.props.route.params.transferArray)
     }
 
@@ -65,19 +67,14 @@ class TransferConfirm extends Component {
     }
 
     async onSubmit(language) {
-        if(this.state.title === language.fund_transfer_own_account){
-            this.props.navigation.navigate("Receipt",{screenName:"FundTransfer",
-                routeVal: [{name: 'Transfer'},{name: 'FundTransfer'}],
-                routeIndex: 1,
-                transferArray:this.state.data});
-        }else{
-            this.props.navigation.navigate("SecurityVerification", {
+        this.props.navigation.navigate(this.state.screenName,
+            {
                 REQUEST_CD: "",
                 transType: "fund",
-                routeVal: [{name: 'Transfer'}, {name: 'CashByCode'}],
-                routeIndex: 1
-            })
-        }
+                routeVal: this.props.route.params.routeVal,
+                routIndex: this.props.route.params.routeIndex,
+                transferArray:this.props.route.params.transferArray
+            });
     }
 
     transferCompleted(language) {

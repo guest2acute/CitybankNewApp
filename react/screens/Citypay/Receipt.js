@@ -40,11 +40,11 @@ class Receipt extends Component {
     resetVal(){
         console.log("reset screen",this.state.screenName),
             console.log("routeVal",this.props.route.params.routeVal),
-            console.log("routIndex",this.state.routIndex)
+            console.log("routIndex",this.props.route.params.routeIndex)
         this.props.navigation.reset(this.state.screenName,
             {
                 routeVal: this.props.route.params.routeVal,
-                routIndex: this.props.route.params.routIndex
+                routIndex: this.props.route.params.routeIndex
             });
     }
 
