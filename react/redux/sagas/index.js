@@ -10,5 +10,8 @@ export default function* sagas() {
     takeLatest(actions.account.CHANGE_LOGIN_PREF, AccountSagas.changeLoginPref),
     takeLatest(actions.account.SET_USER_DETAILS, AccountSagas.setUserDetails),
     takeLatest(actions.account.SET_SIGNUP_DETAILS, AccountSagas.setSignupDetails),
+    takeLatest(actions.account.SET_SIGNUP_DETAILS, AccountSagas.setSignupDetails),
+    takeLatest(actions.account.ADD_BENEFICIARY, AccountSagas.addBeneficiary),
+    takeLatest(actions.account.RESET_BENEFICIARY, AccountSagas.resetBeneficiary),
   ]);
 }

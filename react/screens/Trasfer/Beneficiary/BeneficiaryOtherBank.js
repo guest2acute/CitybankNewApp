@@ -18,7 +18,8 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
 import {AddBeneficiary, GETACCTBALDETAIL, GETBANKDETAILS} from "../../Requests/RequestBeneficiary";
-import {MoreDetails} from "../../Requests/CommonRequest";
+import {MoreDetails, validateCard} from "../../Requests/CommonRequest";
+import {actions} from "../../../redux/actions";
 
 class BeneficiaryOtherBank extends Component {
     constructor(props) {
@@ -42,14 +43,15 @@ class BeneficiaryOtherBank extends Component {
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
             selectTypeVal: -1,
-            selectBankVal: null,
-            selectBranchVal: null,
-            selectDistrictVal: null,
+            selectBankVal: -1,
+            selectBranchVal: -1,
+            selectDistrictVal: -1,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            updateTitle: props.route.params.title
+            updateTitle: props.route.params.title,
+            isMainView: true
         }
         console.log("updated title is", props.route.params.title)
     }
@@ -75,7 +77,6 @@ class BeneficiaryOtherBank extends Component {
             accountNo: "",
             error_accountNo: "",
             error_cardName: "",
-            /*   error_cardName: "",*/
             districtTypeArr: [],
             branchTypeArr: [],
             selectBankType: props.language.select_bank_type,
@@ -83,6 +84,7 @@ class BeneficiaryOtherBank extends Component {
             selectBankVal: null,
             selectBranchVal: null,
             selectDistrictVal: null,
+
         }, async () => await this.getBankName())
     }
 
@@ -115,12 +117,6 @@ class BeneficiaryOtherBank extends Component {
     }
 
 
-    userInput(text) {
-        if (text.indexOf(" ") !== -1)
-            text = text.replace(/\s/g, '');
-        this.setState({nickname: text, error_nickname: ""})
-    }
-
     accountchange(text) {
         if (text.indexOf(" ") !== -1)
             text = text.replace(/\s/g, '');
@@ -129,79 +125,109 @@ class BeneficiaryOtherBank extends Component {
 
     async onSubmit(language, navigation) {
         console.log("selectType value", this.state.selectTypeVal);
-        if (this.state.nickname === "") {
-            this.setState({error_nickname: language.require_nickname});
-        } else if (this.state.selectTypeVal === -1) {
-            Utility.alert(language.select_type_account, language.ok);
-        } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length === 0) {
-            this.setState({error_accountNo: language.require_accnumber})
-        } else if (this.state.selectTypeVal === 1 && this.state.accountNo.length === 0) {
-            this.setState({error_accountNo: language.require_cardnumber})
-        } else if (this.state.selectTypeVal === 1 && !this.validateCard(this.state.accountNo)) {
-            this.setState({error_accountNo: language.invalid_cardNumber})
-        } else if (this.state.account_card_name === "") {
-            this.setState({error_cardName: this.state.selectTypeVal === 1 ? language.require_cardname : language.require_actName});
-        } else if (this.state.selectBankType === language.select_bank_type) {
-            Utility.alert(language.error_select_bank_name, language.ok);
-        } else if (this.state.selectTypeVal === 0 && this.state.selectDistrictType === language.select_district_type) {
-            Utility.alert(language.error_select_district_name, language.ok);
-        } else if (this.state.selectTypeVal === 0 && this.state.selectBranchType === language.select_branch_type) {
-            Utility.alert(language.error_select_branch_name, language.ok);
-        } else
-            this.getActDetails(language);
-    }
-
-    resetScreen = (flag) => {
-        if (flag) {
-            this.setState({
-                nickname: "",
-                account_card_name: "",
-                accountNo: "",
-                mobile_number: "",
-                emailTxt: "",
-                bankTypeArr: [],
-                districtTypeArr: [],
-                branchTypeArr: [],
-                selectType: this.props.language.select_type_account,
-                selectBankType: this.props.language.select_bank_type,
-                selectDistrictType: this.props.language.select_district_type,
-                selectBranchType: this.props.language.select_branch_type,
-                selectTypeVal: -1,
-                selectBankVal: null,
-                selectBranchVal: null,
-                selectDistrictVal: null,
-                modelSelection: "",
-                modalVisible: false,
-                modalTitle: "",
-                modalData: [],
-                updateTitle: this.props.route.params.title
-            });
+        if (this.state.isMainView) {
+            if (this.state.nickname === "") {
+                this.setState({error_nickname: language.require_nickname});
+            } else if (this.state.selectTypeVal === -1) {
+                Utility.alert(language.select_type_account, language.ok);
+            } else if (this.state.selectTypeVal === 0 && this.state.accountNo.length === 0) {
+                this.setState({error_accountNo: language.require_accnumber})
+            } else if (this.state.selectTypeVal === 1 && this.state.accountNo.length === 0) {
+                this.setState({error_accountNo: language.require_cardnumber})
+            } else if (this.state.selectTypeVal === 1 && !validateCard(this.state.accountNo)) {
+                this.setState({error_accountNo: language.invalid_cardNumber});
+            } else if (this.state.account_card_name === "") {
+                this.setState({error_cardName: this.state.selectTypeVal === 1 ? language.require_cardname : language.require_actName});
+            } else if (this.state.selectBankType === language.select_bank_type) {
+                Utility.alert(language.error_select_bank_name, language.ok);
+            } else if (this.state.selectTypeVal === 0 && this.state.selectDistrictType === language.select_district_type) {
+                Utility.alert(language.error_select_district_name, language.ok);
+            } else if (this.state.selectTypeVal === 0 && this.state.selectBranchType === language.select_branch_type) {
+                Utility.alert(language.error_select_branch_name, language.ok);
+            } else if (this.state.mobile_number !== "" && this.state.mobile_number.length < 11) {
+                this.setState({errorMobileNo: language.invalidMobile});
+            } else
+                this.setState({isMainView: false})
+        } else {
+            this.beneficiaryAdd(language, navigation);
         }
     }
 
-    getActDetails(language) {
-        let object = {
-            selectType: this.state.selectType,
-            selectTypeVal: this.state.selectTypeVal,
-            nickname: this.state.nickname,
-            accountNo: this.state.accountNo,
-            account_card_name: this.state.account_card_name,
-            bankDetails: this.state.selectBankVal,
-            districtDetails: this.state.selectTypeVal === 0 ? this.state.selectDistrictVal : "",
-            branchDetails: this.state.selectTypeVal === 0 ? this.state.selectBranchVal : "",
-            mobile_number: this.state.mobile_number,
-            emailTxt: this.state.emailTxt,
+    resetScreen = () => {
+        this.setState({
+            nickname: "",
+            account_card_name: "",
+            accountNo: "",
+            mobile_number: "",
+            emailTxt: "",
+            bankTypeArr: [],
+            districtTypeArr: [],
+            branchTypeArr: [],
+            selectType: this.props.language.select_type_account,
+            selectBankType: this.props.language.select_bank_type,
+            selectDistrictType: this.props.language.select_district_type,
+            selectBranchType: this.props.language.select_branch_type,
+            selectTypeVal: -1,
+            selectBankVal: -1,
+            selectBranchVal: -1,
+            selectDistrictVal: -1,
+            modelSelection: "",
+            modalVisible: false,
+            modalTitle: "",
+            modalData: [],
+            updateTitle: this.props.route.params.title,
+            isMainView: true
+        });
+
+    }
+
+
+    confirmDetails(language) {
+        let arrayList = [{key: language.nick_name, value: this.state.nickname},
+            {key: language.account_Type, value: this.state.selectType},
+            {key: language.account_card_number, value: this.state.accountNo},
+            {key: language.account_card_name, value: this.state.account_card_name},
+            {
+                key: language.bank_name,
+                value: this.state.selectBankVal.BANK_NM
+            }];
+
+        if (this.state.selectTypeVal === 0) {
+            arrayList.push({key: language.district_type, value: this.state.selectDistrictVal.DIST_NM},
+                {key: language.branch_name, value: this.state.selectBranchVal.BRANCH_NM});
         }
 
-        console.log("object", object);
-        this.props.navigation.navigate("ViewBeneficiaryOtherBank",
-            {details: object, title: this.props.route.params.title, resetScreen: this.resetScreen},
-        );
+        arrayList.push({key: language.beneficiary_mobile_number, value: this.state.mobile_number},
+            {key: language.beneficiary_Email_Address, value: this.state.emailTxt});
+
+        return (
+            arrayList.map((item) => {
+                    return (
+                        <View key={item.key}>
+                            <View style={{
+                                flexDirection: "row",
+                                height: Utility.setHeight(50),
+                                marginStart: 10,
+                                alignItems: "center",
+                                marginEnd: 10,
+                            }}>
+                                <Text style={CommonStyle.textStyle}>
+                                    {item.key}
+                                </Text>
+                                <Text
+                                    style={CommonStyle.viewText}>{item.value}</Text>
+                            </View>
+                            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        </View>)
+                }
+            )
+        )
     }
+
 
     accountNoOption(language) {
         return (
-            <View>
+            <View key={"accountNoOption"}>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -358,57 +384,57 @@ class BeneficiaryOtherBank extends Component {
                 </View>
                 {this.state.selectTypeVal !== 1 ?
                     <View>
-                    <View style={{flex: 1}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.type_district}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity disabled={this.state.selectBankVal === null}
-                                          onPress={() => this.openModal("district_type", language.select_district_type, this.state.districtTypeArr, language)}>
-                            <View style={CommonStyle.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectDistrictType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex: 1}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.type_Branch}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity disabled={this.state.selectDistrictVal === null}
-                                          onPress={() => this.openModal("branch_type", language.select_branch_name, this.state.branchTypeArr, language)}>
-                            <View style={CommonStyle.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectBranchType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View> : null}
+                        <View style={{flex: 1}}>
+                            <Text style={[CommonStyle.labelStyle, {
+                                color: themeStyle.THEME_COLOR,
+                                marginStart: 10,
+                                marginEnd: 10,
+                                marginTop: 6,
+                                marginBottom: 4
+                            }]}>
+                                {language.type_district}
+                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                            </Text>
+                            <TouchableOpacity disabled={this.state.selectBankVal === null}
+                                              onPress={() => this.openModal("district_type", language.select_district_type, this.state.districtTypeArr, language)}>
+                                <View style={CommonStyle.selectionBg}>
+                                    <Text style={[CommonStyle.midTextStyle, {
+                                        color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                        flex: 1
+                                    }]}>
+                                        {this.state.selectDistrictType}
+                                    </Text>
+                                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                                           source={require("../../../resources/images/ic_arrow_down.png")}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flex: 1}}>
+                            <Text style={[CommonStyle.labelStyle, {
+                                color: themeStyle.THEME_COLOR,
+                                marginStart: 10,
+                                marginEnd: 10,
+                                marginTop: 6,
+                                marginBottom: 4
+                            }]}>
+                                {language.type_Branch}
+                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                            </Text>
+                            <TouchableOpacity disabled={this.state.selectDistrictVal === null}
+                                              onPress={() => this.openModal("branch_type", language.select_branch_name, this.state.branchTypeArr, language)}>
+                                <View style={CommonStyle.selectionBg}>
+                                    <Text style={[CommonStyle.midTextStyle, {
+                                        color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                        flex: 1
+                                    }]}>
+                                        {this.state.selectBranchType}
+                                    </Text>
+                                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                                           source={require("../../../resources/images/ic_arrow_down.png")}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View>
                     <View style={{
@@ -453,6 +479,9 @@ class BeneficiaryOtherBank extends Component {
                             }}
                             maxLength={11}/>
                     </View>
+                    {this.state.errorMobileNo !== "" ?
+                        <Text style={CommonStyle.errorStyle
+                        }>{this.state.errorMobileNo}</Text> : null}
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View>
@@ -510,6 +539,37 @@ class BeneficiaryOtherBank extends Component {
             </View>)
     }
 
+    beneficiaryAdd(language, navigation) {
+        const {selectBankVal,accountNo, nickname, mobile_number, emailTxt, selectTypeVal, account_card_name} = this.state;
+        this.setState({isProgress: true});
+        let accountDetails = {
+            ACCOUNT: accountNo,
+            ADDRESS: "",
+            CONTACTNUMBER: mobile_number,
+            ACCOUNTNAME: account_card_name
+        }
+
+        AddBeneficiary(accountDetails, "O", this.props.userDetails, nickname, mobile_number,
+            emailTxt,
+            selectTypeVal === 0 ? this.state.selectBranchVal.ROUTING_NO : selectBankVal.BANK_CD,
+             selectBankVal.BANK_CD,
+            this.props,
+            selectTypeVal === 0 ? "A" : "C", "").then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            }, () =>
+                this.props.navigation.navigate("SecurityVerification", {
+                    REQUEST_CD: response.REQUEST_CD,
+                    transType: "O"
+                }));
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
+
+
     render() {
         let language = this.props.language;
         return (
@@ -544,7 +604,8 @@ class BeneficiaryOtherBank extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.accountNoOption(language)}
+                        {this.state.isMainView ? this.accountNoOption(language) :
+                            <View key={"confirmView"}>{this.confirmDetails(language)}</View>}
 
                         <View style={{
                             flexDirection: "row",
@@ -578,7 +639,7 @@ class BeneficiaryOtherBank extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.stateVal === 3 ? language.submit_txt : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.isMainView ? language.next : language.confirm}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -607,7 +668,8 @@ class BeneficiaryOtherBank extends Component {
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => index + ""}
+                                      data={this.state.modalData}
+                                      keyExtractor={(item, index) => index + ""}
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -641,12 +703,25 @@ class BeneficiaryOtherBank extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
+
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.langId !== this.props.langId) {
             this.props.navigation.setOptions({
-                tabBarLabel: this.props.language.more
+                tabBarLabel: this.props.language.transfer
+            });
+        }
+
+        if (this.props.isReset && this.props.beneType === "O") {
+            this.resetScreen();
+            this.props.dispatch({
+                type: actions.account.RESET_BENEFICIARY,
+                payload: {
+                    isReset: false,
+                    beneType: "",
+                },
             });
         }
     }
@@ -710,6 +785,8 @@ class BeneficiaryOtherBank extends Component {
 
 const mapStateToProps = (state) => {
         return {
+            beneType: state.accountReducer.beneType,
+            isReset: state.accountReducer.isReset,
             userDetails: state.accountReducer.userDetails,
             langId: state.accountReducer.langId,
             language: state.accountReducer.language,

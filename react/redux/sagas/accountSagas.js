@@ -16,6 +16,9 @@ export function* setSignupDetails(action) {
 
 export function* addBeneficiary(action) {
     return action.payload;
+
+}export function* resetBeneficiary(action) {
+    return action.payload;
 }
 
 

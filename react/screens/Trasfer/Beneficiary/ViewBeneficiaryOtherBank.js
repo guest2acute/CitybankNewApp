@@ -67,8 +67,12 @@ class ViewBeneficiaryOtherBank extends Component {
             ACCOUNTNAME: account_holder_name
         }
 
-        AddBeneficiary(accountDetails, "O", this.props.userDetails, nickname, mobile_number, emailTxt, selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD, this.props,
-            selectTypeVal === 0 ?"A":"C","").then(response => {
+        AddBeneficiary(accountDetails, "O", this.props.userDetails, nickname, mobile_number,
+            emailTxt,
+            selectTypeVal === 0 ? details.branchDetails.ROUTING_NO : details.bankDetails.BANK_CD,
+            details.bankDetails.BANK_CD,
+            this.props,
+            selectTypeVal === 0 ? "A" : "C", "").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,

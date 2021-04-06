@@ -18,6 +18,7 @@ import React, {Component} from "react";
 import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
 import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiary';
+import {actions} from "../../../redux/actions";
 
 
 class BeneficiaryWithCityBank extends Component {
@@ -66,6 +67,8 @@ class BeneficiaryWithCityBank extends Component {
                 this.setState({error_accountNo: language.require_accnumber});
             } else if (account_holder_name === "") {
                 this.getActDetails(language);
+            } else if (this.state.mobile_number !== "" && this.state.mobileNo.length < 11) {
+                this.setState({errorMobileNo: language.invalidMobile});
             } else {
                 this.setState({stageVal: stageVal + 1});
             }
@@ -74,35 +77,32 @@ class BeneficiaryWithCityBank extends Component {
         }
     }
 
-    resetScreen = (flag) => {
-        console.log("flag", flag);
-        if (flag) {
-            this.setState({
-                nickname: "",
-                account_holder_name: "",
-                currency: "",
-                accountNo: "",
-                type_act: "",
-                mobile_number: "",
-                emailTxt: "",
-                stageVal: 0,
-                accountDetails: null,
-            })
-        }
+    resetScreen = () => {
+        this.setState({
+            nickname: "",
+            account_holder_name: "",
+            currency: "",
+            accountNo: "",
+            type_act: "",
+            mobile_number: "",
+            emailTxt: "",
+            stageVal: 0,
+            accountDetails: null,
+        })
+
     }
 
     beneficiaryAdd(language) {
         const {accountDetails, nickname, mobile_number, emailTxt} = this.state;
         this.setState({isProgress: true});
-        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", this.props, "A", this.state.currency).then(response => {
+        AddBeneficiary(accountDetails, "I", this.props.userDetails, nickname, mobile_number, emailTxt, "", "", this.props, "A", this.state.currency).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
             }, () =>
                 this.props.navigation.navigate("SecurityVerification", {
                     REQUEST_CD: response.REQUEST_CD,
-                    transType: "I",
-                    resetScreen: this.resetScreen
+                    transType: "I"
                 }));
         }).catch(error => {
             this.setState({isProgress: false});
@@ -329,8 +329,11 @@ class BeneficiaryWithCityBank extends Component {
                             onSubmitEditing={(event) => {
                                 this.emailRef.focus();
                             }}
-                            maxLength={14}/>
+                            maxLength={11}/>
                     </View>
+                    {this.state.errorMobileNo !== "" ?
+                        <Text style={CommonStyle.errorStyle
+                        }>{this.state.errorMobileNo}</Text> : null}
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View>
@@ -487,6 +490,17 @@ class BeneficiaryWithCityBank extends Component {
                 tabBarLabel: this.props.language.transfer
             });
         }
+
+        if (this.props.isReset && this.props.beneType === "I") {
+            this.resetScreen();
+            this.props.dispatch({
+                type: actions.account.RESET_BENEFICIARY,
+                payload: {
+                    isReset: false,
+                    beneType: "",
+                },
+            });
+        }
     }
 
     backAction = () => {
@@ -513,6 +527,8 @@ class BeneficiaryWithCityBank extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        beneType: state.accountReducer.beneType,
+        isReset: state.accountReducer.isReset,
         userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,

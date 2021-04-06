@@ -19,6 +19,7 @@ import {BusyIndicator} from "../../../resources/busy-indicator";
 import Utility from "../../../utilize/Utility";
 import {AddBeneficiary, VERIFYBKASHAC} from "../../Requests/RequestBeneficiary";
 import {MoreDetails} from "../../Requests/CommonRequest";
+import {actions} from "../../../redux/actions";
 
 class BeneficiaryTransferMFS extends Component {
     constructor(props) {
@@ -38,9 +39,9 @@ class BeneficiaryTransferMFS extends Component {
 
     async onSubmit(language, navigation) {
         if (this.state.isMainScreen) {
-            if (this.state.selMFSVal === -1) {
+           /* if (this.state.selMFSVal === -1) {
                 Utility.alert(language.errorSelMFSVal,language.ok);
-            } else if (this.state.nickname === "") {
+            } else */if (this.state.nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
             } else if (this.state.accountNo.length < 11) {
                 this.setState({error_accountNo: language.errBkash})
@@ -70,14 +71,13 @@ class BeneficiaryTransferMFS extends Component {
         const {accountNo, nickname} = this.state;
         this.setState({isProgress: true});
         let accountDetails = {ACCOUNT:accountNo,ADDRESS:"",CONTACTNUMBER:accountNo,ACCOUNTNAME:nickname};
-        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, accountNo, "", "",this.props, "A","").then(response => {
+        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, accountNo, "", "","",this.props, "A","").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
             }, () => this.props.navigation.navigate("SecurityVerification", {
                 REQUEST_CD: response.REQUEST_CD,
-                transType: "W",
-                resetScreen: this.resetScreen
+                transType: "W"
             }));
         }).catch(error => {
             this.setState({isProgress: false});
@@ -85,8 +85,7 @@ class BeneficiaryTransferMFS extends Component {
         });
     }
 
-    resetScreen = (flag) => {
-        if (flag) {
+    resetScreen(){
             this.setState({
                 selMFS: this.props.language.selMfs,
                 selMFSVal: -1,
@@ -94,7 +93,6 @@ class BeneficiaryTransferMFS extends Component {
                 accountNo: "",
                 isMainScreen: true,
             });
-        }
     }
 
 
@@ -121,7 +119,7 @@ class BeneficiaryTransferMFS extends Component {
     accountNoOption(language) {
         return (
             <View>
-                <Text style={[CommonStyle.labelStyle, {
+               {/* <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
                     marginStart: 10,
                     marginEnd: 10,
@@ -143,7 +141,7 @@ class BeneficiaryTransferMFS extends Component {
                         <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
                                source={require("../../../resources/images/ic_arrow_down.png")}/>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -410,12 +408,25 @@ class BeneficiaryTransferMFS extends Component {
                 tabBarLabel: this.props.language.transfer
             });
         }
+
+        if (this.props.isReset && this.props.beneType === "W") {
+            this.resetScreen();
+            this.props.dispatch({
+                type: actions.account.RESET_BENEFICIARY,
+                payload: {
+                    isReset: false,
+                    beneType: "",
+                },
+            });
+        }
     }
 }
 
 
 const mapStateToProps = (state) => {
     return {
+        beneType: state.accountReducer.beneType,
+        isReset: state.accountReducer.isReset,
         userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,

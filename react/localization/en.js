@@ -1264,6 +1264,10 @@ export default {
     transfer_type: "Transfer Type",
     single_transfer: "Single Transfer",
     transfer_from_beneficiary:"Transfer From Beneficiary",
-    verifyOtp:"Verify OTP"
+    verifyOtp:"Verify OTP",
+    ActNo:"A/c No.",
+    mobileTxt:"Mobile",
+    routingNo:"Routing No.",
+    bankCode:"Bank Code",
 
 }

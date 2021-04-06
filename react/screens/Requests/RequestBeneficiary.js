@@ -34,7 +34,7 @@ export const GETACCTBALDETAIL = (accountNo, props) => {
 }
 
 
-export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID, ifscCode, props, reqFlag,currency) => {
+export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOBILE_NO, EMAIL_ID, ifscCode, BANK_CD,props, reqFlag, currency) => {
     console.log("accountRes", accountRes);
     return new Promise(async (resolve, reject) => {
         let request = {
@@ -51,13 +51,12 @@ export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOB
                 TO_ACCT_NO: accountRes.ACCOUNT,
                 NICK_NAME: NICK_NAME,
                 TO_ADD1: accountRes.ADDRESS,
-                TO_CONTACT_NO: MOBILE_NO,
+                TO_CONTACT_NO: accountRes.CONTACTNUMBER,
                 TO_EMAIL_ID: EMAIL_ID,
                 TO_IFSCODE: ifscCode,
                 TO_ACCT_NM: accountRes.ACCOUNTNAME,
-                BANK_CD:"",
-                ACCT_TYPE:""
-
+                BANK_CD: BANK_CD,
+                ACCT_TYPE: reqFlag
             }]
         }
         console.log("addBeneficiary", request);

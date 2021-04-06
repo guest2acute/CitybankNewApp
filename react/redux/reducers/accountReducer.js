@@ -9,7 +9,9 @@ const initialState = {
     login_val: 0,
     userDetails: "",
     signupDetails: "",
-    update_beneficiary: false
+    update_beneficiary: false,
+    isReset: false,
+    beneType: ""
 };
 
 export function accountReducer(state = initialState, action) {
@@ -53,6 +55,15 @@ export function accountReducer(state = initialState, action) {
                 {
                     ...state,
                     update_beneficiary: action.payload.update_beneficiary
+                },
+            );
+        case actions.account.RESET_BENEFICIARY:
+            return Object.assign(
+                {},
+                {
+                    ...state,
+                    isReset: action.payload.isReset,
+                    beneType: action.payload.beneType,
                 },
             );
         default:
