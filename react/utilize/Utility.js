@@ -303,9 +303,8 @@ export default class Utility {
     }
 
     static ValidateMobileNumber(text) {
-        console.log("validate", text.startsWith("01"));
-        let checkMobile = text.startsWith("01")
-        return checkMobile(text);
+       return  text.startsWith("01")
     }
+
 
 }

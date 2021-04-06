@@ -73,6 +73,7 @@ export default {
     HIGHLIGHT_COLOR: '#0000EE',
     DISABLE_TEXT: '#E2E2E2',
     BORDER: "#E2E2E2",
-    DIM_TEXT_COLOR:"#bbbbbb"
+    DIM_TEXT_COLOR:"#bbbbbb",
+    DIM_DIM_COLOR:'#d4cdce'
 
 };

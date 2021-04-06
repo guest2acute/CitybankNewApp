@@ -1265,9 +1265,16 @@ export default {
     single_transfer: "Single Transfer",
     transfer_from_beneficiary:"Transfer From Beneficiary",
     verifyOtp:"Verify OTP",
+
     ActNo:"A/c No.",
     mobileTxt:"Mobile",
     routingNo:"Routing No.",
     bankCode:"Bank Code",
+
+    Transaction_success: "Transaction Successfully",
+    trans_success_message:"Your fund has been transferred successfully, please check below details for reference.",
+    addToFavorite: "Add To Favourite",
+
+
 
 }

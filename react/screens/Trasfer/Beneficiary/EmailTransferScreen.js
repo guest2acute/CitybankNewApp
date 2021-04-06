@@ -116,7 +116,8 @@ class EmailTransferScreen extends Component {
     }
 
     accountNoOption(language) {
-        return (<View>
+        return (
+            <View>
             <View style={{flex: 1}}>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,

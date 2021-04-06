@@ -119,7 +119,8 @@ export const FUNDTRFOTP = async (userDetails, REQUEST_CD, authFlag, actNo, cPin,
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         CUSTOMER_ID: userDetails.CUSTOMER_ID,
         AUTH_FLAG: userDetails.AUTH_FLAG,
-        ACTION: "FUNDTRFOTP",
+        ACTION: "SENTOTP",
+        SERVICE:"FUNDTRF",
         REQUEST_CD: REQUEST_CD,
         ...Config.commonReq
     }
