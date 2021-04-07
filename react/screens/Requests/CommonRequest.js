@@ -106,7 +106,7 @@ export const blockProcess = async (ACCT_NO, userId, description, props, authFlag
 
 }
 
-export const RESENDOTP = async (userDetails,otpType, props) => {
+export const RESENDOTP = async (userDetails, otpType, props) => {
     console.log("userDetails", userDetails);
     return new Promise(async (resolve, reject) => {
         let resendReq = {
@@ -139,12 +139,12 @@ export const RESENDOTP = async (userDetails,otpType, props) => {
 }
 
 
-export const GETBALANCE = async (accountNo,SOURCE,APPCUSTOMER_ID, props) => {
+export const GETBALANCE = async (accountNo, SOURCE, APPCUSTOMER_ID, props) => {
     return new Promise(async (resolve, reject) => {
         let balanceReq = {
             ACCT_NO: accountNo,
             ACTION: "GETACCTBALDETAIL",
-            SOURCE:SOURCE,
+            SOURCE: SOURCE,
             RES_FLAG: "B",
             CURRENCYCODE: "BDT",
             APPCUSTOMER_ID: APPCUSTOMER_ID,
@@ -558,6 +558,37 @@ export const unicodeToChar = (text) => {
         function (match) {
             return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
         });
+}
+
+export const VerifyCard = async (cardNo, cardPin, props) => {
+    let request = {
+        ACTION: "",
+        CARD_DETAIL: {
+            ACCT_NO: cardNo,
+            CARD_PIN: cardPin,
+        },
+        ...Config.commonReq
+    }
+
+    console.log("request", request);
+
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {CARD_VERIFY: "P"}).then(result => {
+            console.log("responseVal", result)
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(props.language.somethingWrong, props.language.ok);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
 }
 
 

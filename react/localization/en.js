@@ -611,7 +611,7 @@ export default {
     type_Branch: "Branch Name",
     select_branch_name: "Select Branch Name",
 
-    notes: "Notes",
+    conAmt: "Convenience Amount",
     note: "Note:",
 
     add_beneficiary_transfer: "Add Beneficiary-Transfer to bkash",
@@ -635,6 +635,7 @@ export default {
     services_charge: "Services Charge",
     grand_total: "Grand Total",
     remarks: "Remarks",
+    tipAmt: "Tip Amount",
     selectNickType: "Select Nickname",
     nickTypeArr: [
         {key: "0", label: "Ebad Vai", value: 0},

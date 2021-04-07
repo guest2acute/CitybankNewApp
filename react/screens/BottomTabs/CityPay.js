@@ -19,23 +19,28 @@ import {RNCamera} from 'react-native-camera';
 import Utility from "../../utilize/Utility";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
+import {QRSCANCODE} from "../Requests/QRRequest";
 
+let isLoading = false;
 
 class CityPay extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            qrVal: "",
             qrId: "",
-            isProgress: false
+            isProgress: false,
+            remarks: "",
+            type: "",
         }
     }
 
     onSuccess = e => {
-        if (e.type === "QR_CODE") {
-          //  Utility.alert("data-" + e.data);
-            //this.scanner.reactivate();
-        } else {
-           // Utility.alert(e.type + "-" + e.data);
+        if (e.type === "QR_CODE" && !isLoading) {
+            isLoading = true;
+            this.setState({type: "SCAN", qrVal: e.data}, () => {
+                this.scanRequestQrCode();
+            });
         }
         console.log("e.data", e);
     };
@@ -76,10 +81,31 @@ class CityPay extends Component {
 
     submit(language) {
         if (this.state.qrId === "") {
-            Utility.alert(language.errorQRId,language.ok);
+            Utility.alert(language.errorQRId, language.ok);
         } else {
 
         }
+    }
+
+    scanRequestQrCode() {
+        const {qrVal, qrId, remarks, type} = this.state;
+        this.setState({isProgress: true});
+        QRSCANCODE(this.props.userDetails, type, type === "SCAN" ? qrVal : qrId, type, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            });
+            isLoading = false;
+            this.scanner.reactivate();
+            this.props.navigation.navigate("PaymentDetails", {
+                response: response,
+                qrVal: type === "SCAN" ? qrVal : qrId
+            });
+
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
     bottomView(language) {
@@ -100,7 +126,7 @@ class CityPay extends Component {
                     <View style={{
                         flexDirection: "row", alignItems: "center", marginTop: 10,
                     }}>
-                        <Text style={CommonStyle.midTextStyle}>{language.qrId}</Text>
+                        <Text style={CommonStyle.midTextStyle}>{language.qrVal}</Text>
                         <TextInput
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
@@ -170,8 +196,8 @@ class CityPay extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("this.props.language.city_pay",this.props.language.city_pay);
-        if(prevProps.langId !== this.props.langId){
+        console.log("this.props.language.city_pay", this.props.language.city_pay);
+        if (prevProps.langId !== this.props.langId) {
             this.props.navigation.setOptions({
                 tabBarLabel: this.props.language.city_pay
             });
@@ -220,7 +246,7 @@ let styles = {
         paddingTop: Utility.setHeight(10),
         paddingBottom: Utility.setHeight(10), backgroundColor: themeStyle.BG_COLOR, width: Utility.getDeviceWidth()
     },
-    scanQrCodeText:{
+    scanQrCodeText: {
         paddingLeft: Utility.setWidth(20),
         paddingRight: Utility.setWidth(20),
         paddingTop: 5,

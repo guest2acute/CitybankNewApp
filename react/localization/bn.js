@@ -1278,6 +1278,8 @@ export default {
     Transaction_success: "সফলভাবে লেনদেন",
     trans_success_message:"আপনার তহবিল সফলভাবে স্থানান্তরিত হয়েছে, দয়া করে রেফারেন্সের জন্য বিশদটি নীচে দেখুন check",
     addToFavorite: "প্রিয়তে যুক্ত করুন",
+    conAmt: "সুবিধার পরিমাণ",
+    tipAmt: "টিপ পরিমাণ",
 
 }
 

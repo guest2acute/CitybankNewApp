@@ -42,7 +42,7 @@ class ChangeLoginCredential extends Component {
             expiryDate: "",
             creditCardNo: "",
             transactionPin: "",
-            stateVal: 0,
+            stateVal: 1,
             newCredential: "",
             errorNewCredential: "",
             confNewCredential: "",
@@ -495,7 +495,7 @@ class ChangeLoginCredential extends Component {
                         maxLength={this.state.select_credential_type.value === 0 ? 12 : 6}/>
                 </View>
                 {this.state.errorNewCredential !== "" ?
-                    <Text style={CommonStyle.arrowStyle}>{this.state.errorNewCredential}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorNewCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -535,7 +535,7 @@ class ChangeLoginCredential extends Component {
                         maxLength={this.state.select_credential_type.value === 0 ? 12 : 6}/>
                 </View>
                 {this.state.errorConfNewCredential !== "" ?
-                    <Text style={CommonStyle.arrowStyle}>{this.state.errorConfNewCredential}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorConfNewCredential}</Text> : null}
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
         </View>)

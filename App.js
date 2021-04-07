@@ -119,7 +119,7 @@ const BottomNavigator = () => {
                            source={require("./react/resources/images/ic_payment.png")}/>
                 ),
             }}/>
-            <Tab.Screen name="CityPay" component={CityPay} listeners={tabBarListeners} options={{
+            <Tab.Screen name="CityPayTab" component={CityPayTab} listeners={tabBarListeners} options={{
                 tabBarLabel: 'CityPay',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{width: size, height: size}}
@@ -190,7 +190,7 @@ function PaymentTab() {
 
 function CityPayTab() {
     return (
-        <Stack.Navigator initialRouteName={"Payments"} mode={"modal"} screenOptions={{
+        <Stack.Navigator initialRouteName={"CityPay"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
@@ -256,6 +256,7 @@ function Root() {
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
             <Stack.Screen name="CityPayTab" component={CityPayTab} options={{headerShown: false}}/>
             <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
+            <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
 
         </Stack.Navigator>);
 }
