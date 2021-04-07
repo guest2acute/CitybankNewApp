@@ -11,6 +11,7 @@ import StorageClass from "../../utilize/StorageClass";
 import * as DeviceInfo from "react-native-device-info";
 import CommonStyle from "../../resources/CommonStyle";
 import FontSize from "../../resources/ManageFontSize";
+import {FUNDTRF} from "../Requests/FundsTransferRequest";
 
 
 class TransferConfirm extends Component {
@@ -67,15 +68,41 @@ class TransferConfirm extends Component {
     }
 
     async onSubmit(language) {
-        this.props.navigation.navigate(this.state.screenName,
-            {
-                REQUEST_CD: "",
-                transType: "fund",
-                routeVal: this.props.route.params.routeVal,
-                routIndex: this.props.route.params.routeIndex,
-                transferArray:this.props.route.params.transferArray
-            });
+         await this.transferFundOwnAccounts();
+
     }
+
+    async transferFundOwnAccounts() {
+        const {
+            stateVal,
+            servicesCharge,
+            transferAmount,
+            remarks,
+            vat
+        } = this.state;
+        this.setState({isProgress: true});
+        await FUNDTRF(this.props.route.params.transRequest,this.props).then((response) => {
+            console.log("response", response);
+            this.setState({isProgress: false},
+                () => {
+                    /*if (this.state.stateVal === 2) {
+                        this.resetData(this.props);
+                    }*/
+                    this.props.navigation.navigate(this.state.screenName,
+                        {
+                            REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
+                            transType: "fund",
+                            routeVal: this.props.route.params.routeVal,
+                            routIndex: this.props.route.params.routeIndex,
+                            transferArray:this.props.route.params.transferArray
+                        });
+                })
+        }, (error) => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
+
 
     transferCompleted(language) {
         return (

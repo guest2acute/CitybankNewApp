@@ -43,7 +43,6 @@ class MobileRecharge extends Component {
             grandTotal:"",
             error_grandTotal:"",
             transferAmount:"",
-
         }
     }
 
@@ -135,7 +134,7 @@ class MobileRecharge extends Component {
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        maxLength={14}/>
+                        maxLength={11}/>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                <View style={{

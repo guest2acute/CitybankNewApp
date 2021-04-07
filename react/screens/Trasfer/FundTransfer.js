@@ -23,6 +23,7 @@ import moment from "moment";
 import {CHARGEVATAMT, FUNDTRF, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
 import {GETACCTBALDETAIL, GETBENF} from "../Requests/RequestBeneficiary";
 import {GETBALANCE, unicodeToChar} from "../Requests/CommonRequest";
+import Config from "../../config/Config";
 
 
 let initialVar = {
@@ -120,12 +121,12 @@ class FundTransfer extends Component {
         const {modelSelection} = this.state;
 
         if (modelSelection === "nickName") {
+            console.log("onselect item is this",item)
             this.setState({
                 selectNicknameType: item.label,
                 selectNickVal: item.value,
                 modalVisible: false,
                 toAccount: item.value.TO_ACCT_NM,
-                accountRes: item
             })
         } else if (modelSelection === "fromAccountType") {
             this.setState({
@@ -206,6 +207,8 @@ class FundTransfer extends Component {
     async onSubmit(language) {
         console.log("cityTransVal", this.state.cityTransVal)
         console.log("transfer type", this.state.transfer_type)
+        console.log("accountRes ACCOUNT",this.state.accountRes)
+        console.log("TO_ACCT_NO is this",this.state.selectNickVal)
         const {
             selectNickVal,
             accountRes,
@@ -244,14 +247,14 @@ class FundTransfer extends Component {
             } else if (remarks === "") {
                 this.setState({error_remarks: language.errRemarks});
             } else if (this.state.transfer_type === 1) {
-                this.processRequest(language,0)
+                this.processRequest(language, 0)
             } else {
-                 this.processRequest(language,0)
+                this.processRequest(language, 0)
                 console.log("array is this type", this.state.transferArray)
                 // this.setState({stateVal: stateVal + 2});
             }
         } else if (stateVal === 1) {
-            console.log("1 state ",this.state.toAccount)
+            console.log("1 state ", this.state.toAccount)
             if (selectAcctType === language.selectAccountType) {
                 Utility.alert(language.error_select_from_type, language.ok);
             } else if (cityTransVal === 1 && selectNicknameType === language.select_nickname) {
@@ -269,7 +272,7 @@ class FundTransfer extends Component {
             } else if (grandTotal !== "" && parseFloat(fromBalance) < parseFloat(grandTotal)) {
                 Utility.alert(this.props.language.insufficientBal, this.props.language.ok);
             } else if (this.state.cityTransVal === 0) {
-                this.processRequest(language,1)
+                this.processRequest(language, 1)
 
             } else if (this.state.cityTransVal === 1 && this.state.transfer_type === 1) {
                 if (paymentDate === "") {
@@ -278,22 +281,11 @@ class FundTransfer extends Component {
                     Utility.alert(language.select_payment, language.ok);
                 } else if (numberPayment === "") {
                     this.setState({error_numberPayment: language.error_numberPayment})
-                }else{
-                    this.processRequest(language,1)
+                } else {
+                    this.processRequest(language, 1)
                 }
-            }
-            else {
-                this.processRequest(language,1)
-               /* tempArr.push(
-                    {key: language.currency, value: this.state.currency},
-                    {key: language.nick_name, value: this.state.selectNicknameType},
-                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
-                    {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
-                )
-                this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr
-                });*/
+            } else {
+                this.processRequest(language, 1)
                 // this.setState({stateVal: stateVal + 3});
             }
         } else if (stateVal === 2) {
@@ -317,20 +309,59 @@ class FundTransfer extends Component {
         }
     }
 
-    processRequest(language,val){
+    processRequest(language, val) {
         let tempArr = [];
+        let screenName = "";
         tempArr.push(
-            { key: language.fromAccount,value: this.state.selectFromActVal !== -1 ? this.state.selectFromActVal.ACCT_UNMASK : ""},
+            {
+                key: language.fromAccount,
+                value: this.state.selectFromActVal !== -1 ? this.state.selectFromActVal.ACCT_UNMASK : ""
+            },
             {key: language.available_bal, value: this.state.fromBalance},
             {key: language.currency, value: this.state.currency},
-            {key: language.to_acct,value: this.state.selectToActVal !== -1 ? this.state.selectToActVal.ACCT_UNMASK : ""},
+            {
+                key: language.to_acct,
+                value: this.state.selectToActVal !== -1 ? this.state.selectToActVal.ACCT_UNMASK : ""
+            },
             {key: language.transfer_amount, value: this.state.transferAmount},
             {key: language.services_charge, value: this.state.servicesCharge},
             {key: language.vat, value: this.state.vat},
             {key: language.grand_total, value: this.state.grandTotal},
             {key: language.remarks, value: this.state.remarks},
         )
-        if(val === 0) {
+
+        let BEN_TYPE = "", APP_INDICATOR = "", TO_EMAIL_ID = "", VAT_CHARGE = "",TO_IFSCODE:"",mobileNo:"";
+        let userDetails = this.props.userDetails;
+
+        let request = {
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            USER_ID: userDetails.USER_ID,
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            TO_ACCT_NO: val===0 ? this.state.selectToActVal.ACCT_UNMASK : this.state.cityTransVal === 0? this.state.accountRes.ACCOUNT:this.state.selectNickVal.TO_ACCT_NO,
+            // TO_ACCT_NO: this.state.selectToActVal !== -1 ? this.state.selectToActVal.ACCT_UNMASK : "",
+            SERVICE_CHARGE: this.state.servicesCharge,
+            ACTION: "FUNDTRF",
+            TRN_AMT: this.state.transferAmount,
+            REMARKS: this.state.remarks,
+            ACCT_NO:  this.state.selectFromActVal.ACCT_UNMASK,
+            TO_ACCT_NM: "",
+            NICK_NAME: val===1 ?"":this.state.selectNickVal.NICK_NAME,
+            REQ_FLAG: "R",
+            REQ_TYPE: "I",
+            TRN_TYPE: val===0?"CBLOA":"CBLOA",
+            REF_NO: "",
+            TO_MOBILE_NO: val===0 ? this.state.selectToActVal.MOBILE_NO:this.state.cityTransVal===0?this.state.accountRes.CONTACTNUMBER:this.state.selectNickVal.TO_CONTACT_NO,
+            BEN_TYPE:  "I",
+            APP_INDICATOR: val===0?this.state.selectFromActVal.APP_INDICATOR:this.state.selectFromActVal.APP_INDICATOR,
+            TO_EMAIL_ID: val ===0 ? this.state.selectToActVal.EMAIL_ID:this.state.cityTransVal === 0?"":this.state.selectNickVal.TO_EMAIL_ID,
+            VAT_CHARGE: VAT_CHARGE,
+            TO_IFSCODE: val ===0 ?"":this.state.cityTransVal === 0?"":this.state.selectNickVal.TO_IFSCODE,
+            OTP_TYPE: this.state.otp_type === 0 ? "S" : "E",
+            ...Config.commonReq
+        }
+        console.log("request type is ",request)
+
+        if (val === 0) {
             if (this.state.transfer_type === 1) {
                 tempArr.push(
                     {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
@@ -338,48 +369,24 @@ class FundTransfer extends Component {
                     {key: language.Frequency, value: this.state.selectPaymentType},
                     {key: language.number_of_payment, value: this.state.numberPayment},
                 )
-                this.props.navigation.navigate("TransferConfirm", {
-                    routeVal: [{name: 'Transfer'},{name: 'FundTransfer'}],
-                    routeIndex: 1,
-                    title: language.fund_transfer_own_account,
-                    transferArray: tempArr,
-                    screenName:"Receipt"
-                });
-            }else{
+            } else {
                 tempArr.push(
-                    {key: language.available_bal, value: this.state.toBalance},
-                    {key: language.currency, value: this.state.currency},
                     {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
                 )
-                this.props.navigation.navigate("TransferConfirm", {
-                    routeVal: [{name: 'Transfer'},{name: 'FundTransfer'}],
-                    routeIndex: 1,
-                    title: language.fund_transfer_own_account,
-                    transferArray: tempArr,
-                    screenName:"Receipt"
-                });
             }
-        }else if(val ===1 ){
-            if(this.state.cityTransVal === 0){
+            /*await this.transferFundOwnAccounts(this.state.selectToActVal.ACCT_UNMASK,
+                this.state.selectFromActVal.ACCT_UNMASK, "", this.state.selectToActVal.EMAIL_ID, "",
+                this.state.selectToActVal.MOBILE_NO, "I",
+                "CBLOA", this.state.selectFromActVal.APP_INDICATOR);*/
+            screenName = "Receipt";
+
+        } else if (val === 1) {
+            if (this.state.cityTransVal === 0) {
                 tempArr.push(
                     {key: language.account_holder_name, value: this.state.account_holder_name},
                     {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
                 )
-
-                this.props.navigation.navigate("TransferConfirm", {
-                    routeVal: [{name: 'Transfer'},{name: 'FundTransfer'}],
-                    routeIndex: 1,
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr,
-                    screenName:"SecurityVerification"
-                });
-
-                /*this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr
-                });*/
-            }else if(this.state.cityTransVal === 1 && this.state.transfer_type === 1){
-                console.log("valid is this")
+            } else if (this.state.cityTransVal === 1 && this.state.transfer_type === 1) {
                 tempArr.push(
                     {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
                     {key: language.payment_date, value: this.state.paymentDate},
@@ -387,39 +394,28 @@ class FundTransfer extends Component {
                     {key: language.number_of_payment, value: this.state.numberPayment},
                     {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
                 )
-                console.log("temparray data", tempArr)
-                this.props.navigation.navigate("TransferConfirm", {
-                    routeVal: [{name: 'Transfer'},{name: 'FundTransfer'}],
-                    routeIndex: 1,
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr,
-                    screenName:"SecurityVerification"
-                });
-                /*this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr
-                });*/
-            }else {
+            } else {
                 tempArr.push(
                     {key: language.currency, value: this.state.currency},
                     {key: language.nick_name, value: this.state.selectNicknameType},
                     {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
                     {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
                 )
-                this.props.navigation.navigate("TransferConfirm", {
-                    routeVal: [{name: 'Transfer'},{name: 'FundTransfer'}],
-                    routeIndex: 1,
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr,
-                    screenName:"SecurityVerification"
-                });
-              /*  this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr
-                });*/
-                // this.setState({stateVal: stateVal + 3});
             }
+            screenName = "SecurityVerification";
         }
+
+
+
+
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'Transfer'}, {name: 'FundTransfer'}],
+            routeIndex: 1,
+            title: val === 0 ? language.fund_transfer_own_account : language.fund_transfer_city_account,
+            transferArray: tempArr,
+            screenName: screenName,
+             transRequest: request
+        });
     }
 
     FundTransferDetails(language) {
@@ -758,7 +754,7 @@ class FundTransfer extends Component {
     getNickList() {
         this.setState({isProgress: true});
         GETBENF(this.props.userDetails, "I", this.props).then(response => {
-            console.log("response", response);
+            console.log("response======>", response);
             let arr = [];
             response.map((account) => {
                 arr.push({label: account.NICK_NAME, value: account});
