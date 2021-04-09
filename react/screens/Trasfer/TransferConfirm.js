@@ -24,7 +24,6 @@ class TransferConfirm extends Component {
             screenName:this.props.route.params.screenName,
             screenSwitcher:false,
         }
-
         console.log("transfer confirm",this.props.route.params.transferArray)
     }
 
@@ -68,10 +67,19 @@ class TransferConfirm extends Component {
     }
 
     async onSubmit(language) {
-         await this.transferFundOwnAccounts();
+        this.props.navigation.navigate(this.state.screenName,
+            {
+                REQUEST_CD: "",
+                transType: "fund",
+                routeVal: this.props.route.params.routeVal,
+                routIndex: this.props.route.params.routeIndex,
+                transferArray:this.props.route.params.transferArray
+            });
+         // await this.transferFundOwnAccounts();
 
     }
 
+/*
     async transferFundOwnAccounts() {
         const {
             stateVal,
@@ -85,9 +93,9 @@ class TransferConfirm extends Component {
             console.log("response", response);
             this.setState({isProgress: false},
                 () => {
-                    /*if (this.state.stateVal === 2) {
+                    /!*if (this.state.stateVal === 2) {
                         this.resetData(this.props);
-                    }*/
+                    }*!/
                     this.props.navigation.navigate(this.state.screenName,
                         {
                             REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
@@ -102,6 +110,7 @@ class TransferConfirm extends Component {
             console.log("error", error);
         });
     }
+*/
 
 
     transferCompleted(language) {

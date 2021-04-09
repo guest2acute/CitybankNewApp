@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList
+    TextInput, FlatList, BackHandler, Platform, StatusBar
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
@@ -19,6 +19,7 @@ import moment from "moment";
 import MonthPicker from "react-native-month-year-picker";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
+import RadioForm from "react-native-simple-radio-button";
 
 class CreditCardActivation extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class CreditCardActivation extends Component {
             isProgress: false,
             selectType: props.language.select_type_transfer,
             selectCard: props.language.select_card_number,
+            selectChangeStatus: props.language.select_change_status,
             selectTypeVal: -1,
             selectActCard: props.language.TypeOfTransferArr[0],
             modelSelection: "",
@@ -41,7 +43,7 @@ class CreditCardActivation extends Component {
             cardExpiry: "",
             showMonthPicker: false,
             errorExpiry: "",
-
+            otp_type:0
         }
     }
 
@@ -75,17 +77,39 @@ class CreditCardActivation extends Component {
         const {modelSelection} = this.state;
         if (modelSelection === "creditCardType") {
             this.setState({selectCard: item.label, selectTypeVal: item.value, modalVisible: false})
+        }else if (modelSelection === "statusType") {
+            this.setState({selectChangeStatus: item.label, modalVisible: false})
         }
     }
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert(language.errorSelectCard,language.ok);
-        } else if (this.state.cardExpiry === "") {
-            this.setState({errorExpiry: language.errExpiryDate});
+            Utility.alert(language.errorSelectCard, language.ok);
+        }else if (this.state.selectChangeStatus === language.select_change_status) {
+            Utility.alert(language.errorSelectChangeStatus, language.ok);
         } else {
-            Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+            this.processRequest(language)
+            // Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
+    }
+
+    processRequest(language){
+        let tempArr = [];
+        tempArr.push(
+            {key: language.credit_card_no, value: this.state.selectCard},
+            {key: language.card_status, value: this.state.cardStatus},
+            {key: language.change_status, value: this.state.selectChangeStatus},
+            {key: language.otp_type, value: language.otp_props[this.state.otp_type].label},
+        )
+        console.log("temp array is this",tempArr)
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'More'},{name: 'CreditCardActivation'}],
+            routeIndex: 1,
+            title: this.state.title,
+            transferArray:tempArr,
+            screenName:"Otp"
+        });
+
     }
 
     onValueChange = (event, newDate) => {
@@ -115,6 +139,7 @@ class CreditCardActivation extends Component {
                     marginBottom: 4
                 }]}>
                     {language.credit_card_no}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <TouchableOpacity
                     onPress={() => this.openModal("creditCardType", language.select_card_number, language.cardTypeArr, language)}>
@@ -160,143 +185,57 @@ class CreditCardActivation extends Component {
                     />
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.card_state}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            cardState: Utility.userInput(text)
-                        })}
-                        value={this.state.cardState}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        editable={false}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.card_holder_name}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            cardHolderName: Utility.userInput(text)
-                        })}
-                        value={this.state.cardHolderName}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        editable={false}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.card_type}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            cardType: Utility.userInput(text)
-                        })}
-                        value={this.state.cardType}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        editable={false}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row",
+
+                <Text style={[CommonStyle.labelStyle, {
+                    color: themeStyle.THEME_COLOR,
                     marginStart: 10,
-                    height: Utility.setHeight(50),
-                    alignItems: "center",
                     marginEnd: 10,
+                    marginTop: 6,
+                    marginBottom: 4
+                }]}>
+                    {language.change_status}
+                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                </Text>
+                <TouchableOpacity
+                    onPress={() => this.openModal("statusType", language.select_change_status, language.statusTypeArr, language)}>
+                    <View style={CommonStyle.selectionBg}>
+                        <Text style={[CommonStyle.midTextStyle, {
+                            color: this.state.selectChangeStatus === language.select_change_status ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                            flex: 1
+                        }]}>
+                            {this.state.selectChangeStatus}
+                        </Text>
+                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                               source={require("../../resources/images/ic_arrow_down.png")}/>
+                    </View>
+                </TouchableOpacity>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.enterExpiry}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        {language.otp_type}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
-                    <TouchableOpacity style={{
-                        flex: 1,
-                        marginLeft: 10
-                    }} onPress={() => this.setState({errorExpiry: "", showMonthPicker: true})}>
-                        <TextInput
-                            selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {
-                                alignItems: "flex-end",
-                                textAlign: 'right',
-                                flex: 1,
-                                marginLeft: 10
-                            }]}
-                            placeholder={language.select_expiry_date}
-                            editable={false}
-                            value={this.state.cardExpiry}
-                            multiline={false}
-                            numberOfLines={1}
-                            contextMenuHidden={true}
-                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}
-                            maxLength={5}/>
-                    </TouchableOpacity>
+                    <RadioForm
+                        radio_props={language.otp_props}
+                        initial={0}
+                        buttonSize={9}
+                        selectedButtonColor={themeStyle.THEME_COLOR}
+                        formHorizontal={true}
+                        labelHorizontal={true}
+                        borderWidth={1}
+                        buttonColor={themeStyle.GRAY_COLOR}
+                        labelColor={themeStyle.BLACK}
+                        labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                        style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                        animation={true}
+                        onPress={(value) => {
+                            this.setState({otp_type: value});
+                        }}
+                    />
                 </View>
-                {this.state.errorExpiry !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                        marginBottom: 10,
-                    }}>{this.state.errorExpiry}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View>
         )
@@ -423,6 +362,38 @@ class CreditCardActivation extends Component {
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
+    }
+
+    componentDidMount() {
+        if (Platform.OS === "android") {
+            this.focusListener = this.props.navigation.addListener("focus", () => {
+                StatusBar.setTranslucent(false);
+                StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
+                StatusBar.setBarStyle("light-content");
+            });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
+        }
+        this.props.navigation.setOptions({
+            tabBarLabel: this.props.language.transfer
+        });
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
+    }
+
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        this.props.navigation.goBack(null);
     }
 }
 

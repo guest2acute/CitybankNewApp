@@ -213,6 +213,9 @@ class Otp extends Component {
         return true;
     }
 
+    backEvent() {
+        this.props.navigation.goBack(null);
+    }
 }
 
 

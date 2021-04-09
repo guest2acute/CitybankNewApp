@@ -191,7 +191,8 @@ class CashByCode extends Component {
     cashByCodeView(language) {
         return (<View>
             <View style={{flex: 1}}>
-                {<Text style={[CommonStyle.labelStyle, {
+                {
+                    <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
                     marginStart: 10,
                     marginEnd: 10,
@@ -715,7 +716,7 @@ class CashByCode extends Component {
                                           position: "absolute",
                                           right: Utility.setWidth(10),
                                       }}
-                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                                     >
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),

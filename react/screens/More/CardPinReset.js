@@ -19,6 +19,7 @@ import moment from "moment";
 import MonthPicker from "react-native-month-year-picker";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
+import RadioForm from "react-native-simple-radio-button";
 
 class CardPinReset extends Component {
     constructor(props) {
@@ -28,25 +29,24 @@ class CardPinReset extends Component {
             selectType: props.language.select_reason,
             selectCard: props.language.select_card_number,
             selectTypeVal: -1,
-            selectActCard: props.language.TypeOfTransferArr[0],
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
             title: props.route.params.title,
             cardStatus: "",
-            cardState: "",
             cardHolderName: "",
             cardType: "",
-            cardExpiry: "",
-            showMonthPicker: false,
-            errorExpiry: "",
             pinChangeReason: "",
             error_pinChangeReason: "",
             pinVal: "",
             errorPinVal: "",
             confirmPinNumber: "",
             errorConfirmPinNumber: "",
+            cardMaskingNumber: "",
+            otp_type: 0,
+            error_masking_number:"",
+
         }
     }
 
@@ -72,7 +72,7 @@ class CardPinReset extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord,language.ok);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -84,38 +84,45 @@ class CardPinReset extends Component {
         } else if (modelSelection === "cardBlockType") {
             this.setState({selectType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
-
     }
 
     submit(language, navigation) {
         if (this.state.selectCard === language.select_card_number) {
-            Utility.alert(language.errorSelectCard,language.ok);
-        } else if (this.state.pinChangeReason === "") {
+            Utility.alert(language.errorSelectCard, language.ok);
+        } else if (this.state.cardMaskingNumber === "") {
+            this.setState({error_masking_number: language.error_masking_number});
+        }else if (this.state.pinChangeReason === "") {
             this.setState({error_pinChangeReason: language.error_pinChangeReason});
         } else if (this.state.pinVal === "") {
             this.setState({errorPinVal: language.error_newPinNumber});
-        } else if (this.state.confirmPinNumber === "") {
-            this.setState({errorConfirmPinNumber: language.error_confirmPinNumber});
+        } else if (this.state.pinVal !== this.state.confirmPinNumber) {
+            this.setState({errorConfirmPinNumber: language.errConfirmPin});
         } else {
-            Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+            this.processRequest(language)
+            // Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
         }
     }
 
-    onValueChange = (event, newDate) => {
-        console.log("event", event + "-" + newDate);
-        let dateVal = Utility.dateInFormat(newDate, "MM/YY")
-        switch (event) {
-            case "dateSetAction":
-                this.setState({cardExpiry: dateVal, showMonthPicker: false});
-                break;
-            case "neutralAction":
-                break;
-            case "dismissedAction":
-            default:
-                this.setState({showMonthPicker: false});
-        }
-    }
+    processRequest(language) {
+        let tempArr = [];
+        tempArr.push(
+            {key: language.credit_card_no, value: this.state.selectCard},
+            {key: language.card_status, value: this.state.cardStatus},
+            {key: language.card_holder_name, value: this.state.cardHolderName},
+            {key: language.card_masking_number, value: this.state.cardMaskingNumber},
+            {key: language.pin_change_reason, value: this.state.pinChangeReason},
+            {key: language.otp_txt, value: language.otp_props[this.state.otp_type].label},
+        ),
+            console.log("titile temparray", tempArr)
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'More'}, {name: 'CardPinReset'}],
+            routeIndex: 1,
+            title: this.state.title,
+            transferArray: tempArr,
+            screenName: "SecurityVerification"
+        });
 
+    }
 
     cardPINReset(language) {
         return (
@@ -143,37 +150,7 @@ class CardPinReset extends Component {
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.card_holder_name}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            cardHolderName: Utility.userInput(text)
-                        })}
-                        value={this.state.cardHolderName}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        editable={false}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -181,28 +158,7 @@ class CardPinReset extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.card_status}
                     </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            cardStatus: Utility.userInput(text)
-                        })}
-                        value={this.state.cardStatus}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        editable={false}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                    />
+                    <Text style={CommonStyle.viewText}>{this.state.cardStatus}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
@@ -210,33 +166,48 @@ class CardPinReset extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.card_type}
+                        {language.card_holder_name}
                     </Text>
+                    <Text style={CommonStyle.viewText}>{this.state.cardHolderName}</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{ flex:1,flexDirection:"row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10}}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.card_masking_number}
+                    </Text>
+                    <Text style={[CommonStyle.viewText, {}]}>37698</Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
+                        style={[{
+                            height: Utility.setHeight(25),
+                            width: Utility.setWidth(55),
+                            borderWidth: 1,
+                            marginLeft: 10,
+                            paddingVertical: 0,
+                            fontFamily: fontStyle.RobotoRegular,
+                            fontSize: FontSize.getSize(11),
+                            color: themeStyle.BLACK,
+                            textAlign: "center"
                         }]}
                         placeholder={""}
                         onChangeText={text => this.setState({
-                            cardType: Utility.userInput(text)
+                            error_masking_number:"",
+                            cardMaskingNumber: Utility.input(text, "0123456789")
                         })}
-                        value={this.state.cardType}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
+                        value={this.state.cardMaskingNumber}
+                        keyboardType={"number-pad"}
                         numberOfLines={1}
                         contextMenuHidden={true}
-                        editable={false}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        maxLength={5}/>
 
+                    <Text style={{paddingLeft:10,textAlign: "right"}}>9669</Text>
+                </View>
+                {this.state.error_masking_number !== "" ?
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_masking_number}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -260,8 +231,6 @@ class CardPinReset extends Component {
                         })}
                         value={this.state.pinChangeReason}
                         multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
                         numberOfLines={1}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
@@ -273,10 +242,7 @@ class CardPinReset extends Component {
                     />
                 </View>
                 {this.state.error_pinChangeReason !== "" ?
-                    <Text style={{
-                        marginStart: 10, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                    }}>{this.state.error_pinChangeReason}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_pinChangeReason}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{
@@ -319,14 +285,7 @@ class CardPinReset extends Component {
                         maxLength={4}/>
                 </View>
                 {this.state.errorPinVal !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                    }}>{this.state.errorPinVal}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorPinVal}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{
@@ -365,14 +324,34 @@ class CardPinReset extends Component {
                         maxLength={4}/>
                 </View>
                 {this.state.errorConfirmPinNumber !== "" ?
-                    <Text style={{
-                        marginLeft: 5,
-                        marginRight: 10,
-                        color: themeStyle.THEME_COLOR,
-                        fontSize: FontSize.getSize(11),
-                        fontFamily: fontStyle.RobotoRegular,
-                        alignSelf: "flex-end",
-                    }}>{this.state.errorConfirmPinNumber}</Text> : null}
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorConfirmPinNumber}</Text> : null}
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.otp_txt}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                    </Text>
+                    <RadioForm
+                        radio_props={language.otp_props}
+                        initial={0}
+                        buttonSize={9}
+                        selectedButtonColor={themeStyle.THEME_COLOR}
+                        formHorizontal={true}
+                        labelHorizontal={true}
+                        borderWidth={1}
+                        buttonColor={themeStyle.GRAY_COLOR}
+                        labelColor={themeStyle.BLACK}
+                        labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                        style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                        animation={true}
+                        onPress={(value) => {
+                            this.setState({otp_type: value});
+                        }}
+                    />
+                </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             </View>
         )
@@ -448,14 +427,6 @@ class CardPinReset extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                {this.state.showMonthPicker ? <MonthPicker
-                    onChange={this.onValueChange}
-                    value={new Date()}
-                    minimumDate={new Date()}
-                    maximumDate={new Date(new Date().getFullYear() + 10, 12)}
-                    locale="en"
-                    mode="number"
-                /> : null}
                 <Modal
                     animationType="none"
                     transparent={true}
