@@ -27,7 +27,6 @@ class MobileRecharge extends Component {
             isProgress: false,
             SelectOperator: props.language.SelectOperator,
             SelectFromAccount: props.language.select_from_account,
-            SelectName: props.language.selectNickType,
             selectTypeVal: -1,
             selectActCard: props.language.TypeOfTransferArr[0],
             modelSelection: "",
@@ -35,14 +34,17 @@ class MobileRecharge extends Component {
             modalTitle: "",
             modalData: [],
             mobileNumber: "",
-            availableBalance:"",
-            error_availableBal:"",
-            transfer_amount:"",
-            error_transferAmount:"",
-            servicesCharge:"",
-            grandTotal:"",
-            error_grandTotal:"",
-            transferAmount:"",
+            errorMobile: "",
+            availableBalance: "",
+            error_availableBal: "",
+            transfer_amount: "",
+            error_transferAmount: "",
+            servicesCharge: "",
+            grandTotal: "",
+            error_grandTotal: "",
+            transferAmount: "",
+            otp_type:0,
+
         }
     }
 
@@ -68,7 +70,7 @@ class MobileRecharge extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord,language.ok);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -78,26 +80,58 @@ class MobileRecharge extends Component {
         console.log("modelSelection is this", item)
         if (modelSelection === "type") {
             this.setState({SelectOperator: item.label, selectTypeVal: item.value, modalVisible: false})
-        }
-        if (modelSelection === "NickType") {
-            this.setState({SelectName: item.label, selectTypeVal: item.value, modalVisible: false})
-        }
-        else if (modelSelection === "accountType") {
-            this.setState({SelectFromAccount: item.label, selectTypeVal: item.value, modalVisible: false})
+        } else if (modelSelection === "accountType") {
+            this.setState({SelectFromAccount: item.label, selectAccountTypeVal: item.value, modalVisible: false})
         }
     }
 
     submit(language, navigation) {
         let otpMsg = "", successMsg = "";
         if (this.state.SelectOperator === language.SelectOperator) {
-            Utility.alert(language.error_select_operator,language.ok);
-        }else if (this.state.SelectName === language.selectNickType) {
-            Utility.alert(language.error_select_nickname,language.ok);
-        }  else if (this.state.SelectFromAccount === language.select_from_account) {
-            Utility.alert(language.error_select_from_type,language.ok);
-        }else if (this.state.transferAmount === "") {
+            Utility.alert(language.error_select_operator, language.ok);
+        } else if (!Utility.ValidateMobileNumber(this.state.mobileNumber)) {
+            this.setState({errorMobile: language.error_mobile_number})
+            return;
+        } else if (this.state.SelectFromAccount === language.select_from_account) {
+            Utility.alert(language.error_select_from_type, language.ok);
+        } else if (this.state.transferAmount === "") {
             this.setState({error_transferAmount: language.errPaymentAmount})
         }
+        else{
+            this.processRequest(language)
+        }
+    }
+
+    processRequest(language,val) {
+        let tempArr = [];
+        tempArr.push(
+            {key: language.operatorType, value: this.state.SelectOperator},
+            {key: language.phoneNumber, value: this.state.mobileNumber},
+            {key: language.connectionType, value: language.connectionType_props[this.state.otp_type].label},
+            {key: language.fromAccount, value: this.state.SelectFromAccount},
+            {key: language.available_bal, value: this.state.availableBalance},
+            {key: language.totalAmount, value: this.state.transferAmount},
+            {key: language.totalServicesCharge, value: this.state.servicesCharge},
+            {key: language.grand_total, value: this.state.grandTotal},
+        )
+
+
+        console.log("tempArr is this==>",tempArr)
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'Payments'},{name: 'MobileRecharge'}],
+            routeIndex: 1,
+            title: language.mobileRecharge,
+            transferArray:tempArr,
+            screenName:"SecurityVerification"
+        });
+
+
+       /* this.props.navigation.navigate("SecurityVerification", {
+            REQUEST_CD: "",
+            transType: "fund",
+            routeVal: [{name: 'Payments'}, {name: 'MobileRecharge'}],
+            routeIndex: 1
+        })*/
     }
 
     getListViewItem = (item) => {
@@ -126,7 +160,10 @@ class MobileRecharge extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={"01********"}
-                        onChangeText={text => this.setState({mobileNumber: Utility.input(text, "0123456789")})}
+                        onChangeText={text => this.setState({
+                            errorMobile: "",
+                            mobileNumber: Utility.input(text, "0123456789")
+                        })}
                         value={this.state.mobileNumber}
                         multiline={false}
                         numberOfLines={1}
@@ -136,8 +173,10 @@ class MobileRecharge extends Component {
                         autoCorrect={false}
                         maxLength={11}/>
                 </View>
+                {this.state.errorMobile !== "" ?
+                    <Text style={CommonStyle.errorStyle}>{this.state.errorMobile}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-               <View style={{
+                <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10
                 }}>
@@ -164,7 +203,7 @@ class MobileRecharge extends Component {
                     />
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-               <View style={{flex: 1}}>
+                <View style={{flex: 1}}>
                     {<Text style={[CommonStyle.labelStyle, {
                         color: themeStyle.THEME_COLOR,
                         marginStart: 10,
@@ -192,7 +231,20 @@ class MobileRecharge extends Component {
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
+
                 <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.available_bal}
+                    </Text>
+                    <Text style={CommonStyle.viewText}>{this.state.availableBalance}</Text>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                {/* <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
@@ -229,11 +281,10 @@ class MobileRecharge extends Component {
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 {this.state.error_availableBal !== "" ?
-                    <Text style={CommonStyle.errorStyle}>{this.state.error_availableBal}</Text> : null}
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                    <Text style={CommonStyle.errorStyle}>{this.state.error_availableBal}</Text> : null}*/}
 
                 <FlatList horizontal={true}
-                          data={language.balanceTypeArr}
+                          data={language.smallBalanceTypeArr}
                           renderItem={({item}) =>
                               <View>
                                   <TouchableOpacity onPress={this.getListViewItem.bind(this, item)} style={{
@@ -246,7 +297,8 @@ class MobileRecharge extends Component {
                                       justifyContent: "space-around",
                                       backgroundColor: themeStyle.THEME_COLOR
                                   }}>
-                                      <Text style={[CommonStyle.textStyle, {color: themeStyle.WHITE}]}>{item.label}</Text>
+                                      <Text
+                                          style={[CommonStyle.textStyle, {color: themeStyle.WHITE}]}>{item.label}</Text>
                                   </TouchableOpacity>
                               </View>
                           }
@@ -282,18 +334,12 @@ class MobileRecharge extends Component {
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.servicesChargeRef.focus();
-                        }}
-                        maxLength={13}/>
+                        maxLength={30}/>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                  {this.state.error_transferAmount !== "" ?
+                {this.state.error_transferAmount !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.error_transferAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -301,40 +347,10 @@ class MobileRecharge extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.totalServicesCharge}
                     </Text>
-                    <TextInput
-                        ref={(ref) => this.servicesChargeRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={"00.00"}
-                        onChangeText={text => this.setState({
-                            error_servicescharge: "",
-                            servicesCharge: Utility.userInput(text)
-                        })}
-                        value={this.state.servicesCharge}
-                        multiline={false}
-                        numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.grandtotalRef.focus();
-                        }}
-                        maxLength={13}/>
+                    <Text style={CommonStyle.viewText}>{this.state.servicesCharge}</Text>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                {this.state.error_servicescharge !== "" ?
-                    <Text style={CommonStyle.errorStyle}>{this.state.error_servicescharge}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -342,41 +358,10 @@ class MobileRecharge extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.grand_total}
                     </Text>
-                    <TextInput
-                        ref={(ref) => this.grandtotalRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={"00.00"}
-                        onChangeText={text => this.setState({
-                            error_grandTotal: "",
-                            grandTotal: Utility.userInput(text)
-                        })}
-                        value={this.state.grandTotal}
-                        multiline={false}
-                        numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.grandtotalRef.focus();
-                        }}
-                        maxLength={13}/>
+                    <Text style={CommonStyle.viewText}>{this.state.grandTotal}</Text>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                {this.state.error_grandTotal !== "" ?
-                    <Text style={CommonStyle.errorStyle
-                    }>{this.state.error_grandTotal}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
             </View>
         )
     }
@@ -424,7 +409,7 @@ class MobileRecharge extends Component {
                             onPress={() => this.openModal("type", language.select_operator_type, language.operatorsTypeArr, language)}>
                             <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.SelectOperator === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                    color: this.state.SelectOperator === language.SelectOperator ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.SelectOperator}
@@ -433,29 +418,7 @@ class MobileRecharge extends Component {
                                        source={require("../../resources/images/ic_arrow_down.png")}/>
                             </View>
                         </TouchableOpacity>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.nick_name}
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.openModal("NickType", language.selectNickType, language.nickTypeArr, language)}>
-                            <View style={CommonStyle.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.SelectName === language.select_type_transfer ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.SelectName}
-                                </Text>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
-                        {(this.state.selectTypeVal=== 1) ? this.mobileRecharge(language) :null}
+                        {(this.state.selectTypeVal === 1) ? this.mobileRecharge(language) : null}
                         <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
                         <View style={{marginStart: 10, marginEnd: 10, marginTop: 10}}>
                             <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
@@ -467,8 +430,8 @@ class MobileRecharge extends Component {
                             <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note6}</Text>
                             <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note7}</Text>
                             <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note8}</Text>
-                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note8}</Text>
                             <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note9}</Text>
+                            <Text style={CommonStyle.themeTextStyle}>{language.mobile_recharge_note10}</Text>
                         </View>
 
                         {/*=====================================================================================*/}
@@ -478,7 +441,7 @@ class MobileRecharge extends Component {
                             marginRight: Utility.setWidth(10),
                             marginTop: Utility.setHeight(20)
                         }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack(null)}>
                                 <View style={{
                                     flex: 1,
                                     alignItems: "center",

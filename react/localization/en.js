@@ -879,9 +879,10 @@ export default {
     mobile_recharge_note4: "Tk.10000/- and for prepaid Tk. 1000/-.",
     mobile_recharge_note5: "3. only prepaid recharge is acceptable in Teletalk numbers.",
     mobile_recharge_note6: "4. Consecutive recharge in the same number require.",
-    mobile_recharge_note7: "minimum 15 minutes interval.",
-    mobile_recharge_note8: "if your recharge amount is equivalent to any trigger/bundle",
-    mobile_recharge_note9: "pack amount, a data/minute/bundle pack will be activated",
+    mobile_recharge_note7: "minimum 10 minutes interval.",
+    mobile_recharge_note8: "5. if your recharge amount is equivalent to any",
+    mobile_recharge_note9: "trigger/bundle pack amount, a data/minute/bundle",
+    mobile_recharge_note10: "pack will be activated on your mobile.Please visit operator websites to know more.",
 
     fixed_deposit_note1: "1. You can View the details of this FDR after 1(one)",
     fixed_deposit_note2: "working day of your request a CityTouch.",
@@ -1046,7 +1047,6 @@ export default {
         {key: "1", label: "474867****0655/AMEX/AGORA", value: 1},
         {key: "2", label: "376948*****9669/AMEX", value: 2},
     ],
-
     /*Debit Card Activation*/
     debit_card_activation: "Debit Card Activation",
 
@@ -1067,6 +1067,7 @@ export default {
     newPIn_placeholder: "Enter New Pin",
     confirmPin_placeholder: "Re-enter New Pin",
     error_pinChangeReason: "PIN Change Reason is Required",
+    error_masking_number:"Masking Number is required",
     error_newPinNumber: "PIN Number is Required",
     error_confirmPinNumber: "Confirm PIN Number is Required",
 
@@ -1275,16 +1276,42 @@ export default {
     trans_success_message:"Your fund has been transferred successfully, please check below details for reference.",
     addToFavorite: "Add To Favourite",
 
+
     empty_card_list_msg:"You don’t have any card selected. Please select card (s) from QR Merchant Payment tab",
     empty_card_list_with_out_msg:"You don’t have any card selected. Login to select card (s) from QR Merchant Payment tab",
     enable_following_card_s_allows_you_to_perform_pay_qr_merchant:"Select the card(s) to perform QR Merchant Payment",
 
     return_home:"Return To Home",
     make_another_transfer:"Make Another Transfer",
+    smallBalanceTypeArr: [
+        {key: "0", label: "50", value: 0},
+        {key: "1", label: "100", value: 1},
+        {key: "2", label: "200", value: 2},
+        {key: "3", label: "300", value: 3},
+        {key: "4", label: "500", value: 4},
+        {key: "5", label: "1000", value: 5}
+    ],
+    reset_txt: "Reset",
+    card_masking_number: "Card Masking Number",
+    errConfirmPin: "Pin should be same as confirm pin",
+    change_status : "Change Status",
 
-
-
-
-
-
+    statusTypeArr: [
+        {key: "0", label: "Stolen", value: 0},
+        {key: "1", label: "Restricted", value: 1},
+        {key: "2", label: "Lost", value: 2},
+    ],
+    select_change_status:"Select Change Status",
+    errorSelectChangeStatus: "Please select Change Status",
+    accountStatement: "Account Statement",
+    statement_account_number:"Statement For Account Number",
+    statementTypeArr: [
+        {key: "0", label: "2251615410001/GENERAL SAVINGS-STAFF A/C", value: 0},
+        {key: "1", label: "2271615410001/ALO SAVINGS-STAFF DST", value: 1},
+        {key: "2", label: "2701615410001/HIGH VALUE SAVINGS A/C", value: 2},
+    ],
+    statement_from_date: "Statement From Date",
+    statement_end_date: "Statement Till Date",
+    select_from_date: "Select From Date",
+    select_end_date: "Select End Date"
 }

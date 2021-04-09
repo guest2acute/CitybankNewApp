@@ -1288,5 +1288,28 @@ export default {
     make_another_transfer:"আরেকটি স্থানান্তর করুন",
 
 
+    smallBalanceTypeArr: [
+        {key: "0", label: "50", value: 0},
+        {key: "1", label: "100", value: 1},
+        {key: "2", label: "200", value: 2},
+        {key: "3", label: "300", value: 3},
+        {key: "4", label: "500", value: 4},
+        {key: "5", label: "1000", value: 5}
+    ],
+    reset_txt: "রিসেট",
+    card_masking_number: "কার্ড মাস্কিং নম্বর",
+    errConfirmPin: "পিন কনফার্ম পিনের মতো হওয়া উচিত",
+    change_status : "স্ট্যাটাস বদলাও",
+
+    statusTypeArr: [
+        {key: "0", label: "চুরি", value: 0},
+        {key: "1", label: "সীমাবদ্ধ", value: 1},
+        {key: "2", label: "নিখোঁজ", value: 2},
+    ],
+    select_change_status:"পরিবর্তন স্থিতি নির্বাচন করুন",
+    errorSelectChangeStatus: "পরিবর্তন স্থিতি নির্বাচন করুন",
+    accountStatement: "অ্যাকাউন্ট বিবৃতি"
+
+
 }
 

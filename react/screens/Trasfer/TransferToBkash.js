@@ -161,7 +161,6 @@ class TransferToBkash extends Component {
             {key: language.transfer_type, value: language.transfer_pay_props[this.state.transferType].label},
             {key: language.otp_type, value: language.otp_props[this.state.otpType].label},
             )
-
         if(val===1){
             tempArr.push(
                 {key: language.payment_date, value: this.state.paymentDate},
