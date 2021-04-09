@@ -11,6 +11,8 @@ import StorageClass from "../../utilize/StorageClass";
 import * as DeviceInfo from "react-native-device-info";
 import CommonStyle from "../../resources/CommonStyle";
 import FontSize from "../../resources/ManageFontSize";
+import {FUNDTRF} from "../Requests/FundsTransferRequest";
+import {BusyIndicator} from "../../resources/busy-indicator";
 
 
 class TransferConfirm extends Component {
@@ -18,10 +20,13 @@ class TransferConfirm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isProgress:false,
             data: this.props.route.params.transferArray,
             title:this.props.route.params.title,
-            screenSwitcher:false
+            screenName:this.props.route.params.screenName,
+            screenSwitcher:false,
         }
+
         console.log("transfer confirm",this.props.route.params.transferArray)
     }
 
@@ -65,34 +70,45 @@ class TransferConfirm extends Component {
     }
 
     async onSubmit(language) {
-        if(this.state.title === language.fund_transfer_own_account){
-            this.props.navigation.navigate("Receipt",{screenName:"FundTransfer",
-                routeVal: [{name: 'Transfer'},{name: 'FundTransfer'}],
-                routeIndex: 1,
-                transferArray:this.state.data});
-        }else{
-            this.props.navigation.navigate("SecurityVerification", {
-                REQUEST_CD: "",
-                transType: "fund",
-                routeVal: [{name: 'Transfer'}, {name: 'CashByCode'}],
-                routeIndex: 1
-            })
-        }
+         await this.transferFundOwnAccounts();
+
     }
+
+    async transferFundOwnAccounts() {
+        this.setState({isProgress: true});
+        await FUNDTRF(this.props.route.params.transRequest,this.props).then((response) => {
+            console.log("response", response);
+            this.setState({isProgress: false},
+                () => {
+                    this.props.navigation.navigate(this.state.screenName,
+                        {
+                            REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
+                            transType: "fund",
+                            routeVal: this.props.route.params.routeVal,
+                            routIndex: this.props.route.params.routeIndex,
+                            transferArray:this.props.route.params.transferArray
+                        });
+                })
+        }, (error) => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
+
 
     transferCompleted(language) {
         return (
                   this.state.data.map((item) => {
                     return (
-                        <View>
+                        <View key={item.key}>
                             <View style={{
                                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                                 marginEnd: 10,
                             }}>
-                                <Text style={[CommonStyle.textStyle]}>
+                                <Text style={[CommonStyle.midTextStyle]}>
                                     {item.key}
                                 </Text>
-                                <Text style={CommonStyle.viewText}>{item.value}</Text>
+                                <Text style={[CommonStyle.viewText,CommonStyle.midTextStyle]}>{item.value}</Text>
                             </View>
                             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         </View>
@@ -172,6 +188,7 @@ class TransferConfirm extends Component {
                         </View>
                     </View>
                 </ScrollView>
+                <BusyIndicator visible={this.state.isProgress}/>
             </View>
         );
     }

@@ -151,11 +151,36 @@ class EmailTransfer extends Component {
         }else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})
             return;
+        }else{
+            let tempArr = [];
+            tempArr.push(
+                {key: language.nick_name, value: this.state.selectNicknameType},
+                {key: language.beneficiary_Email_Address, value: this.state.emailTxt},
+                {key: language.beneficiary_mobile_number, value:this.state.mobileNumber},
+                {key: language.fromAccount, value: this.state.selectAcctType},
+                {key:language.email,value:this.state.emailTxt},
+                {key:language.available_bal,value:this.state.availableBalance},
+                {key:language.payment_amount,value:this.state.paymentAmount},
+                {key:language.security_questions,value:this.state.securityQuestions},
+                {key:language.answer,value:this.state.answer},
+                {key:language.remarks,value:this.state.remarks},
+                {key:language.services_charge,value:this.state.servicesCharge},
+                {key:language.vat,value:this.state.vat},
+                {key:language.grand_total,value:this.state.grandtotal},
+                {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
+            )
+            console.log("temp array is email trnasfer",tempArr)
+
+            this.props.navigation.navigate("TransferConfirm", {
+                routeVal: [{name: 'Transfer'},{name: 'EmailTransfer'}],
+                routeIndex: 1,
+                title: language.email_transfer,
+                transferArray:tempArr,
+                screenName:"Otp"
+            });
         }
-        Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
+        // Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
-
-
 
     _renderItem = ({item, index}) => {
         return (
@@ -307,7 +332,7 @@ class EmailTransfer extends Component {
                     marginEnd: 10,
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
-                        {language.email}
+                        {language.beneficiary_Email_Address}
                         <Text
                             style={{color: themeStyle.THEME_COLOR}}>{this.state.isMainScreen ? "*" : ""}</Text>
                     </Text>

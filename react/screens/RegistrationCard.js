@@ -429,6 +429,7 @@ class RegistrationCard extends Component {
                         marginRight: 3,
                     }]}>{language.read_term}</Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("TermConditionScreen", {
+                        screenName:"register",
                         showButton: false
                     })}>
                         <Text style={[CommonStyle.textStyle, {

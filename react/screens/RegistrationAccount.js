@@ -553,7 +553,8 @@ class RegistrationAccount extends Component {
                         marginRight: 3,
                     }]}>{language.read_term}</Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("TermConditionScreen", {
-                        showButton: false
+                        showButton: false,
+                        screenName:"register"
                     })}>
                         <Text style={[CommonStyle.textStyle, {
                             textDecorationLine: "underline",

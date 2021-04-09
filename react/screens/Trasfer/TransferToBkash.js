@@ -65,14 +65,15 @@ class TransferToBkash extends Component {
     };
 
     backEvent(){
-        if(this.state.screenSwitcher){
+        this.props.navigation.goBack(null);
+       /* if(this.state.screenSwitcher){
             this.setState({
                 screenSwitcher:false
             })
         }else{
             this.props.navigation.goBack();
             console.log("else part back event")
-        }
+        }*/
     }
 
     onChange = (event, selectedDate) => {
@@ -131,14 +132,52 @@ class TransferToBkash extends Component {
             } else if (this.state.numberPayment === "") {
                 this.setState({error_numberPayment: language.error_numberPayment})
             } else {
-                this.setState({ screenSwitcher:true})
+                this.processRequest(language,1)
+                // this.setState({ screenSwitcher:true})
             }
         }else if(this.state.screenSwitcher){
-            this.props.navigation.navigate("Otp");
+            this.processRequest(language)
+            // this.props.navigation.navigate("Otp");
         }else{
             console.log("else part")
-            this.setState({screenSwitcher:true})
+            this.processRequest(language)
+            // this.setState({screenSwitcher:true})
         }
+    }
+
+    processRequest(language,val){
+        let tempArr = [];
+        tempArr.push(
+            {key: language.nick_name, value: this.state.selectNicknameType},
+            {key: language.bkash_account, value: this.state.accountNo},
+            {key: language.bkash_name, value: this.state.bkash_name},
+            {key: language.fromAccount, value: this.state.selectAcctType},
+            {key: language.available_bal, value: this.state.availableBalance},
+            {key: language.transfer_amount, value: this.state.transferAmount},
+            {key: language.services_charge, value: this.state.servicesCharge},
+            {key: language.vat, value: this.state.vat},
+            {key: language.grand_total, value: this.state.grandTotal},
+            {key: language.remarks, value: this.state.remarks},
+            {key: language.transfer_type, value: language.transfer_pay_props[this.state.transferType].label},
+            {key: language.otp_type, value: language.otp_props[this.state.otpType].label},
+            )
+
+        if(val===1){
+            tempArr.push(
+                {key: language.payment_date, value: this.state.paymentDate},
+                {key: language.Frequency, value: this.state.selectPaymentType},
+                {key: language.number_of_payment, value: this.state.numberPayment}
+            )
+        }
+
+        console.log("temp array ",tempArr)
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'Transfer'},{name: 'CashByCode'}],
+            routeIndex: 1,
+            title: language.transfer_bkash,
+            transferArray:tempArr,
+            screenName:"Otp"
+        });
     }
 
     transferToBkash(language) {

@@ -68,14 +68,15 @@ class CashByCode extends Component {
     }
 
     backEvent() {
-        if (this.state.screenSwitcher) {
+        this.props.navigation.goBack(null);
+       /* if (this.state.screenSwitcher) {
             this.setState({
                 screenSwitcher: false
             })
         } else {
             this.props.navigation.goBack();
             console.log("else part back event")
-        }
+        }*/
     }
 
     onSelectItem(item) {
@@ -103,23 +104,7 @@ class CashByCode extends Component {
 
     async onSubmit(language, navigation) {
         const {selectDebitType,availableBalance,transferAmount, mobileNumber, remarks,servicesCharge,vat,grandTotal} = this.state;
-        let tempArr = [];
-        tempArr.push(
-            {key: language.select_card_title, value: selectDebitType},
-            {key: language.available_bal, value: availableBalance},
-            {key: language.case_code_via, value:language.bkash_otp_props[this.state.caseCodeType].label},
-            {key: language.transfer_amount, value: transferAmount},
-            {key: language.beneficiary_mobile_number, value: mobileNumber},
-            {key:language.remarks,value:remarks},
-            {key:language.services_charge,value:servicesCharge},
-            {key:language.vat,value:vat},
-            {key:language.grand_total,value:grandTotal},
-            {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
-            )
-        console.log("tempArr", tempArr)
-        this.setState({
-            transferArray:tempArr
-        })
+
         if (this.state.selectDebitType === language.cash_select_acct) {
             Utility.alert(language.error_debit_card, language.ok);
             return;
@@ -142,14 +127,45 @@ class CashByCode extends Component {
                 routeVal: [{name: 'Transfer'}, {name: 'CashByCode'}],
                 routeIndex: 1
             })*/
-             this.props.navigation.navigate("Receipt",{title:language.transfer_bkash,transferArray:this.state.transferArray});
+            this.processRequest(language)
+            console.log("cash by code is this  ")
             // this.props.navigation.navigate("Otp");
         } else {
+            this.processRequest(language)
             console.log("else part")
         }
-        this.setState({
+      /*  this.setState({
             screenSwitcher: true
-        })
+        })*/
+    }
+
+    processRequest(language) {
+        let tempArr = [];
+        tempArr.push(
+            {key: language.select_card_title, value: this.state.selectDebitType},
+            {key: language.available_bal, value: this.state.availableBalance},
+            {key: language.case_code_via, value:language.bkash_otp_props[this.state.caseCodeType].label},
+            {key: language.transfer_amount, value: this.state.transferAmount},
+            {key: language.beneficiary_mobile_number, value: this.state.mobileNumber},
+            {key:language.remarks,value:this.state.remarks},
+            {key:language.services_charge,value:this.state.servicesCharge},
+            {key:language.vat,value:this.state.vat},
+            {key:language.grand_total,value:this.state.grandTotal},
+            {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
+        )
+        console.log("tempArr", tempArr)
+        // this.setState({
+        //     transferArray:tempArr
+        // })
+        // this.props.navigation.navigate("Receipt",{title:language.transfer_bkash,transferArray:this.state.transferArray});
+
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'Transfer'},{name: 'CashByCode'}],
+            routeIndex: 1,
+            title: language.cash_by_code,
+            transferArray:tempArr,
+            screenName:"SecurityVerification"
+        });
     }
 
     getListViewItem = (item) => {

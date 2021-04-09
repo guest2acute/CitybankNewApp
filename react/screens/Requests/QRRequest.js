@@ -110,9 +110,10 @@ export const QRPAYMENT = async (userDetails, QRSTRING,cardDetails, REMARKS,CON_A
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         REMARKS: REMARKS,
         QRSTRING: QRSTRING,
-        SOURCE_NO: cardDetails.SOURCE_NO,
+        SOURCE_NO: cardDetails.UNMASK_CARD_NO,
         EMAIL_ID: userDetails.EMAIL_ID,
         CARD_TYPE: cardDetails.CARD_TYPE,
+        CARD_NAME: cardDetails.CARD_NAME,
         CON_AMOUNT: CON_AMOUNT,
         TIP_AMOUNT: TIP_AMOUNT,
 

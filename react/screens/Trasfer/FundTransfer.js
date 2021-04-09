@@ -23,6 +23,7 @@ import moment from "moment";
 import {CHARGEVATAMT, FUNDTRF, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
 import {GETACCTBALDETAIL, GETBENF} from "../Requests/RequestBeneficiary";
 import {GETBALANCE, unicodeToChar} from "../Requests/CommonRequest";
+import Config from "../../config/Config";
 
 
 let initialVar = {
@@ -46,7 +47,7 @@ let initialVar = {
     vat: "",
     paymentDate: "",
     numberPayment: "",
-    toAccount: "2101084528001",
+    toAccount: "2251151374001",
     fromBalance: "",
     VAT_AMT_LABEL: "",
     CHARGE_AMT_LABEL: "",
@@ -120,12 +121,12 @@ class FundTransfer extends Component {
         const {modelSelection} = this.state;
 
         if (modelSelection === "nickName") {
+            console.log("onselect item is this", item)
             this.setState({
                 selectNicknameType: item.label,
                 selectNickVal: item.value,
                 modalVisible: false,
                 toAccount: item.value.TO_ACCT_NM,
-                accountRes: item
             })
         } else if (modelSelection === "fromAccountType") {
             this.setState({
@@ -206,13 +207,12 @@ class FundTransfer extends Component {
     async onSubmit(language) {
         console.log("cityTransVal", this.state.cityTransVal)
         console.log("transfer type", this.state.transfer_type)
+        console.log("accountRes ACCOUNT", this.state.accountRes)
+        console.log("TO_ACCT_NO is this", this.state.selectNickVal)
         const {
-            selectNickVal,
-            accountRes,
             numberPayment,
             selectPaymentType,
             paymentDate,
-            transfer_type,
             fromBalance,
             grandTotal,
             toAccount,
@@ -225,19 +225,6 @@ class FundTransfer extends Component {
             transferAmount,
             remarks
         } = this.state;
-
-        let tempArr = [];
-        tempArr.push(
-            { key: language.fromAccount,value: this.state.selectFromActVal !== -1 ? this.state.selectFromActVal.ACCT_UNMASK : ""},
-            {key: language.available_bal, value: this.state.fromBalance},
-            {key: language.currency, value: this.state.currency},
-            {key: language.to_acct,value: this.state.selectToActVal !== -1 ? this.state.selectToActVal.ACCT_UNMASK : ""},
-            {key: language.transfer_amount, value: this.state.transferAmount},
-            {key: language.services_charge, value: this.state.servicesCharge},
-            {key: language.vat, value: this.state.vat},
-            {key: language.grand_total, value: this.state.grandTotal},
-            {key: language.remarks, value: this.state.remarks},
-        )
 
         if (stateVal === 0) {
             if (selectFromActVal === -1) {
@@ -257,32 +244,11 @@ class FundTransfer extends Component {
             } else if (remarks === "") {
                 this.setState({error_remarks: language.errRemarks});
             } else if (this.state.transfer_type === 1) {
-                tempArr.push(
-                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
-                    {key: language.payment_date, value: this.state.paymentDate},
-                    {key: language.Frequency, value: this.state.selectPaymentType},
-                    {key: language.number_of_payment, value: this.state.numberPayment},
-                )
-                this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_own_account,
-                    transferArray: tempArr
-                });
+                this.processRequest(language, 0);
             } else {
-                console.log("array is this type", this.state.transferArray)
-                tempArr.push(
-                    {key: language.available_bal, value: this.state.toBalance},
-                    {key: language.currency, value: this.state.currency},
-                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
-                )
-                this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_own_account,
-                    transferArray: tempArr
-                });
-
-                // this.setState({stateVal: stateVal + 2});
+                this.processRequest(language, 0);
             }
         } else if (stateVal === 1) {
-            console.log("1 state ",this.state.toAccount)
             if (selectAcctType === language.selectAccountType) {
                 Utility.alert(language.error_select_from_type, language.ok);
             } else if (cityTransVal === 1 && selectNicknameType === language.select_nickname) {
@@ -300,305 +266,94 @@ class FundTransfer extends Component {
             } else if (grandTotal !== "" && parseFloat(fromBalance) < parseFloat(grandTotal)) {
                 Utility.alert(this.props.language.insufficientBal, this.props.language.ok);
             } else if (this.state.cityTransVal === 0) {
-                tempArr.push(
-                    {key: language.account_holder_name, value: this.state.account_holder_name},
-                    {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
-                )
-                this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr
-                });
+                this.processRequest(language, 1);
             } else if (this.state.cityTransVal === 1 && this.state.transfer_type === 1) {
                 if (paymentDate === "") {
                     this.setState({errorPaymentDate: language.error_payment_date});
                 } else if (selectPaymentType === language.select_payment) {
                     Utility.alert(language.select_payment, language.ok);
                 } else if (numberPayment === "") {
-                    this.setState({error_numberPayment: language.error_numberPayment})
+                    this.setState({error_numberPayment: language.error_numberPayment});
+                } else {
+                    this.processRequest(language, 1);
                 }
-                console.log("valid is this")
-                tempArr.push(
-                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
-                    {key: language.payment_date, value: this.state.paymentDate},
-                    {key: language.Frequency, value: this.state.selectPaymentType},
-                    {key: language.number_of_payment, value: this.state.numberPayment},
-                    {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
-                )
-                console.log("temparray data", tempArr)
-                this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr
-                });
-            }
-            else {
-                tempArr.push(
-                    {key: language.currency, value: this.state.currency},
-                    {key: language.nick_name, value: this.state.selectNicknameType},
-                    {key: language.transfer, value: language.transfer_pay_props[this.state.transfer_type].label},
-                    {key: language.otpType, value: language.otp_props[this.state.otp_type].label}
-                )
-                this.props.navigation.navigate("TransferConfirm", {
-                    title: language.fund_transfer_city_account,
-                    transferArray: tempArr
-                });
-                // this.setState({stateVal: stateVal + 3});
-            }
-        } else if (stateVal === 2) {
-            await this.transferFundOwnAccounts(selectToActVal.ACCT_UNMASK,
-                selectFromActVal.ACCT_UNMASK, "", selectToActVal.EMAIL_ID, "",
-                selectToActVal.MOBILE_NO, "I",
-                "CBLOA", selectFromActVal.APP_INDICATOR);
-
-        } else if (stateVal === 4) {
-            if (cityTransVal === 0) {
-                await this.transferFundOwnAccounts(accountRes.ACCOUNT,
-                    selectFromActVal.ACCT_UNMASK, "", "", "",
-                    accountRes.CONTACTNUMBER, "I",
-                    "CBLTA", selectFromActVal.APP_INDICATOR);
             } else {
-                await this.transferFundOwnAccounts(selectNickVal.TO_ACCT_NO,
-                    selectFromActVal.ACCT_UNMASK, selectNickVal.NICK_NAME, selectNickVal.TO_EMAIL_ID, selectNickVal.TO_IFSCODE,
-                    selectNickVal.TO_CONTACT_NO, "I",
-                    "CBLTA", selectFromActVal.APP_INDICATOR)
+                this.processRequest(language, 1);
             }
         }
     }
 
-    FundTransferDetails(language) {
-        console.log("fund transfer details", this.state.stateVal)
-        return (
-            <View style={{flex: 1}}>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                        {language.fromAccount}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.selectFromActVal !== -1 ? this.state.selectFromActVal.ACCT_UNMASK : ""}</Text>
+    processRequest(language, val) {
+        let tempArr = [];
+        let screenName = "";
+        let userDetails = this.props.userDetails;
+        let request = {
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            USER_ID: userDetails.USER_ID,
+            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            TO_ACCT_NO: val === 0 ? this.state.selectToActVal.ACCT_UNMASK : this.state.cityTransVal === 0 ? this.state.accountRes.ACCOUNT : this.state.selectNickVal.TO_ACCT_NO,
+            SERVICE_CHARGE: this.state.servicesCharge,
+            ACTION: "FUNDTRF",
+            TRN_AMT: this.state.transferAmount,
+            REMARKS: this.state.remarks,
+            ACCT_NO: this.state.selectFromActVal.ACCT_UNMASK,
+            TO_ACCT_NM: "",
+            NICK_NAME: val === 0 ? "" : this.state.cityTransVal === 0 ? "" : this.state.selectNickVal.NICK_NAME,
+            REQ_FLAG: "R",
+            REQ_TYPE: val === 1 && this.state.cityTransVal === 1 ? "B" : "I",
+            TRN_TYPE: val === 0 ? "CBLOA" : "CBLTA",
+            REF_NO: val === 1 && this.state.cityTransVal === 1 ? this.state.selectNickVal.REF_NO : "",
+            TO_MOBILE_NO: val === 0 ? this.state.selectToActVal.MOBILE_NO : this.state.cityTransVal === 0 ? this.state.accountRes.CONTACTNUMBER : this.state.selectNickVal.TO_CONTACT_NO,
+            BEN_TYPE: "I",
+            APP_INDICATOR: val === 0 ? this.state.selectFromActVal.APP_INDICATOR : this.state.selectFromActVal.APP_INDICATOR,
+            TO_EMAIL_ID: val === 0 ? this.state.selectToActVal.EMAIL_ID : this.state.cityTransVal === 0 ? "" : this.state.selectNickVal.TO_EMAIL_ID,
+            VAT_CHARGE: this.state.vat,
+            TO_IFSCODE: val === 0 ? "" : this.state.cityTransVal === 0 ? "" : this.state.selectNickVal.TO_IFSCODE,
+            OTP_TYPE: this.state.otp_type === 0 ? "S" : "E",
+            FROM_CURRENCY_CODE: this.state.selectFromActVal.CURRENCY_CODE,
+            TO_CURRENCY_CODE: val === 0 ? this.state.selectToActVal.CURRENCY_CODE : this.state.cityTransVal === 0 ? this.state.accountRes.CURRENCYCODE : this.state.selectNickVal.CURRENCY,
+            TO_ACCT_CARD_FLAG: val === 0 ? this.state.selectToActVal.ACCT_CARD_FLAG : this.state.cityTransVal === 0 ? "A" : this.state.selectNickVal.ACCT_TYPE === "ACCOUNT" ? "A" : "C",
+            ...Config.commonReq
+        }
+        console.log("request type is ", request);
+        tempArr.push(
+            {
+                key: language.fromAccount,
+                value: this.state.selectFromActVal.ACCT_UNMASK + "-" + this.state.selectFromActVal.ACCT_TYPE_NAME
+            },
+            {
+                key: language.to_account,
+                value: val === 0 ? this.state.selectToActVal.ACCT_UNMASK : this.state.cityTransVal === 0 ? this.state.accountRes.ACCOUNT : this.state.selectNickVal.TO_ACCT_NO
+            });
 
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={CommonStyle.textStyle}>
-                        {language.available_bal}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.fromBalance}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                        {language.currency}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.currency}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                {this.state.stateVal === 2 ?
-                    <View>
-                        <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                                {language.to_acct}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.selectToActVal !== -1 ? this.state.selectToActVal.ACCT_UNMASK : ""}</Text>
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                        <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                                {language.available_bal}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.toBalance}</Text>
+        if (this.state.transfer_type === 1) {
+            tempArr.push(
+                {key: language.payment_date, value: this.state.paymentDate},
+                {key: language.Frequency, value: this.state.selectPaymentType},
+                {key: language.number_of_payment, value: this.state.numberPayment});
+        }
 
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                        <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                                {language.currency}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.toCurrency}</Text>
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    </View>
-                    :
-                    <View>
-                        {this.state.cityTransVal === 1 ? <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                                {language.nick_name}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.selectNicknameType}</Text>
-                        </View> : null}
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                        <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                                {language.to_account}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.toAccount}</Text>
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    </View>
-                }
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                        {language.transfer_amount}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.transferAmount}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                        {language.services_charge}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.servicesCharge}</Text>
+        tempArr.push(
+            {key: language.transfer_amount, value: this.state.transferAmount},
+            {key: language.services_charge, value: this.state.servicesCharge},
+            {key: language.vat, value: this.state.vat},
+            {key: language.grand_total, value: this.state.grandTotal},
+            {key: language.remarks, value: this.state.remarks});
 
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+        if (val === 0) {
+            screenName = "Receipt";
+        } else if (val === 1) {
+            screenName = "SecurityVerification";
+        }
 
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                        {language.vat}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.vat}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle,]}>
-                        {language.grand_total}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.grandTotal}</Text>
-
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.remarks}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.remarks}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                {this.state.stateVal === 0 || this.state.cityTransVal === 1 ? <View><View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.transfer}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{language.transfer_pay_props[this.state.transfer_type].label}</Text>
-                </View>
-                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/></View> : null}
-
-                {this.state.cityTransVal === 1 && this.state.transfer_type === 1 ? <View>
-                    <View style={{
-                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                        marginEnd: 10,
-                    }}>
-                        <Text style={[CommonStyle.textStyle]}>
-                            {language.payment_date}
-                        </Text>
-                        <Text
-                            style={CommonStyle.viewText}>{this.state.paymentDate}</Text>
-                    </View>
-                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    <View style={{
-                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                        marginEnd: 10,
-                    }}>
-                        <Text style={[CommonStyle.textStyle]}>
-                            {language.Frequency}
-                        </Text>
-                        <Text
-                            style={CommonStyle.viewText}>{this.state.selectPaymentType}</Text>
-                    </View>
-                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    <View style={{
-                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                        marginEnd: 10,
-                    }}>
-                        <Text style={[CommonStyle.textStyle]}>
-                            {language.number_of_payment}
-                        </Text>
-                        <Text
-                            style={CommonStyle.viewText}>{this.state.numberPayment}</Text>
-                    </View>
-                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                </View> : null}
-
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.otpType.replace(":", "")}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{language.otp_props[this.state.otp_type].label}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            </View>
-        )
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'Transfer'}, {name: 'FundTransfer'}],
+            routeIndex: 1,
+            title: val === 0 ? language.fund_transfer_own_account : language.fund_transfer_city_account,
+            transferArray: tempArr,
+            screenName: screenName,
+            transRequest: request
+        });
     }
 
     async getOwnAccounts(serviceType) {
@@ -651,8 +406,6 @@ class FundTransfer extends Component {
                 () => {
                     if (this.state.stateVal === 2) {
                         this.resetData(this.props);
-                        // Utility.alert(this.props.language.success_transfer, this.props.language.ok);
-
                     } else {
                         this.props.navigation.navigate("SecurityVerification", {
                             REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
@@ -700,7 +453,7 @@ class FundTransfer extends Component {
     getNickList() {
         this.setState({isProgress: true});
         GETBENF(this.props.userDetails, "I", this.props).then(response => {
-            console.log("response", response);
+            console.log("response======>", response);
             let arr = [];
             response.map((account) => {
                 arr.push({label: account.NICK_NAME, value: account});
@@ -1417,7 +1170,7 @@ class FundTransfer extends Component {
                 }
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.state.stateVal === 2 || this.state.stateVal === 4 ? this.FundTransferDetails(language) : this.accountNoOption(language)}
+                        {this.accountNoOption(language)}
                         <View style={{
                             flexDirection: "row",
                             marginStart: Utility.setWidth(10),

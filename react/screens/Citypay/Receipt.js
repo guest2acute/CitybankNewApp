@@ -18,50 +18,56 @@ import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
-import {CommonActions} from "@react-navigation/native";
 
 class Receipt extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: this.props.route.params.transferArray,
-            title:this.props.route.params.title,
-            screenName:this.props.route.params.screenName,
+            title: this.props.route.params.title,
+            screenName: this.props.route.params.screenName,
         }
     }
 
     onSubmit(language, navigation) {
         if (this.state.isMainScreen) {
+
         } else {
 
         }
     }
 
-    resetVal(){
-        console.log("reset screen",this.state.screenName),
-            console.log("routeVal",this.props.route.params.routeVal),
-            console.log("routIndex",this.state.routIndex)
-        this.props.navigation.reset(this.state.screenName,
-            {
-                routeVal: this.props.route.params.routeVal,
-                routIndex: this.props.route.params.routIndex
-            });
+    resetVal() {
+        console.log("routeVal", this.props.route.params.routeVal),
+            console.log("routIndex", this.props.route.params.routeIndex)
+        this.props.navigation.reset({
+            routes: this.props.route.params.routeVal,
+            index: this.props.route.params.routeIndex
+        });
+    }
+
+    backToHome(){
+        this.props.navigation.reset({
+            routes: [{name: 'Transfer'}],
+            index: 0
+        });
     }
 
 
-    receiptView(language){
+    receiptView(language) {
         return (
             this.state.data.map((item) => {
                     return (
-                        <View>
+                        <View key={item.key}>
                             <View style={{
                                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                                 marginEnd: 10,
                             }}>
-                                <Text style={[CommonStyle.textStyle,{color:themeStyle.THEME_COLOR}]}>
+                                <Text style={[CommonStyle.textStyle, {color: themeStyle.THEME_COLOR}]}>
                                     {item.key}
                                 </Text>
-                                <Text style={[CommonStyle.viewText,{color:themeStyle.PLACEHOLDER_COLOR}]}>{item.value}</Text>
+                                <Text
+                                    style={[CommonStyle.viewText, {color: themeStyle.PLACEHOLDER_COLOR}]}>{item.value}</Text>
                             </View>
                             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         </View>
@@ -79,11 +85,30 @@ class Receipt extends Component {
                 <SafeAreaView/>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.toolbar}>
-                        <View style={{flexDirection:"column",justifyContent:"space-between"}}>
-                            <Text style={[CommonStyle.textStyle,{textAlign:"center",color: themeStyle.WHITE,fontSize: FontSize.getSize(16)}]}>{language.receipt}</Text>
-                            <Text style={[CommonStyle.textStyle,{marginTop:10,marginBottom:5,textAlign:"center",fontSize: FontSize.getSize(20),  fontFamily: fontStyle.RobotoBold,color: themeStyle.WHITE}]}>{language.thank_you}</Text>
-                            <Text style={[CommonStyle.textStyle,{textAlign:"center",fontSize: FontSize.getSize(17),color: themeStyle.WHITE}]}>{language.transaction_success}</Text>
-                            <Text style={[CommonStyle.textStyle,{marginBottom:10,textAlign:"center",color: themeStyle.DIM_DIM_COLOR}]}>{language.approval_id}</Text>
+                        <View style={{flexDirection: "column", justifyContent: "space-between"}}>
+                            <Text style={[CommonStyle.textStyle, {
+                                textAlign: "center",
+                                color: themeStyle.WHITE,
+                                fontSize: FontSize.getSize(16)
+                            }]}>{language.receipt}</Text>
+                            <Text style={[CommonStyle.textStyle, {
+                                marginTop: 10,
+                                marginBottom: 5,
+                                textAlign: "center",
+                                fontSize: FontSize.getSize(20),
+                                fontFamily: fontStyle.RobotoBold,
+                                color: themeStyle.WHITE
+                            }]}>{language.thank_you}</Text>
+                            <Text style={[CommonStyle.textStyle, {
+                                textAlign: "center",
+                                fontSize: FontSize.getSize(17),
+                                color: themeStyle.WHITE
+                            }]}>{language.transaction_success}</Text>
+                            <Text style={[CommonStyle.textStyle, {
+                                marginBottom: 10,
+                                textAlign: "center",
+                                color: themeStyle.DIM_DIM_COLOR
+                            }]}>{language.approval_id}</Text>
                         </View>
                         <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                           style={{
@@ -104,9 +129,12 @@ class Receipt extends Component {
                         marginStart: Utility.setWidth(10),
                         marginRight: Utility.setWidth(10),
                         marginTop: Utility.setHeight(20),
-                        marginBottom:Utility.setHeight(20)
+                        marginBottom: Utility.setHeight(20)
                     }}>
-                        <TouchableOpacity style={{flex: 1}} onPress={()=>{}}>
+
+                        <TouchableOpacity style={{flex: 1}} onPress={() => {
+                            this.backToHome()
+                        }}>
                             <View style={{
                                 flex: 1,
                                 alignItems: "center",
@@ -120,9 +148,42 @@ class Receipt extends Component {
                                     style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.addToFavorite}</Text>
                             </View>
                         </TouchableOpacity>
+
+                       {/* <TouchableOpacity style={{flex: 1}} onPress={() => {
+                        }}>
+                            <View style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                borderWidth: 1,
+                                borderColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.addToFavorite}</Text>
+                            </View>
+                        </TouchableOpacity>*/}
                         <View style={{width: Utility.setWidth(20)}}/>
                         <TouchableOpacity style={{flex: 1}}
-                                          onPress={() => {}}>
+                                          onPress={() => {
+                                              this.resetVal()
+                                          }}>
+                            <View style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: Utility.setHeight(46),
+                                borderRadius: Utility.setHeight(23),
+                                backgroundColor: themeStyle.THEME_COLOR
+                            }}>
+                                <Text
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.save_share}</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={{width: Utility.setWidth(20)}}/>
+                        <TouchableOpacity style={{flex: 1}}
+                                          onPress={() => {
+                                          }}>
                             <View style={{
                                 alignItems: "center",
                                 justifyContent: "center",
@@ -135,30 +196,6 @@ class Receipt extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={{
-                        flexDirection: "row",
-                        marginStart: Utility.setWidth(10),
-                        marginRight: Utility.setWidth(10),
-                        marginTop: Utility.setHeight(10),
-                        marginBottom:Utility.setHeight(20)
-                    }}>
-                    <TouchableOpacity style={{flex: 1}} onPress={()=>{this.resetVal()}}>
-                        <View style={{
-                            flex: 1,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            height: Utility.setHeight(46),
-                            borderRadius: Utility.setHeight(23),
-                            borderWidth: 1,
-                            borderColor: themeStyle.THEME_COLOR
-                        }}>
-                            <Text
-                                style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.continue_txt}</Text>
-                        </View>
-                    </TouchableOpacity>
-                    </View>
-
-
                 </ScrollView>
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
@@ -177,8 +214,6 @@ class Receipt extends Component {
                 this.backAction
             );
         }
-
-
 
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
@@ -210,10 +245,10 @@ class Receipt extends Component {
 const styles = {
     toolbar: {
         flexDirection: "row",
-         justifyContent: "center",
+        justifyContent: "center",
         height: Utility.setHeight(130),
         backgroundColor: themeStyle.THEME_COLOR,
-         // alignItems: "center",
+        // alignItems: "center",
         paddingLeft: 15,
         paddingRight: 15
     },

@@ -545,6 +545,7 @@ export const DeviceChange = (result, props) => {
                 text: props.language.yes_txt, onPress: () =>
                     props.navigation.navigate("TermConditionScreen",
                         {
+                            screen:"deviceChange",
                             showButton: true,
                             deviceChangeRes: result.RESPONSE[0],
                         })
@@ -560,9 +561,10 @@ export const unicodeToChar = (text) => {
         });
 }
 
-export const VerifyCard = async (cardNo, cardPin, props) => {
+export const VERIFYCARDPINDETAIL = async (cardNo, cardPin, props) => {
     let request = {
-        ACTION: "",
+        ACTION: "VERIFYCARDPINDETAIL",
+        ACCT_NO: cardNo,
         CARD_DETAIL: {
             ACCT_NO: cardNo,
             CARD_PIN: cardPin,

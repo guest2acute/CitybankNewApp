@@ -97,10 +97,14 @@ class CityPay extends Component {
             });
             isLoading = false;
             this.scanner.reactivate();
-            this.props.navigation.navigate("PaymentDetails", {
-                response: response,
-                qrVal: type === "SCAN" ? qrVal : qrId
-            });
+            if (response.CARD_LIST.length === 0) {
+                Utility.alert(this.props.language.empty_card_list_msg, language.ok);
+            } else {
+                this.props.navigation.navigate("PaymentDetails", {
+                    response: response,
+                    qrVal: type === "SCAN" ? qrVal : qrId
+                });
+            }
 
         }).catch(error => {
             this.setState({isProgress: false});

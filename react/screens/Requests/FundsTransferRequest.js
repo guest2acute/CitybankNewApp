@@ -32,35 +32,7 @@ export const OPERATIVETRNACCT = async (userDetails,SERVICE_TYPE, props) => {
     });
 }
 
-export const FUNDTRF = async (userDetails, TO_ACCT_NO, SERVICE_CHARGE, TRN_AMT,
-                              REMARKS, ACCT_NO, NICK_NAME, TO_EMAIL_ID,
-                              VAT_CHARGE, TO_IFSCODE, TO_MOBILE_NO, BEN_TYPE, TRN_TYPE, APP_INDICATOR,
-                              OTP_TYPE,TO_ACCT_NM, props) => {
-    let request = {
-        CUSTOMER_ID: userDetails.CUSTOMER_ID,
-        USER_ID: userDetails.USER_ID,
-        ACTIVITY_CD: userDetails.ACTIVITY_CD,
-        TO_ACCT_NO: TO_ACCT_NO,
-        SERVICE_CHARGE: SERVICE_CHARGE,
-        ACTION: "FUNDTRF",
-        TRN_AMT: TRN_AMT,
-        REMARKS: REMARKS,
-        ACCT_NO: ACCT_NO,
-        TO_ACCT_NM: TO_ACCT_NM,
-        NICK_NAME: NICK_NAME,
-        REQ_FLAG: "R",
-        REQ_TYPE: "I",
-        TRN_TYPE: TRN_TYPE,
-        REF_NO: "",
-        TO_MOBILE_NO: TO_MOBILE_NO,
-        BEN_TYPE: BEN_TYPE,
-        APP_INDICATOR: APP_INDICATOR,
-        TO_EMAIL_ID: TO_EMAIL_ID,
-        VAT_CHARGE: VAT_CHARGE,
-        TO_IFSCODE: TO_IFSCODE,
-        OTP_TYPE: OTP_TYPE,
-        ...Config.commonReq
-    }
+export const FUNDTRF = async (request, props) => {
     console.log("request", request);
     return new Promise(async (resolve, reject) => {
         await ApiRequest.apiRequest.callApi(request, {}).then(result => {

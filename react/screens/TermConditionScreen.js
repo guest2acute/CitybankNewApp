@@ -27,6 +27,7 @@ import CommonStyle from "../resources/CommonStyle";
 import {StackActions} from "@react-navigation/native";
 
 let showButton = true, deviceChangeRes;
+let url = "", iosUrl = "";
 
 class TermConditionScreen extends Component {
 
@@ -34,6 +35,10 @@ class TermConditionScreen extends Component {
         super(props);
         showButton = props.route.params.showButton;
         deviceChangeRes = props.route.params.deviceChangeRes ? props.route.params.deviceChangeRes : null;
+        if (props.route.params.screenName === "register")
+            url = Platform.OS === "android" ? {uri: 'file:///android_asset/term_cond_main.html'} : require("../resources/webpage/term_cond_main.html");
+        else if (props.route.params.screenName === "deviceChange")
+            url = Platform.OS === "android" ? {uri: 'file:///android_asset/term_cond_main.html'} : require("../resources/webpage/term_cond_main.html");
     }
 
 
@@ -76,10 +81,10 @@ class TermConditionScreen extends Component {
                 </View>
 
                 <WebView
-                    source={{
-                        uri: Config.termConditionURl
-                    }}
-                    scalesPageToFit={true}
+                    source={url}
+                    originWhitelist={['*']}
+                    style={{width: Utility.getDeviceWidth(), height: Utility.getDeviceHeight(), flex: 1}}
+                    domStorageEnabled={true}
                     /*onLoadEnd={this._onLoadEnd}*/
                 />
                 {showButton ? <View style={{

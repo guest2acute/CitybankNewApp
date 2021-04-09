@@ -633,7 +633,6 @@ export default {
     select_nickname: "ডাক নাম নির্বাচন করুন",
     bkash_account: "বিকাশ অ্যাকাউন্ট",
     bkash_name: "নাম",
-    fromAccount: "হিসাব থেকে",
     bkash_select_acct: "নির্বাচন অ্যাকাউন্ট",
     available_bal: "পর্যাপ্ত টাকা",
     transfer_amount: "স্থানান্তর পরিমাণ",
@@ -1280,6 +1279,14 @@ export default {
     addToFavorite: "প্রিয়তে যুক্ত করুন",
     conAmt: "সুবিধার পরিমাণ",
     tipAmt: "টিপ পরিমাণ",
+
+    empty_card_list_msg:"আপনার কোনও কার্ড সিলেক্ট করা নেই। দয়া করে কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করুন।",
+    empty_card_list_with_out_msg:"আপনার কোনও কার্ড সিলেক্ট করা নেই। কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করতে লগইন করুন।",
+    enable_following_card_s_allows_you_to_perform_pay_qr_merchant:"কিউআর মার্চেন্ট পেইমেন্ট করার জন্য একটি কার্ড বাছাই করুন",
+
+    return_home:"বাড়িতে ফিরে",
+    make_another_transfer:"আরেকটি স্থানান্তর করুন",
+
 
 }
 

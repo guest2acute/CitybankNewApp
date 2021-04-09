@@ -18,7 +18,7 @@ import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
 import {CARDUPDATE, QRPAYMENT} from "../Requests/QRRequest";
-import {VerifyCard} from "../Requests/CommonRequest";
+import {VerifyCard, VERIFYCARDPINDETAIL} from "../Requests/CommonRequest";
 
 let response;
 
@@ -43,13 +43,14 @@ class PaymentDetails extends Component {
             cardPin: "",
             conAmt: "",
             tipAmt: "",
+            email:"",
             errorTipAmt: "",
             data: response.CARD_LIST,
-            cardDetails: null
+            cardDetails: response.CARD_LIST.length > 0 ? response.CARD_LIST[0] : null
         }
     }
 
-    otpUpdate(index) {
+    selectCard(index) {
         let counter = 0;
         let newArray = [];
         let array = this.state.data;
@@ -84,7 +85,7 @@ class PaymentDetails extends Component {
             if (this.state.cardPin === "") {
                 this.setState({errorCardPin: language.error_card_pin})
             } else {
-                await this.qrPayment();
+                await this.VerifyCard();
             }
         }
     }
@@ -105,13 +106,10 @@ class PaymentDetails extends Component {
 
     async VerifyCard() {
         this.setState({isProgress: true});
-        await VerifyCard(this.state.cardDetails, this.state.cardPin, this.props)
+        await VERIFYCARDPINDETAIL(this.state.cardDetails.UNMASK_CARD_NO, this.state.cardPin, this.props)
             .then((response) => {
                 console.log("response", response);
-                this.setState({
-                    isProgress: false,
-                });
-               this.qrPayment();
+                this.qrPayment();
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
@@ -119,7 +117,6 @@ class PaymentDetails extends Component {
     }
 
     async qrPayment() {
-        this.setState({isProgress: true});
         await QRPAYMENT(this.props.userDetails, this.props.route.params.qrVal, this.state.cardDetails, this.state.remarks,
             this.state.conAmt !== "" ? this.state.conAmt : "0.0",
             this.state.tipAmt !== "" ? this.state.tipAmt : "0.0", response, this.props)
@@ -136,11 +133,11 @@ class PaymentDetails extends Component {
     }
 
     getConAmt() {
-        if (response.hasOwnProperty("tipIndicator_55") && response.tipIndicator_55 === "02") {
-            this.setState({conAmt: response.conFeeFixed_56})
-        } else if (response.hasOwnProperty("tipIndicator_55") && response.tipIndicator_55 === "03") {
-            let amt = this.state.paymentAmount * (response.ConFeePercentage_57 / 100);
-            this.setState({conAmt: amt})
+        if (response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 === "02") {
+            this.setState({conAmt: response.CONFEEFIXED56});
+        } else if (response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 === "03") {
+            let amt = this.state.paymentAmount * (response.CONFEEPERCENTAGE57 / 100);
+            this.setState({conAmt: amt});
         }
     }
 
@@ -243,7 +240,7 @@ class PaymentDetails extends Component {
                     <Text style={CommonStyle.errorStyle}>{this.state.errorPaymentAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-                {response.hasOwnProperty("tipIndicator_55") && response.tipIndicator_55 !== "" ?
+                {response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 !== "" ?
                     <View><View style={{
                         flexDirection: "row",
                         marginStart: 10,
@@ -334,6 +331,39 @@ class PaymentDetails extends Component {
                     /></View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
+                {response.hasOwnProperty("ADDICONDATAREQ6209") && response.ADDICONDATAREQ6209 !== "" ?
+                    <View>
+                        <View>
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: 10,
+                                marginEnd: 10,
+                                height: Utility.setHeight(50),
+                                alignItems: "center"
+                            }}>
+                                <Text style={[CommonStyle.textStyle, {flex: 1}]}>{language.mobile}</Text>
+                                <Text style={CommonStyle.textStyle}>{this.props.userDetails.MOBILE_NO}</Text>
+                            </View>
+                            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        </View>
+                        {response.ADDICONDATAREQ6209 !== "" ?
+                            <View>
+                                <View style={{
+                                    flexDirection: "row",
+                                    marginStart: 10,
+                                    marginEnd: 10,
+                                    height: Utility.setHeight(50),
+                                    alignItems: "center"
+                                }}>
+                                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>{language.email}</Text>
+                                    <Text style={CommonStyle.textStyle}>{this.state.email}</Text>
+                                </View>
+                                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                            </View> : null}
+                    </View>
+                    : null
+                }
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -380,7 +410,7 @@ class PaymentDetails extends Component {
     _renderItem = ({item, index}) => {
         return (
             <TouchableOpacity onPress={() => {
-                this.otpUpdate(index)
+                this.selectCard(index)
             }}>
                 <View style={[styles.renderView, {
                     height: Utility.setHeight(55),
@@ -482,7 +512,7 @@ class PaymentDetails extends Component {
                 {this.state.errorPaymentAmount !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.errorPaymentAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                {response.hasOwnProperty("tipIndicator_55") && response.tipIndicator_55 === "01" ? <View>
+                {response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 === "01" ? <View>
                     <View style={{
                         flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                         marginEnd: 10,

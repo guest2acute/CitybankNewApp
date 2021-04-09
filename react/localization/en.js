@@ -628,7 +628,6 @@ export default {
     select_nickname: "Select Nickname",
     bkash_account: "bkash Account",
     bkash_name: "Name",
-    fromAccount: "From Account",
     bkash_select_acct: "Select Account",
     available_bal: "Available Balance",
     transfer_amount: "Transfer Amount",
@@ -1275,6 +1274,16 @@ export default {
     Transaction_success: "Transaction Successfully",
     trans_success_message:"Your fund has been transferred successfully, please check below details for reference.",
     addToFavorite: "Add To Favourite",
+
+    empty_card_list_msg:"You don’t have any card selected. Please select card (s) from QR Merchant Payment tab",
+    empty_card_list_with_out_msg:"You don’t have any card selected. Login to select card (s) from QR Merchant Payment tab",
+    enable_following_card_s_allows_you_to_perform_pay_qr_merchant:"Select the card(s) to perform QR Merchant Payment",
+
+    return_home:"Return To Home",
+    make_another_transfer:"Make Another Transfer",
+
+
+
 
 
 
