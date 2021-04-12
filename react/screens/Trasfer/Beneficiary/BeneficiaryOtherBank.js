@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
     Image,
-    TextInput, FlatList, Platform, StatusBar
+    TextInput, FlatList, Platform, StatusBar,BackHandler
 } from "react-native";
 import themeStyle from "../../../resources/theme.style";
 import fontStyle from "../../../resources/FontStyle";
@@ -144,8 +144,10 @@ class BeneficiaryOtherBank extends Component {
                 Utility.alert(language.error_select_district_name, language.ok);
             } else if (this.state.selectTypeVal === 0 && this.state.selectBranchType === language.select_branch_type) {
                 Utility.alert(language.error_select_branch_name, language.ok);
-            } else if (this.state.mobile_number !== "" && this.state.mobile_number.length < 11) {
+            } else if (this.state.mobile_number !== "" && !Utility.ValidateMobileNumber(this.state.mobile_number)) {
                 this.setState({errorMobileNo: language.invalidMobile});
+            } else if (this.state.emailTxt !== "" && !Utility.validateEmail(this.state.emailTxt)) {
+                this.setState({errorEmail: language.invalidEmail});
             } else
                 this.setState({isMainView: false})
         } else {
@@ -465,7 +467,7 @@ class BeneficiaryOtherBank extends Component {
                                 marginLeft: 10
                             }]}
                             placeholder={"01********"}
-                            onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
+                            onChangeText={text => this.setState({errorMobileNo:"",mobile_number: Utility.input(text, "0123456789")})}
                             value={this.state.mobile_number}
                             multiline={false}
                             numberOfLines={1}
@@ -505,7 +507,7 @@ class BeneficiaryOtherBank extends Component {
                                 marginLeft: 10
                             }]}
                             placeholder={"a********@gmail.com"}
-                            onChangeText={text => this.setState({emailTxt: Utility.userInput(text)})}
+                            onChangeText={text => this.setState({errorEmail:"",emailTxt: Utility.userInput(text)})}
                             value={this.state.emailTxt}
                             multiline={false}
                             numberOfLines={1}
@@ -519,7 +521,7 @@ class BeneficiaryOtherBank extends Component {
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{marginLeft: 10, marginRight: 10}}>
-                    <Text style={CommonStyle.themeMidTextStyle}>{language.notes}:</Text>
+                    <Text style={CommonStyle.themeMidTextStyle}>{language.note}</Text>
                     <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note1}</Text>
                     <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note2}</Text>
                     <Text style={CommonStyle.themeTextStyle}>{language.beneficiary_otherBank_note3}</Text>
@@ -540,7 +542,15 @@ class BeneficiaryOtherBank extends Component {
     }
 
     beneficiaryAdd(language, navigation) {
-        const {selectBankVal,accountNo, nickname, mobile_number, emailTxt, selectTypeVal, account_card_name} = this.state;
+        const {
+            selectBankVal,
+            accountNo,
+            nickname,
+            mobile_number,
+            emailTxt,
+            selectTypeVal,
+            account_card_name
+        } = this.state;
         this.setState({isProgress: true});
         let accountDetails = {
             ACCOUNT: accountNo,
@@ -552,7 +562,7 @@ class BeneficiaryOtherBank extends Component {
         AddBeneficiary(accountDetails, "O", this.props.userDetails, nickname, mobile_number,
             emailTxt,
             selectTypeVal === 0 ? this.state.selectBranchVal.ROUTING_NO : selectBankVal.BANK_CD,
-             selectBankVal.BANK_CD,
+            selectBankVal.BANK_CD,
             this.props,
             selectTypeVal === 0 ? "A" : "C", "").then(response => {
             console.log("response", response);
@@ -570,6 +580,7 @@ class BeneficiaryOtherBank extends Component {
     }
 
 
+
     render() {
         let language = this.props.language;
         return (
@@ -581,7 +592,7 @@ class BeneficiaryOtherBank extends Component {
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
                         style={CommonStyle.toolbar_back_btn_touch}
-                        onPress={() => this.props.navigation.goBack(null)}>
+                        onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
                                    require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
@@ -593,8 +604,7 @@ class BeneficiaryOtherBank extends Component {
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -613,7 +623,7 @@ class BeneficiaryOtherBank extends Component {
                             marginRight: Utility.setWidth(10),
                             marginTop: Utility.setHeight(20)
                         }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.goBack()}>
+                            <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
                                 <View style={{
                                     flex: 1,
                                     alignItems: "center",
@@ -691,6 +701,19 @@ class BeneficiaryOtherBank extends Component {
         )
     }
 
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        const {isMainView} = this.state;
+        if (isMainView)
+            this.props.navigation.goBack();
+        else
+            this.setState({isMainView: true});
+    }
+
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -699,6 +722,11 @@ class BeneficiaryOtherBank extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer

@@ -25,13 +25,14 @@ import BeneficiaryOtherBank from "./Beneficiary/BeneficiaryOtherBank";
 import StorageClass from "../../utilize/StorageClass";
 import Config from "../../config/Config";
 import {AddBeneficiary, GETACCTBALDETAIL, GETBANKDETAILS} from "../Requests/RequestBeneficiary";
+import {OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
 
 class OtherBankAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
             nickname: "",
-            accountNo: "2101636171001",
+            accountNo: "",
             error_nickname: "",
             error_accountNo: "",
             isProgress: false,
@@ -39,7 +40,6 @@ class OtherBankAccount extends Component {
             selectAcctType: props.language.bkash_select_acct,
             selectPaymentType: props.language.select_payment,
             selectAccountType: props.language.selectActType,
-            // selectBankType: props.language.select_bank_type,
             selectBankType: props.language.select_bank_type,
             selectDistrictType: props.language.select_district_type,
             selectBranchType: props.language.select_branch_type,
@@ -64,7 +64,7 @@ class OtherBankAccount extends Component {
             accountType: "",
             branchName: "",
             numberPayment: "",
-            paymentdate: "",
+            paymentDate: "",
             errorPaymentDate: "",
             mode: "date",
             dateVal: new Date(),
@@ -86,11 +86,6 @@ class OtherBankAccount extends Component {
 
     backEvent() {
         this.props.navigation.goBack(null)
-       /* if (this.state.screenSwitcher) {
-            this.setState({screenSwitcher: false})
-        } else {
-            this.props.navigation.goBack(null)
-        }*/
     }
 
     async changeCard(cardCode) {
@@ -110,7 +105,7 @@ class OtherBankAccount extends Component {
             let currentDate = selectedDate === "" ? new Date() : selectedDate;
             console.log("currentDate get date ", currentDate.getDate() + 1)
             currentDate = moment(currentDate).format("DD-MMM-YYYY");
-            this.setState({dateVal: selectedDate, paymentdate: currentDate, show: false});
+            this.setState({dateVal: selectedDate, paymentDate: currentDate, show: false});
         } else {
             this.setState({show: false});
         }
@@ -221,17 +216,8 @@ class OtherBankAccount extends Component {
                 Utility.alert(language.error_select_branch_name, language.ok);
             } else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
-            } else if (this.state.screenSwitcher) {
-                //this.setState({stageVal: this.state.stageVal + 1});
-                /*   this.props.navigation.navigate("Otp")
-                   this.props.navigation.navigate("Otp", {
-                       routeVal: [{name: 'Transfer'}, {name: 'OtherBankAccount'}],
-                       routeIndex: 1
-                   })*/
-                // this.getActDetails(language);
-                // this.beneficiaryAdd(language);
             } else {
-                this.processRequest(0,language);
+                this.processRequest(0, language);
             }
         } else if (this.state.cardCode === 1) {
             let tempArr = [];
@@ -244,32 +230,23 @@ class OtherBankAccount extends Component {
             } else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
             } else if (this.state.transferType === 1) {
-                console.log("payment date is this", this.state.paymentdate)
-                if (this.state.paymentdate === "") {
+                if (this.state.paymentDate === "") {
                     this.setState({errorPaymentDate: language.error_payment_date});
                 } else if (this.state.selectPaymentType === language.select_payment) {
                     Utility.alert(language.select_payment, language.ok);
                 } else if (this.state.numberPayment === "") {
                     this.setState({error_numberPayment: language.error_numberPayment})
                 } else {
-                    this.processRequest(1,language);
-                    // this.setState({screenSwitcher: true})
-                    /*   this.getActDetails(language);
-                       this.beneficiaryAdd(language);*/
+                    this.processRequest(1, language);
                 }
             } else {
-                this.processRequest(1,language);
-                // this.setState({screenSwitcher: true})
+                this.processRequest(1, language);
             }
-            /*  this.getActDetails(language);
-              this.beneficiaryAdd(language);*/
         }
-        // Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
-    processRequest(val,language) {
+    processRequest(val, language) {
         let tempArr = [];
-        // this.setState({screenSwitcher: true})
         tempArr.push(
             {key: language.fromAccount, value: this.state.selectAcctType},
             {key: language.available_bal, value: this.state.availableBalance},
@@ -287,18 +264,18 @@ class OtherBankAccount extends Component {
             {key: language.remarks, value: this.state.remarks},
             {key: language.otpType, value: language.otp_props[this.state.otp_type].label},
         );
-        if(val === 0){
+        if (val === 0) {
             this.props.navigation.navigate("TransferConfirm", {
-                routeVal: [{name: 'Transfer'},{name: 'OtherBankAccount'}],
+                routeVal: [{name: 'Transfer'}, {name: 'OtherBankAccount'}],
                 routeIndex: 1,
                 title: language.other_bank_account_title,
                 transferArray: tempArr,
-                screenName:"SecurityVerification"
+                screenName: "SecurityVerification"
             });
-        }else if (val === 1) {
-            if(this.state.transferType===1){
+        } else if (val === 1) {
+            if (this.state.transferType === 1) {
                 tempArr.push(
-                    {key: language.payment_date, value: this.state.paymentdate},
+                    {key: language.payment_date, value: this.state.paymentDate},
                     {key: language.Frequency, value: this.state.selectPaymentType},
                     {key: language.number_of_payment, value: this.state.numberPayment})
             }
@@ -307,14 +284,14 @@ class OtherBankAccount extends Component {
                 {key: language.nick_name, value: this.state.selectNicknameType})
 
             this.props.navigation.navigate("TransferConfirm", {
-                routeVal: [{name: 'Transfer'},{name: 'OtherBankAccount'}],
+                routeVal: [{name: 'Transfer'}, {name: 'OtherBankAccount'}],
                 routeIndex: 1,
                 title: language.other_bank_account_title,
                 transferArray: tempArr,
-                screenName:"Otp"
+                screenName: "Otp"
             });
         }
-        console.log("val o this is",tempArr)
+        console.log("val o this is", tempArr)
     }
 
     getActDetails(language) {
@@ -1002,7 +979,7 @@ class OtherBankAccount extends Component {
                                 }]}
                                 placeholder={language.select_payment_date}
                                 editable={false}
-                                value={this.state.paymentdate}
+                                value={this.state.paymentDate}
                                 multiline={false}
                                 numberOfLines={1}
                                 contextMenuHidden={true}
@@ -1142,20 +1119,6 @@ class OtherBankAccount extends Component {
                     <Text style={CommonStyle.viewText}>{this.state.currency}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                {this.state.cardCode === 1 && this.state.screenSwitcher ?
-                    <View>
-                        <View style={{
-                            flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle]}>
-                                {language.nick_name}
-                            </Text>
-                            <Text style={CommonStyle.viewText}>{this.state.selectNicknameType}</Text>
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    </View> : null
-                }
 
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -1198,7 +1161,7 @@ class OtherBankAccount extends Component {
                     <Text style={CommonStyle.viewText}>{this.state.toAccount}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                {this.state.cardCode === 1 && this.state.screenSwitcher ? null
+                {this.state.cardCode === 1 ? null
                     :
                     <View>
                         <View style={{
@@ -1275,71 +1238,6 @@ class OtherBankAccount extends Component {
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-                {this.state.cardCode === 1 && this.state.screenSwitcher ?
-                    <View>
-                        <View>
-                            <View style={{
-                                flexDirection: "row",
-                                height: Utility.setHeight(50),
-                                marginStart: 10,
-                                alignItems: "center",
-                                marginEnd: 10,
-                            }}>
-                                <Text style={[CommonStyle.textStyle]}>
-                                    {language.TransferType}
-                                </Text>
-                                <Text
-                                    style={CommonStyle.viewText}>{language.transfer_pay_props[this.state.transferType].label}</Text>
-                            </View>
-                            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                        </View>
-                        <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle]}>
-                                {language.payment_date}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.paymentdate}</Text>
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                        <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle]}>
-                                {language.Frequency}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.selectPaymentType}</Text>
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-                        <View style={{
-                            flexDirection: "row",
-                            height: Utility.setHeight(50),
-                            marginStart: 10,
-                            alignItems: "center",
-                            marginEnd: 10,
-                        }}>
-                            <Text style={[CommonStyle.textStyle]}>
-                                {language.number_of_payment}
-                            </Text>
-                            <Text
-                                style={CommonStyle.viewText}>{this.state.numberPayment}</Text>
-                        </View>
-                        <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    </View>
-                    : null
-                }
-
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -1384,50 +1282,49 @@ class OtherBankAccount extends Component {
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                {this.state.screenSwitcher ? null :
-                    <View style={[styles.headerLabel, {
-                        marginTop: 10, marginStart: 10,
-                        marginEnd: 10,
-                    }]}>
-                        <TouchableOpacity
-                            onPress={() => this.changeCard(0)}
-                            style={{
-                                height: "100%",
-                                alignItems: "center",
-                                flex: 1,
-                                justifyContent: "center",
-                                borderBottomLeftRadius: this.state.cardCode === 1 ? 3 : 0,
-                                borderTopLeftRadius: this.state.cardCode === 1 ? 3 : 0,
-                                backgroundColor: this.state.cardCode === 0 ? themeStyle.THEME_COLOR : "#F4F4F4",
-                            }}>
-                            <Text style={[styles.langText, {
-                                color: this.state.cardCode === 0 ? themeStyle.WHITE : themeStyle.BLACK,
-                                fontFamily: fontStyle.RobotoMedium,
-                                fontSize: FontSize.getSize(11),
-                            }]}>{this.props.language.single_transfer}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => this.changeCard(1)}
-                            style={{
-                                height: "100%",
-                                flex: 1,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderBottomRightRadius: this.state.cardCode === 1 ? 5 : 0,
-                                borderTopRightRadius: this.state.cardCode === 1 ? 5 : 0,
-                                backgroundColor: this.state.cardCode === 1 ? themeStyle.THEME_COLOR : "#F4F4F4",
-                            }}>
-                            <Text style={[styles.langText, {
-                                color: this.state.cardCode === 1 ? themeStyle.WHITE : themeStyle.BLACK,
-                                fontFamily: fontStyle.RobotoMedium,
-                                fontSize: FontSize.getSize(11),
-                            }]}>{this.props.language.transfer_from_beneficiary}</Text>
-                        </TouchableOpacity>
-                    </View>
-                }
+                <View style={[styles.headerLabel, {
+                    marginTop: 10, marginStart: 10,
+                    marginEnd: 10,
+                }]}>
+                    <TouchableOpacity
+                        onPress={() => this.changeCard(0)}
+                        style={{
+                            height: "100%",
+                            alignItems: "center",
+                            flex: 1,
+                            justifyContent: "center",
+                            borderBottomLeftRadius: this.state.cardCode === 1 ? 3 : 0,
+                            borderTopLeftRadius: this.state.cardCode === 1 ? 3 : 0,
+                            backgroundColor: this.state.cardCode === 0 ? themeStyle.THEME_COLOR : "#F4F4F4",
+                        }}>
+                        <Text style={[styles.langText, {
+                            color: this.state.cardCode === 0 ? themeStyle.WHITE : themeStyle.BLACK,
+                            fontFamily: fontStyle.RobotoMedium,
+                            fontSize: FontSize.getSize(11),
+                        }]}>{this.props.language.single_transfer}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.changeCard(1)}
+                        style={{
+                            height: "100%",
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderBottomRightRadius: this.state.cardCode === 1 ? 5 : 0,
+                            borderTopRightRadius: this.state.cardCode === 1 ? 5 : 0,
+                            backgroundColor: this.state.cardCode === 1 ? themeStyle.THEME_COLOR : "#F4F4F4",
+                        }}>
+                        <Text style={[styles.langText, {
+                            color: this.state.cardCode === 1 ? themeStyle.WHITE : themeStyle.BLACK,
+                            fontFamily: fontStyle.RobotoMedium,
+                            fontSize: FontSize.getSize(11),
+                        }]}>{this.props.language.transfer_from_beneficiary}</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.state.screenSwitcher ? this.otherBankAccountDetails(language) : this.otherBankAccountView(language)}
+                        {this.otherBankAccountView(language)}
 
                         <View style={{
                             flexDirection: "row",
@@ -1461,7 +1358,7 @@ class OtherBankAccount extends Component {
                                     backgroundColor: themeStyle.THEME_COLOR
                                 }}>
                                     <Text
-                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{this.state.screenSwitcher ? language.confirm : language.next}</Text>
+                                        style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}>{language.next}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -1526,7 +1423,7 @@ class OtherBankAccount extends Component {
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -1538,6 +1435,33 @@ class OtherBankAccount extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.more
         });
+
+        await this.getOwnAccounts("FROMACCOUNTS");
+    }
+
+    async getOwnAccounts(serviceType) {
+        this.setState({isProgress: true});
+
+        await OPERATIVETRNACCT(this.props.userDetails, serviceType, this.props).then((response) => {
+                let resArr = [];
+                if (response.length === 0) {
+                    Utility.alertWithBack(this.props.language.ok, this.props.language.debit_card_empty_message,
+                        this.props.navigation);
+                    return;
+                }
+                response.map((account) => {
+                    resArr.push({
+                        label: account.ACCT_CD + "-" + account.ACCT_TYPE_NAME,
+                        value: account
+                    });
+                });
+                this.setState({isProgress: false, accountArr: resArr});
+            },
+            (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            }
+        );
     }
 
     async getBankName() {

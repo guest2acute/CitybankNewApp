@@ -24,7 +24,7 @@ import themesStyle from "../../resources/theme.style";
 import Config from "../../config/Config";
 import {unicodeToChar} from "../Requests/CommonRequest";
 
-let balanceArr = [];
+let actList = [];
 let that;
 
 class Accounts extends Component {
@@ -204,7 +204,9 @@ class Accounts extends Component {
         this.setState({dataList: mainArray}, async () => {
             console.log("actArr", actArr.length);
             actArr.map(async (account) => {
-                await this.getBalance(account);
+                if (actList.indexOf(account.ACCOUNTORCARDNO) === -1)
+                    await this.getBalance(account);
+
             });
             this.setState({isProgress: false});
         });
@@ -228,16 +230,20 @@ class Accounts extends Component {
         }
 
         await ApiRequest.apiRequest.callApi(balanceReq, {}).then(result => {
-            console.log("balance", JSON.stringify(result));
+            console.log(accountNo + "-balance", JSON.stringify(result));
             if (result.STATUS === "0") {
-                let response = result.RESPONSE.filter((e) => e.ACCOUNTNUMBER === accountNo || e.ACCOUNT === accountNo);
-                if (response.length > 0)
-                    this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? response[0].TOTALOUTSTANDING : response[0].hasOwnProperty("BALANCE") ? response[0].BALANCE : response[0].AVAILBALANCE, accountNo, "");
-                else {
-                    this.processBalance("", accountNo, "");
-                }
+                let response = result.RESPONSE;
+                response.map((res) => {
+                    if (actList.indexOf(accountNo) === -1) {
+                        actList.push(accountNo);
+                        this.processBalance(account.PARENTPRODUCTCODE === "LOAN_ACCOUNT" ? res.TOTALOUTSTANDING : res.hasOwnProperty("AVAILBALANCE") ? res.AVAILBALANCE : res.BALANCE, accountNo);
+                    }
+                });
             } else {
-                this.processBalance("", accountNo, "");
+                if (actList.indexOf(accountNo) === -1) {
+                    actList.push(accountNo);
+                    this.processBalance("", accountNo);
+                }
             }
         }).catch(error => {
             Utility.alert(error, this.props.language.ok);
@@ -246,8 +252,7 @@ class Accounts extends Component {
 
     }
 
-    processBalance(balance, accountNo, message) {
-        //  balance = balance === "" ? this.props.language.notAvailable : balance;
+    processBalance(balance, accountNo) {
         let dataList = this.state.dataList;
         let objectPos = -1;
         let object;

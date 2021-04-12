@@ -47,7 +47,7 @@ let initialVar = {
     vat: "",
     paymentDate: "",
     numberPayment: "",
-    toAccount: "2251151374001",
+    toAccount: "",
     fromBalance: "",
     VAT_AMT_LABEL: "",
     CHARGE_AMT_LABEL: "",
@@ -63,7 +63,8 @@ let initialVar = {
     account_holder_name: "",
     otp_type: 0,
     accountRes: null,
-    transferArray: []
+    transferArray: [],
+    actLabelList: []
 };
 
 class FundTransfer extends Component {
@@ -174,7 +175,7 @@ class FundTransfer extends Component {
     }
 
     getListViewItem = (item) => {
-        this.setState({error_transferAmount: "", transferAmount: item.label}, async () => {
+        this.setState({error_transferAmount: "", transferAmount: item.AMOUNT_LABEL}, async () => {
             await this.calculateVat();
         });
     }
@@ -376,6 +377,26 @@ class FundTransfer extends Component {
         );
     }
 
+    async getAmtLabel(transType) {
+        this.setState({isProgress: true});
+
+        await OPERATIVETRNACCT(this.props.userDetails, transType, this.props).then((response) => {
+                let resArr = [];
+                response.map((account) => {
+                    resArr.push({
+                        label: account.ACCT_CD + "-" + account.ACCT_TYPE_NAME,
+                        value: account
+                    });
+                });
+                this.setState({isProgress: false, accountArr: resArr});
+            },
+            (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            }
+        );
+    }
+
 
     resetData(props) {
         this.setState({
@@ -384,40 +405,6 @@ class FundTransfer extends Component {
             selectToAcctType: props.language.select_to_acct,
             selectPaymentType: props.language.select_payment,
             ...initialVar
-        });
-    }
-
-    async transferFundOwnAccounts(TO_ACCT_NO, From_ACCT_NO, nickName, emailId, ifscCode, mobileNo, beneType, transType, appIndicator) {
-        const {
-            stateVal,
-            servicesCharge,
-            transferAmount,
-            remarks,
-            vat
-        } = this.state;
-        this.setState({isProgress: true});
-        await FUNDTRF(
-            this.props.userDetails, TO_ACCT_NO, servicesCharge, transferAmount,
-            remarks, From_ACCT_NO, nickName, emailId,
-            vat, ifscCode, mobileNo, beneType, transType,
-            appIndicator, this.state.OTP_TYPE === 0 ? "S" : "E", "", this.props).then((response) => {
-            console.log("response", response);
-            this.setState({isProgress: false},
-                () => {
-                    if (this.state.stateVal === 2) {
-                        this.resetData(this.props);
-                    } else {
-                        this.props.navigation.navigate("SecurityVerification", {
-                            REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
-                            transType: "fund",
-                            routeVal: [{name: 'Transfer'}, {name: 'FundTransfer'}],
-                            routeIndex: 1
-                        })
-                    }
-                })
-        }, (error) => {
-            this.setState({isProgress: false});
-            console.log("error", error);
         });
     }
 
@@ -732,27 +719,30 @@ class FundTransfer extends Component {
                     this.state.cityTransVal === 0 ? this.singleTransfer(language) : this.beneficiaryTransfer(language)
                 }
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <FlatList horizontal={true}
-                          data={language.balanceTypeArr}
-                          keyExtractor={((item, index) => index + "")}
-                          renderItem={({item}) =>
-                              <TouchableOpacity onPress={this.getListViewItem.bind(this, item)}>
-                                  <View style={{
-                                      marginRight: 10,
-                                      marginLeft: 10,
-                                      marginTop: 10,
-                                      borderRadius: 3,
-                                      padding: 7,
-                                      flexDirection: 'row',
-                                      justifyContent: "space-around",
-                                      backgroundColor: themeStyle.THEME_COLOR
-                                  }}>
-                                      <Text style={[CommonStyle.textStyle, {color: themeStyle.WHITE}]}
-                                      >{item.label}</Text>
-                                  </View>
-                              </TouchableOpacity>
-                          }
-                />
+                {this.state.actLabelList.length > 0 ?
+                    <FlatList horizontal={true}
+                              data={this.state.actLabelList}
+                              keyExtractor={((item, index) => index + "")}
+                              renderItem={({item}) =>
+                                  <TouchableOpacity
+                                      onPress={this.getListViewItem.bind(this, item)}>
+                                      <View style={{
+                                          marginRight: 10,
+                                          marginLeft: 10,
+                                          marginTop: 10,
+                                          borderRadius: 3,
+                                          padding: 7,
+                                          flexDirection: 'row',
+                                          justifyContent: "space-around",
+                                          backgroundColor: themeStyle.THEME_COLOR
+                                      }}>
+                                          <Text
+                                              style={[CommonStyle.textStyle, {color: themeStyle.WHITE}]}
+                                          >{item.AMOUNT_LABEL}</Text>
+                                      </View>
+                                  </TouchableOpacity>
+                              }
+                    /> : null}
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -1089,10 +1079,12 @@ class FundTransfer extends Component {
         })
         this.resetData(this.props);
         if (cardCode === 1 && this.state.selectNickArr.length === 0) {
-            await this.getOwnAccounts("IMT_FUND_TRANSFER");
+            await this.getOwnAccounts("IFT_FUND_TRANSFER");
+            await this.getAmtLabel("CBLTA");
             this.getNickList();
         } else if (cardCode === 0) {
             await this.getOwnAccounts("OWN_FUND_TRANSFER");
+            await this.getAmtLabel("CBLOA");
         }
 
     }
@@ -1281,6 +1273,7 @@ class FundTransfer extends Component {
             tabBarLabel: this.props.language.transfer
         });
         await this.getOwnAccounts("OWN_FUND_TRANSFER");
+        await this.getAmtLabel("CBLOA");
     }
 
 }

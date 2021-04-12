@@ -303,7 +303,7 @@ export default class Utility {
     }
 
     static ValidateMobileNumber(text) {
-       return  text.startsWith("01")
+        return text.length === 11 && text.startsWith("01")
     }
 
 

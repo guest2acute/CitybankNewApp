@@ -29,6 +29,7 @@ import dimen from "../resources/Dimens";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
 import {DeviceChange, unicodeToChar} from "./Requests/CommonRequest";
+import {QRSCANCODE} from "./Requests/QRRequest";
 
 
 class PinLogin extends Component {
@@ -471,6 +472,36 @@ class PinLogin extends Component {
         );
     }
 
+    async getQrDetails() {
+        this.setState({isProgress: true});
+
+        let userDetails = {
+            USER_ID: await StorageClass.retrieve(Config.isFirstTime),
+            ACTIVITY_CD: "",
+            CUSTOMER_ID: ""
+        }
+
+        if (userDetails.USER_ID === null || userDetails.USER_ID === "") {
+            Utility.alert(this.props.language.qr_merchant_without_login_alert);
+            return;
+        }
+
+        QRSCANCODE(userDetails, "", "", "", "N", this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            });
+            this.props.navigation.navigate("CityPay", {
+                isLoggedIn: "N"
+            });
+
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+    }
+
+
     pinView(language) {
         const {oneFocus, twoFocus, threeFocus, fourFocus, fiveFocus, sixFocus} = this.state;
         const oneStyle = {
@@ -749,7 +780,7 @@ class PinLogin extends Component {
                 {this.state.loginPref === "0" ? this.passwordView(language) : this.state.loginPref === "1" ? this.pinView(language) : this.state.loginPref === "2" ? this.fingerView(language) : null}
 
                 {this.state.loginPref !== "2" ?
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("CityPay")}>
+                    <TouchableOpacity onPress={() => this.getQrDetails()}>
                         <Image style={{
                             alignSelf: "center",
                             marginTop: Utility.setHeight(20),

@@ -21,9 +21,10 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
 import {QRSCANCODE} from "../Requests/QRRequest";
 
-let isLoading = false;
+let isLoading = false, isLoggedIn = "Y";
 
 class CityPay extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -31,11 +32,17 @@ class CityPay extends Component {
             qrId: "",
             isProgress: false,
             remarks: "",
-            type: "",
+            type: ""
+        }
+        try {
+            isLoggedIn = props.route.params.isLoggedIn;
+        } catch (e) {
+            isLoggedIn = "Y";
         }
     }
 
     onSuccess = e => {
+        console.log("isLoading",isLoading);
         if (e.type === "QR_CODE" && !isLoading) {
             isLoading = true;
             this.setState({type: "SCAN", qrVal: e.data}, () => {
@@ -90,15 +97,15 @@ class CityPay extends Component {
     scanRequestQrCode() {
         const {qrVal, qrId, remarks, type} = this.state;
         this.setState({isProgress: true});
-        QRSCANCODE(this.props.userDetails, type, type === "SCAN" ? qrVal : qrId, type, this.props).then(response => {
-            console.log("response", response);
+        QRSCANCODE(this.props.userDetails, type, type === "SCAN" ? qrVal : qrId, type, isLoggedIn, this.props).then(response => {
+            console.log("scanRequestQrCodeResponse", response);
             this.setState({
                 isProgress: false,
             });
             isLoading = false;
             this.scanner.reactivate();
             if (response.CARD_LIST.length === 0) {
-                Utility.alert(this.props.language.empty_card_list_msg, language.ok);
+                Utility.alert(this.props.language.empty_card_list_msg, this.props.language.ok);
             } else {
                 this.props.navigation.navigate("PaymentDetails", {
                     response: response,
@@ -107,6 +114,7 @@ class CityPay extends Component {
             }
 
         }).catch(error => {
+            isLoading = false
             this.setState({isProgress: false});
             console.log("error", error);
         });

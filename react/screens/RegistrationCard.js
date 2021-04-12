@@ -593,7 +593,7 @@ class RegistrationCard extends Component {
                                 onSubmitEditing={(event) => {
                                     this.emailref.focus();
                                 }}
-                                maxLength={14}/>
+                                maxLength={13}/>
                         </View>
                         {this.state.errorMobile !== "" ?
                             <Text style={{

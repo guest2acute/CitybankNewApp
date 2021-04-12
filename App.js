@@ -200,6 +200,7 @@ function CityPayTab() {
         }}>
             <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
             <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
+            <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -239,6 +240,7 @@ function MoreTab() {
             <Stack.Screen name="RequestMonitor" component={RequestMonitor} options={{headerShown: false}}/>
             <Stack.Screen name="OtpLockUnlock" component={OtpLockUnlock} options={{headerShown: false}}/>
             <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>
+            <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

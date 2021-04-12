@@ -44,8 +44,8 @@ class BeneficiaryEmail extends Component {
                 this.setState({errorEmail: language.require_email})
             } else if (!Utility.validateEmail(this.state.emailTxt)) {
                 this.setState({errorEmail: language.email_not_valid})
-            } else if (this.state.mobileNo !== "" && this.state.mobileNo.length < 11) {
-                this.setState({errorMobileNo: language.invalidMobile})
+            } else if (this.state.mobile_number !== "" && !Utility.ValidateMobileNumber(this.state.mobile_number)) {
+                this.setState({errorMobileNo: language.invalidMobile});
             } else {
                 this.setState({isMainScreen: false});
             }

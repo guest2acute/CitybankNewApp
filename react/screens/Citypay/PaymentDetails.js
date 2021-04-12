@@ -14,11 +14,10 @@ import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
 import Utility from "../../utilize/Utility";
 import {connect} from "react-redux";
-import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
-import {CARDUPDATE, QRPAYMENT} from "../Requests/QRRequest";
-import {VerifyCard, VERIFYCARDPINDETAIL} from "../Requests/CommonRequest";
+import {QRPAYMENT} from "../Requests/QRRequest";
+import {VERIFYCARDPINDETAIL} from "../Requests/CommonRequest";
 
 let response;
 
@@ -43,7 +42,7 @@ class PaymentDetails extends Component {
             cardPin: "",
             conAmt: "",
             tipAmt: "",
-            email:"",
+            email: "",
             errorTipAmt: "",
             data: response.CARD_LIST,
             cardDetails: response.CARD_LIST.length > 0 ? response.CARD_LIST[0] : null
@@ -56,10 +55,10 @@ class PaymentDetails extends Component {
         let array = this.state.data;
         array.map((item) => {
             if (counter === index) {
-                item = {...item, ACTIVE: "Y"};
+                item = {...item, selected: true};
                 this.setState({cardDetails: item});
             } else {
-                item = {...item, ACTIVE: "N"};
+                item = {...item, selected: false};
             }
 
             newArray.push(item);
@@ -342,7 +341,7 @@ class PaymentDetails extends Component {
                                 alignItems: "center"
                             }}>
                                 <Text style={[CommonStyle.textStyle, {flex: 1}]}>{language.mobile}</Text>
-                                <Text style={CommonStyle.textStyle}>{this.props.userDetails.MOBILE_NO}</Text>
+                                <Text style={CommonStyle.textStyle}>{response.MOBILENUMBER6202}</Text>
                             </View>
                             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         </View>
@@ -356,7 +355,7 @@ class PaymentDetails extends Component {
                                     alignItems: "center"
                                 }}>
                                     <Text style={[CommonStyle.textStyle, {flex: 1}]}>{language.email}</Text>
-                                    <Text style={CommonStyle.textStyle}>{this.state.email}</Text>
+                                    <Text style={CommonStyle.textStyle}>response.EMAIL_ID}</Text>
                                 </View>
                                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                             </View> : null}
@@ -408,43 +407,41 @@ class PaymentDetails extends Component {
     }
 
     _renderItem = ({item, index}) => {
+
+        item = {...item, selected: item.hasOwnProperty("selected") ? item.selected : false};
         return (
-            <TouchableOpacity onPress={() => {
-                this.selectCard(index)
-            }}>
-                <View style={[styles.renderView, {
-                    height: Utility.setHeight(55),
-                    backgroundColor: item.isSelected ? "#f5dbdc" : "#b2b8ba"
-                }]}>
+            <View style={[styles.renderView, {
+                height: Utility.setHeight(55),
+                backgroundColor: item.selected? "#f5dbdc" : "#b2b8ba"
+            }]}>
 
-                    <Image style={{
-                        height: Utility.setHeight(55),
-                        width: Utility.setWidth(63),
-                        borderRadius: 5
-                    }} resizeMode={"contain"}
-                           source={{uri: "http://placehold.it/200x200"}}/>
-                    <View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.BLACK,
-                            fontSize: FontSize.getSize(12),
-                            paddingLeft: 10,
-                        }]}>{item.CARD_NAME}</Text>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.BLACK,
-                            fontSize: FontSize.getSize(12),
-                            paddingLeft: 10,
-                        }]}>{item.SOURCE_NO}</Text>
-                    </View>
+                <View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.BLACK,
+                        fontSize: FontSize.getSize(12),
+                        paddingLeft: 10,
+                    }]}>{item.CARD_NAME}</Text>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.BLACK,
+                        fontSize: FontSize.getSize(12),
+                        paddingLeft: 10,
+                    }]}>{item.SOURCE_NO}</Text>
+                </View>
 
+                <TouchableOpacity onPress={() => {
+                    this.selectCard(index)
+                }}>
                     <Image style={{
                         height: Utility.setHeight(20),
                         width: Utility.setWidth(20),
-                        marginEnd: 10,
+                        marginEnd: Utility.setWidth(20),
                         tintColor: themeStyle.THEME_COLOR,
                     }} resizeMode={"contain"}
-                           source={item.ACTIVE === "Y" ? require("../../resources/images/check.png") : require("../../resources/images/uncheck.png")}/>
-                </View>
-            </TouchableOpacity>
+                           source={item.selected ? require("../../resources/images/check.png") : require("../../resources/images/uncheck.png")}/>
+                </TouchableOpacity>
+
+            </View>
+
         )
     }
 

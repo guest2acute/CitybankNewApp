@@ -42,7 +42,7 @@ class ChangeLoginCredential extends Component {
             expiryDate: "",
             creditCardNo: "",
             transactionPin: "",
-            stateVal: 1,
+            stateVal: 0,
             newCredential: "",
             errorNewCredential: "",
             confNewCredential: "",

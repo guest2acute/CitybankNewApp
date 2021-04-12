@@ -609,8 +609,6 @@ class RegistrationAccount extends Component {
                 actName: response.CUST_NAME,
                 placeMobile: response.MASK_MOBILE_NO,
                 placeEmail: response.MASK_MAIL_ID,
-                /*  conf_mobile: response.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, ""),
-                  conf_email: response.MAIL_ID,*/
                 signUpResponse: response,
                 hasDebitCard: response.DEBIT_CARD.length > 0 || response.PREPAID_CARD.length > 0 || response.CREDIT_CARD.length > 0
             });
@@ -744,7 +742,7 @@ class RegistrationAccount extends Component {
                                 onSubmitEditing={(event) => {
                                     this.emailref.focus();
                                 }}
-                                maxLength={14}/>
+                                maxLength={13}/>
                         </View>
                         {this.state.errorMobile !== "" ?
                             <Text style={{
@@ -787,7 +785,7 @@ class RegistrationAccount extends Component {
                                     errorEmail: "",
                                     conf_email: Utility.userInput(text)
                                 })}
-                                value={this.state.conf_email}
+                                value={this.state.conf_email !== ""?this.state.conf_email.toLowerCase():this.state.conf_email}
                                 multiline={false}
                                 numberOfLines={1}
                                 contextMenuHidden={true}
@@ -1292,7 +1290,7 @@ class RegistrationAccount extends Component {
                 this.setState({errorEmail: language.require_email});
             } else if (conf_mobile !== signUpResponse.MOBILE_NO.replace(/\(/g, "").replace(/\)/g, "")) {
                 this.setState({errorMobile: language.invalidMobile});
-            } else if (conf_email !== signUpResponse.MAIL_ID) {
+            }else if (conf_email !== signUpResponse.MAIL_ID) {
                 this.setState({errorEmail: language.invalidEmail});
             } else {
                 this.setState({stateVal: stateVal + 1});

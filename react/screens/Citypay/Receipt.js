@@ -18,14 +18,15 @@ import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
+import {CommonActions} from "@react-navigation/native";
 
 class Receipt extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: this.props.route.params.transferArray,
-            title: this.props.route.params.title,
-            screenName: this.props.route.params.screenName,
+            data: props.route.params.transferArray,
+            title: props.route.params.title,
+            screenName: props.route.params.screenName,
         }
     }
 
@@ -38,21 +39,20 @@ class Receipt extends Component {
     }
 
     resetVal() {
-        console.log("routeVal", this.props.route.params.routeVal),
-            console.log("routIndex", this.props.route.params.routeIndex)
-        this.props.navigation.reset({
+        console.log("routeVal", this.props.route.params.routeVal);
+        console.log("routIndex", this.props.route.params.routeIndex);
+        CommonActions.reset({
             routes: this.props.route.params.routeVal,
             index: this.props.route.params.routeIndex
         });
     }
 
     backToHome(){
-        this.props.navigation.reset({
+        CommonActions.reset({
             routes: [{name: 'Transfer'}],
             index: 0
         });
     }
-
 
     receiptView(language) {
         return (
@@ -123,7 +123,7 @@ class Receipt extends Component {
                             }} source={require("../../resources/images/ic_logout.png")}/>
                         </TouchableOpacity>
                     </View>
-                    {this.receiptView(language)}
+                  {/*  {this.receiptView(language)}*/}
                     <View style={{
                         flexDirection: "row",
                         marginStart: Utility.setWidth(10),
@@ -149,21 +149,6 @@ class Receipt extends Component {
                             </View>
                         </TouchableOpacity>
 
-                       {/* <TouchableOpacity style={{flex: 1}} onPress={() => {
-                        }}>
-                            <View style={{
-                                flex: 1,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                height: Utility.setHeight(46),
-                                borderRadius: Utility.setHeight(23),
-                                borderWidth: 1,
-                                borderColor: themeStyle.THEME_COLOR
-                            }}>
-                                <Text
-                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.addToFavorite}</Text>
-                            </View>
-                        </TouchableOpacity>*/}
                         <View style={{width: Utility.setWidth(20)}}/>
                         <TouchableOpacity style={{flex: 1}}
                                           onPress={() => {

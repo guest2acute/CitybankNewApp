@@ -1,5 +1,15 @@
 import React, {Component} from "react";
-import {Platform, StatusBar, View, Image, Text, SafeAreaView, TouchableOpacity, ScrollView,BackHandler} from "react-native";
+import {
+    Platform,
+    StatusBar,
+    View,
+    Image,
+    Text,
+    SafeAreaView,
+    TouchableOpacity,
+    ScrollView,
+    BackHandler
+} from "react-native";
 
 import {actions} from "../../redux/actions";
 import {connect} from "react-redux";
@@ -20,13 +30,12 @@ class TransferConfirm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isProgress:false,
+            isProgress: false,
             data: this.props.route.params.transferArray,
-            title:this.props.route.params.title,
-            screenName:this.props.route.params.screenName,
-            screenSwitcher:false,
+            title: this.props.route.params.title,
+            screenName: this.props.route.params.screenName,
+            screenSwitcher: false,
         }
-        console.log("transfer confirm",this.props.route.params.transferArray)
     }
 
     backEvent() {
@@ -68,21 +77,31 @@ class TransferConfirm extends Component {
         return true;
     }
 
-    async onSubmit(language) {
-        this.props.navigation.navigate(this.state.screenName,
-            {
-                REQUEST_CD: "",
-                transType: "fund",
-                routeVal: this.props.route.params.routeVal,
-                routIndex: this.props.route.params.routeIndex,
-                transferArray:this.props.route.params.transferArray
-            });
+    async transferFundOwnAccounts() {
+        this.setState({isProgress: true});
+        await FUNDTRF(this.props.route.params.transRequest, this.props).then((response) => {
+            console.log("response", response);
+            this.setState({isProgress: false},
+                () => {
+                    this.props.navigation.navigate(this.state.screenName,
+                        {
+                            REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
+                            transType: "fund",
+                            routeVal: this.props.route.params.routeVal,
+                            routIndex: this.props.route.params.routeIndex,
+                            transferArray: this.props.route.params.transferArray
+                        });
+                })
+        }, (error) => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
 
     transferCompleted(language) {
         return (
-                  this.state.data.map((item) => {
+            this.state.data.map((item) => {
                     return (
                         <View key={item.key}>
                             <View style={{
@@ -92,7 +111,7 @@ class TransferConfirm extends Component {
                                 <Text style={[CommonStyle.midTextStyle]}>
                                     {item.key}
                                 </Text>
-                                <Text style={[CommonStyle.viewText,CommonStyle.midTextStyle]}>{item.value}</Text>
+                                <Text style={[CommonStyle.viewText, CommonStyle.midTextStyle]}>{item.value}</Text>
                             </View>
                             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                         </View>
@@ -116,15 +135,14 @@ class TransferConfirm extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={[CommonStyle.title,{textAlign:"left"}]}>{this.state.title}</Text>
+                    <Text style={[CommonStyle.title, {textAlign: "left"}]}>{this.state.title}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -157,7 +175,7 @@ class TransferConfirm extends Component {
                             </TouchableOpacity>
                             <View style={{width: Utility.setWidth(20)}}/>
                             <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.onSubmit(language)}>
+                                              onPress={() => this.transferFundOwnAccounts()}>
                                 <View style={{
                                     alignItems: "center",
                                     justifyContent: "center",

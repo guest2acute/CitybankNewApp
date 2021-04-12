@@ -315,18 +315,42 @@ export default {
     ],
 
     transfer_props: [
-        {id: "cityBankAcct",title: "সিটি ব্যাংক অ্যাকাউন্ট",icon: require("../resources/images/ic_city_bank_account.png")},
-        {id: "otherBankAcct",title: "অন্যান্য ব্যাংক অ্যাকাউন্ট",  icon: require("../resources/images/contact_icon.png")},
+        {
+            id: "cityBankAcct",
+            title: "সিটি ব্যাংক অ্যাকাউন্ট",
+            icon: require("../resources/images/ic_city_bank_account.png")
+        },
+        {
+            id: "otherBankAcct",
+            title: "অন্যান্য ব্যাংক অ্যাকাউন্ট",
+            icon: require("../resources/images/contact_icon.png")
+        },
         {id: "cashByCode", title: "কোড দ্বারা নগদ", icon: require("../resources/images/case_by_code.png")},
         {id: "emailTransfer", title: "ইমেল স্থানান্তর", icon: require("../resources/images/email_transfer.png")},
-        {id: "transferToBkash",title: "বিকাশে স্থানান্তর করুন",icon: require("../resources/images/transfer_to_bkash.png")},
-        {id: "beneficiaryManagement",title: "সুবিধাভোগী ব্যবস্থাপনা",icon: require("../resources/images/beneficiary_management.png")},
-        {id: "favoriteTransfer",title: "প্রিয় স্থানান্তর",icon: require("../resources/images/ic_facourite_transfer.png")},
+        {
+            id: "transferToBkash",
+            title: "বিকাশে স্থানান্তর করুন",
+            icon: require("../resources/images/transfer_to_bkash.png")
+        },
+        {
+            id: "beneficiaryManagement",
+            title: "সুবিধাভোগী ব্যবস্থাপনা",
+            icon: require("../resources/images/beneficiary_management.png")
+        },
+        {
+            id: "favoriteTransfer",
+            title: "প্রিয় স্থানান্তর",
+            icon: require("../resources/images/ic_facourite_transfer.png")
+        },
         {id: "transferHistory", title: "স্থানান্তর ইতিহাস", icon: require("../resources/images/ic_transfer_istory.png")}
     ],
     payments_props: [
         {id: "MobileRecharge", title: "মোবাইল রিচার্জ", icon: require("../resources/images/ic_mobile_recharge.png")},
-        {id: "CityCreditCard",title: "সিটি ক্রেডিট কার্ড",icon: require("../resources/images/ic_city_credit_card.png")},
+        {
+            id: "CityCreditCard",
+            title: "সিটি ক্রেডিট কার্ড",
+            icon: require("../resources/images/ic_city_credit_card.png")
+        },
         {
             id: "ValueAddedServices",
             title: "মান যোগ পরিষেবা",
@@ -589,7 +613,7 @@ export default {
     select_type_account: "অ্যাকাউন্টের ধরণ নির্বাচন করুন",
     select_district_type: "জেলার নাম নির্বাচন করুন",
     select_branch_type: "শাখার নাম নির্বাচন করুন",
-    error_account_same:"থেকে এবং অ্যাকাউন্টে এক হওয়া উচিত নয়",
+    error_account_same: "থেকে এবং অ্যাকাউন্টে এক হওয়া উচিত নয়",
     error_select_bank_name: "দয়া করে ব্যাঙ্কের নাম নির্বাচন করুন",
     error_select_district_name: "জেলার নাম নির্বাচন করুন",
     error_select_branch_name: "শাখার নাম নির্বাচন করুন",
@@ -654,7 +678,7 @@ export default {
     /*error message*/
     errtransferammt: "স্থানান্তর পরিমাণ প্রয়োজন",
     errRemarks: "মন্তব্য প্রয়োজন",
-    errPrepaidStaff:"প্রিপেইড কার্ড অ্যাকাউন্ট থেকে স্টাফ অ্যাকাউন্টে স্থানান্তর অনুমোদিত নয়",
+    errPrepaidStaff: "প্রিপেইড কার্ড অ্যাকাউন্ট থেকে স্টাফ অ্যাকাউন্টে স্থানান্তর অনুমোদিত নয়",
 
     /*Cash By Code message*/
     cashbycode: "কোড দ্বারা নগদ",
@@ -809,9 +833,9 @@ export default {
     transactionTitle: "লেনদেনের পিন প্রবেশ করুন",
 
     /*notes*/
-    notePin4Digits:"আপনার লেনদেনের পিনটি 4 সংখ্যার হওয়া উচিত।",
-    noteLock3Attempt:"পরপর 3 টি ভুল প্রচেষ্টা লক হয়ে যাবে।",
-    noteCallTPin:"আপনার লেনদেনের পিনটি আনলক করতে 16243 কল করুন।",
+    notePin4Digits: "আপনার লেনদেনের পিনটি 4 সংখ্যার হওয়া উচিত।",
+    noteLock3Attempt: "পরপর 3 টি ভুল প্রচেষ্টা লক হয়ে যাবে।",
+    noteCallTPin: "আপনার লেনদেনের পিনটি আনলক করতে 16243 কল করুন।",
     fund_transfer_note1: "1. আপনার মধ্যে কোনও স্থানান্তর সীমাবদ্ধতা পাওয়া যায় নি",
     fund_transfer_note2: "অ্যাকাউন্ট লেনদেনের জন্য নিজস্ব অ্যাকাউন্ট।",
     fund_transfer_note3: "2. ক্রেডিট কার্ড স্থানান্তর সীমা: সর্বনিম্ন স্থানান্তরযোগ্য।",
@@ -851,16 +875,16 @@ export default {
     beneficiary_otherBank_note15: "13-সংখ্যার কার্ড নম্বর আগে।",
 
 
-   /* transferTo_bkash_note1: "1. একক বিকাশ অ্যাকাউন্টের জন্য স্থানান্তর এবং লেনদেনের সীমা।",
-    transferTo_bkash_note2: "5 প্রতি দিন এবং 25 মাসে প্রতি লেনদেন।",
-    transferTo_bkash_note3: "স্থানান্তর পরিমাণ প্রতিদিন 50 টাকা থেকে 30000 টাকা এবং 2 টাকা হয়",
-    transferTo_bkash_note4: "প্রতি মাসে লক্ষ",
-    transferTo_bkash_note5: "২. বিকাশ স্থানান্তর সীমাতে সিটিটিচ: প্রতিদিন 60000 টাকা পর্যন্ত।",
-    transferTo_bkash_note6: "৩. ক্রেডিট কার্ড স্থানান্তর সীমা: সর্বনিম্ন স্থানান্তরযোগ্য পরিমাণ",
-    transferTo_bkash_note7: "বিডিটি 500 এবং মোট উপলব্ধ বিডিটি সীমাতে 50% অবধি",
-    transferTo_bkash_note8: "৪. প্রক্রিয়াকরণ ফি + ভ্যাট প্রযোজ্য হবে",
-    transferTo_bkash_note9: "৫. একই বিকাশ অ্যাকাউন্টে একটানা ট্রান্সফার করতে হয়",
-    transferTo_bkash_note10: "সর্বনিম্ন 10 মিনিটের ব্যবধান।",*/
+    /* transferTo_bkash_note1: "1. একক বিকাশ অ্যাকাউন্টের জন্য স্থানান্তর এবং লেনদেনের সীমা।",
+     transferTo_bkash_note2: "5 প্রতি দিন এবং 25 মাসে প্রতি লেনদেন।",
+     transferTo_bkash_note3: "স্থানান্তর পরিমাণ প্রতিদিন 50 টাকা থেকে 30000 টাকা এবং 2 টাকা হয়",
+     transferTo_bkash_note4: "প্রতি মাসে লক্ষ",
+     transferTo_bkash_note5: "২. বিকাশ স্থানান্তর সীমাতে সিটিটিচ: প্রতিদিন 60000 টাকা পর্যন্ত।",
+     transferTo_bkash_note6: "৩. ক্রেডিট কার্ড স্থানান্তর সীমা: সর্বনিম্ন স্থানান্তরযোগ্য পরিমাণ",
+     transferTo_bkash_note7: "বিডিটি 500 এবং মোট উপলব্ধ বিডিটি সীমাতে 50% অবধি",
+     transferTo_bkash_note8: "৪. প্রক্রিয়াকরণ ফি + ভ্যাট প্রযোজ্য হবে",
+     transferTo_bkash_note9: "৫. একই বিকাশ অ্যাকাউন্টে একটানা ট্রান্সফার করতে হয়",
+     transferTo_bkash_note10: "সর্বনিম্ন 10 মিনিটের ব্যবধান।",*/
 
     transferTo_bkash_note1: "1. একক বিকাশ অ্যাকাউন্টের জন্য স্থানান্তর এবং লেনদেনের সীমা।",
     transferTo_bkash_note2: "5 প্রতি দিন এবং 25 মাসে প্রতি লেনদেন। স্থানান্তর",
@@ -1165,9 +1189,9 @@ export default {
     account_title: "অ্যাকাউন্টের শিরোনাম",
     account_number: "হিসাব নাম্বার",
     start_date: "শুরুর তারিখ",
-    accountTxt:"হিসাব",
-    cardText:"কার্ড",
-    selectActNo:"অ্যাকাউন্ট নম্বর নির্বাচন করুন",
+    accountTxt: "হিসাব",
+    cardText: "কার্ড",
+    selectActNo: "অ্যাকাউন্ট নম্বর নির্বাচন করুন",
     biometricTitle: "চালিয়ে যেতে মোবাইল স্ক্যানারে আপনার ফিঙ্গারপ্রিন্ট স্ক্যান করুন",
     biometricError: "লগইন করতে আঙুল ব্যবহার করে বৈধতা দিন",
 
@@ -1191,40 +1215,40 @@ export default {
     deleteAlert: "আপনি কি নিশ্চিতরূপে যোগ হওয়া সুবিধাভোগী মুছতে চান?",
     noBeneficiaryAdded: "কোনও সুবিধাভোগী যোগ করা হয়নি",
     delete: "মুছে ফেলা",
-    error_debit_card:"দয়া করে ডেবিট কার্ড নির্বাচন করুন",
-    onlybKashTxt:"কেবল বিকাশ গ্রাহকের অ্যাকাউন্ট যুক্ত করা যেতে পারে",
+    error_debit_card: "দয়া করে ডেবিট কার্ড নির্বাচন করুন",
+    onlybKashTxt: "কেবল বিকাশ গ্রাহকের অ্যাকাউন্ট যুক্ত করা যেতে পারে",
 
-    selMfs:"এমএফএস নির্বাচন করুন",
-    mfsTxt:"এমএফএস",
-    mfsList:[{label:"বিকাশ অ্যাকাউন্ট",value:0}],
+    selMfs: "এমএফএস নির্বাচন করুন",
+    mfsTxt: "এমএফএস",
+    mfsList: [{label: "বিকাশ অ্যাকাউন্ট", value: 0}],
 
-    update_beneficiary_alert:"এই সুবিধাভোগী তথ্য আপডেট করুন",
-    settings:"সেটিংস",
+    update_beneficiary_alert: "এই সুবিধাভোগী তথ্য আপডেট করুন",
+    settings: "সেটিংস",
 
-    error_select_to_type:"অ্যাকাউন্ট থেকে নির্বাচন করুন",
-    error_select_nickname_type:"নিক নাম নির্বাচন করুন",
-    fund_transfer_own_account:"তহবিল স্থানান্তর নিজস্ব অ্যাকাউন্ট",
-    fund_transfer_city_account:"তহবিল স্থানান্তর সিটি অ্যাকাউন্ট",
-    transfer:"স্থানান্তর",
-    fund_transfer_bank:"অন্যান্য ব্যাংক অ্যাকাউন্টে তহবিল স্থানান্তর",
+    error_select_to_type: "অ্যাকাউন্ট থেকে নির্বাচন করুন",
+    error_select_nickname_type: "নিক নাম নির্বাচন করুন",
+    fund_transfer_own_account: "তহবিল স্থানান্তর নিজস্ব অ্যাকাউন্ট",
+    fund_transfer_city_account: "তহবিল স্থানান্তর সিটি অ্যাকাউন্ট",
+    transfer: "স্থানান্তর",
+    fund_transfer_bank: "অন্যান্য ব্যাংক অ্যাকাউন্টে তহবিল স্থানান্তর",
 
-    error_grand_total_amount:"গ্র্যান্ড মোট পরিমাণ উপলব্ধ ব্যালেন্সের চেয়ে কম বা সমান হওয়া উচিত।",
+    error_grand_total_amount: "গ্র্যান্ড মোট পরিমাণ উপলব্ধ ব্যালেন্সের চেয়ে কম বা সমান হওয়া উচিত।",
     enter_amount: "এখানে পরিমাণ লিখুন",
 
-    error_mobile_number:"মোবাইল নম্বরটি 11 ডিজিটের এবং 01 দিয়ে শুরু হওয়া উচিত",
-    payment_details:"পেমেন্ট বিবরণ",
+    error_mobile_number: "মোবাইল নম্বরটি 11 ডিজিটের এবং 01 দিয়ে শুরু হওয়া উচিত",
+    payment_details: "পেমেন্ট বিবরণ",
 
     /* Payments Details*/
     merchant_name: "ব্যবসায়ীর নাম",
     merchant_city: "মার্চেন্ট সিটি",
     payment_amount: "প্রদানের পরিমাণ (বিডিটি)",
     grandTotal_bdt: "গ্র্যান্ড টোটাল (বিডিটি)",
-    bill_number:"বিল নম্বর",
+    bill_number: "বিল নম্বর",
     store_label: "স্টোর লেবেল",
     terminal_label: "টার্মিনাল লেবেল",
-    payment_details_note1:"1. ক্রয়কৃত সামগ্রীর পরিমাণ বা বিলের মোট মূল্য প্রবেশ করান।",
+    payment_details_note1: "1. ক্রয়কৃত সামগ্রীর পরিমাণ বা বিলের মোট মূল্য প্রবেশ করান।",
     somethingWrong: "কিছু ভুল হয়েছে দয়া করে কিছুক্ষণ পরে চেষ্টা করুন",
-    insufficientBal:"অর্থ স্থানান্তর করতে অপর্যাপ্ত ভারসাম্য",
+    insufficientBal: "অর্থ স্থানান্তর করতে অপর্যাপ্ত ভারসাম্য",
     errAmt: "স্থানান্তর পরিমাণ প্রয়োজন",
     errTransferAmt: "ন্যূনতম স্থানান্তর  সীমা",
     errMaxTransferAmt: "সর্বাধিক স্থানান্তর সীমা",
@@ -1235,57 +1259,57 @@ export default {
     ],
 
     payment_card: "কার্ড নির্বাচন করুন *",
-    error_card_pin:"কার্ড পিন প্রয়োজন",
-    receipt:"প্রাপ্তি",
-    thank_you:"ধন্যবাদ!",
+    error_card_pin: "কার্ড পিন প্রয়োজন",
+    receipt: "প্রাপ্তি",
+    thank_you: "ধন্যবাদ!",
     transaction_success: "সফলভাবে লেনদেন",
     approval_id: "অনুমোদনের আইডি 108417268210",
     customer_name: "ক্রেতার নাম",
-    source_account:"উত্স অ্যাকাউন্ট",
-    receipt_amount:"পরিমাণ (বিডিটি)",
-    type:"প্রকার",
-    transaction_date:"লেনদেনের তারিখ এবং সময়",
-    another_qr_payment:"আরেকটি কিউআর পেমেন্ট",
-    save_share:"সংরক্ষণ / ভাগ করুন",
+    source_account: "উত্স অ্যাকাউন্ট",
+    receipt_amount: "পরিমাণ (বিডিটি)",
+    type: "প্রকার",
+    transaction_date: "লেনদেনের তারিখ এবং সময়",
+    another_qr_payment: "আরেকটি কিউআর পেমেন্ট",
+    save_share: "সংরক্ষণ / ভাগ করুন",
 
     /*Qr Merchant Payment*/
-    type_selection:"নির্বাচনের ধরণ",
-    select_card_qr:"কিউআর মার্চেন্ট পেমেন্ট সম্পাদনের জন্য কার্ড (গুলি) নির্বাচন করুন",
-    transLogin:"লগইন সঙ্গে লেনদেন শুধুমাত্র",
-    transLimit:"লগইন ছাড়াই 99 টি লেনদেন সীমা সেট করুন",
+    type_selection: "নির্বাচনের ধরণ",
+    select_card_qr: "কিউআর মার্চেন্ট পেমেন্ট সম্পাদনের জন্য কার্ড (গুলি) নির্বাচন করুন",
+    transLogin: "লগইন সঙ্গে লেনদেন শুধুমাত্র",
+    transLimit: "লগইন ছাড়াই 99 টি লেনদেন সীমা সেট করুন",
 
-    qr_notes:"বিকল্প 2 নির্বাচন করা থাকলে, প্রতিটি সফলভাবে লেনদেনের পরে মোট সীমা একের মাধ্যমে হ্রাস পাবে",
+    qr_notes: "বিকল্প 2 নির্বাচন করা থাকলে, প্রতিটি সফলভাবে লেনদেনের পরে মোট সীমা একের মাধ্যমে হ্রাস পাবে",
     errorTransactionLimit: "লগইন ছাড়াই 99 লেনদেনের সীমাতে সেটআপ করুন",
-    status:"স্থিতি",
-    waiting:"অপেক্ষা করছি",
-    reference_number:"পরিচিত সংখ্যা",
-    valid_till:"বৈধ টাল",
-    resend_notification:"বিজ্ঞপ্তি পুনরায় প্রেরণ",
-    cancel_transfer:"স্থানান্তর বাতিল করুন",
-    email_transfer_details:"ইমেল স্থানান্তর বিশদ",
-    reclaim_money_to:"টাকা পুনরায় দাবি",
-    select_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন",
-    error_reclaim_money:"অর্থ দাবিতে নির্বাচন করুন",
+    status: "স্থিতি",
+    waiting: "অপেক্ষা করছি",
+    reference_number: "পরিচিত সংখ্যা",
+    valid_till: "বৈধ টাল",
+    resend_notification: "বিজ্ঞপ্তি পুনরায় প্রেরণ",
+    cancel_transfer: "স্থানান্তর বাতিল করুন",
+    email_transfer_details: "ইমেল স্থানান্তর বিশদ",
+    reclaim_money_to: "টাকা পুনরায় দাবি",
+    select_reclaim_money: "অর্থ দাবিতে নির্বাচন করুন",
+    error_reclaim_money: "অর্থ দাবিতে নির্বাচন করুন",
     from_account_card: "অ্যাকাউন্ট / কার্ড থেকে",
     enter_otp: "ওটিপি প্রবেশ করান",
     transfer_type: "স্থানান্তর প্রকার",
-    verifyOtp:"OTP যাচাই করুন",
-    ActNo:"এ / সি নং",
-    mobileTxt:"মুঠোফোন",
-    routingNo:"রাউটিং নং",
-    bankCode:"ব্যাংেকর সংকেতলিপি",
+    verifyOtp: "OTP যাচাই করুন",
+    ActNo: "এ / সি নং",
+    mobileTxt: "মুঠোফোন",
+    routingNo: "রাউটিং নং",
+    bankCode: "ব্যাংেকর সংকেতলিপি",
     Transaction_success: "সফলভাবে লেনদেন",
-    trans_success_message:"আপনার তহবিল সফলভাবে স্থানান্তরিত হয়েছে, দয়া করে রেফারেন্সের জন্য বিশদটি নীচে দেখুন check",
+    trans_success_message: "আপনার তহবিল সফলভাবে স্থানান্তরিত হয়েছে, দয়া করে রেফারেন্সের জন্য বিশদটি নীচে দেখুন check",
     addToFavorite: "প্রিয়তে যুক্ত করুন",
     conAmt: "সুবিধার পরিমাণ",
     tipAmt: "টিপ পরিমাণ",
 
-    empty_card_list_msg:"আপনার কোনও কার্ড সিলেক্ট করা নেই। দয়া করে কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করুন।",
-    empty_card_list_with_out_msg:"আপনার কোনও কার্ড সিলেক্ট করা নেই। কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করতে লগইন করুন।",
-    enable_following_card_s_allows_you_to_perform_pay_qr_merchant:"কিউআর মার্চেন্ট পেইমেন্ট করার জন্য একটি কার্ড বাছাই করুন",
+    empty_card_list_msg: "আপনার কোনও কার্ড সিলেক্ট করা নেই। দয়া করে কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করুন।",
+    empty_card_list_with_out_msg: "আপনার কোনও কার্ড সিলেক্ট করা নেই। কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করতে লগইন করুন।",
+    enable_following_card_s_allows_you_to_perform_pay_qr_merchant: "কিউআর মার্চেন্ট পেইমেন্ট করার জন্য একটি কার্ড বাছাই করুন",
 
-    return_home:"বাড়িতে ফিরে",
-    make_another_transfer:"আরেকটি স্থানান্তর করুন",
+    return_home: "বাড়িতে ফিরে",
+    make_another_transfer: "আরেকটি স্থানান্তর করুন",
 
 
     smallBalanceTypeArr: [
@@ -1299,16 +1323,19 @@ export default {
     reset_txt: "রিসেট",
     card_masking_number: "কার্ড মাস্কিং নম্বর",
     errConfirmPin: "পিন কনফার্ম পিনের মতো হওয়া উচিত",
-    change_status : "স্ট্যাটাস বদলাও",
+    change_status: "স্ট্যাটাস বদলাও",
 
     statusTypeArr: [
         {key: "0", label: "চুরি", value: 0},
         {key: "1", label: "সীমাবদ্ধ", value: 1},
         {key: "2", label: "নিখোঁজ", value: 2},
     ],
-    select_change_status:"পরিবর্তন স্থিতি নির্বাচন করুন",
+    select_change_status: "পরিবর্তন স্থিতি নির্বাচন করুন",
     errorSelectChangeStatus: "পরিবর্তন স্থিতি নির্বাচন করুন",
-    accountStatement: "অ্যাকাউন্ট বিবৃতি"
+    accountStatement: "অ্যাকাউন্ট বিবৃতি",
+
+    debit_card_empty_message: "এই সার্ভিসটি ব্যবহার করার জন্য দয়া করে আপনার ডেবিট কার্ডটি সক্রিয় করুন।",
+    qr_merchant_without_login_alert: "দয়া করে প্রথমে লগ ইন করুন"
 
 
 }

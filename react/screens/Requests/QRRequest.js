@@ -66,7 +66,7 @@ export const CARDUPDATE = async (userDetails, details, ALLOW_AFTER_LOGIN, BEFORE
     });
 }
 
-export const QRSCANCODE = async (userDetails, REMARKS, DATA, TYPE, props) => {
+export const QRSCANCODE = async (userDetails, REMARKS, DATA, TYPE,ISLOGGEDIN, props) => {
     let request = {
         TYPE: TYPE,
         USER_ID: userDetails ? userDetails.USER_ID : "",
@@ -76,7 +76,7 @@ export const QRSCANCODE = async (userDetails, REMARKS, DATA, TYPE, props) => {
         REMARKS: REMARKS,
         DATA: DATA,
         KEY_ID: "SCAN",
-        ISLOGGEDIN: "Y",
+        ISLOGGEDIN: ISLOGGEDIN,
         ...Config.commonReq
     }
     console.log("request", request);
@@ -116,7 +116,6 @@ export const QRPAYMENT = async (userDetails, QRSTRING,cardDetails, REMARKS,CON_A
         CARD_NAME: cardDetails.CARD_NAME,
         CON_AMOUNT: CON_AMOUNT,
         TIP_AMOUNT: TIP_AMOUNT,
-
         ...Config.commonReq
     }
     console.log("request", request);

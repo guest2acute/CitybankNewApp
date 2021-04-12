@@ -39,13 +39,11 @@ class BeneficiaryTransferMFS extends Component {
 
     async onSubmit(language, navigation) {
         if (this.state.isMainScreen) {
-           /* if (this.state.selMFSVal === -1) {
-                Utility.alert(language.errorSelMFSVal,language.ok);
-            } else */if (this.state.nickname === "") {
+            if (this.state.nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
             } else if (this.state.accountNo.length < 11) {
                 this.setState({error_accountNo: language.errBkash})
-            } else{
+            } else {
                 this.verifybKashAct();
             }
         } else {
@@ -70,8 +68,8 @@ class BeneficiaryTransferMFS extends Component {
     beneficiaryAdd() {
         const {accountNo, nickname} = this.state;
         this.setState({isProgress: true});
-        let accountDetails = {ACCOUNT:accountNo,ADDRESS:"",CONTACTNUMBER:accountNo,ACCOUNTNAME:nickname};
-        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, accountNo, "", "","",this.props, "A","").then(response => {
+        let accountDetails = {ACCOUNT: accountNo, ADDRESS: "", CONTACTNUMBER: accountNo, ACCOUNTNAME: nickname};
+        AddBeneficiary(accountDetails, "W", this.props.userDetails, nickname, accountNo, "", "", "", this.props, "A", "").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -85,16 +83,15 @@ class BeneficiaryTransferMFS extends Component {
         });
     }
 
-    resetScreen(){
-            this.setState({
-                selMFS: this.props.language.selMfs,
-                selMFSVal: -1,
-                nickname: "",
-                accountNo: "",
-                isMainScreen: true,
-            });
+    resetScreen() {
+        this.setState({
+            selMFS: this.props.language.selMfs,
+            selMFSVal: -1,
+            nickname: "",
+            accountNo: "",
+            isMainScreen: true,
+        });
     }
-
 
 
     openModal(option, title, data, language) {
@@ -105,7 +102,7 @@ class BeneficiaryTransferMFS extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord,language.ok);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -119,7 +116,7 @@ class BeneficiaryTransferMFS extends Component {
     accountNoOption(language) {
         return (
             <View>
-               {/* <Text style={[CommonStyle.labelStyle, {
+                {/* <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
                     marginStart: 10,
                     marginEnd: 10,

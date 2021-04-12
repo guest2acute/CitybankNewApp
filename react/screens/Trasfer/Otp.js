@@ -107,24 +107,37 @@ class Otp extends Component {
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
-                this.alertConfirm(response.MESSAGE);
+                this.alertConfirm(response);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
             });
     }
 
-    alertConfirm(msg) {
+    alertConfirm(response) {
         Alert.alert(
             Config.appName,
-            msg,
+            response.MESSAGE,
             [
                 {
                     text: this.props.language.ok, onPress: () => {
-                        this.props.navigation.reset({
-                            index: this.props.route.params.routeIndex,
-                            routes: this.props.route.params.routeVal
-                        });
+                        if(response.STATUS === "999"){
+                            CommonActions.reset({
+                                routes: this.props.route.params.routeVal,
+                                index: this.props.route.params.routeIndex
+                            });
+                        }
+                        else{
+                            this.props.navigation.navigate(this.state.screenName,
+                                {
+                                    REQUEST_CD: "",
+                                    transType: "fund",
+                                    routeVal: this.props.route.params.routeVal,
+                                    routIndex: this.props.route.params.routeIndex,
+                                    transferArray: this.props.route.params.transferArray
+                                });
+                        }
+
                     }
                 },
             ]
