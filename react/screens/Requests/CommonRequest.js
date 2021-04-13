@@ -568,48 +568,40 @@ export const ValueAddedServicesDetails = (language) => {
             id: "mobileRecharge",
             title: language.mobileRecharge,
             redirectScreen: "MobileRecharge",
-            subCategory: [],
         },
         {
             id: "movieTickets",
             title: language.movie_tickets,
-            subCategory: [],
             redirectScreen: "MovieTickets"
         },
         {
             id: "utilityBankPayment",
             title: language.utility_bank_payment,
             redirectScreen: "UtilityBankPayment",
-            subCategory: [],
         },
         {
             id: "InternetBillPayment",
             title: language.internet_bill_payment,
-            subCategory: [],
             redirectScreen: "InternetBillPayment"
         },
         {
             id: "ClubBillPayment",
             title: language.club_bill_payment,
-            subCategory: [],
             redirectScreen: "ClubBillPayment"
         },
         {
             id: "InsurancePayment",
             title: language.insurance_payment,
-            subCategory: [],
             redirectScreen: "InsurancePayment"
         },
         {
             id: "TuitionFee",
             title: language.tuition_fee,
-            subCategory: [],
             redirectScreen: "TuitionFee"
         },
         {
             id: "IndianVisaPayment",
             title: language.indian_visa_payment,
-            subCategory: [],
             redirectScreen: "IndianVisaPayment"
         }
     ]

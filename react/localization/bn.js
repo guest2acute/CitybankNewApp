@@ -1328,7 +1328,7 @@ export default {
         {label: "শেষ 15 লেনদেন", value: 2},
     ],
     or_txt: "বা",
-    error_select_from_type: "অ্যাকাউন্ট নম্বর জন্য বিবৃতি নির্বাচন করুন",
+    error_select_statement_from_type: "অ্যাকাউন্ট নম্বর জন্য বিবৃতি নির্বাচন করুন",
     error_from_date: "তারিখ থেকে নির্বাচন করুন",
     error_end_date: "শেষের তারিখটি নির্বাচন করুন",
     movie_tickets : "ছবির টিকেটগুলি",
@@ -1339,7 +1339,26 @@ export default {
     tuition_fee: "শিক্ষাদান খরচ",
     indian_visa_payment: "ইন্ডিয়ান ভিসা প্রসেসিং ফি প্রদান",
     payee_category:"পেইজ ক্যাটাগরি",
-    payee_list: "পেইস তালিকা"
+    payee_list: "পেইস তালিকা",
 
+
+    /*Utility Bank Payment*/
+    company_name: "কোমপানির নাম",
+    wasa_account_number: "ওয়াসার অ্যাকাউন্ট নম্বর",
+    desco_account_number: "ডেসকো অ্যাকাউন্ট নম্বর",
+    customer_mobile_no:"গ্রাহক মোবাইল নম্বর",
+    bill_number: "বিল নম্বর",
+    payable_amount: "প্রদেয় পরিমান",
+    payment_status: "লেনদেনের অবস্থা",
+
+    company_name_props: [
+        {label: "WASA", value: 0},
+        {label: "DESCO", value: 1}
+    ],
+    select_company_name:"কোম্পানির নাম নির্বাচন করুন",
+
+    /*error message*/
+    error_select_company_name: "দয়া করে সংস্থার নাম নির্বাচন করুন",
+    error_bill: "বিল নম্বর প্রয়োজনীয়"
 }
 

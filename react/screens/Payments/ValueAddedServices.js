@@ -1,5 +1,15 @@
 import React, {Component} from "react";
-import {Platform, StatusBar, View, Image, Text, TouchableOpacity, SafeAreaView, FlatList} from "react-native";
+import {
+    Platform,
+    StatusBar,
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    SafeAreaView,
+    FlatList,
+    ScrollView
+} from "react-native";
 
 import {actions} from "../../redux/actions";
 import {connect} from "react-redux";

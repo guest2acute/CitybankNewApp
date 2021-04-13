@@ -386,7 +386,6 @@ class BeneficiaryWithCityBank extends Component {
                         color: themeStyle.THEME_COLOR
                     }}>*{language.mark_field_mandatory}
                 </Text>
-
             </View>)
     }
 

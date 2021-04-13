@@ -255,7 +255,7 @@ class AccountStatement extends Component {
     async onSubmit(language, navigation) {
         console.log("submit callled")
         if (this.state.selectAccountType === language.bkash_select_acct) {
-            Utility.alert(language.error_select_from_type, language.ok);
+            Utility.alert(language.error_select_statement_from_type, language.ok);
         } else if (this.state.fromDate === "") {
             this.setState({errorFromDate: language.error_from_date});
         }else if (this.state.endDate === "") {

@@ -1323,7 +1323,7 @@ export default {
         {label: "Last 15 transaction", value: 2},
     ],
     or_txt: "OR",
-    error_select_from_type: "Please Select Statement for Account Number",
+    error_select_statement_from_type: "Please Select Statement for Account Number",
     error_from_date: "Select From Date",
     error_end_date: "Select End Date",
     movie_tickets : "Movie Tickets",
@@ -1339,10 +1339,21 @@ export default {
 
     /*Utility Bank Payment*/
     company_name: "Company Name",
-    wasa_account_number: "WASA Account Number",
-    customer_mobile_no:"Customer Mobile Number",
+    wasa_account_number: "WASA Account No",
+    desco_account_number: "DESCO Account No",
+    customer_mobile_no:"Customer Mobile No",
     bill_number: "Bill Number",
+    payable_amount: "Payable Amount",
+    payment_status: "Payment Status",
 
+    company_name_props: [
+        {label: "WASA", value: 0},
+        {label: "DESCO", value: 1}
+    ],
+    select_company_name:"Select Company Name",
 
+    /*error message*/
+    error_select_company_name: "Please Select Company Name",
+    error_bill: "Bill Number is Required"
 
 }
