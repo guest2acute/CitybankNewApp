@@ -1299,8 +1299,47 @@ export default {
     ],
     select_change_status:"পরিবর্তন স্থিতি নির্বাচন করুন",
     errorSelectChangeStatus: "পরিবর্তন স্থিতি নির্বাচন করুন",
-    accountStatement: "অ্যাকাউন্ট বিবৃতি"
+    accountStatement: "অ্যাকাউন্ট বিবৃতি",
+    statement_account_number:"অ্যাকাউন্ট নম্বর জন্য বিবৃতি",
+    statementTypeArr: [
+        {key: "0", label: "2251615410001 / জেনারেল সেভিংস-স্টাফ এ / সি", value: 0},
+        {key: "1", label: "2271615410001 / ALO সাভিং-স্টাফ ডিএসটি", value: 1},
+        {key: "2", label: "2701615410001 / উচ্চ মান সাশ্রয় এ / সি", value: 2},
+    ],
+    statement_from_date: "তারিখ থেকে বিবৃতি",
+    statement_end_date: "বিবৃতি অবধি তারিখ",
+    select_from_date: "তারিখ থেকে নির্বাচন করুন",
+    select_end_date: "শেষের তারিখটি নির্বাচন করুন",
+    submitRequest: "অনুরোধ জমা দিন",
+    monthly_statement:"মাসিক বিবৃতি (ইউপি থেকে শেষ 6 মাস)",
+    statement_format: "বিবৃতি ফর্ম্যাট",
 
+    monthTypeArr: [
+        {key: "0", label: "ফেব্রুয়ারী", value: 0},
+        {key: "1", label: "জান", value: 1},
+        {key: "2", label: "ডিসেম্বর", value: 2},
+        {key: "3", label: "নভেম্বর", value: 3},
+        {key: "4", label: "অক্টোবর", value: 4},
+        {key: "5", label: "সেপ্টেম্বর", value: 5},
+    ],
+    statement_format_props: [
+        {label: "স্ক্রিনে প্রদর্শন করুন", value: 0},
+        {label: "পিডিএফ ফর্ম্যাট হিসাবে সংরক্ষণ করুন", value: 1},
+        {label: "শেষ 15 লেনদেন", value: 2},
+    ],
+    or_txt: "বা",
+    error_select_from_type: "অ্যাকাউন্ট নম্বর জন্য বিবৃতি নির্বাচন করুন",
+    error_from_date: "তারিখ থেকে নির্বাচন করুন",
+    error_end_date: "শেষের তারিখটি নির্বাচন করুন",
+    movie_tickets : "ছবির টিকেটগুলি",
+    utility_bank_payment: "ইউটিলিটি ব্যাংক পেমেন্ট",
+    internet_bill_payment: "ইন্টারনেট বিল পেমেন্ট",
+    club_bill_payment: "ক্লাব বিল পেমেন্ট",
+    insurance_payment: "বীমা প্রদান",
+    tuition_fee: "শিক্ষাদান খরচ",
+    indian_visa_payment: "ইন্ডিয়ান ভিসা প্রসেসিং ফি প্রদান",
+    payee_category:"পেইজ ক্যাটাগরি",
+    payee_list: "পেইস তালিকা"
 
 }
 

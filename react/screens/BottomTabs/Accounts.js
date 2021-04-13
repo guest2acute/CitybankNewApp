@@ -100,7 +100,7 @@ class Accounts extends Component {
     level3(account) {
         return (
             <View key={"level3"}>
-                <TouchableOpacity disabled={true} onPress={() => this.props.navigation.navigate("AccountDetails")}>
+                <TouchableOpacity  onPress={() => this.props.navigation.navigate("AccountStatement")}>
                     <View style={styles.level3}>
                         <Text style={CommonStyle.midTextStyle}>{unicodeToChar(account.PRODUCTNAME)}</Text>
                         <View style={{flexDirection: "row", marginTop: 2}}>

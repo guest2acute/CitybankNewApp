@@ -368,7 +368,8 @@ class MobileRecharge extends Component {
 
     render() {
         let language = this.props.language;
-        return (<View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+        return (
+            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity

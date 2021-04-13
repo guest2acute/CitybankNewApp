@@ -19,7 +19,7 @@ class Payments extends Component {
              this.props.navigation.navigate("CityCreditCard")
              break;
             case "ValueAddedServices":
-                this.props.navigation.navigate("MobileRecharge")
+                this.props.navigation.navigate("ValueAddedServices")
                 break;
             case "VisaInstantPayment":
                 this.props.navigation.navigate("MobileRecharge")

@@ -9,7 +9,7 @@ import {
     TouchableHighlight,
     SafeAreaView,
     FlatList,
-    Alert, Dimensions
+    Alert, Dimensions, SectionList
 } from "react-native";
 
 import {actions} from "../../redux/actions";
@@ -22,8 +22,8 @@ import CommonStyle from "../../resources/CommonStyle";
 import fontStyle from "../../resources/FontStyle";
 import FontSize from "../../resources/ManageFontSize";
 import StorageClass from "../../utilize/StorageClass";
-import Swipeable from 'react-native-swipeable-row';
-import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
+import NestedListView, {NestedRow} from 'react-native-nested-listview'
+import {unicodeToChar} from "../Requests/CommonRequest";
 
 /**
  * splash page
@@ -36,25 +36,21 @@ class Favorite extends Component {
         let language = props.language;
         console.log("language", language.bkash_account)
         this.state = {
-            data: [
+            updateTitle: props.route.params.title,
+            data: [{
+                title: 'Favorite Transaction',
+                items: [{ id: 0,title: 'Send Money To Main'},
+                    { id: 1,title: 'Transfer to Other Account'}, { id: 2,title: 'Send To Son'}
+                ]
+            },
                 {
-                    id: 0,
-                    title: language.Donation,
-                    description: language.transfer_bkash
-                },
-                {
-                    id: 1,
-                    title: language.Donation,
-                    description: language.transfer_bkash
+                    title: 'Favorite Payments',
+                    items: [{id: 0,title: 'Pay Internet Vendor'}]
                 }
             ],
-            updateTitle: props.route.params.title
+            contentVisible: false
         }
     }
-
-    /**
-     * redirect to landing screen
-     */
 
     async componentDidMount() {
         if (Platform.OS === "android") {
@@ -69,6 +65,7 @@ class Favorite extends Component {
             tabBarLabel: this.props.language.transfer
         });
     }
+
 
     moveScreen(item) {
         console.log(item)
@@ -96,65 +93,49 @@ class Favorite extends Component {
         }*/
     }
 
+    level1(node) {
+        return (
+            <View key={"level1"} style={styles.level2}>
+                <Text
+                    style={[CommonStyle.midTextStyle, {}]}>{unicodeToChar(node.title)}</Text>
+            </View>)
+    }
 
-    _renderItem = (data, rowMap) => (
-        <View>
-            <TouchableOpacity
-                // onPress={() => rowMap[data.item.id].closeRow()}
-                style={styles.rowFront}>
-                <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                    <View style={{
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        marginStart: 10,
-                        marginEnd: 10
-                    }}>
-                        <Text style={CommonStyle.textStyle}>{data.item.title}</Text>
-                        <Text style={CommonStyle.textStyle}>{data.item.description}</Text>
-                    </View>
-                    <View>
-                        <Image style={{
-                            height: Utility.setHeight(12),
-                            width: Utility.setWidth(30),
-                            tintColor: "#b5bfc1"
-                        }} resizeMode={"contain"}
-                               source={require("../../resources/images/arrow_right_ios.png")}/>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        </View>
+    deleteValue(data,items) {
+        console.log(this.state.data)
+        let tempArray=[];
+        let object=null;
 
-    )
-
-    closeRow = (rowMap, rowKey) => {
-        if (rowMap[rowKey]) {
-            rowMap[rowKey].closeRow();
+        for (let i=0; i < data.length; i++) {
+            console.log("items array",data[i].items)
+            let filterArray = data[i].items.filter(e => e.id !== items.id)
+             object = {title: data[i].title,items:filterArray};
+            tempArray.push(object);
         }
-    };
-
-    deleteRow = (data, rowMap) => {
-        Alert.alert(
-            Config.appName,
-            this.props.language.deleteAlert,
-            [
-                {text: this.props.language.no_txt},
-                {text: this.props.language.yes_txt, onPress: () => this.deleteValue(data)},
-            ]
-        );
+        console.log("tempArray",tempArray)
+        this.setState({
+            data:tempArray
+        })
     }
 
-    deleteValue(data) {
-        const filterArray = this.state.data.filter(e => e.id !== data.item.id)
-        this.setState({data: filterArray})
-    }
 
-    bottomLine() {
-        return (<View style={{
-            height: 1,
-            marginLeft: 10,
-            marginRight: 10,
-            backgroundColor: "#D3D1D2"
-        }}/>)
+    level2(node) {
+        return (
+            <View style={styles.rowFront}>
+                <Text
+                    style={[CommonStyle.midTextStyle, {flex: 1}]}>{unicodeToChar(node.title)}</Text>
+                <TouchableOpacity onPress={() => this.deleteValue(this.state.data,node)}  style={{
+                    width: 25,
+                    height: 25,
+                }}>
+                    <Image style={{
+                        width: 20,
+                        height: 20,
+                        tintColor: themeStyle.THEME_COLOR,
+                    }} resizeMode={"contain"} source={require("../../resources/images/icon-close.png")}/>
+                </TouchableOpacity>
+            </View>
+        )
     }
 
     render() {
@@ -185,41 +166,23 @@ class Favorite extends Component {
                                source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{alignItems: "center", paddingTop: 10, paddingBottom: 10}}>
-                    <Text style={styles.title}>{language.favoriteTitle}</Text>
-                </View>
-                    <SwipeListView
-                         disableRightSwipe={true}
+                <View>
+                    <NestedListView
                         data={this.state.data}
-                        renderItem={this._renderItem}
-                        keyExtractor={(item, index) => index + ""}
-                        renderHiddenItem={(data, rowMap) => (
-                            <View style={styles.rowBack} onStartShouldSetResponder={
-                                () => this.closeRow(rowMap, data.item.id)
-                            }>
-                               {/* <TouchableOpacity
-                                    style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                                    onPress={() => this.closeRow(rowMap, data.item.id)}
-                                >
-                                    <Text style={styles.backTextWhite}>Close</Text>
-                                </TouchableOpacity>*/}
-                                <TouchableOpacity
-                                    style={[styles.backRightBtn, styles.backRightBtnRight]}
-                                    onPress={() => this.deleteRow(data, rowMap)}
-                                >
-                                    <Image style={{
-                                        height: Utility.setHeight(22),
-                                        width: Utility.setWidth(30),
-                                        tintColor: themeStyle.WHITE
-                                    }} resizeMode={"contain"}
-                                           source={require("../../resources/images/trash.png")}/>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        leftOpenValue={75}
-                        // rightOpenValue={-300}
-                        rightOpenValue={-Utility.getDeviceWidth()}
+                        getChildrenName={(node) => 'items'}
+                        onNodePressed={(node) => this.setState({contentVisible: !this.state.contentVisible})}
+                        renderNode={(node, level, isLastLevel) => {
+                            return (
+                                <NestedRow
+                                    paddingLeftIncrement={0}
+                                    level={level}>
+                                    {level === 1 ? this.level1(node) : level === 2 ? this.level2(node) : null}
+                                </NestedRow>
+                            )
+                        }
+                        }
                     />
+                </View>
             </View>
         );
     }
@@ -232,31 +195,6 @@ const styles = {
         justifyContent: "center",
         backgroundColor: themeStyle.BG_COLOR,
     },
-    rowBack: {
-        backgroundColor: themeStyle.THEME_COLOR,
-        flex: 1,
-        // paddingLeft: 25,
-    },
-    backRightBtn: {
-        backgroundColor: "yellow",
-        alignItems: 'center',
-        bottom: 0,
-        justifyContent: 'center',
-        position: 'absolute',
-        top: 0,
-        width: 75,
-    },
-    backRightBtnRight: {
-        backgroundColor: themeStyle.THEME_COLOR,
-        right: 0,
-    },
-    backRightBtnLeft: {
-        backgroundColor: 'blue',
-        right: 75,
-    },
-    backTextWhite: {
-        color: '#FFF',
-    },
     toolbar: {
         justifyContent: "center",
         backgroundColor: themeStyle.THEME_COLOR,
@@ -268,16 +206,40 @@ const styles = {
         fontSize: FontSize.getSize(14),
         color: themeStyle.THEME_COLOR
     },
-    rowFront: {
-        flex:1,
-        backgroundColor: themeStyle.WHITE,
-        borderBottomColor: themeStyle.SEPARATOR,
-        borderTopColor: themeStyle.SEPARATOR,
-        borderTopWidth: 1,
-        justifyContent: "center",
-        borderBottomWidth: 1,
-        height: 50,
+    level1: {
+        backgroundColor: themeStyle.THEME_COLOR,
+        height: Utility.setHeight(35),
+        alignItems: "center",
+        paddingStart: 10,
+        paddingEnd: 10,
+        flexDirection: "row",
+        marginTop: 10,
     },
+    level2: {
+        backgroundColor: themeStyle.TITLE_BG,
+        height: Utility.setHeight(35),
+        alignItems: "center",
+        paddingStart: 10,
+        paddingEnd: 10,
+        marginTop: 10,
+        flexDirection: "row"
+    },
+    level3: {
+        backgroundColor: themeStyle.WHITE,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 13,
+        marginBottom: 13
+    },
+    rowFront: {
+        alignItems: 'center',
+        flexDirection: "row",
+        backgroundColor: themeStyle.WHITE,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 10,
+        flex: 1
+    }
 }
 
 

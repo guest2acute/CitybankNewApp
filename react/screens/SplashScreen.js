@@ -111,7 +111,6 @@ const styles = {
         justifyContent: "center",
         backgroundColor: themeStyle.BG_COLOR,
     },
-
 };
 
 
