@@ -75,6 +75,10 @@ import QRMerchantPayment from "./react/screens/More/QRMerchantPayment";
 import Otp from "./react/screens/Trasfer/Otp";
 import TransferCompleted from "./react/screens/Trasfer/TransferCompleted";
 import TransferConfirm from "./react/screens/Trasfer/TransferConfirm";
+import AccountStatement from "./react/screens/BottomTabs/AccountStatement";
+import ValueAddedServices from "./react/screens/Payments/ValueAddedServices";
+import ClubBillPayment from "./react/screens/Payments/ValueAddedServices/ClubBillPayment";
+import UtilityBillPayment from "./react/screens/Payments/ValueAddedServices/UtilityBillPayment";
 
 
 const store = configureStore(window.__State__);
@@ -139,7 +143,6 @@ const BottomNavigator = () => {
     );
 }
 
-
 function TransferTab() {
     return (
         <Stack.Navigator initialRouteName={"Transfer"} mode={"modal"} screenOptions={{
@@ -177,7 +180,6 @@ function TransferTab() {
             <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
             <Stack.Screen name="TransferCompleted" component={TransferCompleted} options={{headerShown: false}}/>
             <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
-            <Stack.Screen name="TransferConfirm" component={TransferConfirm} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -190,12 +192,17 @@ function PaymentTab() {
             <Stack.Screen name="MobileRecharge" component={MobileRecharge} options={{headerShown: false}}/>
             <Stack.Screen name="CityCreditCard" component={CityCreditCard} options={{headerShown: false}}/>
             <Stack.Screen name="Favorite" component={Favorite} options={{headerShown: false}}/>
+            <Stack.Screen name="ValueAddedServices" component={ValueAddedServices} options={{headerShown: false}}/>
+            <Stack.Screen name="UtilityBillPayment" component={UtilityBillPayment} options={{headerShown: false}}/>
+            <Stack.Screen name="ClubBillPayment" component={ClubBillPayment} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferConfirm" component={TransferConfirm} options={{headerShown: false}}/>
+            <Stack.Screen name="SecurityVerification" component={SecurityVerification} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
 function CityPayTab() {
     return (
-        <Stack.Navigator initialRouteName={"Payments"} mode={"modal"} screenOptions={{
+        <Stack.Navigator initialRouteName={"CityPay"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
@@ -210,6 +217,7 @@ function AccountTab() {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
             <Stack.Screen name="Accounts" component={Accounts} options={{headerShown: false}}/>
+            <Stack.Screen name="AccountStatement" component={AccountStatement} options={{headerShown: false}}/>
             <Stack.Screen name="AccountDetails" component={AccountDetails} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
@@ -239,14 +247,18 @@ function MoreTab() {
             <Stack.Screen name="RequestMonitor" component={RequestMonitor} options={{headerShown: false}}/>
             <Stack.Screen name="OtpLockUnlock" component={OtpLockUnlock} options={{headerShown: false}}/>
             <Stack.Screen name="QRMerchantPayment" component={QRMerchantPayment} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferConfirm" component={TransferConfirm} options={{headerShown: false}}/>
+            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
+            <Stack.Screen name="SecurityVerification" component={SecurityVerification} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
 function Root() {
     return (
-        <Stack.Navigator initialRouteName={"SplashScreen"} mode={"modal"} screenOptions={{
+        <Stack.Navigator initialRouteName={"AccountStatement"} mode={"modal"} screenOptions={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>
+{/*            <Stack.Screen name="AccountStatement" component={AccountStatement} options={{headerShown: false}}/>*/}
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name="CredentialDetails" component={CredentialDetails} options={{headerShown: false}}/>
@@ -260,8 +272,6 @@ function Root() {
                           options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
             <Stack.Screen name="CityPayTab" component={CityPayTab} options={{headerShown: false}}/>
-        {/*    <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>*/}
-
         </Stack.Navigator>);
 }
 
