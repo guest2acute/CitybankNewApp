@@ -1332,7 +1332,7 @@ export default {
     error_from_date: "তারিখ থেকে নির্বাচন করুন",
     error_end_date: "শেষের তারিখটি নির্বাচন করুন",
     movie_tickets : "ছবির টিকেটগুলি",
-    utility_bank_payment: "ইউটিলিটি ব্যাংক পেমেন্ট",
+    utility_bank_payment: "ইউটিলিটি বিল পেমেন্ট",
     internet_bill_payment: "ইন্টারনেট বিল পেমেন্ট",
     club_bill_payment: "ক্লাব বিল পেমেন্ট",
     insurance_payment: "বীমা প্রদান",
@@ -1359,6 +1359,23 @@ export default {
 
     /*error message*/
     error_select_company_name: "দয়া করে সংস্থার নাম নির্বাচন করুন",
-    error_bill: "বিল নম্বর প্রয়োজনীয়"
+    error_bill: "বিল নম্বর প্রয়োজনীয়",
+
+    /*club bill payments*/
+    club_name: "ক্লাব নাম",
+    select_club_name:"ক্লাবের নাম নির্বাচন করুন",
+    member_id: "সদস্য আইডি",
+    name_of_the_member: "সদস্যের নাম",
+    member_type: "সদস্যের প্রকার",
+    member_since: "সদস্য যেহেতু",
+    amount:"পরিমাণ",
+    club_name_props: [
+        {label: "আল্ট্রা ক্লাব", value: 0},
+        {label: "গুলশান ক্লাব", value: 1},
+        {label: "চট্টগ্রাম ক্লাব লিমিটেড", value: 2}
+    ],
+    error_select_club_name: "ক্লাবের নামটি নির্বাচন করুন",
+    require_memberId: 'Member Id is requires'
+
 }
 

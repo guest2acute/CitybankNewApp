@@ -16,8 +16,9 @@ import themeStyle from "../../../resources/theme.style";
 import CommonStyle from "../../../resources/CommonStyle";
 import Utility from "../../../utilize/Utility";
 import {BusyIndicator} from "../../../resources/busy-indicator";
+import RadioForm from "react-native-simple-radio-button";
 
-class UtilityBankPayment extends Component {
+class UtilityBillPayment extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -46,7 +47,7 @@ class UtilityBankPayment extends Component {
             vat:"",
             grandTotal:"",
             accountNumber:"",
-
+            otp_type:0
         }
     }
 
@@ -125,18 +126,18 @@ class UtilityBankPayment extends Component {
             {key: language.payment_status, value: this.state.paymentStatus},
             {key: language.fromAccount, value: this.state.SelectFromAccount},
             {key: language.available_bal, value: this.state.availableBalance},
-            {key: language.totalAmount, value: this.state.totalAmount},
             {key: language.services_charge, value: this.state.servicesCharge},
             {key: language.vat, value: this.state.vat},
             {key: language.grand_total, value: this.state.grandTotal},
+            {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
         );
 
         console.log("tempArr", tempArr)
 
         this.props.navigation.navigate("TransferConfirm", {
-            routeVal: [{name: 'Payments'},{name: 'UtilityBankPayment'}],
+            routeVal: [{name: 'Payments'},{name: 'UtilityBillPayment'}],
             routeIndex: 1,
-            title: language.utility_bank_payment,
+            title: language.utility_bill_payment,
             transferArray:tempArr,
             screenName:"SecurityVerification"
         });
@@ -351,7 +352,7 @@ class UtilityBankPayment extends Component {
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-                <View style={{
+{/*                <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
@@ -361,7 +362,7 @@ class UtilityBankPayment extends Component {
                     <Text style={CommonStyle.viewText}>{this.state.totalAmount}</Text>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>*/}
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -398,6 +399,36 @@ class UtilityBankPayment extends Component {
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10
+                }}>
+                    <Text style={[CommonStyle.textStyle]}>
+                        {language.otpType}
+                        <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
+                    </Text>
+
+                    <RadioForm
+                        radio_props={language.otp_props}
+                        initial={this.state.otp_type}
+                        buttonSize={9}
+                        selectedButtonColor={themeStyle.THEME_COLOR}
+                        formHorizontal={true}
+                        labelHorizontal={true}
+                        borderWidth={1}
+                        buttonColor={themeStyle.GRAY_COLOR}
+                        labelColor={themeStyle.BLACK}
+                        labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
+                        style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
+                        animation={true}
+                        onPress={(value) => {
+                            this.setState({otp_type: value});
+                        }}
+                    />
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
             </View>
         )
     }
@@ -416,7 +447,7 @@ class UtilityBankPayment extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.utility_bank_payment}</Text>
+                    <Text style={CommonStyle.title}>{language.utility_bill_payment}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
@@ -558,4 +589,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(UtilityBankPayment);
+export default connect(mapStateToProps)(UtilityBillPayment);

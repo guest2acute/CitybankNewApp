@@ -575,9 +575,9 @@ export const ValueAddedServicesDetails = (language) => {
             redirectScreen: "MovieTickets"
         },
         {
-            id: "utilityBankPayment",
-            title: language.utility_bank_payment,
-            redirectScreen: "UtilityBankPayment",
+            id: "UtilityBillPayment",
+            title: language.utility_bill_payment,
+            redirectScreen: "UtilityBillPayment",
         },
         {
             id: "InternetBillPayment",

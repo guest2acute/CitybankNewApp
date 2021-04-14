@@ -1327,7 +1327,7 @@ export default {
     error_from_date: "Select From Date",
     error_end_date: "Select End Date",
     movie_tickets : "Movie Tickets",
-    utility_bank_payment: "Utility Bank Payment",
+    utility_bill_payment: "Utility Bill Payment",
     internet_bill_payment: "Internet Bill Payment",
     club_bill_payment: "Club Bill Payment",
     insurance_payment: "Insurance Payment",
@@ -1354,6 +1354,23 @@ export default {
 
     /*error message*/
     error_select_company_name: "Please Select Company Name",
-    error_bill: "Bill Number is Required"
+    error_bill: "Bill Number is Required",
+
+    /*club bill payments*/
+    club_name: "Club Name",
+    select_club_name:"Select Club Name",
+    member_id: "Member Id",
+    name_of_the_member: "Name Of The Member",
+    member_type: "Member Type",
+    member_since: "Member Since",
+    amount:"Amount",
+    club_name_props: [
+        {label: "Ultara Club", value: 0},
+        {label: "Gulshan Club", value: 1},
+        {label: "Chittagong Club Limited", value: 2}
+    ],
+    error_select_club_name: "Please Select Club Name",
+    require_memberId: 'Member Id is requires'
+
 
 }
