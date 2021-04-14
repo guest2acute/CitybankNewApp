@@ -135,7 +135,6 @@ class SecurityVerification extends Component {
         }
     }
 
-    //beneficiary verification
     async processVerification() {
         this.setState({isProgress: true});
         const {authFlag, selectTypeVal, cardPin, transactionPin} = this.state;

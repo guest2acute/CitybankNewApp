@@ -611,7 +611,7 @@ export default {
     type_Branch: "Branch Name",
     select_branch_name: "Select Branch Name",
 
-    notes: "Notes",
+    conAmt: "Convenience Amount",
     note: "Note:",
 
     add_beneficiary_transfer: "Add Beneficiary-Transfer to bkash",
@@ -628,13 +628,13 @@ export default {
     select_nickname: "Select Nickname",
     bkash_account: "bkash Account",
     bkash_name: "Name",
-    fromAccount: "From Account",
-    bkash_select_acct: "Select Account",
+    select_acct: "Select Account",
     available_bal: "Available Balance",
     transfer_amount: "Transfer Amount",
     services_charge: "Services Charge",
     grand_total: "Grand Total",
     remarks: "Remarks",
+    tipAmt: "Tip Amount",
     selectNickType: "Select Nickname",
     nickTypeArr: [
         {key: "0", label: "Ebad Vai", value: 0},
@@ -652,7 +652,7 @@ export default {
     errTransferAmt: "Minimum transfer limit is",
     errMaxTransferAmt: "Maximum transfer limit is",
     errRemarks: "Remarks is Required",
-    errPrepaidStaff:"Transfer from prepaid card to staff account is not allowed",
+    errPrepaidStaff: "Transfer from prepaid card to staff account is not allowed",
     /*Cash By Code message*/
     cashbycode: "Cash By Code",
     select_debit_card: "Select Debit Card",
@@ -721,6 +721,9 @@ export default {
     other_bank_props: [
         {label: "BEFTN(Regular Transfer)", value: 0},
         {label: "RTGS(Instant Transfer)", value: 1},
+        {label: "NPSB(Instant Transfer)", value: 2},
+    ],
+    npsb_bank_props: [
         {label: "NPSB(Instant Transfer)", value: 2},
     ],
     transfer_mode: "Transfer Mode",
@@ -1067,7 +1070,7 @@ export default {
     newPIn_placeholder: "Enter New Pin",
     confirmPin_placeholder: "Re-enter New Pin",
     error_pinChangeReason: "PIN Change Reason is Required",
-    error_masking_number:"Masking Number is required",
+    error_masking_number: "Masking Number is required",
     error_newPinNumber: "PIN Number is Required",
     error_confirmPinNumber: "Confirm PIN Number is Required",
 
@@ -1230,51 +1233,59 @@ export default {
     ],
 
     payment_card: "Select Card *",
-    error_card_pin:"Card pin is Required",
-    receipt:"Receipt",
-    thank_you:"Thank You!",
+    error_card_pin: "Card pin is Required",
+    receipt: "Receipt",
+    thank_you: "Thank You!",
     transaction_success: "Transaction Successfully",
     approval_id: "Approval ID 108417268210",
     customer_name: "Customer Name",
-    source_account:"Source Account",
-    receipt_amount:"Amount (BDT)",
-    type:"Type",
-    transaction_date:"Transaction Date & Time",
-    another_qr_payment:"Another Qr Payment",
-    save_share:"Save/Share",
+    source_account: "Source Account",
+    receipt_amount: "Amount (BDT)",
+    type: "Type",
+    transaction_date: "Transaction Date & Time",
+    another_qr_payment: "Another Qr Payment",
+    save_share: "Save/Share",
 
     /*Qr Merchant Payment*/
-        type_selection:"Type of Selection",
-        select_card_qr:"Select the card(s) to perform QR Merchant Payment",
-    transLogin:"Transaction with login only",
-    transLimit:"Set up to 99 transaction limits without login",
-    qr_notes:"If option 2 is selected, upon each successfully transaction the total limit will reduce by one",
+    type_selection: "Type of Selection",
+    select_card_qr: "Select the card(s) to perform QR Merchant Payment",
+    transLogin: "Transaction with login only",
+    transLimit: "Set up to 99 transaction limits without login",
+    qr_notes: "If option 2 is selected, upon each successfully transaction the total limit will reduce by one",
     errorTransactionLimit: "Setup to 99 transaction limit without login",
-    status:"Status",
-    waiting:"Waiting",
-    reference_number:"Reference Number",
-    valid_till:"valid Till",
-    resend_notification:"Re-send Notification",
-    cancel_transfer:"Cancel Transfer",
-    email_transfer_details:"Email Transfer Details",
-    reclaim_money_to:"Reclaim Money To",
-    select_reclaim_money:"Select Reclaim Money",
-    error_reclaim_money:"Select Reclaim Money",
+    status: "Status",
+    waiting: "Waiting",
+    reference_number: "Reference Number",
+    valid_till: "valid Till",
+    resend_notification: "Re-send Notification",
+    cancel_transfer: "Cancel Transfer",
+    email_transfer_details: "Email Transfer Details",
+    reclaim_money_to: "Reclaim Money To",
+    select_reclaim_money: "Select Reclaim Money",
+    error_reclaim_money: "Select Reclaim Money",
     from_account_card: "From Account/Card",
     enter_otp: "Enter Otp",
     transfer_type: "Transfer Type",
     single_transfer: "Single Transfer",
-    transfer_from_beneficiary:"Transfer From Beneficiary",
-    verifyOtp:"Verify OTP",
+    transfer_from_beneficiary: "Transfer From Beneficiary",
+    verifyOtp: "Verify OTP",
 
-    ActNo:"A/c No.",
-    mobileTxt:"Mobile",
-    routingNo:"Routing No.",
-    bankCode:"Bank Code",
+    ActNo: "A/c No.",
+    mobileTxt: "Mobile",
+    routingNo: "Routing No.",
+    bankCode: "Bank Code",
 
     Transaction_success: "Transaction Successfully",
-    trans_success_message:"Your fund has been transferred successfully, please check below details for reference.",
+    trans_success_message: "Your fund has been transferred successfully, please check below details for reference.",
     addToFavorite: "Add To Favourite",
+
+
+    empty_card_list_msg: "You don’t have any card selected. Please select card (s) from QR Merchant Payment tab",
+    empty_card_list_with_out_msg: "You don’t have any card selected. Login to select card (s) from QR Merchant Payment tab",
+    enable_following_card_s_allows_you_to_perform_pay_qr_merchant: "Select the card(s) to perform QR Merchant Payment",
+
+    return_home: "Return To Home",
+    make_another_transfer: "Make Another Transfer",
     smallBalanceTypeArr: [
         {key: "0", label: "50", value: 0},
         {key: "1", label: "100", value: 1},
@@ -1286,17 +1297,19 @@ export default {
     reset_txt: "Reset",
     card_masking_number: "Card Masking Number",
     errConfirmPin: "Pin should be same as confirm pin",
-    change_status : "Change Status",
+    change_status: "Change Status",
 
     statusTypeArr: [
         {key: "0", label: "Stolen", value: 0},
         {key: "1", label: "Restricted", value: 1},
         {key: "2", label: "Lost", value: 2},
     ],
-    select_change_status:"Select Change Status",
+    select_change_status: "Select Change Status",
     errorSelectChangeStatus: "Please select Change Status",
     accountStatement: "Account Statement",
+
     statement_account_number:"Statement for Account Number",
+
     statementTypeArr: [
         {key: "0", label: "2251615410001/GENERAL SAVINGS-STAFF A/C", value: 0},
         {key: "1", label: "2271615410001/ALO SAVINGS-STAFF DST", value: 1},
@@ -1306,6 +1319,13 @@ export default {
     statement_end_date: "Statement Till Date",
     select_from_date: "Select From Date",
     select_end_date: "Select End Date",
+
+
+    debit_card_empty_message: "Please Active your debit card for using this feature.",
+    qr_merchant_without_login_alert:"Please Login First",
+    to_account_card_number: "To Account/Card",
+    et_act_card:"Enter account or card number",
+
     submitRequest: "Submit Request",
     monthly_statement:"Monthly Statement(UP to last 6 Months)",
     statement_format: "Statement Format",
@@ -1371,6 +1391,7 @@ export default {
     ],
     error_select_club_name: "Please Select Club Name",
     require_memberId: 'Member Id is requires'
+
 
 
 }

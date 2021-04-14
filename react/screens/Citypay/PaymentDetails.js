@@ -14,86 +14,54 @@ import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
 import Utility from "../../utilize/Utility";
 import {connect} from "react-redux";
-import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
-import RadioForm from "react-native-simple-radio-button";
+import {QRPAYMENT} from "../Requests/QRRequest";
+import {VERIFYCARDPINDETAIL} from "../Requests/CommonRequest";
+
+let response;
 
 class PaymentDetails extends Component {
     constructor(props) {
         super(props);
+        response = props.route.params.response;
         this.state = {
             isProgress: false,
-            nickname: "",
-            error_nickname: "",
             isMainScreen: true,
-            emailTxt: "",
-            errorEmail: "",
-            mobileNo: "",
-            errorMobileNo: "",
-            merchantName: "",
-            merchantCity: "",
-            paymentAmount: "",
-            grandTotal: "",
-            billNumber: "",
-            storeLabel: "",
-            terminalLabel: "",
+            merchantName: response.MERNAME59,
+            merchantCity: response.MERCITY60,
+            paymentAmount: response.TRANAMOUNT54,
+            grandTotal: response.TRANAMOUNT54,
+            billNumber: response.BILLNUMBER6201,
+            storeLabel: response.STORELABEL6203,
+            terminalLabel: response.TERLABEL6207,
             remarks: "",
             error_remarks: "",
             errorPaymentAmount: "",
             errorCardPin: "",
             cardPin: "",
-            otp_type: 0,
-            data: [
-                {
-                    cardName: "AMEX CITY MAXX DEBIT",
-                    cardNumber: "371599****0857",
-                    isSelected:true,
-                    images: "http://placehold.it/200x200"
-                },
-                {
-                    cardName: "MASTER CARD DEBIT",
-                    cardNumber: "371599****0857",
-                    isSelected:false,
-                    images: "http://placehold.it/200x200"
-                },
-                {
-                    cardName: "VISA PLATINUM",
-                    cardNumber: "371599****0857",
-                    isSelected:false,
-                    images: "http://placehold.it/200x200"
-                },
-                {
-                    cardName: "MASTER CARD DEBIT",
-                    cardNumber: "371599****0857",
-                    isSelected:false,
-                    radio_props: [{label: "", value: 0}],
-                    images: "http://placehold.it/200x200"
-                },
-                {
-                    cardName: "VISA PLATINUM",
-                    cardNumber: "371599****0857",
-                    isSelected:false,
-                    images: "http://placehold.it/200x200"
-                }
-            ]
+            conAmt: "",
+            tipAmt: "",
+            email: "",
+            errorTipAmt: "",
+            data: response.CARD_LIST,
+            cardDetails: response.CARD_LIST.length > 0 ? response.CARD_LIST[0] : null
         }
     }
 
-    otpUpdate( index) {
-        console.log("value", index)
+    selectCard(index) {
         let counter = 0;
         let newArray = [];
         let array = this.state.data;
         array.map((item) => {
-            console.log("test count",counter === index)
             if (counter === index) {
-                item = {...item, isSelected:true}
+                item = {...item, selected: true};
+                this.setState({cardDetails: item});
             } else {
-                item = {...item, isSelected:false}
+                item = {...item, selected: false};
             }
-            console.log("item", item)
-            newArray.push(item)
+
+            newArray.push(item);
             counter++;
         })
 
@@ -103,24 +71,21 @@ class PaymentDetails extends Component {
 
     }
 
-    onSubmit(language, navigation) {
-        console.log("submit")
+    async onSubmit(language, navigation) {
         if (this.state.isMainScreen) {
             if (this.state.paymentAmount === "") {
-                console.log("is main screen")
                 this.setState({errorPaymentAmount: language.error_payment_ammt});
             } else {
                 this.setState({
                     isMainScreen: false
                 })
             }
-        } else{
+        } else {
             if (this.state.cardPin === "") {
                 this.setState({errorCardPin: language.error_card_pin})
-            }else{
-                this.props.navigation.navigate("Receipt")
+            } else {
+                await this.VerifyCard();
             }
-
         }
     }
 
@@ -132,13 +97,49 @@ class PaymentDetails extends Component {
     backEvent() {
         const {isMainScreen} = this.state;
         if (isMainScreen) {
-            console.log("1");
             this.props.navigation.goBack();
         } else {
-            console.log("2");
-            this.setState({isMainScreen: true})
+            this.setState({isMainScreen: true});
         }
     }
+
+    async VerifyCard() {
+        this.setState({isProgress: true});
+        await VERIFYCARDPINDETAIL(this.state.cardDetails.UNMASK_CARD_NO, this.state.cardPin, this.props)
+            .then((response) => {
+                console.log("response", response);
+                this.qrPayment();
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    async qrPayment() {
+        await QRPAYMENT(this.props.userDetails, this.props.route.params.qrVal, this.state.cardDetails, this.state.remarks,
+            this.state.conAmt !== "" ? this.state.conAmt : "0.0",
+            this.state.tipAmt !== "" ? this.state.tipAmt : "0.0", response, this.props)
+            .then((response) => {
+                console.log("response", response);
+                this.setState({
+                    isProgress: false,
+                });
+                this.props.navigation.navigate("Receipt");
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
+    }
+
+    getConAmt() {
+        if (response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 === "02") {
+            this.setState({conAmt: response.CONFEEFIXED56});
+        } else if (response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 === "03") {
+            let amt = this.state.paymentAmount * (response.CONFEEPERCENTAGE57 / 100);
+            this.setState({conAmt: amt});
+        }
+    }
+
 
     paymentDetails(language) {
         return (
@@ -206,7 +207,8 @@ class PaymentDetails extends Component {
                 }}>
                     <Text style={[CommonStyle.textStyle]}>
                         {language.payment_amount}
-                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                        {response.POIMETHOD01 !== "12" ?
+                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text> : null}
                     </Text>
                     <TextInput
                         selectionColor={themeStyle.THEME_COLOR}
@@ -219,12 +221,15 @@ class PaymentDetails extends Component {
                         placeholder={""}
                         onChangeText={text => this.setState({
                             errorPaymentAmount: "",
-                            paymentAmount: Utility.userInput(text)
+                            paymentAmount: Utility.input(text, "1234567890.")
+                        }, () => {
+                            this.getConAmt()
                         })}
                         value={this.state.paymentAmount}
                         multiline={false}
                         numberOfLines={1}
                         contextMenuHidden={true}
+                        editable={response.POIMETHOD01 !== "12"}
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
@@ -233,33 +238,20 @@ class PaymentDetails extends Component {
                 {this.state.errorPaymentAmount !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.errorPaymentAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.grandTotal_bdt}
-                    </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        value={this.state.grandTotal}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        editable={false}
-                    />
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                {response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 !== "" ?
+                    <View><View style={{
+                        flexDirection: "row",
+                        marginStart: 10,
+                        marginEnd: 10,
+                        height: Utility.setHeight(50),
+                        alignItems: "center"
+                    }}>
+                        <Text style={[CommonStyle.textStyle, {flex: 1}]}>{language.conAmt}</Text>
+                        <Text style={CommonStyle.textStyle}>{this.state.conAmt}</Text>
+                    </View><View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                    </View> : null
+                }
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -303,9 +295,6 @@ class PaymentDetails extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={""}
-                        onChangeText={text => this.setState({
-                            storeLabel: Utility.userInput(text)
-                        })}
                         value={this.state.storeLabel}
                         multiline={false}
                         editable={false}
@@ -331,9 +320,6 @@ class PaymentDetails extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={""}
-                        onChangeText={text => this.setState({
-                            terminal_label: Utility.userInput(text)
-                        })}
                         value={this.state.terminalLabel}
                         multiline={false}
                         editable={false}
@@ -343,6 +329,40 @@ class PaymentDetails extends Component {
                         autoCorrect={false}
                     /></View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                {response.hasOwnProperty("ADDICONDATAREQ6209") && response.ADDICONDATAREQ6209 !== "" ?
+                    <View>
+                        <View>
+                            <View style={{
+                                flexDirection: "row",
+                                marginStart: 10,
+                                marginEnd: 10,
+                                height: Utility.setHeight(50),
+                                alignItems: "center"
+                            }}>
+                                <Text style={[CommonStyle.textStyle, {flex: 1}]}>{language.mobile}</Text>
+                                <Text style={CommonStyle.textStyle}>{response.MOBILENUMBER6202}</Text>
+                            </View>
+                            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                        </View>
+                        {response.ADDICONDATAREQ6209 !== "" ?
+                            <View>
+                                <View style={{
+                                    flexDirection: "row",
+                                    marginStart: 10,
+                                    marginEnd: 10,
+                                    height: Utility.setHeight(50),
+                                    alignItems: "center"
+                                }}>
+                                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>{language.email}</Text>
+                                    <Text style={CommonStyle.textStyle}>response.EMAIL_ID}</Text>
+                                </View>
+                                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                            </View> : null}
+                    </View>
+                    : null
+                }
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -387,40 +407,41 @@ class PaymentDetails extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        console.log(console.log("otp type is this", item.radio_props));
+
+        item = {...item, selected: item.hasOwnProperty("selected") ? item.selected : false};
         return (
-            <TouchableOpacity onPress={() => { this.otpUpdate(index)
-            }}>
-                <View style={[styles.renderView, {height: Utility.setHeight(55), backgroundColor:item.isSelected?"#f5dbdc":"#b2b8ba"}]}>
+            <View style={[styles.renderView, {
+                height: Utility.setHeight(55),
+                backgroundColor: item.selected? "#f5dbdc" : "#b2b8ba"
+            }]}>
 
-                    <Image style={{
-                        height: Utility.setHeight(55),
-                        width: Utility.setWidth(63),
-                        borderRadius:5
-                    }} resizeMode={"contain"}
-                           source={{uri: item.images}}/>
-                    <View style={{ flex:1,flexDirection: "column", justifyContent: "center"}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.BLACK,
-                            fontSize: FontSize.getSize(12),
-                            paddingLeft:10,
-                        }]}>{item.cardName}</Text>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.BLACK,
-                            fontSize: FontSize.getSize(12),
-                            paddingLeft:10,
-                        }]}>{item.cardNumber}</Text>
-                    </View>
+                <View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.BLACK,
+                        fontSize: FontSize.getSize(12),
+                        paddingLeft: 10,
+                    }]}>{item.CARD_NAME}</Text>
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.BLACK,
+                        fontSize: FontSize.getSize(12),
+                        paddingLeft: 10,
+                    }]}>{item.SOURCE_NO}</Text>
+                </View>
 
+                <TouchableOpacity onPress={() => {
+                    this.selectCard(index)
+                }}>
                     <Image style={{
                         height: Utility.setHeight(20),
                         width: Utility.setWidth(20),
-                        marginEnd:10,
-                        tintColor:themeStyle.THEME_COLOR,
+                        marginEnd: Utility.setWidth(20),
+                        tintColor: themeStyle.THEME_COLOR,
                     }} resizeMode={"contain"}
-                           source={item.isSelected?require("../../resources/images/check.png"):require("../../resources/images/uncheck.png")}/>
-                </View>
-            </TouchableOpacity>
+                           source={item.selected ? require("../../resources/images/check.png") : require("../../resources/images/uncheck.png")}/>
+                </TouchableOpacity>
+
+            </View>
+
         )
     }
 
@@ -438,7 +459,7 @@ class PaymentDetails extends Component {
         return (
             <View>
                 <View style={[{
-                    backgroundColor:"#b2b8ba",
+                    backgroundColor: "#b2b8ba",
                     height: Utility.setHeight(50),
                     justifyContent: "center",
                     alignItems: "center"
@@ -488,6 +509,41 @@ class PaymentDetails extends Component {
                 {this.state.errorPaymentAmount !== "" ?
                     <Text style={CommonStyle.errorStyle}>{this.state.errorPaymentAmount}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                {response.hasOwnProperty("TIPINDICATOR55") && response.TIPINDICATOR55 === "01" ? <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.tipAmt}
+                        </Text>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={language.et_placeholder}
+                            onChangeText={text => this.setState({
+                                errorTipAmt: "",
+                                tipAmt: Utility.input(text, "1234567890.")
+                            })}
+                            value={this.state.tipAmt}
+                            multiline={false}
+                            numberOfLines={1}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                            maxLength={10}/>
+                    </View>
+                    {this.state.errorTipAmt !== "" ?
+                        <Text style={CommonStyle.errorStyle
+                        }>{this.state.errorTipAmt}</Text> : null}
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                </View> : null}
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -558,44 +614,45 @@ class PaymentDetails extends Component {
                     </TouchableOpacity>
                 </View>
 
-                    {this.state.isMainScreen ? this.paymentDetails(language) : this.nextPaymentDetails(language)}
-                    <View style={{
-                        flexDirection: "row",
-                        marginStart: Utility.setWidth(10),
-                        marginRight: Utility.setWidth(10),
-                        marginTop: Utility.setHeight(20),
-                        marginBottom: Utility.setHeight(20),
-                    }}>
-                        <TouchableOpacity style={{flex: 1}}
-                                          onPress={() => this.backEvent()}>
-                            <View style={{
-                                flex: 1,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                height: Utility.setHeight(46),
-                                borderRadius: Utility.setHeight(23),
-                                borderWidth: 1,
-                                borderColor: themeStyle.THEME_COLOR
-                            }}>
-                                <Text
-                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{width: Utility.setWidth(20)}}/>
+                {this.state.isMainScreen ? this.paymentDetails(language) : this.nextPaymentDetails(language)}
+                <View style={{
+                    flexDirection: "row",
+                    marginStart: Utility.setWidth(10),
+                    marginRight: Utility.setWidth(10),
+                    marginTop: Utility.setHeight(20),
+                    marginBottom: Utility.setHeight(20),
+                }}>
+                    <TouchableOpacity style={{flex: 1}}
+                                      onPress={() => this.backEvent()}>
+                        <View style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: Utility.setHeight(46),
+                            borderRadius: Utility.setHeight(23),
+                            borderWidth: 1,
+                            borderColor: themeStyle.THEME_COLOR,
+                            backgroundColor: themeStyle.WHITE
+                        }}>
+                            <Text
+                                style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.back_txt}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{width: Utility.setWidth(20)}}/>
 
-                        <TouchableOpacity style={{flex: 1}}
-                                          onPress={() => this.onSubmit(language, this.props.navigation)}>
-                            <View style={{
-                                alignItems: "center",
-                                justifyContent: "center",
-                                height: Utility.setHeight(46),
-                                borderRadius: Utility.setHeight(23),
-                                backgroundColor: themeStyle.THEME_COLOR
-                            }}><Text
-                                style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}> {language.next} </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={{flex: 1}}
+                                      onPress={() => this.onSubmit(language, this.props.navigation)}>
+                        <View style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: Utility.setHeight(46),
+                            borderRadius: Utility.setHeight(23),
+                            backgroundColor: themeStyle.THEME_COLOR
+                        }}><Text
+                            style={[CommonStyle.midTextStyle, {color: themeStyle.WHITE}]}> {language.next} </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
 
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
@@ -629,27 +686,19 @@ class PaymentDetails extends Component {
         }
     }
 
-    /*   componentDidUpdate(prevProps, prevState, snapshot) {
-           console.log("this.props.language.account", this.props.language.account);
-           if (prevProps.langId !== this.props.langId) {
-               this.props.navigation.setOptions({
-                   tabBarLabel: this.props.language.transfer
-               });
-           }
-       }*/
-
 }
 
-const styles = {
-    renderView: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 5,
-        marginBottom: 5,
-        alignItems: "center",
+const styles =
+    {
+        renderView: {
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: 5,
+            marginBottom: 5,
+            alignItems: "center"
+        }
     }
-}
 
 
 const mapStateToProps = (state) => {

@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
 import {
-    I18nManager,
     Modal,
     SafeAreaView,
     ScrollView,
@@ -11,13 +10,12 @@ import {
     TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
-import fontStyle from "../../resources/FontStyle";
-import FontSize from "../../resources/ManageFontSize";
 import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import Utility from "../../utilize/Utility";
 import RadioForm from "react-native-simple-radio-button";
+import {OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
 
 class CashByCode extends Component {
     constructor(props) {
@@ -31,7 +29,6 @@ class CashByCode extends Component {
             focusPwd: false,
             isProgress: false,
             selectDebitType: props.language.cash_select_acct,
-            // selectTypeAccount: props.language.select_type_account,
             selectTypeVal: -1,
             modelSelection: "",
             modalVisible: false,
@@ -45,13 +42,14 @@ class CashByCode extends Component {
             remarks: "",
             error_remarks: "",
             errorMobile: "",
-            servicesCharge:"",
+            servicesCharge: "",
             services_charge: "",
             vat: "",
             grandTotal: "",
-            screenSwitcher: false,
             caseCodeType: 0,
-            transferArray:[]
+            transferArray: [],
+            accountArr: [],
+            accountDetails: null
         }
     }
 
@@ -69,74 +67,30 @@ class CashByCode extends Component {
 
     backEvent() {
         this.props.navigation.goBack(null);
-       /* if (this.state.screenSwitcher) {
-            this.setState({
-                screenSwitcher: false
-            })
-        } else {
-            this.props.navigation.goBack();
-            console.log("else part back event")
-        }*/
     }
 
     onSelectItem(item) {
         const {modelSelection,} = this.state;
-       if (modelSelection === "cardType") {
+        if (modelSelection === "cardType") {
             this.setState({selectDebitType: item.label, selectTypeVal: item.value, modalVisible: false})
         }
     }
 
-    resetScreen = (flag) => {
-        console.log("flag", flag);
-        if (flag) {
-            this.setState({
-                nickname: "",
-                account_holder_name: "",
-                currency: "",
-                accountNo: "",
-                type_act: "",
-                stageVal: 0,
-                accountDetails: null,
-            })
-        }
-    }
-
-
     async onSubmit(language, navigation) {
-        const {selectDebitType,availableBalance,transferAmount, mobileNumber, remarks,servicesCharge,vat,grandTotal} = this.state;
 
         if (this.state.selectDebitType === language.cash_select_acct) {
             Utility.alert(language.error_debit_card, language.ok);
-            return;
         } else if (this.state.transferAmount === "") {
             this.setState({error_amount: language.error_amount})
-            return;
         } else if (this.state.mobileNumber === "") {
             this.setState({errorMobile: language.error_mobile})
-            return;
         } else if (!Utility.ValidateMobileNumber(this.state.mobileNumber)) {
             this.setState({errorMobile: language.error_mobile_number})
-            return;
         } else if (this.state.remarks === "") {
             this.setState({error_remarks: language.errRemarks})
-            return;
-        } else if (this.state.screenSwitcher) {
-         /*   this.props.navigation.navigate("SecurityVerification", {
-                REQUEST_CD: "",
-                transType: "fund",
-                routeVal: [{name: 'Transfer'}, {name: 'CashByCode'}],
-                routeIndex: 1
-            })*/
-            this.processRequest(language)
-            console.log("cash by code is this  ")
-            // this.props.navigation.navigate("Otp");
         } else {
-            this.processRequest(language)
-            console.log("else part")
+            this.processRequest(language);
         }
-      /*  this.setState({
-            screenSwitcher: true
-        })*/
     }
 
     processRequest(language) {
@@ -144,47 +98,24 @@ class CashByCode extends Component {
         tempArr.push(
             {key: language.select_card_title, value: this.state.selectDebitType},
             {key: language.available_bal, value: this.state.availableBalance},
-            {key: language.case_code_via, value:language.bkash_otp_props[this.state.caseCodeType].label},
+            {key: language.case_code_via, value: language.bkash_otp_props[this.state.caseCodeType].label},
             {key: language.transfer_amount, value: this.state.transferAmount},
             {key: language.beneficiary_mobile_number, value: this.state.mobileNumber},
-            {key:language.remarks,value:this.state.remarks},
-            {key:language.services_charge,value:this.state.servicesCharge},
-            {key:language.vat,value:this.state.vat},
-            {key:language.grand_total,value:this.state.grandTotal},
-            {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
+            {key: language.remarks, value: this.state.remarks},
+            {key: language.services_charge, value: this.state.servicesCharge},
+            {key: language.vat, value: this.state.vat},
+            {key: language.grand_total, value: this.state.grandTotal},
+            {key: language.otpType, value: language.otp_props[this.state.otp_type].label},
         )
-        console.log("tempArr", tempArr)
-        // this.setState({
-        //     transferArray:tempArr
-        // })
-        // this.props.navigation.navigate("Receipt",{title:language.transfer_bkash,transferArray:this.state.transferArray});
+        console.log("tempArr", tempArr);
 
         this.props.navigation.navigate("TransferConfirm", {
-            routeVal: [{name: 'Transfer'},{name: 'CashByCode'}],
+            routeVal: [{name: 'Transfer'}, {name: 'CashByCode'}],
             routeIndex: 1,
             title: language.cash_by_code,
-            transferArray:tempArr,
-            screenName:"SecurityVerification"
+            transferArray: tempArr,
+            screenName: "SecurityVerification"
         });
-    }
-
-    getListViewItem = (item) => {
-        this.setState({transferAmount: item.label})
-    }
-
-    resetScreen = (flag) => {
-        console.log("flag", flag);
-        if (flag) {
-            this.setState({
-                nickname: "",
-                account_holder_name: "",
-                currency: "",
-                accountNo: "",
-                type_act: "",
-                stageVal: 0,
-                accountDetails: null,
-            })
-        }
     }
 
 
@@ -193,18 +124,18 @@ class CashByCode extends Component {
             <View style={{flex: 1}}>
                 {
                     <Text style={[CommonStyle.labelStyle, {
-                    color: themeStyle.THEME_COLOR,
-                    marginStart: 10,
-                    marginEnd: 10,
-                    marginTop: 6,
-                    marginBottom: 4
-                }]}>
-                    {language.select_card_title}
-                    <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                </Text>
+                        color: themeStyle.THEME_COLOR,
+                        marginStart: 10,
+                        marginEnd: 10,
+                        marginTop: 6,
+                        marginBottom: 4
+                    }]}>
+                        {language.select_card_title}
+                        <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                    </Text>
                 }
                 <TouchableOpacity
-                    onPress={() => this.openModal("cardType", language.select_card, language.accountTypeArr, language)}>
+                    onPress={() => this.openModal("cardType", language.select_card, this.state.accountArr, language)}>
                     <View style={CommonStyle.selectionBg}>
                         <Text style={[CommonStyle.midTextStyle, {
                             color: this.state.selectDebitType === language.cash_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -252,27 +183,7 @@ class CashByCode extends Component {
                 <Text style={{paddingLeft: 5}}>BDT</Text>
             </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            <FlatList horizontal={true}
-                      data={language.balanceTypeArr}
-                      renderItem={({item}) =>
-                          <View>
-                              <TouchableOpacity onPress={this.getListViewItem.bind(this, item)} style={{
-                                  marginRight: 10,
-                                  marginLeft: 10,
-                                  marginTop: 10,
-                                  marginBottom: 10,
-                                  borderRadius: 3,
-                                  padding: 7,
-                                  flexDirection: 'row',
-                                  justifyContent: "space-around",
-                                  backgroundColor: themeStyle.THEME_COLOR
-                              }}>
-                                  <Text
-                                      style={[CommonStyle.textStyle, {color: themeStyle.WHITE}]}>{item.label}</Text>
-                              </TouchableOpacity>
-                          </View>
-                      }
-            />
+
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
@@ -324,17 +235,6 @@ class CashByCode extends Component {
                         {language.beneficiary_mobile_number}
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
-                    {/*
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("BeneficiaryMobileNumber")}>
-                        <Image style={{
-                            height: Utility.setHeight(20),
-                            width: Utility.setWidth(20),
-                            marginLeft: Utility.setWidth(10),
-                            marginRight: Utility.setWidth(10),
-                        }} resizeMode={"contain"}
-                               source={require("../../resources/images/ic_beneficiary.png")}/>
-                    </TouchableOpacity>
-*/}
                     <TextInput
                         ref={(ref) => this.mobileNumberRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
@@ -426,35 +326,6 @@ class CashByCode extends Component {
                 />
             </View>
 
-            {/*
-            <View style={{
-                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                marginEnd: 10
-            }}>
-                <Text style={[CommonStyle.textStyle]}>
-                    {language.otpType}
-                    <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
-                </Text>
-
-                <RadioForm
-                    radio_props={language.otp_props}
-                    initial={0}
-                    buttonSize={9}
-                    selectedButtonColor={themeStyle.THEME_COLOR}
-                    formHorizontal={true}
-                    labelHorizontal={true}
-                    borderWidth={1}
-                    buttonColor={themeStyle.GRAY_COLOR}
-                    labelColor={themeStyle.BLACK}
-                    labelStyle={[CommonStyle.textStyle, {marginRight: 10}]}
-                    style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
-                    animation={true}
-                    onPress={(value) => {
-                        this.setState({otp_type: value});
-                    }}
-                />
-            </View>
-*/}
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
@@ -583,117 +454,6 @@ class CashByCode extends Component {
         </View>)
     }
 
-    cashByCodeConfirm(language) {
-        return (
-            <View>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.select_card_title}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.selectDebitType}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.available_bal}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.availableBalance}</Text>
-                    <Text style={{paddingLeft: 5}}>BDT</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.cash_amount}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.transferAmount}</Text>
-                    <Text style={{paddingLeft: 5}}>BDT</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.beneficiary_mobile_number}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.mobileNumber}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.remarks}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.remarks}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.case_code_via}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{language.bkash_otp_props[this.state.caseCodeType].label}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.services_charge}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.servicesCharge}</Text>
-                    <Text style={{paddingLeft: 5}}>BDT</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.vat}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.vat}</Text>
-                    <Text style={{paddingLeft: 5}}>BDT</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.grand_total}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.grandTotal}</Text>
-                    <Text style={{paddingLeft: 5}}>BDT</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.otpType}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{language.otp_props[this.state.otp_type].label}</Text>
-                </View>
-                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            </View>
-        )
-    }
 
     render() {
         let language = this.props.language;
@@ -708,15 +468,14 @@ class CashByCode extends Component {
                                source={Platform.OS === "android" ?
                                    require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
-                    <Text style={CommonStyle.title}>{language.transfer_bkash}</Text>
+                    <Text style={CommonStyle.title}>{language.cash_by_code}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                       style={{
                                           width: Utility.setWidth(35),
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                                     >
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -726,7 +485,7 @@ class CashByCode extends Component {
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{flex: 1, paddingBottom: 30}}>
-                        {this.state.screenSwitcher ? this.cashByCodeConfirm(language) : this.cashByCodeView(language)}
+                        {this.cashByCodeView(language)}
 
                         <View style={{
                             flexDirection: "row",
@@ -789,7 +548,9 @@ class CashByCode extends Component {
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => item.key}
+                                      data={this.state.modalData}
+                                      keyExtractor={(item, index) => index + ""}
+
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -811,7 +572,7 @@ class CashByCode extends Component {
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
@@ -826,6 +587,32 @@ class CashByCode extends Component {
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
+        await this.getOwnAccounts("DEBITCARDS");
+    }
+
+    async getOwnAccounts(serviceType) {
+        this.setState({isProgress: true});
+
+        await OPERATIVETRNACCT(this.props.userDetails, serviceType, this.props).then((response) => {
+                let resArr = [];
+                if (response.length === 0) {
+                    Utility.alertWithBack(this.props.language.ok, this.props.language.debit_card_empty_message,
+                        this.props.navigation);
+                    return;
+                }
+                response.map((account) => {
+                    resArr.push({
+                        label: account.ACCT_CD + "-" + account.ACCT_TYPE_NAME,
+                        value: account
+                    });
+                });
+                this.setState({isProgress: false, accountArr: resArr});
+            },
+            (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            }
+        );
     }
 
     componentWillUnmount() {
@@ -842,6 +629,7 @@ class CashByCode extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

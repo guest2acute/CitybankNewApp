@@ -427,13 +427,30 @@ class ChangeContactDetails extends Component {
     }
 
     async processChange(language, navigation) {
-        if (this.state.newCredential === "") {
-            this.setState({errorCredential: this.state.select_contact_type.value === 0 ? language.errorNewMobNo : language.errorEmail});
-        } else if (this.state.confNewCredential !== this.state.newCredential) {
-            this.setState({errorConfCredential: this.state.select_contact_type.value === 0 ? language.errorMobConfNo : language.errorConfEmail});
+
+        if (this.state.select_contact_type.value === 0) {
+            if (this.state.newCredential === "") {
+                this.setState({errorCredential: language.errorNewMobNo});
+            }else if (!Utility.ValidateMobileNumber(this.state.newCredential)) {
+                this.setState({errorCredential: language.invalidMobile});
+            } else if (this.state.confNewCredential !== this.state.newCredential) {
+                this.setState({errorConfCredential: language.errorMobConfNo});
+            } else {
+                await this.changeMobEmail(language, navigation);
+            }
         } else {
-            await this.changeMobEmail(language, navigation);
+            if (this.state.newCredential === "") {
+                this.setState({errorCredential: language.errorEmail});
+            }else if (!Utility.validateEmail(this.state.newCredential)) {
+                this.setState({errorCredential: language.invalidEmail});
+            }
+            else if (this.state.confNewCredential !== this.state.newCredential) {
+                this.setState({errorConfCredential: language.errorConfEmail});
+            } else {
+                await this.changeMobEmail(language, navigation);
+            }
         }
+
     }
 
     async verifyOtp() {
@@ -651,6 +668,7 @@ class ChangeContactDetails extends Component {
                         onSubmitEditing={(event) => {
                             this.confRef.focus();
                         }}
+                        maxLength={this.state.select_contact_type.value === 0 ? 11 : 50}
                         autoCorrect={false}/>
                 </View>
                 {this.state.errorCredential !== "" ?
@@ -690,6 +708,7 @@ class ChangeContactDetails extends Component {
                         keyboardType={this.state.select_contact_type.value === 0 ? "number-pad" : "email-address"}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                        maxLength={this.state.select_contact_type.value === 0 ? 11 : 50}
                         autoCorrect={false}/>
                 </View>
                 {this.state.errorConfCredential !== "" ?
@@ -790,26 +809,26 @@ class ChangeContactDetails extends Component {
 
             {this.state.select_contact_type.value !== -1 ?
                 <View>
-                <Text style={[CommonStyle.labelStyle, {
-                    color: themeStyle.THEME_COLOR,
-                    marginStart: 10,
-                    marginEnd: 10,
-                    marginTop: 6,
-                    marginBottom: 4
-                }]}>
-                    {language.changeIn}
-                </Text>
-                <TouchableOpacity
-                    onPress={() => this.openModal("accountType", language.select_txt, this.state.changeInArr, language)}>
-                    <View style={CommonStyle.selectionBg}>
-                        <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
-                            {this.state.selectActCard.label}
-                        </Text>
-                        <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                               source={require("../resources/images/ic_arrow_down.png")}/>
-                    </View>
-                </TouchableOpacity>
-            </View> : null}
+                    <Text style={[CommonStyle.labelStyle, {
+                        color: themeStyle.THEME_COLOR,
+                        marginStart: 10,
+                        marginEnd: 10,
+                        marginTop: 6,
+                        marginBottom: 4
+                    }]}>
+                        {language.changeIn}
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => this.openModal("accountType", language.select_txt, this.state.changeInArr, language)}>
+                        <View style={CommonStyle.selectionBg}>
+                            <Text style={[CommonStyle.midTextStyle, {color: themeStyle.BLACK, flex: 1}]}>
+                                {this.state.selectActCard.label}
+                            </Text>
+                            <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                                   source={require("../resources/images/ic_arrow_down.png")}/>
+                        </View>
+                    </TouchableOpacity>
+                </View> : null}
         </View>)
     }
 

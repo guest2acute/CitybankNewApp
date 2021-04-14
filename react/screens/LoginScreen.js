@@ -24,6 +24,7 @@ import StorageClass from "../utilize/StorageClass";
 import {CommonActions, StackActions} from "@react-navigation/native";
 import ApiRequest from "../config/ApiRequest";
 import {DeviceChange, unicodeToChar} from "./Requests/CommonRequest";
+import {QRSCANCODE} from "./Requests/QRRequest";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -75,6 +76,7 @@ class LoginScreen extends Component {
             TXN_PASS_EXP_ALERT_MSG: response.TXN_PASS_EXP_ALERT_MSG,
             USER_PROFILE_IMG: response.USER_PROFILE_IMG,
             TXN_PASS_REG_FLAG: response.TXN_PASS_REG_FLAG,
+            EMAIL_ID: response.EMAIL_ID,
         };
 
         Config.userRequest = {
@@ -100,7 +102,9 @@ class LoginScreen extends Component {
             )
         } else {
             this.props.navigation.dispatch(
-                StackActions.replace("LoginConfigureProfile", {userID: response.USER_ID})
+                StackActions.replace("LoginConfigureProfile", {
+                    userID: response.USER_ID,activityCD: response.USER_ID
+                })
             )
         }
 
@@ -158,6 +162,35 @@ class LoginScreen extends Component {
         }).catch(error => {
             this.setState({isProgress: false});
             Utility.alert(this.props.language.somethingWrong, this.props.language.ok);
+        });
+    }
+
+    async getQrDetails() {
+
+        this.setState({isProgress: true});
+        let userDetails = {
+            USER_ID: await StorageClass.retrieve(Config.isFirstTime),
+            ACTIVITY_CD: "",
+            CUSTOMER_ID: ""
+        }
+
+        if (userDetails.USER_ID === null || userDetails.USER_ID === "") {
+            Utility.alert(this.props.language.qr_merchant_without_login_alert,this.props.language.ok);
+            return;
+        }
+
+        QRSCANCODE(userDetails, "", "", "", "N", this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            });
+            this.props.navigation.navigate("CityPay", {
+                isLoggedIn: "N"
+            });
+
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
         });
     }
 
@@ -357,7 +390,7 @@ class LoginScreen extends Component {
                                 }}>{language.open_account}</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate("CityPay")}>
+                        <TouchableOpacity onPress={() => this.getQrDetails()}>
                             <Image style={{
                                 alignSelf: "center",
                                 marginTop: Utility.setHeight(20),
@@ -476,6 +509,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
+        userDetails: state.accountReducer.userDetails,
         langId: state.accountReducer.langId,
         language: state.accountReducer.language,
     };

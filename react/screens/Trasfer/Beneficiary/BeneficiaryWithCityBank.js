@@ -64,12 +64,16 @@ class BeneficiaryWithCityBank extends Component {
             if (nickname === "") {
                 this.setState({error_nickname: language.require_nickname});
             } else if (accountNo.length !== 13) {
-                this.setState({error_accountNo: language.require_accnumber});
+                this.setState({error_accountNo: language.require_accnumber}); 
             } else if (account_holder_name === "") {
                 this.getActDetails(language);
-            } else if (this.state.mobile_number !== "" && this.state.mobileNo.length < 11) {
+            }
+            else if (this.state.mobile_number !== "" && !Utility.ValidateMobileNumber(this.state.mobile_number)) {
                 this.setState({errorMobileNo: language.invalidMobile});
-            } else {
+            } else if (this.state.emailTxt !== "" && !Utility.validateEmail(this.state.emailTxt)) {
+                this.setState({errorEmail: language.invalidEmail});
+            }
+            else {
                 this.setState({stageVal: stageVal + 1});
             }
         } else if (stageVal === 1) {

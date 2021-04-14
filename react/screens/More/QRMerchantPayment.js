@@ -28,7 +28,6 @@ class QRMerchantPayment extends Component {
         super(props);
         this.state = {
             isProgress: false,
-            isSelected: false,
             selection_type: 0,
             limit: "",
             error_limit: "",

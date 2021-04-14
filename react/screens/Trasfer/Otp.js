@@ -36,7 +36,7 @@ class Otp extends Component {
         if (this.state.otpVal.length !== 4) {
             Utility.alert(language.errOTP, language.ok);
         } else {
-           await this.verifyOTP();
+            await this.verifyOTP();
         }
     }
 
@@ -103,28 +103,41 @@ class Otp extends Component {
     async verifyOTP() {
         this.setState({isProgress: true});
         await FUNDTRFVERIFY(
-            this.props.userDetails, this.props.route.params.REQUEST_CD,this.state.otpVal,this.props)
+            this.props.userDetails, this.props.route.params.REQUEST_CD, this.state.otpVal, this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
-                this.alertConfirm(response.MESSAGE);
+                this.alertConfirm(response);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);
             });
     }
 
-    alertConfirm(msg) {
+    alertConfirm(response) {
         Alert.alert(
             Config.appName,
-            msg,
+            response.MESSAGE,
             [
                 {
                     text: this.props.language.ok, onPress: () => {
-                        this.props.navigation.reset({
-                            index: this.props.route.params.routeIndex,
-                            routes: this.props.route.params.routeVal
-                        });
+                        if (response.STATUS === "999") {
+                            CommonActions.reset({
+                                routes: this.props.route.params.routeVal,
+                                index: this.props.route.params.routeIndex
+                            });
+                        } else {
+                            this.props.navigation.navigate("Receipt",
+                                {
+                                    REQUEST_CD: "",
+                                    transType: "fund",
+                                    response: response,
+                                    routeVal: this.props.route.params.routeVal,
+                                    routIndex: this.props.route.params.routeIndex,
+                                    transferArray: this.props.route.params.transferArray
+                                });
+                        }
+
                     }
                 },
             ]
@@ -171,7 +184,7 @@ class Otp extends Component {
         );
     }
 
-   async componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);

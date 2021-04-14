@@ -28,7 +28,7 @@ class CityCreditCard extends Component {
         this.state = {
             stateVal: 0,
             selectCreditCardType: props.language.selectCreditCard,
-            selectAcctType: props.language.bkash_select_acct,
+            selectAcctType: props.language.select_acct,
             selectPaymentType: props.language.select_payment,
             selectNicknameType: props.language.select_nickname,
             modelSelection: "",
@@ -87,7 +87,7 @@ class CityCreditCard extends Component {
 
     resetVal(language){
         this.setState({
-            selectAcctType:this.props.language.bkash_select_acct,
+            selectAcctType:this.props.language.select_acct,
             availableBalance:"",
             paymentAmount:"",
             services_charge:"",
@@ -145,16 +145,13 @@ class CityCreditCard extends Component {
         if(this.state.stateVal === 0) {
             if (this.state.selectCreditCardType === language.selectCreditCard) {
                 Utility.alert(language.error_select_credit_card,language.ok);
-                return;
-            }else if (this.state.selectAcctType === language.bkash_select_acct) {
+            }else if (this.state.selectAcctType === language.select_acct) {
                 Utility.alert(language.error_select_from_type,language.ok);
-                return;
             }else if (this.state.paymentAmount === "") {
                 this.setState({errorPaymentAmount: language.err_payment_amount})
-                return;
+
             }else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
-                return;
             }
             else if (this.state.transferType === 1) {
                  if (this.state.paymentDate === "") {
@@ -176,7 +173,7 @@ class CityCreditCard extends Component {
                 this.setState({errorCard_Number: language.error_card_number})
                 return;
             }
-              else if (this.state.selectAcctType === language.bkash_select_acct) {
+              else if (this.state.selectAcctType === language.select_acct) {
                   Utility.alert(language.error_select_from_type,language.ok);
                   return;
               }else if (this.state.paymentAmount === "") {
@@ -423,7 +420,7 @@ class CityCreditCard extends Component {
                         onPress={() => this.openModal("accountType", language.select_from_account, language.cardNumber, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.selectAcctType === language.bkash_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                color: this.state.selectAcctType === language.select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectAcctType}

@@ -29,7 +29,6 @@ import dimen from "../resources/Dimens";
 import ApiRequest from "../config/ApiRequest";
 import {BusyIndicator} from "../resources/busy-indicator";
 import {DeviceChange, unicodeToChar} from "./Requests/CommonRequest";
-import {QRSCANCODE} from "./Requests/QRRequest";
 
 
 class PinLogin extends Component {
@@ -184,11 +183,11 @@ class PinLogin extends Component {
         await ApiRequest.apiRequest.callApi(loginReq, {}).then(async result => {
             console.log("responseVal", result);
             this.setState({isProgress: false,});
-            if (result.STATUS === "0") {
+           /* if (result.STATUS === "0") {
                 await this.processLoginResponse(result, userName);
-            } else if (result.STATUS === "71") {
+            } else if (result.STATUS === "71") {*/
                 DeviceChange(result, this.props);
-            } else {
+           /* } else {
                 Alert.alert(
                     Config.appName,
                     unicodeToChar(result.MESSAGE),
@@ -217,7 +216,7 @@ class PinLogin extends Component {
                         },
                     ]
                 );
-            }
+            }*/
         }).catch(error => {
             this.setState({isProgress: false});
             Alert.alert(
@@ -261,7 +260,6 @@ class PinLogin extends Component {
             TXN_PASS_EXP_ALERT_MSG: response.TXN_PASS_EXP_ALERT_MSG,
             USER_PROFILE_IMG: response.USER_PROFILE_IMG,
             TXN_PASS_REG_FLAG: response.TXN_PASS_REG_FLAG,
-            EMAIL_ID: response.EMAIL_ID,
         };
         console.log("userDetails", userDetails);
 
@@ -471,36 +469,6 @@ class PinLogin extends Component {
             ]
         );
     }
-
-    async getQrDetails() {
-        this.setState({isProgress: true});
-
-        let userDetails = {
-            USER_ID: await StorageClass.retrieve(Config.isFirstTime),
-            ACTIVITY_CD: "",
-            CUSTOMER_ID: ""
-        }
-
-        if (userDetails.USER_ID === null || userDetails.USER_ID === "") {
-            Utility.alert(this.props.language.qr_merchant_without_login_alert);
-            return;
-        }
-
-        QRSCANCODE(userDetails, "WithoutLogin", "", "SCAN", "N", this.props).then(response => {
-            console.log("response", response);
-            this.setState({
-                isProgress: false,
-            });
-            this.props.navigation.navigate("CityPay", {
-                isLoggedIn: "N"
-            });
-
-        }).catch(error => {
-            this.setState({isProgress: false});
-            console.log("error", error);
-        });
-    }
-
 
     pinView(language) {
         const {oneFocus, twoFocus, threeFocus, fourFocus, fiveFocus, sixFocus} = this.state;
@@ -780,7 +748,7 @@ class PinLogin extends Component {
                 {this.state.loginPref === "0" ? this.passwordView(language) : this.state.loginPref === "1" ? this.pinView(language) : this.state.loginPref === "2" ? this.fingerView(language) : null}
 
                 {this.state.loginPref !== "2" ?
-                    <TouchableOpacity onPress={() => this.getQrDetails()}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("CityPay")}>
                         <Image style={{
                             alignSelf: "center",
                             marginTop: Utility.setHeight(20),

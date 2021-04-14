@@ -144,10 +144,41 @@ export const FUNDTRFVERIFY = async (userDetails, REQUEST_CD, OTP_NO, props) => {
     return new Promise(async (resolve, reject) => {
         await ApiRequest.apiRequest.callApi(request, {}).then(result => {
             console.log("responseVal", result)
-            if (result.STATUS === "0") {
+            if (result.STATUS === "0" || result.STATUS === "999") {
                 console.log("successResponse", JSON.stringify(result));
                 return resolve(result);
-            } else {
+            }
+            else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(props.language.somethingWrong, props.language.ok);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
+export const GETAMTLABEL = async (userDetails,TRN_TYPE,  props) => {
+    let request = {
+        USER_ID: userDetails.USER_ID,
+        ACTIVITY_CD: userDetails.ACTIVITY_CD,
+        ACTION: "GETAMTLABEL",
+        TRN_TYPE : TRN_TYPE,
+        ...Config.commonReq
+    }
+
+    console.log("request", request);
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {}).then(result => {
+            console.log("responseVal", result)
+            if (result.STATUS === "0" || result.STATUS === "999") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result.RESPONSE[0].AMOUNTLIST);
+            }
+            else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 console.log("errorResponse", JSON.stringify(result));
                 return reject(result.STATUS);

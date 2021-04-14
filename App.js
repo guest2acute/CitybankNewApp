@@ -125,7 +125,7 @@ const BottomNavigator = () => {
                            source={require("./react/resources/images/ic_payment.png")}/>
                 ),
             }}/>
-            <Tab.Screen name="CityPay" component={CityPay} listeners={tabBarListeners} options={{
+            <Tab.Screen name="CityPayTab" component={CityPayTab} listeners={tabBarListeners} options={{
                 tabBarLabel: 'CityPay',
                 tabBarIcon: ({color, size}) => (
                     <Image resizeMode={"contain"} style={{width: size, height: size}}
@@ -207,6 +207,7 @@ function CityPayTab() {
         }}>
             <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
             <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
+            <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -250,6 +251,7 @@ function MoreTab() {
             <Stack.Screen name="TransferConfirm" component={TransferConfirm} options={{headerShown: false}}/>
             <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
             <Stack.Screen name="SecurityVerification" component={SecurityVerification} options={{headerShown: false}}/>
+            <Stack.Screen name="PaymentDetails" component={PaymentDetails} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 
@@ -272,6 +274,8 @@ function Root() {
                           options={{headerShown: false}}/>
             <Stack.Screen name="PinLogin" component={PinLogin} options={{headerShown: false}}/>
             <Stack.Screen name="CityPayTab" component={CityPayTab} options={{headerShown: false}}/>
+            <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
+            <Stack.Screen name="CityPay" component={CityPay} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }
 

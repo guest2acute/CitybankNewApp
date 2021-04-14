@@ -81,7 +81,7 @@ export const blockProcess = async (ACCT_NO, userId, description, props, authFlag
             USER_ID: userId ? userId : "",
             ACTION: "BLOCK_CP_PROCESS",
             BLOCK_PROCESS_TYPE: "UPDATE_BLOCK_STATUS",
-            ACTUAL_ACTION: "USER_REG_REQ",
+            ACTUAL_ACTION: actualAction,
             BLOCK_ACTIVITY_DECRIPTION: description,
             ACCT_NO: ACCT_NO,
             UPDATE_BLOCK_STATUS: "Y",
@@ -106,7 +106,7 @@ export const blockProcess = async (ACCT_NO, userId, description, props, authFlag
 
 }
 
-export const RESENDOTP = async (userDetails,otpType, props) => {
+export const RESENDOTP = async (userDetails, otpType, props) => {
     console.log("userDetails", userDetails);
     return new Promise(async (resolve, reject) => {
         let resendReq = {
@@ -139,13 +139,13 @@ export const RESENDOTP = async (userDetails,otpType, props) => {
 }
 
 
-export const GETBALANCE = async (accountNo,SOURCE,APPCUSTOMER_ID, props) => {
+export const GETBALANCE = async (accountNo, SOURCE, APPCUSTOMER_ID, props) => {
     return new Promise(async (resolve, reject) => {
         let balanceReq = {
             ACCT_NO: accountNo,
             ACTION: "GETACCTBALDETAIL",
-            SOURCE:SOURCE,
-            RES_FLAG: "B",
+            SOURCE: SOURCE,
+            RES_FLAG: "D",
             CURRENCYCODE: "BDT",
             APPCUSTOMER_ID: APPCUSTOMER_ID,
             ...Config.commonReq,
@@ -547,6 +547,7 @@ export const DeviceChange = (result, props) => {
                 text: props.language.yes_txt, onPress: () =>
                     props.navigation.navigate("TermConditionScreen",
                         {
+                            screen:"deviceChange",
                             showButton: true,
                             deviceChangeRes: result.RESPONSE[0],
                         })
@@ -561,6 +562,40 @@ export const unicodeToChar = (text) => {
             return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
         });
 }
+
+
+export const VERIFYCARDPINDETAIL = async (cardNo, cardPin, props) => {
+    let request = {
+        ACTION: "VERIFYCARDPINDETAIL",
+        ACCT_NO: cardNo,
+        CARD_DETAIL: {
+            ACCT_NO: cardNo,
+            CARD_PIN: cardPin,
+        },
+        ...Config.commonReq
+    }
+
+    console.log("request", request);
+
+    return new Promise(async (resolve, reject) => {
+        await ApiRequest.apiRequest.callApi(request, {CARD_VERIFY: "P"}).then(result => {
+            console.log("responseVal", result)
+            if (result.STATUS === "0") {
+                console.log("successResponse", JSON.stringify(result));
+                return resolve(result);
+            } else {
+                Utility.errorManage(result.STATUS, result.MESSAGE, props);
+                console.log("errorResponse", JSON.stringify(result));
+                return reject(result.STATUS);
+            }
+        }).catch(error => {
+            Utility.alert(props.language.somethingWrong, props.language.ok);
+            console.log("error", error);
+            return reject(error);
+        });
+    });
+}
+
 
 export const ValueAddedServicesDetails = (language) => {
     return [
