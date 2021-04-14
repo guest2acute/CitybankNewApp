@@ -1334,11 +1334,70 @@ export default {
     errorSelectChangeStatus: "পরিবর্তন স্থিতি নির্বাচন করুন",
     accountStatement: "অ্যাকাউন্ট বিবৃতি",
 
+
     debit_card_empty_message: "এই সার্ভিসটি ব্যবহার করার জন্য দয়া করে আপনার ডেবিট কার্ডটি সক্রিয় করুন।",
     qr_merchant_without_login_alert: "দয়া করে প্রথমে লগ ইন করুন",
     to_account_card_number: "অ্যাকাউন্ট / কার্ডে",
-    et_act_card:"অ্যাকাউন্ট বা কার্ড নম্বর প্রবেশ করান"
+    et_act_card:"অ্যাকাউন্ট বা কার্ড নম্বর প্রবেশ করান",
+    statement_account_number:"অ্যাকাউন্ট নম্বর জন্য বিবৃতি",
+    statementTypeArr: [
+        {key: "0", label: "2251615410001 / জেনারেল সেভিংস-স্টাফ এ / সি", value: 0},
+        {key: "1", label: "2271615410001 / ALO সাভিং-স্টাফ ডিএসটি", value: 1},
+        {key: "2", label: "2701615410001 / উচ্চ মান সাশ্রয় এ / সি", value: 2},
+    ],
+    statement_from_date: "তারিখ থেকে বিবৃতি",
+    statement_end_date: "বিবৃতি অবধি তারিখ",
+    select_from_date: "তারিখ থেকে নির্বাচন করুন",
+    select_end_date: "শেষের তারিখটি নির্বাচন করুন",
+    submitRequest: "অনুরোধ জমা দিন",
+    monthly_statement:"মাসিক বিবৃতি (ইউপি থেকে শেষ 6 মাস)",
+    statement_format: "বিবৃতি ফর্ম্যাট",
+
+    monthTypeArr: [
+        {key: "0", label: "ফেব্রুয়ারী", value: 0},
+        {key: "1", label: "জান", value: 1},
+        {key: "2", label: "ডিসেম্বর", value: 2},
+        {key: "3", label: "নভেম্বর", value: 3},
+        {key: "4", label: "অক্টোবর", value: 4},
+        {key: "5", label: "সেপ্টেম্বর", value: 5},
+    ],
+    statement_format_props: [
+        {label: "স্ক্রিনে প্রদর্শন করুন", value: 0},
+        {label: "পিডিএফ ফর্ম্যাট হিসাবে সংরক্ষণ করুন", value: 1},
+        {label: "শেষ 15 লেনদেন", value: 2},
+    ],
+    or_txt: "বা",
+    error_select_statement_from_type: "অ্যাকাউন্ট নম্বর জন্য বিবৃতি নির্বাচন করুন",
+    error_from_date: "তারিখ থেকে নির্বাচন করুন",
+    error_end_date: "শেষের তারিখটি নির্বাচন করুন",
+    movie_tickets : "ছবির টিকেটগুলি",
+    utility_bank_payment: "ইউটিলিটি ব্যাংক পেমেন্ট",
+    internet_bill_payment: "ইন্টারনেট বিল পেমেন্ট",
+    club_bill_payment: "ক্লাব বিল পেমেন্ট",
+    insurance_payment: "বীমা প্রদান",
+    tuition_fee: "শিক্ষাদান খরচ",
+    indian_visa_payment: "ইন্ডিয়ান ভিসা প্রসেসিং ফি প্রদান",
+    payee_category:"পেইজ ক্যাটাগরি",
+    payee_list: "পেইস তালিকা",
 
 
+    /*Utility Bank Payment*/
+    company_name: "কোমপানির নাম",
+    wasa_account_number: "ওয়াসার অ্যাকাউন্ট নম্বর",
+    desco_account_number: "ডেসকো অ্যাকাউন্ট নম্বর",
+    customer_mobile_no:"গ্রাহক মোবাইল নম্বর",
+    bill_number: "বিল নম্বর",
+    payable_amount: "প্রদেয় পরিমান",
+    payment_status: "লেনদেনের অবস্থা",
+
+    company_name_props: [
+        {label: "WASA", value: 0},
+        {label: "DESCO", value: 1}
+    ],
+    select_company_name:"কোম্পানির নাম নির্বাচন করুন",
+
+    /*error message*/
+    error_select_company_name: "দয়া করে সংস্থার নাম নির্বাচন করুন",
+    error_bill: "বিল নম্বর প্রয়োজনীয়"
 }
 

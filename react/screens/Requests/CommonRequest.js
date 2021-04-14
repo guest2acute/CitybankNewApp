@@ -81,7 +81,7 @@ export const blockProcess = async (ACCT_NO, userId, description, props, authFlag
             USER_ID: userId ? userId : "",
             ACTION: "BLOCK_CP_PROCESS",
             BLOCK_PROCESS_TYPE: "UPDATE_BLOCK_STATUS",
-            ACTUAL_ACTION: "USER_REG_REQ",
+            ACTUAL_ACTION: actualAction,
             BLOCK_ACTIVITY_DECRIPTION: description,
             ACCT_NO: ACCT_NO,
             UPDATE_BLOCK_STATUS: "Y",
@@ -173,7 +173,7 @@ export const GETBALANCE = async (accountNo, SOURCE, APPCUSTOMER_ID, props) => {
 }
 
 
-export const MoreDetails = (language) => {
+    export const MoreDetails = (language) => {
     return [
         {
             id: "profile",
@@ -488,6 +488,8 @@ export const MoreDetails = (language) => {
         }]
 }
 
+
+
 //luhan algorithm
 export const validateCard = (cardNumber) => {
     let trimmed = String(cardNumber).replace(/[\s]/g, "")
@@ -561,6 +563,7 @@ export const unicodeToChar = (text) => {
         });
 }
 
+
 export const VERIFYCARDPINDETAIL = async (cardNo, cardPin, props) => {
     let request = {
         ACTION: "VERIFYCARDPINDETAIL",
@@ -594,4 +597,50 @@ export const VERIFYCARDPINDETAIL = async (cardNo, cardPin, props) => {
 }
 
 
+export const ValueAddedServicesDetails = (language) => {
+    return [
+        {
+            id: "mobileRecharge",
+            title: language.mobileRecharge,
+            redirectScreen: "MobileRecharge",
+        },
+        {
+            id: "movieTickets",
+            title: language.movie_tickets,
+            redirectScreen: "MovieTickets"
+        },
+        {
+            id: "utilityBankPayment",
+            title: language.utility_bank_payment,
+            redirectScreen: "UtilityBankPayment",
+        },
+        {
+            id: "InternetBillPayment",
+            title: language.internet_bill_payment,
+            redirectScreen: "InternetBillPayment"
+        },
+        {
+            id: "ClubBillPayment",
+            title: language.club_bill_payment,
+            redirectScreen: "ClubBillPayment"
+        },
+        {
+            id: "InsurancePayment",
+            title: language.insurance_payment,
+            redirectScreen: "InsurancePayment"
+        },
+        {
+            id: "TuitionFee",
+            title: language.tuition_fee,
+            redirectScreen: "TuitionFee"
+        },
+        {
+            id: "IndianVisaPayment",
+            title: language.indian_visa_payment,
+            redirectScreen: "IndianVisaPayment"
+        }
+    ]
+
+
+}
 

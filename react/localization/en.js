@@ -1307,7 +1307,9 @@ export default {
     select_change_status: "Select Change Status",
     errorSelectChangeStatus: "Please select Change Status",
     accountStatement: "Account Statement",
-    statement_account_number: "Statement For Account Number",
+
+    statement_account_number:"Statement for Account Number",
+
     statementTypeArr: [
         {key: "0", label: "2251615410001/GENERAL SAVINGS-STAFF A/C", value: 0},
         {key: "1", label: "2271615410001/ALO SAVINGS-STAFF DST", value: 1},
@@ -1318,8 +1320,61 @@ export default {
     select_from_date: "Select From Date",
     select_end_date: "Select End Date",
 
+
     debit_card_empty_message: "Please Active your debit card for using this feature.",
     qr_merchant_without_login_alert:"Please Login First",
     to_account_card_number: "To Account/Card",
-    et_act_card:"Enter account or card number"
+    et_act_card:"Enter account or card number",
+
+    submitRequest: "Submit Request",
+    monthly_statement:"Monthly Statement(UP to last 6 Months)",
+    statement_format: "Statement Format",
+    monthTypeArr: [
+        {key: "0", label: "Feb", value: 0},
+        {key: "1", label: "jan", value: 1},
+        {key: "2", label: "Dec", value: 2},
+        {key: "3", label: "Nov", value: 3},
+        {key: "4", label: "Oct", value: 4},
+        {key: "5", label: "Sep", value: 5},
+    ],
+    statement_format_props: [
+        {label: "Display on Screen", value: 0},
+        {label: "Save as PDF format", value: 1},
+        {label: "Last 15 transaction", value: 2},
+    ],
+    or_txt: "OR",
+    error_select_statement_from_type: "Please Select Statement for Account Number",
+    error_from_date: "Select From Date",
+    error_end_date: "Select End Date",
+    movie_tickets : "Movie Tickets",
+    utility_bank_payment: "Utility Bank Payment",
+    internet_bill_payment: "Internet Bill Payment",
+    club_bill_payment: "Club Bill Payment",
+    insurance_payment: "Insurance Payment",
+    tuition_fee: "Tuition Fee",
+    indian_visa_payment: "Indian Visa Processing Fee Payment",
+    payee_category:"PAYEE CATEGORY",
+    payee_list: "PAYEE LIST",
+    value_added_service_title: "Value Added Services",
+
+    /*Utility Bank Payment*/
+    company_name: "Company Name",
+    wasa_account_number: "WASA Account No",
+    desco_account_number: "DESCO Account No",
+    customer_mobile_no:"Customer Mobile No",
+    bill_number: "Bill Number",
+    payable_amount: "Payable Amount",
+    payment_status: "Payment Status",
+
+    company_name_props: [
+        {label: "WASA", value: 0},
+        {label: "DESCO", value: 1}
+    ],
+    select_company_name:"Select Company Name",
+
+    /*error message*/
+    error_select_company_name: "Please Select Company Name",
+    error_bill: "Bill Number is Required"
+
+
 }
