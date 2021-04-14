@@ -486,7 +486,7 @@ class PinLogin extends Component {
             return;
         }
 
-        QRSCANCODE(userDetails, "", "", "", "N", this.props).then(response => {
+        QRSCANCODE(userDetails, "WithoutLogin", "", "SCAN", "N", this.props).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,

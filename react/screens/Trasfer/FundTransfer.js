@@ -20,7 +20,7 @@ import RadioForm from "react-native-simple-radio-button";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
-import {CHARGEVATAMT, FUNDTRF, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
+import {CHARGEVATAMT, FUNDTRF, GETAMTLABEL, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
 import {GETACCTBALDETAIL, GETBENF} from "../Requests/RequestBeneficiary";
 import {GETBALANCE, unicodeToChar} from "../Requests/CommonRequest";
 import Config from "../../config/Config";
@@ -39,6 +39,7 @@ let initialVar = {
     modalData: [],
     transfer_type: 0,
     toBalance: "",
+    toHolderName: "",
     toCurrency: "",
     transferAmount: "",
     servicesCharge: "",
@@ -49,6 +50,7 @@ let initialVar = {
     numberPayment: "",
     toAccount: "",
     fromBalance: "",
+    fromHolderName: "",
     VAT_AMT_LABEL: "",
     CHARGE_AMT_LABEL: "",
     error_transferAmount: "",
@@ -158,12 +160,14 @@ class FundTransfer extends Component {
                 this.setState({
                     isProgress: false,
                     currency: response.CURRENCYCODE,
+                    fromHolderName: response.ACCOUNTNAME,
                     fromBalance: response.hasOwnProperty("AVAILBALANCE") ? response.AVAILBALANCE : response.BALANCE
                 })
             } else {
                 this.setState({
                     isProgress: false,
                     toCurrency: response.CURRENCYCODE,
+                    toHolderName: response.ACCOUNTNAME,
                     toBalance: response.hasOwnProperty("AVAILBALANCE") ? response.AVAILBALANCE : response.BALANCE
                 })
             }
@@ -289,6 +293,7 @@ class FundTransfer extends Component {
         let screenName = "";
         let userDetails = this.props.userDetails;
         let request = {
+            APP_CUSTOMER_ID:this.state.selectFromActVal.APP_CUSTOMER_ID,
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
@@ -299,6 +304,7 @@ class FundTransfer extends Component {
             REMARKS: this.state.remarks,
             ACCT_NO: this.state.selectFromActVal.ACCT_UNMASK,
             TO_ACCT_NM: "",
+            FROM_ACCT_NM: this.state.fromHolderName,
             NICK_NAME: val === 0 ? "" : this.state.cityTransVal === 0 ? "" : this.state.selectNickVal.NICK_NAME,
             REQ_FLAG: "R",
             REQ_TYPE: val === 1 && this.state.cityTransVal === 1 ? "B" : "I",
@@ -344,7 +350,10 @@ class FundTransfer extends Component {
         if (val === 0) {
             screenName = "Receipt";
         } else if (val === 1) {
-            screenName = "SecurityVerification";
+            if (this.state.cityTransVal === 0)
+                screenName = "SecurityVerification";
+            else
+                screenName = "Otp";
         }
 
         this.props.navigation.navigate("TransferConfirm", {
@@ -380,15 +389,8 @@ class FundTransfer extends Component {
     async getAmtLabel(transType) {
         this.setState({isProgress: true});
 
-        await OPERATIVETRNACCT(this.props.userDetails, transType, this.props).then((response) => {
-                let resArr = [];
-                response.map((account) => {
-                    resArr.push({
-                        label: account.ACCT_CD + "-" + account.ACCT_TYPE_NAME,
-                        value: account
-                    });
-                });
-                this.setState({isProgress: false, accountArr: resArr});
+        await GETAMTLABEL(this.props.userDetails, transType, this.props).then((response) => {
+                this.setState({isProgress: false, actLabelList: response});
             },
             (error) => {
                 this.setState({isProgress: false});
@@ -419,7 +421,7 @@ class FundTransfer extends Component {
         }
         const {selectFromActVal, transferAmount} = this.state;
         this.setState({isProgress: true});
-        await CHARGEVATAMT(this.props.userDetails, "CBLOA", selectFromActVal.APP_INDICATOR,
+        await CHARGEVATAMT(this.props.userDetails, this.state.stateVal === 0 ? "CBLOA" : "CBLTA", selectFromActVal.APP_INDICATOR,
             selectFromActVal.ACCT_UNMASK, transferAmount, this.props)
             .then((response) => {
                 console.log("response", response);
@@ -501,7 +503,7 @@ class FundTransfer extends Component {
 
     getActDetails(language) {
         if (this.state.toAccount.length === 0) {
-            this.setState({errorToAct: language.require_accnumber})
+            this.setState({errorToAct: language.require_accnumber});
             return;
         }
         this.setState({isProgress: true});
@@ -560,7 +562,7 @@ class FundTransfer extends Component {
             </View>
             {this.state.errorToAct !== "" ?
                 <Text style={CommonStyle.errorStyle}>{this.state.errorToAct}</Text> : null}
-
+            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
                 flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                 marginEnd: 10,
@@ -1078,7 +1080,7 @@ class FundTransfer extends Component {
             stateVal: cardCode
         })
         this.resetData(this.props);
-        if (cardCode === 1 && this.state.selectNickArr.length === 0) {
+        if (cardCode === 1) {
             await this.getOwnAccounts("IFT_FUND_TRANSFER");
             await this.getAmtLabel("CBLTA");
             this.getNickList();

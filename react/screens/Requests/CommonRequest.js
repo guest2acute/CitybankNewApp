@@ -145,7 +145,7 @@ export const GETBALANCE = async (accountNo, SOURCE, APPCUSTOMER_ID, props) => {
             ACCT_NO: accountNo,
             ACTION: "GETACCTBALDETAIL",
             SOURCE: SOURCE,
-            RES_FLAG: "B",
+            RES_FLAG: "D",
             CURRENCYCODE: "BDT",
             APPCUSTOMER_ID: APPCUSTOMER_ID,
             ...Config.commonReq,

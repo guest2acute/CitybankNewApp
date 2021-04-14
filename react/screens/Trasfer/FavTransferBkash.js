@@ -30,7 +30,7 @@ class FavTransferBkash extends Component {
             focusUid: false,
             isProgress: false,
             selectNicknameType: props.language.select_nickname,
-            selectAcctType: props.language.bkash_select_acct,
+            selectAcctType: props.language.select_acct,
             selectTypeVal: -1,
             modelSelection: "",
             modalVisible: false,
@@ -76,7 +76,7 @@ class FavTransferBkash extends Component {
             Utility.alert(language.error_select_nickname,language.ok);
             return;
         }
-        else if(this.state.selectAcctType===language.bkash_select_acct){
+        else if(this.state.selectAcctType===language.select_acct){
             Utility.alert(language.error_select_from_type,language.ok);
             return;
         }

@@ -628,7 +628,7 @@ export default {
     select_nickname: "Select Nickname",
     bkash_account: "bkash Account",
     bkash_name: "Name",
-    bkash_select_acct: "Select Account",
+    select_acct: "Select Account",
     available_bal: "Available Balance",
     transfer_amount: "Transfer Amount",
     services_charge: "Services Charge",
@@ -721,6 +721,9 @@ export default {
     other_bank_props: [
         {label: "BEFTN(Regular Transfer)", value: 0},
         {label: "RTGS(Instant Transfer)", value: 1},
+        {label: "NPSB(Instant Transfer)", value: 2},
+    ],
+    npsb_bank_props: [
         {label: "NPSB(Instant Transfer)", value: 2},
     ],
     transfer_mode: "Transfer Mode",
@@ -1316,5 +1319,7 @@ export default {
     select_end_date: "Select End Date",
 
     debit_card_empty_message: "Please Active your debit card for using this feature.",
-    qr_merchant_without_login_alert:"Please Login First"
+    qr_merchant_without_login_alert:"Please Login First",
+    to_account_card_number: "To Account/Card",
+    et_act_card:"Enter account or card number"
 }

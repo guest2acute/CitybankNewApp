@@ -30,7 +30,7 @@ class TransferToBkash extends Component {
             error_accountNo: "",
             isProgress: false,
             selectNicknameType: props.language.select_nickname,
-            selectAcctType: props.language.bkash_select_acct,
+            selectAcctType: props.language.select_acct,
             selectPaymentType: props.language.select_payment,
             selectTypeVal: -1,
             modelSelection: "",
@@ -118,7 +118,7 @@ class TransferToBkash extends Component {
         const {}=this.state;
         if (this.state.selectNicknameType === language.select_nickname) {
             Utility.alert(language.error_select_nickname, language.ok);
-        } else if (this.state.selectAcctType === language.bkash_select_acct) {
+        } else if (this.state.selectAcctType === language.select_acct) {
             Utility.alert(language.error_select_from_type, language.ok);
         } else if (this.state.transferAmount === "") {
             this.setState({error_transferAmount: language.errTransferAmt})
@@ -277,10 +277,10 @@ class TransferToBkash extends Component {
                     </Text>
                     }
                     <TouchableOpacity
-                        onPress={() => this.openModal("bankType", language.bkash_select_acct, language.cardNumber, language)}>
+                        onPress={() => this.openModal("bankType", language.select_acct, language.cardNumber, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.selectAcctType === language.bkash_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                color: this.state.selectAcctType === language.select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectAcctType}

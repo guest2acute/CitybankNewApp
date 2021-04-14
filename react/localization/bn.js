@@ -657,7 +657,7 @@ export default {
     select_nickname: "ডাক নাম নির্বাচন করুন",
     bkash_account: "বিকাশ অ্যাকাউন্ট",
     bkash_name: "নাম",
-    bkash_select_acct: "নির্বাচন অ্যাকাউন্ট",
+    select_acct: "নির্বাচন অ্যাকাউন্ট",
     available_bal: "পর্যাপ্ত টাকা",
     transfer_amount: "স্থানান্তর পরিমাণ",
     services_charge: "পরিষেবা চার্জ",
@@ -1335,7 +1335,9 @@ export default {
     accountStatement: "অ্যাকাউন্ট বিবৃতি",
 
     debit_card_empty_message: "এই সার্ভিসটি ব্যবহার করার জন্য দয়া করে আপনার ডেবিট কার্ডটি সক্রিয় করুন।",
-    qr_merchant_without_login_alert: "দয়া করে প্রথমে লগ ইন করুন"
+    qr_merchant_without_login_alert: "দয়া করে প্রথমে লগ ইন করুন",
+    to_account_card_number: "অ্যাকাউন্ট / কার্ডে",
+    et_act_card:"অ্যাকাউন্ট বা কার্ড নম্বর প্রবেশ করান"
 
 
 }

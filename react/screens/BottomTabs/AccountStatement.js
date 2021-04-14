@@ -38,7 +38,7 @@ class AccountStatement extends Component {
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            selectAccountType: props.language.bkash_select_acct,
+            selectAccountType: props.language.select_acct,
             fromDate:"",
             errorFromDate:"",
         }
@@ -97,10 +97,10 @@ class AccountStatement extends Component {
                         </Text>
                     }
                     <TouchableOpacity
-                        onPress={() => this.openModal("accountType", language.bkash_select_acct, language.statementTypeArr, language)}>
+                        onPress={() => this.openModal("accountType", language.select_acct, language.statementTypeArr, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
-                                color: this.state.selectAccountType === language.bkash_select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                color: this.state.selectAccountType === language.select_acct ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                 flex: 1
                             }]}>
                                 {this.state.selectAccountType}

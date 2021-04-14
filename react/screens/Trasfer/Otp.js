@@ -36,7 +36,7 @@ class Otp extends Component {
         if (this.state.otpVal.length !== 4) {
             Utility.alert(language.errOTP, language.ok);
         } else {
-           await this.verifyOTP();
+            await this.verifyOTP();
         }
     }
 
@@ -103,7 +103,7 @@ class Otp extends Component {
     async verifyOTP() {
         this.setState({isProgress: true});
         await FUNDTRFVERIFY(
-            this.props.userDetails, this.props.route.params.REQUEST_CD,this.state.otpVal,this.props)
+            this.props.userDetails, this.props.route.params.REQUEST_CD, this.state.otpVal, this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});
@@ -121,17 +121,17 @@ class Otp extends Component {
             [
                 {
                     text: this.props.language.ok, onPress: () => {
-                        if(response.STATUS === "999"){
+                        if (response.STATUS === "999") {
                             CommonActions.reset({
                                 routes: this.props.route.params.routeVal,
                                 index: this.props.route.params.routeIndex
                             });
-                        }
-                        else{
-                            this.props.navigation.navigate(this.state.screenName,
+                        } else {
+                            this.props.navigation.navigate("Receipt",
                                 {
                                     REQUEST_CD: "",
                                     transType: "fund",
+                                    response: response,
                                     routeVal: this.props.route.params.routeVal,
                                     routIndex: this.props.route.params.routeIndex,
                                     transferArray: this.props.route.params.transferArray
@@ -184,7 +184,7 @@ class Otp extends Component {
         );
     }
 
-   async componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);

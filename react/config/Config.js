@@ -11,6 +11,8 @@ export default class Config {
      * @type {string}
      */
     static base_url = "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0_dev/easynetpro-serv/request";
+    //for qr code check
+   // static base_url =  "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0_mtz/easynetpro-serv/request";
 
     /**
      * API Action
@@ -60,6 +62,8 @@ export default class Config {
 
     static EN = "en";
     static BN = "bn";
+
+
 
 
 }
