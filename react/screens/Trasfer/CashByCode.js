@@ -21,15 +21,10 @@ class CashByCode extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nickname: "",
-            accountNo: "",
             mobileNumber: "",
-            error_nickname: "",
-            focusUid: false,
-            focusPwd: false,
             isProgress: false,
             selectDebitType: props.language.cash_select_acct,
-            selectTypeVal: -1,
+            selectCardTypeVal: -1,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
@@ -72,7 +67,7 @@ class CashByCode extends Component {
     onSelectItem(item) {
         const {modelSelection,} = this.state;
         if (modelSelection === "cardType") {
-            this.setState({selectDebitType: item.label, selectTypeVal: item.value, modalVisible: false})
+            this.setState({selectDebitType: item.label, selectCardTypeVal: item.value, modalVisible: false})
         }
     }
 
@@ -167,15 +162,13 @@ class CashByCode extends Component {
                     value={this.state.availableBalance}
                     multiline={false}
                     numberOfLines={1}
-                    onFocus={() => this.setState({focusUid: true})}
-                    onBlur={() => this.setState({focusUid: false})}
                     contextMenuHidden={true}
                     keyboardType={"number-pad"}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
                     editable={false}
                     returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
+                    onSubmitEditing={() => {
                         this.amountRef.focus();
                     }}
                     maxLength={10}
@@ -214,7 +207,7 @@ class CashByCode extends Component {
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
                     returnKeyType={"next"}
-                    onSubmitEditing={(event) => {
+                    onSubmitEditing={() => {
                         this.mobileNumberRef.focus();
                     }}
                     maxLength={13}/>
@@ -245,7 +238,7 @@ class CashByCode extends Component {
                             marginLeft: 10
                         }]}
                         placeholder={"01********"}
-                        onChangeText={text => this.setState({errorMobile: "", mobileNumber: Utility.userInput(text)})}
+                        onChangeText={text => this.setState({errorMobile: "", mobileNumber: Utility.input(text,"0123456789")})}
                         value={this.state.mobileNumber}
                         multiline={false}
                         numberOfLines={1}
@@ -254,7 +247,7 @@ class CashByCode extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
+                        onSubmitEditing={() => {
                             this.remarksRef.focus();
                         }}
                         maxLength={11}/>
@@ -281,7 +274,7 @@ class CashByCode extends Component {
                         flex: 1,
                         marginLeft: 10
                     }]}
-                    placeholder={language.et_placeholder}
+                    placeholder={language.et_remarks}
                     onChangeText={text => this.setState({
                         error_remarks: "",
                         remarks: Utility.userInput(text)
@@ -308,6 +301,7 @@ class CashByCode extends Component {
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
                 <RadioForm
+                    key={this.state.caseCodeType}
                     radio_props={language.bkash_otp_props}
                     initial={this.state.caseCodeType}
                     buttonSize={9}

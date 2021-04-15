@@ -130,7 +130,14 @@ class SecurityVerification extends Component {
     async processApi() {
         if (transType === "fund") {
             await this.processFundVerification();
-        } else {
+        }else if(transType === "payments"){
+            this.props.navigation.navigate("Otp",
+                {
+                    routeVal: this.props.route.params.routeVal,
+                    routIndex: this.props.route.params.routIndex, REQUEST_CD: ""
+                });
+        }
+        else {
             await this.processVerification();
         }
     }
@@ -445,7 +452,7 @@ class SecurityVerification extends Component {
             });
         }
         if (this.props.userDetails.AUTH_FLAG === "CP") {
-            await this.getAccount();
+            // await this.getAccount();
         }
     }
 

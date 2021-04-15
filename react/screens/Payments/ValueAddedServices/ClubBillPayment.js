@@ -22,7 +22,7 @@ class ClubBillPayment extends Component {
     constructor(props) {
         super(props);
         this.state={
-            SelectClubName: this.props.language.select_club_name,
+            SelectClubName: props.language.select_club_name,
             SelectFromAccount:props.language.select_from_account,
             modelSelection: "",
             modalVisible: false,
@@ -118,6 +118,7 @@ class ClubBillPayment extends Component {
             {key: language.vat, value: this.state.vat},
             {key: language.grand_total, value: this.state.grandTotal},
             {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
+
         )
 
         console.log("tempArr", tempArr)
@@ -135,7 +136,8 @@ class ClubBillPayment extends Component {
       return(
           <View style={{flex: 1}}>
           <View style={{flex: 1}}>
-              {<Text style={[CommonStyle.labelStyle, {
+              {
+                  <Text style={[CommonStyle.labelStyle, {
                   color: themeStyle.THEME_COLOR,
                   marginStart: 10,
                   marginEnd: 10,
@@ -349,6 +351,7 @@ class ClubBillPayment extends Component {
                   </Text>
 
                   <RadioForm
+                      key={this.state.otp_type}
                       radio_props={language.otp_props}
                       initial={this.state.otp_type}
                       buttonSize={9}

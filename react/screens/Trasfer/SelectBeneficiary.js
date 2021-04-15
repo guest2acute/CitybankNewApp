@@ -144,7 +144,7 @@ class SelectBeneficiary extends Component {
                         sections={this.state.data}
                         renderItem={({item}) => this.renderData(item)}
                         renderSectionHeader={({section}) => this.renderHeader(section)}
-                        keyExtractor={(item, index) => index}
+                        keyExtractor={(item, index) => index+""}
                     />
                 </View>
             </View>)

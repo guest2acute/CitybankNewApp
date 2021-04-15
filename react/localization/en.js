@@ -1351,7 +1351,7 @@ export default {
     internet_bill_payment: "Internet Bill Payment",
     club_bill_payment: "Club Bill Payment",
     insurance_payment: "Insurance Payment",
-    tuition_fee: "Tuition Fee",
+    tuition_fee: "Tuition Fee Payment",
     indian_visa_payment: "Indian Visa Processing Fee Payment",
     payee_category:"PAYEE CATEGORY",
     payee_list: "PAYEE LIST",
@@ -1390,8 +1390,66 @@ export default {
         {label: "Chittagong Club Limited", value: 2}
     ],
     error_select_club_name: "Please Select Club Name",
-    require_memberId: 'Member Id is requires'
+    require_memberId: 'Member Id is requires',
+
+    /*Tuition Fees Payments*/
+    name_of_the_institute: "Name Of The Institute",
+    student_id: "Student Id",
+    student_name: "Student Name",
+    semester: "Semester",
+    payment_header:"Payment Header",
+    select_payment_header:"Select Payment Header",
+    payment_due: "Payment Due",
+    nameOfInstitute_props: [
+        {label: "North South University", value: 0},
+    ],
+    select_nameOfInstitute: "Select Institute",
+    paymentHeader_props: [
+        {label: "Registration", value: 0},
+    ],
+
+    /*error message*/
+    error_select_institute_name: "Please Select Institute Name",
+    require_student:"StudentId is required",
+    require_student_name: "Student Name is required",
+    require_semester: "Semester is required",
+    error_select_payment:"Please Select Payment Header",
+    et_student_id:"Enter Student Id",
+    et_Student_name: "Enter Student Name",
+    et_semester: "Enter Semester",
+
+    /*insurance payments*/
+    insurance_name: "Insurance Name",
+    insurance_props: [
+        {label: "Met Life", value: 0},
+        {label: "Green Delta", value: 0},
+        {label: "Phoenix", value: 0},
+        {label: "Nitol", value: 0},
+    ],
+    select_insurance_name:"Select Insurance Name",
+    policy_number: "Policy Number",
+    policy_holder_name: "Policy Holder's Name",
+    insurance_paid: "Insurance paid For",
+    select_insurance_paid: "Select insurance paid For",
+    insurance_paid_props: [
+        {label: "Premium", value: 0},
+        {label: "Application", value: 1},
+        {label: "Loan Repayment", value: 2},
+        {label: "Reinstatement", value: 3},
+        {label: "Balance Premium", value: 4},
+        {label: "APL Repayment", value: 5},
+    ],
+
+    et_policy_no_placeholder:"Enter Policy Number",
+    et_policy_name_placeholder: "Enter Policy Holder's Name",
+
+    /*error message*/
+    error_select_insurance_name: "Please Select Insurance Name",
+    require_policy_number: "Policy Number is required",
+    require_policy_holder: "Policy holder's name required",
+    error_select_insurance_paid: "Please Select Insurance Paid for",
 
 
+    et_remarks:"Enter Remarks"
 
 }

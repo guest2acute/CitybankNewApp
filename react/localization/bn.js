@@ -1414,7 +1414,34 @@ export default {
         {label: "চট্টগ্রাম ক্লাব লিমিটেড", value: 2}
     ],
     error_select_club_name: "ক্লাবের নামটি নির্বাচন করুন",
-    require_memberId: 'Member Id is requires'
+    require_memberId: 'সদস্য আইডি প্রয়োজন',
+
+    /*Tuition Fees Payments*/
+    name_of_the_institute: "ইনস্টিটিউট নাম",
+    student_id: "শিক্ষার্থী আইডি",
+    student_name: "শিক্ষার্থীর নাম",
+    semester: "সেমিস্টার",
+    payment_header:"পেমেন্ট শিরোনাম",
+    select_payment_header:"পেমেন্ট শিরোনাম নির্বাচন করুন",
+    payment_due: "বাকি টাকা",
+    nameOfInstitute_props: [
+        {label: "উত্তর দক্ষিণ বিশ্ববিদ্যালয়", value: 0},
+    ],
+    select_nameOfInstitute: "ইনস্টিটিউট নির্বাচন করুন",
+    paymentHeader_props: [
+        {label: "নিবন্ধন", value: 0},
+    ],
+
+    /*error message*/
+    error_select_institute_name: "ইনস্টিটিউট নাম নির্বাচন করুন",
+    require_student:"শিক্ষার্থী আইডি প্রয়োজনীয়",
+    require_student_name: "শিক্ষার্থীর নাম আবশ্যক",
+    require_semester: "সেমিস্টার প্রয়োজন",
+    error_select_payment:"পেমেন্ট শিরোনাম নির্বাচন করুন",
+    et_student_id:"শিক্ষার্থী আইডি প্রবেশ করান",
+    et_Student_name: "শিক্ষার্থীর নাম লিখুন",
+    et_semester: "সেমিস্টার প্রবেশ করুন"
+
 
 }
 

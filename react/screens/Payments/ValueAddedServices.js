@@ -115,7 +115,7 @@ class ValueAddedServices extends Component {
     payeeList(language){
         return(
             <View>
-                <Text>payy list</Text>
+                <Text>payee list</Text>
             </View>
         )
     }

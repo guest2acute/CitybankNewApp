@@ -630,9 +630,9 @@ export const ValueAddedServicesDetails = (language) => {
             redirectScreen: "InsurancePayment"
         },
         {
-            id: "TuitionFee",
+            id: "TuitionFeePayment",
             title: language.tuition_fee,
-            redirectScreen: "TuitionFee"
+            redirectScreen: "TuitionFeePayment"
         },
         {
             id: "IndianVisaPayment",
