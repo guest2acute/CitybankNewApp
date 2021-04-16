@@ -635,9 +635,9 @@ export const ValueAddedServicesDetails = (language) => {
             redirectScreen: "TuitionFeePayment"
         },
         {
-            id: "IndianVisaPayment",
+            id: "IndianVisaProcessingPayment",
             title: language.indian_visa_payment,
-            redirectScreen: "IndianVisaPayment"
+            redirectScreen: "IndianVisaProcessingPayment"
         }
     ]
 

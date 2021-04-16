@@ -183,14 +183,13 @@ class BeneficiaryEmail extends Component {
                                     flex: 1,
                                     marginLeft: 10
                                 }]}
-                                placeholder={this.state.isMainScreen ? language.please_enter : ""}
+                                placeholder={language.please_enter}
                                 onChangeText={text => this.setState({
                                     errorEmail: "",
                                     emailTxt: Utility.userInput(text)
                                 })}
                                 value={this.state.emailTxt}
                                 multiline={false}
-                                editable={this.state.isMainScreen}
                                 numberOfLines={1}
                                 contextMenuHidden={true}
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}

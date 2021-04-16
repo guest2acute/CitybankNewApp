@@ -31,7 +31,6 @@ class CashByCode extends Component {
             modalData: [],
             otp_type: 0,
             availableBalance: "",
-            error_availableBal: "",
             transferAmount: "",
             error_amount: "",
             remarks: "",
@@ -155,7 +154,6 @@ class CashByCode extends Component {
                     style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right', marginLeft: 10}]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
-                        error_availableBal: "",
                         availableBalance: Utility.userInput(text)
                     })}
                     value={this.state.availableBalance}
