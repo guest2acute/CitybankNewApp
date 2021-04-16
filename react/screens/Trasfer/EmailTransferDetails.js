@@ -10,15 +10,18 @@ import {
     Image,
     TextInput, FlatList, Platform, StatusBar, BackHandler
 } from "react-native";
-import themeStyle from "../../../resources/theme.style";
-import fontStyle from "../../../resources/FontStyle";
-import FontSize from "../../../resources/ManageFontSize";
-import CommonStyle from "../../../resources/CommonStyle";
+import themeStyle from "../../resources/theme.style";
+import fontStyle from "../../resources/FontStyle";
+import FontSize from "../../resources/ManageFontSize";
+import CommonStyle from "../../resources/CommonStyle";
 import React, {Component} from "react";
-import {BusyIndicator} from "../../../resources/busy-indicator";
-import Utility from "../../../utilize/Utility";
-import {GETACCTBALDETAIL, AddBeneficiary} from '../../Requests/RequestBeneficiary';
+import {BusyIndicator} from "../../resources/busy-indicator";
+import Utility from "../../utilize/Utility";
+import {GETACCTBALDETAIL, AddBeneficiary} from '../Requests/RequestBeneficiary';
+import {CANCELREQUEST, EMAILRESEND, EMAILWAITTRFREQ} from "../Requests/FundsTransferRequest";
+import {actions} from "../../redux/actions";
 
+let details;
 
 class EmailTransferDetails extends Component {
 
@@ -26,10 +29,6 @@ class EmailTransferDetails extends Component {
         super(props);
         this.state = {
             isProgress: false,
-            nickname: "",
-            mobile_number: "",
-            emailTxt: "",
-            transferAmount: "",
             stageVal: 0,
             referenceNumber: "",
             cancelTransfer: false,
@@ -40,22 +39,45 @@ class EmailTransferDetails extends Component {
             modalTitle: "",
             modalData: [],
         }
+
+        details = props.route.params.details;
     }
 
-    async onSubmit(language,navigation) {
-        this.setState({
-            cancelTransfer: true
-        })
 
-        if (this.state.cancelTransfer === true) {
-            if (this.state.selectReclaimType === language.select_reclaim_money) {
-                Utility.alert(language.error_reclaim_money, language.ok);
-                return;
-            }
-            else{
-                Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
-            }
-        }
+    async resendNotification() {
+        this.setState({isProgress: true});
+        EMAILRESEND(this.props.userDetails, details.TRAN_CD, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            });
+            Utility.alertWithBack(this.props.language.ok, response.MESSAGE, this.props.navigation);
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+
+    }
+
+    async cancelRequest() {
+        this.setState({isProgress: true});
+        CANCELREQUEST(this.props.userDetails, details.TRAN_CD, this.state.remarks, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+            });
+            this.props.dispatch({
+                type: actions.account.CANCEL_EMAIL_TRANSFER_REQUEST,
+                payload: {
+                    isERequestCancel: true,
+                },
+            });
+            Utility.alertWithBack(this.props.language.ok, response.MESSAGE, this.props.navigation);
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+
     }
 
     openModal(option, title, data, language) {
@@ -80,15 +102,12 @@ class EmailTransferDetails extends Component {
     emailTransferDetails(language) {
         return (
             <View>
-                <View style={{
+                {details.NICK_NAME !== "" ? <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.nick_name}
-                    </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.nickname}</Text>
-                </View>
+                }}><Text style={[CommonStyle.textStyle]}>{language.nick_name}</Text>
+                    <Text style={CommonStyle.viewText}>{details.NICK_NAME}</Text>
+                </View> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row",
@@ -100,7 +119,7 @@ class EmailTransferDetails extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.beneficiary_Email_Address}
                     </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.emailTxt}</Text>
+                    <Text style={CommonStyle.viewText}>{details.TO_EMAIL_ID}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
@@ -113,7 +132,7 @@ class EmailTransferDetails extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.beneficiary_mobile_number}
                     </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.mobileNumber}</Text>
+                    <Text style={CommonStyle.viewText}>{details.TO_MOBILE_NO}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
@@ -123,7 +142,7 @@ class EmailTransferDetails extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.transfer_amount}
                     </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.transferAmount}</Text>
+                    <Text style={CommonStyle.viewText}>{details.AMOUNT}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
@@ -133,7 +152,7 @@ class EmailTransferDetails extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.status}
                     </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.nickname}</Text>
+                    <Text style={CommonStyle.viewText}>{details.STATUS}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
@@ -143,7 +162,7 @@ class EmailTransferDetails extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.reference_number}
                     </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.referenceNumber}</Text>
+                    <Text style={CommonStyle.viewText}>{details.REFNO}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
@@ -153,34 +172,11 @@ class EmailTransferDetails extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.valid_till}
                     </Text>
-                    <Text style={CommonStyle.viewText}>{this.state.valid_till}</Text>
+                    <Text style={CommonStyle.viewText}>{details.EXPIRE_DT}</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 {this.state.cancelTransfer ?
-                    <>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.reclaim_money_to}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.openModal("reclaimType", language.reclaim_money_to, language.transferTypeArr, language)}>
-                            <View style={CommonStyle.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectReclaimType === language.reclaim_money_to ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectReclaimType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
+                    <View>
                         <View style={{
                             flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                             marginEnd: 10,
@@ -199,7 +195,7 @@ class EmailTransferDetails extends Component {
                                 placeholder={language.et_placeholder}
                                 onChangeText={text => this.setState({
                                     error_remarks: "",
-                                    remarks: Utility.userInput(text)
+                                    remarks: text
                                 })}
                                 value={this.state.remarks}
                                 multiline={false}
@@ -207,11 +203,10 @@ class EmailTransferDetails extends Component {
                                 contextMenuHidden={true}
                                 placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                                 autoCorrect={false}
-                                maxLength={13}/>
+                                maxLength={30}/>
                         </View>
                         <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
-                    </>
+                    </View>
                     : null}
             </View>)
     }
@@ -228,7 +223,7 @@ class EmailTransferDetails extends Component {
                         onPress={() => this.backEvent()}>
                         <Image style={CommonStyle.toolbar_back_btn}
                                source={Platform.OS === "android" ?
-                                   require("../../../resources/images/ic_back_android.png") : require("../../../resources/images/ic_back_ios.png")}/>
+                                   require("../../resources/images/ic_back_android.png") : require("../../resources/images/ic_back_ios.png")}/>
                     </TouchableOpacity>
                     <Text style={CommonStyle.title}>{language.email_transfer_details}</Text>
                     <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
@@ -237,13 +232,12 @@ class EmailTransferDetails extends Component {
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
                         }}
-                               source={require("../../../resources/images/ic_logout.png")}/>
+                               source={require("../../resources/images/ic_logout.png")}/>
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -255,7 +249,8 @@ class EmailTransferDetails extends Component {
                             marginRight: Utility.setWidth(10),
                             marginTop: Utility.setHeight(20)
                         }}>
-                            <TouchableOpacity style={{flex: 1}} onPress={() => this.backEvent()}>
+                            <TouchableOpacity style={{flex: 1}} onPress={() => this.state.cancelTransfer ?
+                                this.setState({cancelTransfer: false}) : this.resendNotification()}>
                                 <View style={{
                                     flex: 1,
                                     alignItems: "center",
@@ -272,7 +267,8 @@ class EmailTransferDetails extends Component {
                             <View style={{width: Utility.setWidth(20)}}/>
 
                             <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.onSubmit(language, this.props.navigation)}>
+                                              onPress={() => this.state.cancelTransfer ?
+                                                  this.cancelRequest() : this.setState({cancelTransfer: true})}>
                                 <View style={{
                                     alignItems: "center",
                                     justifyContent: "center",

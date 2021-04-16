@@ -13,5 +13,6 @@ export default function* sagas() {
     takeLatest(actions.account.SET_SIGNUP_DETAILS, AccountSagas.setSignupDetails),
     takeLatest(actions.account.ADD_BENEFICIARY, AccountSagas.addBeneficiary),
     takeLatest(actions.account.RESET_BENEFICIARY, AccountSagas.resetBeneficiary),
+    takeLatest(actions.account.CANCEL_EMAIL_TRANSFER_REQUEST, AccountSagas.cancelEmailTransRequest),
   ]);
 }
