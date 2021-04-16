@@ -8,7 +8,7 @@ import {
     StatusBar,
     Text, TextInput,
     TouchableOpacity,
-    View
+    View,BackHandler
 } from "react-native";
 import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
@@ -61,7 +61,6 @@ class CityCreditCard extends Component {
             servicesCharge:"",
             vat:"",
             grandTotal:"",
-
         }
     }
 
@@ -164,10 +163,9 @@ class CityCreditCard extends Component {
                 else{
                     this.processRequest(language,0)
                 }
-            }else{
-                 this.processRequest(language,0)
+            }else {
+                this.processRequest(language, 0)
             }
-
         }else if(this.state.stateVal === 1){
             if(this.state.cardNumber === ""){
                 this.setState({errorCard_Number: language.error_card_number})
@@ -246,7 +244,8 @@ class CityCreditCard extends Component {
             routeIndex: 1,
             title: language.creditCardTitle,
             transferArray:tempArr,
-                screenName:"Otp"
+            screenName:"Otp",
+            transType:"payments"
         });
 
     }
@@ -353,7 +352,7 @@ class CityCreditCard extends Component {
                                     flex: 1,
                                     marginLeft: 10
                                 }]}
-                                placeholder={""}
+                                placeholder={language.enter_Card_Number}
                                 onChangeText={text => this.setState({
                                     errorCard_number:"",
                                     cardNumber: Utility.userInput(text)
@@ -937,25 +936,43 @@ class CityCreditCard extends Component {
                         onChange={this.onChange}
                     />
                 )}
-
                 <BusyIndicator visible={this.state.isProgress}/>
 
             </View>)
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
-        // bottom tab management
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.payments
         });
     }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
+    }
+
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        this.props.navigation.goBack();
+    }
+
 }
 
 const styles = {

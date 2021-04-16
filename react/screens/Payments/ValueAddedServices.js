@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     SafeAreaView,
     FlatList,
-    ScrollView
+    ScrollView,BackHandler
 } from "react-native";
 
 import {actions} from "../../redux/actions";
@@ -46,6 +46,10 @@ class ValueAddedServices extends Component {
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
 
         this.props.navigation.setOptions({
@@ -62,6 +66,23 @@ class ValueAddedServices extends Component {
             });
         }
     }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
+    }
+
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        this.props.navigation.goBack();
+    }
+
+
 
     _renderItem = ({item, index}) => {
         return (

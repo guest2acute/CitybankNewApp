@@ -1520,7 +1520,26 @@ export default {
         {label: "নিয়োগ", value: 1}
     ],
     et_email_placeholder:"ইমেইল প্রদান করুন",
-    et_passport_placeholder:"পাসপোর্ট নম্বর প্রবেশ করান"
+    et_passport_placeholder:"পাসপোর্ট নম্বর প্রবেশ করান",
+
+    et_web_file:"ওয়েব ফাইল প্রবেশ করান",
+
+    /*error message*/
+    error_ivas_center_name: "দয়া করে AVAS কেন্দ্রের নাম নির্বাচন করুন",
+    error_appointment_type: "অ্যাপয়েন্টমেন্ট টাইপ নির্বাচন করুন",
+    require_passport: "পাসপোর্ট নম্বর আবশ্যক",
+    require_web_file: "ওয়েব ফাইল প্রয়োজনীয়",
+
+    select_appointment_date:"অ্যাপয়েন্টমেন্টের তারিখ নির্বাচন করুন",
+    appointment_date:"সাক্ষাৎকারের তারিখ",
+
+    /*Visa Instant payment */
+    visa_instant_payment: "ভিসা তাত্ক্ষণিক অর্থ প্রদান",
+    recipient_visa_card_number: "প্রাপক ভিসা কার্ড নম্বর",
+    recipient_name: "প্রাপকের নাম",
+    recipient_mobile_number: "প্রাপক মোবাইল নম্বর (ptionচ্ছিক)",
+    recipient_email_id: "প্রাপক ইমেল আইডি (ptionচ্ছিক)",
+    et_receipt_name:"প্রাপ্তির নাম লিখুন",
 
 }
 

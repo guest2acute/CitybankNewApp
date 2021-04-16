@@ -682,7 +682,7 @@ class EmailTransfer extends Component {
                             borderTopLeftRadius: this.state.stateVal === 1 ? 3 : 0,
                             backgroundColor: this.state.stateVal === 0 ? themeStyle.THEME_COLOR : "#F4F4F4",
                         }}>
-                        <Text style={[styles.langText, {
+                        <Text style={[CommonStyle.langText, {
                             fontFamily: fontStyle.RobotoMedium,
                             fontSize: FontSize.getSize(11),
                             color: this.state.stateVal === 0 ? themeStyle.WHITE : themeStyle.BLACK
@@ -700,7 +700,7 @@ class EmailTransfer extends Component {
                             borderTopRightRadius: this.state.stateVal === 1 ? 5 : 0,
                             backgroundColor: this.state.stateVal === 1 ? themeStyle.THEME_COLOR : "#F4F4F4",
                         }}>
-                        <Text style={[styles.langText, {
+                        <Text style={[CommonStyle.langText, {
                             fontFamily: fontStyle.RobotoMedium,
                             fontSize: FontSize.getSize(11),
                             color: this.state.stateVal === 1 ? themeStyle.WHITE : themeStyle.BLACK
@@ -801,6 +801,14 @@ const styles = {
         borderColor: themeStyle.WHITE,
         overflow: "hidden"
     },
+
+    flexDirection: "row",
+    backgroundColor: themeStyle.WHITE,
+    height: Utility.setHeight(25),
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: themeStyle.WHITE,
+    overflow: "hidden"
 
 }
 const mapStateToProps = (state) => {
