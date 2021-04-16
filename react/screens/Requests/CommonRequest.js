@@ -610,9 +610,9 @@ export const ValueAddedServicesDetails = (language) => {
             redirectScreen: "MovieTickets"
         },
         {
-            id: "utilityBankPayment",
-            title: language.utility_bank_payment,
-            redirectScreen: "UtilityBankPayment",
+            id: "UtilityBillPayment",
+            title: language.utility_bill_payment,
+            redirectScreen: "UtilityBillPayment",
         },
         {
             id: "InternetBillPayment",
@@ -630,9 +630,9 @@ export const ValueAddedServicesDetails = (language) => {
             redirectScreen: "InsurancePayment"
         },
         {
-            id: "TuitionFee",
+            id: "TuitionFeePayment",
             title: language.tuition_fee,
-            redirectScreen: "TuitionFee"
+            redirectScreen: "TuitionFeePayment"
         },
         {
             id: "IndianVisaPayment",

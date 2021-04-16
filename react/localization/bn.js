@@ -1379,7 +1379,7 @@ export default {
     error_from_date: "তারিখ থেকে নির্বাচন করুন",
     error_end_date: "শেষের তারিখটি নির্বাচন করুন",
     movie_tickets : "ছবির টিকেটগুলি",
-    utility_bank_payment: "ইউটিলিটি ব্যাংক পেমেন্ট",
+    utility_bank_payment: "ইউটিলিটি বিল পেমেন্ট",
     internet_bill_payment: "ইন্টারনেট বিল পেমেন্ট",
     club_bill_payment: "ক্লাব বিল পেমেন্ট",
     insurance_payment: "বীমা প্রদান",
@@ -1408,12 +1408,55 @@ export default {
     error_select_company_name: "দয়া করে সংস্থার নাম নির্বাচন করুন",
     error_bill: "বিল নম্বর প্রয়োজনীয়",
 
-    to_card: "কার্ডে",
 
+    to_card: "কার্ডে",
     error_amount_more_balance: "স্থানান্তর পরিমাণ অ্যাকাউন্ট ব্যালেন্সের চেয়ে কম হওয়া উচিত।",
     error_grandTotal_more_balance: "গ্র্যান্ড টোটাল অ্যাকাউন্টের ব্যালেন্সের চেয়ে কম হওয়া উচিত।",
     from_txt:"প্রেরক",
     to_txt: "প্রাপক",
+
+    /*club bill payments*/
+    club_name: "ক্লাব নাম",
+    select_club_name:"ক্লাবের নাম নির্বাচন করুন",
+    member_id: "সদস্য আইডি",
+    name_of_the_member: "সদস্যের নাম",
+    member_type: "সদস্যের প্রকার",
+    member_since: "সদস্য যেহেতু",
+    amount:"পরিমাণ",
+    club_name_props: [
+        {label: "আল্ট্রা ক্লাব", value: 0},
+        {label: "গুলশান ক্লাব", value: 1},
+        {label: "চট্টগ্রাম ক্লাব লিমিটেড", value: 2}
+    ],
+    error_select_club_name: "ক্লাবের নামটি নির্বাচন করুন",
+    require_memberId: 'সদস্য আইডি প্রয়োজন',
+
+    /*Tuition Fees Payments*/
+    name_of_the_institute: "ইনস্টিটিউট নাম",
+    student_id: "শিক্ষার্থী আইডি",
+    student_name: "শিক্ষার্থীর নাম",
+    semester: "সেমিস্টার",
+    payment_header:"পেমেন্ট শিরোনাম",
+    select_payment_header:"পেমেন্ট শিরোনাম নির্বাচন করুন",
+    payment_due: "বাকি টাকা",
+    nameOfInstitute_props: [
+        {label: "উত্তর দক্ষিণ বিশ্ববিদ্যালয়", value: 0},
+    ],
+    select_nameOfInstitute: "ইনস্টিটিউট নির্বাচন করুন",
+    paymentHeader_props: [
+        {label: "নিবন্ধন", value: 0},
+    ],
+
+    /*error message*/
+    error_select_institute_name: "ইনস্টিটিউট নাম নির্বাচন করুন",
+    require_student:"শিক্ষার্থী আইডি প্রয়োজনীয়",
+    require_student_name: "শিক্ষার্থীর নাম আবশ্যক",
+    require_semester: "সেমিস্টার প্রয়োজন",
+    error_select_payment:"পেমেন্ট শিরোনাম নির্বাচন করুন",
+    et_student_id:"শিক্ষার্থী আইডি প্রবেশ করান",
+    et_Student_name: "শিক্ষার্থীর নাম লিখুন",
+    et_semester: "সেমিস্টার প্রবেশ করুন"
+
 
 }
 

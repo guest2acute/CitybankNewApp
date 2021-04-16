@@ -8,7 +8,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,BackHandler
 } from "react-native";
 import themeStyle from "../../../resources/theme.style";
 import CommonStyle from "../../../resources/CommonStyle";
@@ -22,12 +22,7 @@ import {BusyIndicator} from "../../../resources/busy-indicator";
 class EmailTransfer extends Component {
     constructor(props) {
         super(props);
-        let language = props.language;
         this.state = {
-            options: [
-                {id: 0, title: props.language.ownAccount, selected: false},
-                {id: 1, title: props.language.cityAccount, selected: true},
-            ],
             data: [
                 {
                     nickname: "Ebad Vai",
@@ -57,25 +52,24 @@ class EmailTransfer extends Component {
             stateVal: 0,
             nickname: "",
             mobile_number:"",
-            focusUid: false,
-            focusPwd: false,
             isProgress: false,
             selectBeneficiaryType: props.language.select_beneficiary_type,
             selectAcctType: props.language.select_from_account,
             selectTypeVal: -1,
+            selectNickTypeVal:-1,
+            selectFromAccountVal:-1,
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
             otp_type: 0,
             availableBalance:"",
-            error_availablebal:"",
             paymentAmount:"",
             error_paymentAmount:"",
             servicesCharge:"",
             error_servicescharge:"",
-            grandtotal:"",
-            error_grandtotal:"",
+            grandTotal:"",
+            error_grandTotal:"",
             remarks:"",
             error_remarks:"",
             mobile_number:"",
@@ -113,11 +107,11 @@ class EmailTransfer extends Component {
 
     onSelectItem(item) {
         const {modelSelection} = this.state;
-        if (modelSelection === "type") {
-            this.setState({selectNicknameType: item.label, selectTypeVal: item.value, modalVisible: false})
+        if (modelSelection === "nickType") {
+            this.setState({selectNicknameType: item.label, selectNickTypeVal: item.value, modalVisible: false})
         }
-        else if (modelSelection === "accountType") {
-            this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
+        else if (modelSelection === "fromAccountType") {
+            this.setState({selectAcctType: item.label, selectFromAccountVal: item.value, modalVisible: false})
         }
     }
 
@@ -132,56 +126,53 @@ class EmailTransfer extends Component {
             }*/
         if (this.state.selectNicknameType === language.select_nickname) {
             Utility.alert(language.error_select_nickname,language.ok);
-            return;
         }
         else if(this.state.selectAcctType===language.select_from_account){
             Utility.alert(language.error_select_from_type,language.ok);
-            return;
         }
         else if(this.state.paymentAmount===""){
             this.setState({error_paymentAmount:language.err_payment_amount})
-            return;
         } else if(this.state.securityQuestions === "") {
             this.setState({error_security:language.err_security})
-            return;
         }
         else if(this.state.answer === "") {
             this.setState({errorAnswer:language.error_answer})
-            return;
         }else if(this.state.remarks === "") {
             this.setState({error_remarks:language.errRemarks})
-            return;
         }else{
-            let tempArr = [];
-            tempArr.push(
-                {key: language.nick_name, value: this.state.selectNicknameType},
-                {key: language.beneficiary_Email_Address, value: this.state.emailTxt},
-                {key: language.beneficiary_mobile_number, value:this.state.mobileNumber},
-                {key: language.fromAccount, value: this.state.selectAcctType},
-                {key:language.email,value:this.state.emailTxt},
-                {key:language.available_bal,value:this.state.availableBalance},
-                {key:language.payment_amount,value:this.state.paymentAmount},
-                {key:language.security_questions,value:this.state.securityQuestions},
-                {key:language.answer,value:this.state.answer},
-                {key:language.remarks,value:this.state.remarks},
-                {key:language.services_charge,value:this.state.servicesCharge},
-                {key:language.vat,value:this.state.vat},
-                {key:language.grand_total,value:this.state.grandtotal},
-                {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
-            )
-            console.log("temp array is email trnasfer",tempArr)
-
-            this.props.navigation.navigate("TransferConfirm", {
-                routeVal: [{name: 'Transfer'},{name: 'EmailTransfer'}],
-                routeIndex: 1,
-                title: language.email_transfer,
-                transferArray:tempArr,
-                screenName:"Otp"
-            });
+            this.processRequest(language);
         }
-        // Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
     }
 
+    processRequest(language){
+        let tempArr = [];
+        tempArr.push(
+            {key: language.nick_name, value: this.state.selectNicknameType},
+            {key: language.beneficiary_Email_Address, value: this.state.emailTxt},
+            {key: language.beneficiary_mobile_number, value:this.state.mobileNumber},
+            {key: language.fromAccount, value: this.state.selectAcctType},
+            {key:language.email,value:this.state.emailTxt},
+            {key:language.available_bal,value:this.state.availableBalance},
+            {key:language.payment_amount,value:this.state.paymentAmount},
+            {key:language.security_questions,value:this.state.securityQuestions},
+            {key:language.answer,value:this.state.answer},
+            {key:language.remarks,value:this.state.remarks},
+            {key:language.services_charge,value:this.state.servicesCharge},
+            {key:language.vat,value:this.state.vat},
+            {key:language.grand_total,value:this.state.grandTotal},
+            {key:language.otpType,value:language.otp_props[this.state.otp_type].label},
+        )
+        console.log("temp array is email trnasfer",tempArr)
+
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'Transfer'},{name: 'EmailTransfer'}],
+            routeIndex: 1,
+            title: language.email_transfer,
+            transferArray:tempArr,
+            screenName:"Otp"
+        });
+
+    }
     _renderItem = ({item, index}) => {
         return (
              <TouchableOpacity onPress={()=>this.props.navigation.navigate("EmailTransferDetails")}>
@@ -227,7 +218,7 @@ class EmailTransfer extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                     </Text>
                     <TouchableOpacity
-                        onPress={() => this.openModal("type", language.selectNickType, language.nickTypeArr, language)}>
+                        onPress={() => this.openModal("nickType", language.selectNickType, language.nickTypeArr, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectNicknameType === language.select_nickname ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -283,7 +274,7 @@ class EmailTransfer extends Component {
                                 flex: 1,
                                 marginLeft: 10
                             }]}
-                            placeholder={"01********"}
+                            placeholder={""}
                             onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
                             value={this.state.mobile_number}
                             multiline={false}
@@ -292,10 +283,7 @@ class EmailTransfer extends Component {
                             keyboardType={"number-pad"}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                             autoCorrect={false}
-                            returnKeyType={"next"}
-                            onSubmitEditing={(event) => {
-                                this.emailRef.focus();
-                            }}
+                            editable={false}
                             maxLength={11}/>
                     </View>
                 </View>
@@ -313,7 +301,7 @@ class EmailTransfer extends Component {
                     </Text>
                     }
                     <TouchableOpacity
-                        onPress={() => this.openModal("accountType", language.select_from_account, language.cardNumber, language)}>
+                        onPress={() => this.openModal("fromAccountType", language.select_from_account, language.cardNumber, language)}>
                         <View style={CommonStyle.selectionBg}>
                             <Text style={[CommonStyle.midTextStyle, {
                                 color: this.state.selectAcctType === language.select_from_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
@@ -337,7 +325,7 @@ class EmailTransfer extends Component {
                             style={{color: themeStyle.THEME_COLOR}}>{this.state.isMainScreen ? "*" : ""}</Text>
                     </Text>
                     <TextInput
-                        ref={(ref) => this.emailRef = ref}
+                        // ref={(ref) => this.emailRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {
                             alignItems: "flex-end",
@@ -364,27 +352,11 @@ class EmailTransfer extends Component {
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle,{flex:1}]}>
+                    <Text style={[CommonStyle.textStyle]}>
                         {language.available_bal}
                     </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',marginLeft:10}]}
-                        placeholder={"00.00"}
-                        onChangeText={text => this.setState({
-                            error_availablebal: "",
-                            availableBalance: Utility.userInput(text)
-                        })}
-                        value={this.state.availableBalance}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        editable={false}
-                        maxLength={13}/>
-                    <Text style={{paddingLeft:5}}>BDT</Text>
+                    <Text style={CommonStyle.viewText}>{this.state.availableBalance}</Text>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -407,14 +379,12 @@ class EmailTransfer extends Component {
                         value={this.state.paymentAmount}
                         multiline={false}
                         numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
                         contextMenuHidden={true}
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
+                        onSubmitEditing={() => {
                             this.paymentAmountRef.focus();
                         }}
                         maxLength={13}/>
@@ -445,13 +415,11 @@ class EmailTransfer extends Component {
                         value={this.state.securityQuestions}
                         multiline={false}
                         numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
+                        onSubmitEditing={() => {
                             this.answerRef.focus();
                         }}
                         maxLength={30}/>
@@ -481,13 +449,11 @@ class EmailTransfer extends Component {
                         value={this.state.answer}
                         multiline={false}
                         numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
+                        onSubmitEditing={() => {
                             this.remarksRef.focus();
                         }}
                         maxLength={13}/>
@@ -510,7 +476,7 @@ class EmailTransfer extends Component {
                         ref={(ref) => this.remarksRef = ref}
                         selectionColor={themeStyle.THEME_COLOR}
                         style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
-                        placeholder={""}
+                        placeholder={language.et_remarks}
                         onChangeText={text => this.setState({
                             error_remarks: "",
                             remarks: Utility.userInput(text)
@@ -518,8 +484,6 @@ class EmailTransfer extends Component {
                         value={this.state.remarks}
                         multiline={false}
                         numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
                         contextMenuHidden={true}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
@@ -530,6 +494,7 @@ class EmailTransfer extends Component {
                     }>{this.state.error_remarks}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -537,66 +502,24 @@ class EmailTransfer extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.services_charge}
                     </Text>
-                    <TextInput
-                        ref={(ref) => this.serviceschargeRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
-                        placeholder={"00.00"}
-                        onChangeText={text => this.setState({
-                            error_servicescharge: "",
-                            servicesCharge: Utility.userInput(text)
-                        })}
-                        value={this.state.servicesCharge}
-                        multiline={false}
-                        numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={13}/>
-                    <Text style={{paddingLeft:5}}>BDT</Text>
+                    <Text style={CommonStyle.viewText}>{this.state.servicesCharge}</Text>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                {this.state.error_servicescharge !==  "" ?
-                    <Text style={CommonStyle.errorStyle
-                    }>{this.state.error_servicescharge}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
                 }}>
-                    <Text style={[CommonStyle.textStyle,{flex: 1}]}>
+                    <Text style={[CommonStyle.textStyle, {flex: 1}]}>
                         {language.vat}
                     </Text>
-                    <TextInput
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            marginLeft: 10
-                        }]}
-                        placeholder={"00.00"}
-                        onChangeText={text => this.setState({
-                            error_vat: "",
-                            vat: Utility.userInput(text)
-                        })}
-                        value={this.state.vat}
-                        multiline={false}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        editable={false}
-                        returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
-                            this.grandtotalRef.focus();
-                        }}
-                        maxLength={13}/>
+                    <Text
+                        style={CommonStyle.viewText}>{this.state.vat}</Text>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                     marginEnd: 10,
@@ -604,30 +527,9 @@ class EmailTransfer extends Component {
                     <Text style={[CommonStyle.textStyle]}>
                         {language.grand_total}
                     </Text>
-                    <TextInput
-                        ref={(ref) => this.grandtotalRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
-                        placeholder={"00.00"}
-                        onChangeText={text => this.setState({
-                            error_grandtotal: "",
-                            grandtotal: Utility.userInput(text)
-                        })}
-                        value={this.state.grandtotal}
-                        multiline={false}
-                        numberOfLines={1}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        contextMenuHidden={true}
-                        keyboardType={"number-pad"}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        autoCorrect={false}
-                        maxLength={13}/>
-                    <Text style={{paddingLeft:5}}>BDT</Text>
+                    <Text style={CommonStyle.viewText}>{this.state.grandTotal}</Text>
+                    <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
-                {this.state.error_grandtotal !==  "" ?
-                    <Text style={CommonStyle.errorStyle
-                    }>{this.state.error_grandtotal}</Text> : null}
                 <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                 <View style={{
                     flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -833,7 +735,7 @@ class EmailTransfer extends Component {
                             </View>
 
                             <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                      data={this.state.modalData} keyExtractor={(item, index) => item.key}
+                                      data={this.state.modalData} keyExtractor={(item, index) => index+""}
                                       renderItem={({item}) =>
                                           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
                                               <View
@@ -855,19 +757,38 @@ class EmailTransfer extends Component {
             </View>)
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (Platform.OS === "android") {
             this.focusListener = this.props.navigation.addListener("focus", () => {
                 StatusBar.setTranslucent(false);
                 StatusBar.setBackgroundColor(themeStyle.THEME_COLOR);
                 StatusBar.setBarStyle("light-content");
             });
+            BackHandler.addEventListener(
+                "hardwareBackPress",
+                this.backAction
+            );
         }
-        // bottom tab management
         this.props.navigation.setOptions({
             tabBarLabel: this.props.language.transfer
         });
     }
+
+    componentWillUnmount() {
+        if (Platform.OS === "android") {
+            BackHandler.removeEventListener("hardwareBackPress", this.backAction);
+        }
+    }
+
+    backAction = () => {
+        this.backEvent();
+        return true;
+    }
+
+    backEvent() {
+        this.props.navigation.goBack();
+    }
+
 }
 
 const styles = {

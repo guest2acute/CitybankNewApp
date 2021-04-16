@@ -296,7 +296,7 @@ class FundTransfer extends Component {
             APP_CUSTOMER_ID:this.state.selectFromActVal.APP_CUSTOMER_ID,
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
-            ACTIVITY_CD: userDetails.ACTIVITY_CD,
+            ACTIVITY_CD: userDetails.ACTIVITY_CscreenNameD,
             TO_ACCT_NO: val === 0 ? this.state.selectToActVal.ACCT_UNMASK : this.state.cityTransVal === 0 ? this.state.accountRes.ACCOUNT : this.state.selectNickVal.TO_ACCT_NO,
             SERVICE_CHARGE: this.state.servicesCharge,
             ACTION: "FUNDTRF",
@@ -363,7 +363,8 @@ class FundTransfer extends Component {
             title: val === 0 ? language.fund_transfer_own_account : language.fund_transfer_city_account,
             transferArray: tempArr,
             screenName: screenName,
-            transRequest: request
+            transRequest: request,
+            transType:"fund"
         });
     }
 

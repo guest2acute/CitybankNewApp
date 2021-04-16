@@ -78,6 +78,15 @@ class TransferConfirm extends Component {
     }
 
     async transferFundOwnAccounts() {
+      /*  console.log("transType",this.props.route.params.transType)
+        this.props.navigation.navigate(this.state.screenName,
+            {
+                REQUEST_CD: "",
+                transType: this.props.route.params.transType,
+                routeVal: this.props.route.params.routeVal,
+                routIndex: this.props.route.params.routeIndex,
+                transferArray: this.props.route.params.transferArray
+            });*/
         this.setState({isProgress: true});
         await FUNDTRF(this.props.route.params.transRequest, this.props).then((response) => {
             console.log("response", response);
@@ -86,7 +95,7 @@ class TransferConfirm extends Component {
                     this.props.navigation.navigate(this.state.screenName,
                         {
                             REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
-                            transType: "fund",
+                            transType: this.props.route.params.transType,
                             routeVal: this.props.route.params.routeVal,
                             routIndex: this.props.route.params.routeIndex,
                             transferArray: this.props.route.params.transferArray
