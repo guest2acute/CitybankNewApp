@@ -758,7 +758,8 @@ class BeneficiaryOtherBank extends Component {
         this.setState({
             isProgress: true
         });
-        await GETBANKDETAILS(this.props.userDetails, this.props, "BANK", this.state.selectTypeVal === 1).then(response => {
+        await GETBANKDETAILS(this.props.userDetails, this.props, "BANK",
+            this.state.selectTypeVal === 1,this.state.selectTypeVal === 1?"NPSB":"ALL").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -776,7 +777,8 @@ class BeneficiaryOtherBank extends Component {
         });
         let userDetails = this.props.userDetails;
         userDetails = {...userDetails, BANK_CD: this.state.selectBankVal.BANK_CD};
-        await GETBANKDETAILS(userDetails, this.props, "DIST", false).then(response => {
+        await GETBANKDETAILS(userDetails, this.props, "DIST", false,
+            this.state.selectTypeVal === 1?"NPSB":"ALL").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -798,7 +800,8 @@ class BeneficiaryOtherBank extends Component {
             BANK_CD: this.state.selectBankVal.BANK_CD,
             DIST_CD: this.state.selectDistrictVal.DIST_CD
         };
-        await GETBANKDETAILS(userDetails, this.props, "BRANCH", false).then(response => {
+        await GETBANKDETAILS(userDetails, this.props, "BRANCH", false,
+            this.state.selectTypeVal === 1?"NPSB":"ALL").then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,

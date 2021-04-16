@@ -271,7 +271,7 @@ export default {
     errAccountMatch: "প্রদত্ত সিটিটিচ ব্যবহারকারী আইডির সাথে অ্যাকাউন্ট নম্বর মেলে না",
     errCardMatch: "প্রদত্ত সিটিটিচ ব্যবহারকারী আইডির সাথে কার্ড নম্বর মেলে না",
     /*confirmation message*/
-    logout_confirm: "আপনি কি লগআউট করতে চান?",
+    logout_confirm: "আপনি সত্যিই লগ আউট করতে চান?",
     exitConfirm: "আপনি কি অ্যাপ থেকে বেরিয়ে যাওয়ার বিষয়ে নিশ্চিত?",
     select_date: "তারিখ নির্বাচন করুন",
     wrongMobile: "সঠিক মোবাইল নম্বর লিখুন দয়া করে",
@@ -435,7 +435,7 @@ export default {
 
     new_pwd_txt: "নতুন পাসওয়ার্ড",
     act_card_no: "অ্যাকাউন্ট নম্বর / কার্ড নম্বর",
-    sel_act_card_no: "অ্যাকাউন্ট নম্বর / কার্ড নম্বর নির্বাচন করুন",
+    sel_act_card_no: "অ্যাকাউন্ট / কার্ড নির্বাচন করুন",
     confirm_pwd_txt: "পাসওয়ার্ড নিশ্চিত করুন",
     select_request: "অনুরোধ নির্বাচন করুন",
     prepaid_card: "প্রিপেইড কার্ড ব্যবহার করা",
@@ -710,7 +710,6 @@ export default {
     to_account: "হিসাবে",
     vat: "ভ্যাট",
     select_to_acct: "অ্যাকাউন্টে নির্বাচন করুন",
-    to_acct: "হিসাবে",
     balanceTypeArr: [
         {key: "0", label: "2000", value: 0},
         {key: "1", label: "5000", value: 1},
@@ -738,7 +737,6 @@ export default {
 
     own_accountt: "নিজের হিসাব",
     city_accountt: "সিটি অ্যাকাউন্ট",
-    to_account: "হিসাবে",
 
     /*Transfer to bkash screen message*/
     other_bank_account_title: "অন্যান্য ব্যাংক অ্যাকাউন্ট তহবিল স্থানান্তর",
@@ -746,10 +744,18 @@ export default {
     account_type: "অ্যাকাউন্ট ধরন",
     district_type: "জেলার নাম",
     branch_name: "শাখার নাম",
-    other_bank_props: [
-        {label: "বেফ্টন (রাগুলার স্থানান্তর)", value: 0},
-        {label: "আরটিজিএস (তাত্ক্ষণিক স্থানান্তর)", value: 1},
-        {label: "এনপিএসবি (তাত্ক্ষণিক স্থানান্তর)", value: 2},
+    bn_bank_props: [
+        {label: "BEFTN(Regular Transfer)", value: 0,item:"BEFTN"},
+        {label: "NPSB(Instant Transfer)", value: 1,item:"NPSB"},
+    ],
+
+    br_bank_props: [
+        {label: "BEFTN(Regular Transfer)", value: 0,item:"BEFTN"},
+        {label: "RTGS(Instant Transfer)", value: 1,item:"RTGS"}
+    ],
+
+    npsb_bank_props: [
+        {label: "NPSB(Instant Transfer)", value: 0,item:"NPSB"},
     ],
     transfer_mode: "স্থানান্তর মোড",
 
@@ -1263,10 +1269,10 @@ export default {
     receipt: "প্রাপ্তি",
     thank_you: "ধন্যবাদ!",
     transaction_success: "সফলভাবে লেনদেন",
-    approval_id: "অনুমোদনের আইডি 108417268210",
+    approval_id: "নিশ্চিতকরণ ",
     customer_name: "ক্রেতার নাম",
     source_account: "উত্স অ্যাকাউন্ট",
-    receipt_amount: "পরিমাণ (বিডিটি)",
+    receipt_amount: "পরিমাণ",
     type: "প্রকার",
     transaction_date: "লেনদেনের তারিখ এবং সময়",
     another_qr_payment: "আরেকটি কিউআর পেমেন্ট",
@@ -1280,6 +1286,7 @@ export default {
 
     qr_notes: "বিকল্প 2 নির্বাচন করা থাকলে, প্রতিটি সফলভাবে লেনদেনের পরে মোট সীমা একের মাধ্যমে হ্রাস পাবে",
     errorTransactionLimit: "লগইন ছাড়াই 99 লেনদেনের সীমাতে সেটআপ করুন",
+    errorTransactionLimit0: "সীমা 0 এর বেশি হওয়া উচিত",
     status: "স্থিতি",
     waiting: "অপেক্ষা করছি",
     reference_number: "পরিচিত সংখ্যা",
@@ -1304,6 +1311,7 @@ export default {
     conAmt: "সুবিধার পরিমাণ",
     tipAmt: "টিপ পরিমাণ",
 
+    qr_debit_card_error:"এই লেনদেনটি করতে সক্রিয় ডেবিট/ক্রেডিট কার্ড প্রয়োজন। সিটিটাচ এর সাথে বর্তমানে আপনার কোনো কার্ড সংযুক্ত নেই। বিস্তারিত জানতে ১৬২৩৪ এ কল করুন।",
     empty_card_list_msg: "আপনার কোনও কার্ড সিলেক্ট করা নেই। দয়া করে কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করুন।",
     empty_card_list_with_out_msg: "আপনার কোনও কার্ড সিলেক্ট করা নেই। কিউআর মার্চেন্ট পেমেন্ট ট্যাব থেকে কার্ড (গুলি) নির্বাচন করতে লগইন করুন।",
     enable_following_card_s_allows_you_to_perform_pay_qr_merchant: "কিউআর মার্চেন্ট পেইমেন্ট করার জন্য একটি কার্ড বাছাই করুন",
@@ -1398,6 +1406,14 @@ export default {
 
     /*error message*/
     error_select_company_name: "দয়া করে সংস্থার নাম নির্বাচন করুন",
-    error_bill: "বিল নম্বর প্রয়োজনীয়"
+    error_bill: "বিল নম্বর প্রয়োজনীয়",
+
+    to_card: "কার্ডে",
+
+    error_amount_more_balance: "স্থানান্তর পরিমাণ অ্যাকাউন্ট ব্যালেন্সের চেয়ে কম হওয়া উচিত।",
+    error_grandTotal_more_balance: "গ্র্যান্ড টোটাল অ্যাকাউন্টের ব্যালেন্সের চেয়ে কম হওয়া উচিত।",
+    from_txt:"প্রেরক",
+    to_txt: "প্রাপক",
+
 }
 

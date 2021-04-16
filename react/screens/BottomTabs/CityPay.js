@@ -42,7 +42,7 @@ class CityPay extends Component {
     }
 
     onSuccess = e => {
-        console.log("isLoading",isLoading);
+        console.log("isLoading", isLoading);
         if (e.type === "QR_CODE" && !isLoading) {
             isLoading = true;
             this.setState({type: "SCAN", qrVal: e.data}, () => {
@@ -90,7 +90,7 @@ class CityPay extends Component {
         if (this.state.qrId === "") {
             Utility.alert(language.errorQRId, language.ok);
         } else {
-
+            this.scanRequestQrCode();
         }
     }
 
@@ -105,6 +105,11 @@ class CityPay extends Component {
             isLoading = false;
             this.scanner.reactivate();
             if (response.CARD_LIST.length === 0) {
+                Utility.alert(this.props.language.qr_debit_card_error, this.props.language.ok);
+                return;
+            }
+            let cardList = response.CARD_LIST.filter((e) => e.ACTIVE === "Y");
+            if (cardList.length > 0) {
                 Utility.alert(this.props.language.empty_card_list_msg, this.props.language.ok);
             } else {
                 this.props.navigation.navigate("PaymentDetails", {

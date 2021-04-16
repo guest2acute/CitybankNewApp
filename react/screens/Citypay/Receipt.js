@@ -6,7 +6,7 @@ import {
     SafeAreaView,
     ScrollView,
     StatusBar,
-    Text, TextInput,
+    Text,
     TouchableOpacity,
     View
 } from "react-native";
@@ -14,11 +14,12 @@ import themeStyle from "../../resources/theme.style";
 import CommonStyle from "../../resources/CommonStyle";
 import Utility from "../../utilize/Utility";
 import {connect} from "react-redux";
-import {AddBeneficiary} from "../Requests/RequestBeneficiary";
 import {BusyIndicator} from "../../resources/busy-indicator";
 import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
 import {CommonActions} from "@react-navigation/native";
+
+let response;
 
 class Receipt extends Component {
     constructor(props) {
@@ -28,14 +29,7 @@ class Receipt extends Component {
             title: props.route.params.title,
             screenName: props.route.params.screenName,
         }
-    }
-
-    onSubmit(language, navigation) {
-        if (this.state.isMainScreen) {
-
-        } else {
-
-        }
+        response = props.route.params.response;
     }
 
     resetVal() {
@@ -47,7 +41,7 @@ class Receipt extends Component {
         });
     }
 
-    backToHome(){
+    backToHome() {
         CommonActions.reset({
             routes: [{name: 'Transfer'}],
             index: 0
@@ -56,24 +50,67 @@ class Receipt extends Component {
 
     receiptView(language) {
         return (
-            this.state.data.map((item) => {
-                    return (
-                        <View key={item.key}>
-                            <View style={{
-                                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                                marginEnd: 10,
-                            }}>
-                                <Text style={[CommonStyle.textStyle, {color: themeStyle.THEME_COLOR}]}>
-                                    {item.key}
-                                </Text>
-                                <Text
-                                    style={[CommonStyle.viewText, {color: themeStyle.PLACEHOLDER_COLOR}]}>{item.value}</Text>
-                            </View>
-                            <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                        </View>
-                    )
-                }
-            )
+            <View>
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle, {color: themeStyle.THEME_COLOR}]}>
+                        {language.from_txt}
+                    </Text>
+                    <Text
+                        style={[CommonStyle.viewText, {color: themeStyle.BLACK}]}>{response.FROM_ACCT_NO}</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle, {color: themeStyle.THEME_COLOR}]}>
+                        {language.to_txt}
+                    </Text>
+                    <Text
+                        style={[CommonStyle.viewText, {color: themeStyle.BLACK}]}>{response.TO_ACCT_NO}</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle, {color: themeStyle.THEME_COLOR}]}>
+                        {language.receipt_amount}
+                    </Text>
+                    <Text
+                        style={[CommonStyle.viewText, {color: themeStyle.BLACK}]}>{response.TRN_AMOUNT}</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle, {color: themeStyle.THEME_COLOR}]}>
+                        {language.typeTitle}
+                    </Text>
+                    <Text
+                        style={[CommonStyle.viewText, {color: themeStyle.BLACK}]}>{response.TRANSACTION_TYPE}</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                <View style={{
+                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                    marginEnd: 10,
+                }}>
+                    <Text style={[CommonStyle.textStyle, {color: themeStyle.THEME_COLOR}]}>
+                        {language.transaction_date}
+                    </Text>
+                    <Text
+                        style={[CommonStyle.viewText, {color: themeStyle.BLACK}]}>{response.TRANSACTION_DATE}</Text>
+                </View>
+                <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+            </View>
         )
     }
 
@@ -108,7 +145,7 @@ class Receipt extends Component {
                                 marginBottom: 10,
                                 textAlign: "center",
                                 color: themeStyle.DIM_DIM_COLOR
-                            }]}>{language.approval_id}</Text>
+                            }]}>{language.approval_id + response.REFNO}</Text>
                         </View>
                         <TouchableOpacity onPress={() => Utility.logout(this.props.navigation, language)}
                                           style={{
@@ -123,7 +160,7 @@ class Receipt extends Component {
                             }} source={require("../../resources/images/ic_logout.png")}/>
                         </TouchableOpacity>
                     </View>
-                  {/*  {this.receiptView(language)}*/}
+                    {this.receiptView(language)}
                     <View style={{
                         flexDirection: "row",
                         marginStart: Utility.setWidth(10),
@@ -145,7 +182,7 @@ class Receipt extends Component {
                                 borderColor: themeStyle.THEME_COLOR
                             }}>
                                 <Text
-                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR}]}>{language.addToFavorite}</Text>
+                                    style={[CommonStyle.midTextStyle, {color: themeStyle.THEME_COLOR,textAlign:"center"}]}>{language.addToFavorite}</Text>
                             </View>
                         </TouchableOpacity>
 

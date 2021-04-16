@@ -131,7 +131,7 @@ class Otp extends Component {
                                 {
                                     REQUEST_CD: "",
                                     transType: "fund",
-                                    response: response,
+                                    response: response.RESPONSE[0],
                                     routeVal: this.props.route.params.routeVal,
                                     routIndex: this.props.route.params.routeIndex,
                                     transferArray: this.props.route.params.transferArray

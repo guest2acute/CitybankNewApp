@@ -242,6 +242,10 @@ class QRMerchantPayment extends Component {
             this.setState({error_limit: language.errorTransactionLimit});
             return;
         }
+        else if (this.state.selection_type === 1 && parseInt(this.state.limit) === 0) {
+            this.setState({error_limit: language.errorTransactionLimit0});
+            return;
+        }
         this.setState({isProgress: true});
         const {dataList} = this.state;
         let cardItems = [];
@@ -256,7 +260,7 @@ class QRMerchantPayment extends Component {
                 this.setState({
                     isProgress: false,
                 });
-                Utility.alert(language.success_updated, language.ok);
+                Utility.alertWithBack(language.ok,language.success_updated,this.props.navigation);
             }, (error) => {
                 this.setState({isProgress: false});
                 console.log("error", error);

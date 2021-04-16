@@ -2,8 +2,6 @@
  * class store important keys and data object
  */
 
-import {Dimensions, Platform} from "react-native";
-
 export default class Config {
 
     /**

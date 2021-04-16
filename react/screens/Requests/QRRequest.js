@@ -85,7 +85,10 @@ export const QRSCANCODE = async (userDetails, REMARKS, DATA, TYPE,ISLOGGEDIN, pr
             console.log("responseVal", result);
             if (result.STATUS === "0") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve(result.RESPONSE[0]);
+                if(DATA === "")
+                    return resolve(result);
+                else
+                    return resolve(result.RESPONSE[0]);
             } else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);
                 console.log("errorResponse", JSON.stringify(result));
