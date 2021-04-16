@@ -78,7 +78,7 @@ class InsurancePayment extends Component {
         console.log("modelSelection is this", item)
         if (modelSelection === "insuranceType") {
             this.setState({SelectInsuranceName: item.label, selectCompanyTypeVal: item.value, modalVisible: false})
-        }if (modelSelection === "insurancePaidType") {
+        }else if (modelSelection === "insurancePaidType") {
             this.setState({SelectInsurancePaid: item.label, selectCompanyTypeVal: item.value, modalVisible: false})
         }else if (modelSelection === "accountType") {
             this.setState({SelectFromAccount: item.label, selectFromTypeVal: item.value, modalVisible: false})
@@ -187,7 +187,6 @@ class InsurancePayment extends Component {
             screenName:"SecurityVerification",
             transType:"payments"
         });
-
     }
 
 

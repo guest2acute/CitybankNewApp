@@ -1440,8 +1440,72 @@ export default {
     error_select_payment:"পেমেন্ট শিরোনাম নির্বাচন করুন",
     et_student_id:"শিক্ষার্থী আইডি প্রবেশ করান",
     et_Student_name: "শিক্ষার্থীর নাম লিখুন",
-    et_semester: "সেমিস্টার প্রবেশ করুন"
+    et_semester: "সেমিস্টার প্রবেশ করুন",
 
+    /*insurance payments*/
+    insurance_name: "বীমা নাম",
+    insurance_props: [
+        {label: "দেখা জীবন", value: 0},
+        {label: "সবুজ বদ্বীপ", value: 0},
+        {label: "রূপকথার পক্ষি বিশেষ", value: 0},
+        {label: "নিটল", value: 0},
+    ],
+    select_insurance_name:"বীমা নাম নির্বাচন করুন",
+    policy_number: "পলিসি নাম্বার",
+    policy_holder_name: "পলিসি ধারকের নাম",
+    insurance_paid: "জন্য বীমা প্রদান",
+    select_insurance_paid: "জন্য প্রদান বীমা নির্বাচন করুন",
+    insurance_paid_props: [
+        {label: "প্রিমিয়াম", value: 0},
+        {label: "প্রয়োগ", value: 1},
+        {label: "ঋণ পরিশোধ", value: 2},
+        {label: "পুনঃস্থাপন", value: 3},
+        {label: "ব্যালেন্স প্রিমিয়াম", value: 4},
+        {label: "এপিএল ayণ পরিশোধ", value: 5},
+    ],
+
+    et_policy_no_placeholder:"নীতি নম্বর লিখুন",
+    et_policy_name_placeholder: "পলিসি ধারকের নাম প্রবেশ করান",
+    et_remarks:"মন্তব্য লিখুন",
+
+    /*error message*/
+    error_select_insurance_name: "বীমা নাম নির্বাচন করুন",
+    require_policy_number: "নীতি নম্বর প্রয়োজন Number",
+    require_policy_holder: "নীতিধারীর নাম প্রয়োজন",
+    error_select_insurance_paid: "জন্য প্রদান বীমা নির্বাচন করুন",
+
+    /*Internet Bill Payment screen*/
+    operatorBillTypeArr: [
+        {key: "0", label: "বাংলালায়ন", value: 0},
+        {key: "1", label: "কিউবি", value: 1},
+        {key: "2", label: "কার্নিভাল", value: 2}
+    ],
+    account_id:"অ্যাকাউন্ট আইডি",
+    require_account_id:"অ্যাকাউন্ট আইডি প্রয়োজন",
+    et_account_id_placeholder: "অ্যাকাউন্ট আইডি প্রবেশ করান",
+
+    /*Indian Visa Proccesing Fee Payments*/
+    ivas_center_name: "আইভিএএস কেন্দ্রের নাম",
+    select_avas_center: "AVAS কেন্দ্র নির্বাচন করুন",
+    ivas_center_name_props: [
+        {label: "আইভিএসি, শায়ামলি", value: 0},
+        {label: "আইভিএসি, রাজশাহী", value: 1},
+        {label: "আইভিএসি, কুলনা", value: 2},
+        {label: "আইভিএসি, সিলহেট", value: 3},
+        {label: "আইভিএসি, চিটাগং", value: 4},
+        {label: "আইভিএসি, রংপুর", value: 5},
+    ],
+    appointment_type:"অ্যাপয়েন্টমেন্টের ধরণ",
+    select_appointment_type:"অ্যাপয়েন্টমেন্ট টাইপ নির্বাচন করুন",
+    passport_no:"পাসপোর্ট নম্বর",
+    web_file:"ওয়েব ফাইল",
+    visa_processing_fee:"ভিসা প্রসেসিং ফি",
+    appointment_type_props: [
+        {label: "হেটে চলা", value: 0},
+        {label: "নিয়োগ", value: 1}
+    ],
+    et_email_placeholder:"ইমেইল প্রদান করুন",
+    et_passport_placeholder:"পাসপোর্ট নম্বর প্রবেশ করান"
 
 }
 

@@ -1442,6 +1442,7 @@ export default {
 
     et_policy_no_placeholder:"Enter Policy Number",
     et_policy_name_placeholder: "Enter Policy Holder's Name",
+    et_remarks:"Enter Remarks",
 
     /*error message*/
     error_select_insurance_name: "Please Select Insurance Name",
@@ -1449,7 +1450,47 @@ export default {
     require_policy_holder: "Policy holder's name required",
     error_select_insurance_paid: "Please Select Insurance Paid for",
 
+    /*Internet Bill Payment screen*/
+    operatorBillTypeArr: [
+        {key: "0", label: "Banglalion", value: 0},
+        {key: "1", label: "Qubee", value: 1},
+        {key: "2", label: "Carnival", value: 2}
+    ],
+    account_id:"Account Id",
+    require_account_id:"Account id is required",
+    et_account_id_placeholder: "Enter Account Id",
 
-    et_remarks:"Enter Remarks"
+    /*Indian Visa Proccesing Fee Payments*/
+    ivas_center_name: "IVAS Center Name",
+    select_avas_center: "Select AVAS Center",
+    ivas_center_name_props: [
+        {label: "IVAC,SHYAMOLI", value: 0},
+        {label: "IVAC, RAJSHAHI", value: 1},
+        {label: "IVAC, KULNA", value: 2},
+        {label: "IVAC, SYLHET", value: 3},
+        {label: "IVAC, CHITAAGONG", value: 4},
+        {label: "IVAC, RANGPUR", value: 5},
+    ],
+    appointment_type:"Appointment Type",
+    select_appointment_type:"Select Appointment Type",
+    passport_no:"Passport Number",
+    web_file:"Web File",
+    visa_processing_fee:"Visa Processing Fee",
+    appointment_type_props: [
+        {label: "Walk-In", value: 0},
+        {label: "Appointment", value: 1}
+    ],
+    et_email_placeholder:"Enter Email",
+    et_passport_placeholder:"Enter Passport Number",
+    et_web_file:"Enter Web File",
+
+    /*error message*/
+    error_ivas_center_name: "Please Select AVAS Center Name",
+    error_appointment_type: "Please Select appointment Type",
+    require_passport: "Passport Number is Required",
+    require_web_file: "Web File is Required",
+
+    select_appointment_date:"Select Appointment Date",
+    appointment_date:"Appointment Date"
 
 }

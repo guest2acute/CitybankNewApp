@@ -56,7 +56,7 @@ class TransferToBkash extends Component {
             otp:"",
             otpType:0,
             transferType: 0,
-
+            show:false
         }
     }
 
@@ -861,7 +861,6 @@ class TransferToBkash extends Component {
                         onChange={this.onChange}
                     />
                 )}
-
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
         )
