@@ -78,12 +78,12 @@ export const AddBeneficiary = (accountRes, beneType, userDetails, NICK_NAME, MOB
     });
 }
 
-export const GETBANKDETAILS = async (userDetails, props, requestType, isCard) => {
+export const GETBANKDETAILS = async (userDetails, props, requestType, isCard,MOD_TRAN) => {
     let request = {
         ACTION: "GETBENFBANK",
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         REQ_TYPE: requestType,
-        MOD_TRAN: isCard ? "NPSB" : "ALL",
+        MOD_TRAN: MOD_TRAN,
         USER_ID: userDetails.USER_ID,
         ...Config.commonReq
     }

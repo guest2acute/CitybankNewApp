@@ -25,6 +25,7 @@ class PaymentDetails extends Component {
     constructor(props) {
         super(props);
         response = props.route.params.response;
+        let cardList = response.CARD_LIST.filter((e) => e.ACTIVE === "Y");
         this.state = {
             isProgress: false,
             isMainScreen: true,
@@ -44,8 +45,8 @@ class PaymentDetails extends Component {
             tipAmt: "",
             email: "",
             errorTipAmt: "",
-            data: response.CARD_LIST,
-            cardDetails: response.CARD_LIST.length > 0 ? response.CARD_LIST[0] : null
+            data: cardList,
+            cardDetails: cardList.length > 0 ? cardList[0] : null
         }
     }
 

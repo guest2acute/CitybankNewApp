@@ -356,6 +356,7 @@ class FundTransfer extends Component {
                 screenName = "Otp";
         }
 
+
         this.props.navigation.navigate("TransferConfirm", {
             routeVal: [{name: 'Transfer'}, {name: 'FundTransfer'}],
             routeIndex: 1,
@@ -391,7 +392,7 @@ class FundTransfer extends Component {
         this.setState({isProgress: true});
 
         await GETAMTLABEL(this.props.userDetails, transType, this.props).then((response) => {
-                this.setState({isProgress: false, actLabelList: response});
+                this.setState({isProgress: false, actLabelList: response.AMOUNTLIST});
             },
             (error) => {
                 this.setState({isProgress: false});
@@ -526,7 +527,7 @@ class FundTransfer extends Component {
                 marginEnd: 10,
             }}>
                 <Text style={CommonStyle.textStyle}>
-                    {language.to_acct}
+                    {language.to_account}
                     <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                 </Text>
 
@@ -672,7 +673,7 @@ class FundTransfer extends Component {
                                 marginTop: 6,
                                 marginBottom: 4
                             }]}>
-                                {language.to_acct}
+                                {language.to_account}
                                 <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                             </Text>
                             }

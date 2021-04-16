@@ -491,10 +491,19 @@ class PinLogin extends Component {
             this.setState({
                 isProgress: false,
             });
-            this.props.navigation.navigate("CityPay", {
-                isLoggedIn: "N"
-            });
+            if (response.CARD_LIST.length === 0) {
+                Utility.alert(this.props.language.qr_debit_card_error, this.props.language.ok);
+                return;
+            }
 
+            let cardList = response.CARD_LIST.filter((e) => e.ACTIVE === "Y");
+            if (cardList.length > 0) {
+                this.props.navigation.navigate("CityPay", {
+                    isLoggedIn: "N"
+                });
+            } else {
+                Utility.alert(this.props.language.empty_card_list_with_out_msg, this.props.language.ok);
+            }
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);

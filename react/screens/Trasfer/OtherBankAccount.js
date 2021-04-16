@@ -84,14 +84,21 @@ class OtherBankAccount extends Component {
             account_holder_name: "",
             currency: "",
             cardCode: 0,
-            screenSwitcher: false,
             error_numberPayment: "",
             toAccount: "105010074",
             actLabelList: [],
             accountArr: [],
-            selectNickArr:[],
+            selectNickArr: [],
             focusAmount: false,
-            errorToAccount: ""
+            errorToAccount: "",
+            toAccount: "",
+            account_type: "",
+            type_bank: "",
+            district_type: "",
+            branch_name: "",
+            labelRes: null,
+            minAmt: 0,
+            maxAmt: null
         }
     }
 
@@ -102,7 +109,7 @@ class OtherBankAccount extends Component {
 
     async changeCard(cardCode) {
         if (cardCode === 1) {
-            this.getNickList();
+            await this.getNickList();
         }
         this.setState({
             cardCode: cardCode
@@ -143,8 +150,15 @@ class OtherBankAccount extends Component {
     async onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "nickNameType") {
-            this.setState({selectNicknameType: item.label, selectNickVal: item.value, modalVisible: false})
-           // this.alertToNavigate();
+            let label = item.label;
+            item = item.value;
+            this.setState({
+                selectNicknameType: label, selectNickVal: item, modalVisible: false,
+                toAccount: item.TO_ACCT_NO, account_type: item.ACCT_TYPE, type_bank: item.BENF_BANK_NM,
+                district_type: item.BENF_DIST_NM, branch_name: item.BENF_BRANCH_NM,
+                selectAccountTypeVal: item.ACCT_TYPE_ORG === "A" ? 0 : 1
+            })
+            // this.alertToNavigate();
         } else if (modelSelection === "accountType") {
             this.setState({selectAcctType: item.label, selectFromActVal: item.value, modalVisible: false})
             await this.getBalance(item.value);
@@ -157,6 +171,7 @@ class OtherBankAccount extends Component {
                 selectBankType: this.props.language.select_bank_type,
                 selectDistrictType: this.props.language.select_district_type,
                 selectBranchType: this.props.language.select_branch_type,
+                transferModeType: 0,
                 selectBankVal: -1,
                 selectBranchVal: -1,
                 selectDistrictVal: -1,
@@ -169,33 +184,35 @@ class OtherBankAccount extends Component {
                 selectBranchVal: -1,
                 modalVisible: false
             }, async () => {
-                await this.getDistrictName();
+                if (this.state.selectAccountTypeVal === 0)
+                    await this.getDistrictName();
             })
         } else if (modelSelection === "district_type") {
             this.setState({
                 selectDistrictType: item.label, selectDistrictVal: item.details,
                 modalVisible: false
             }, async () => {
-                await this.getBranchName()
+                if (this.state.selectAccountTypeVal === 0)
+                    await this.getBranchName()
             })
         } else if (modelSelection === "branch_type") {
             this.setState({selectBranchType: item.label, selectBranchVal: item.details, modalVisible: false})
         }
     }
 
-  /*  alertToNavigate() {
-        Alert.alert(
-            Config.appName,
-            this.props.language.update_beneficiary_alert,
-            [
-                {
-                    text: this.props.language.yes_txt,
-                    onPress: () => this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.update_beneficiary})
-                },
-                {text: this.props.language.no_txt},
-            ]
-        );
-    }*/
+    /*  alertToNavigate() {
+          Alert.alert(
+              Config.appName,
+              this.props.language.update_beneficiary_alert,
+              [
+                  {
+                      text: this.props.language.yes_txt,
+                      onPress: () => this.props.navigation.navigate("BeneficiaryOtherBank", {title: this.props.language.update_beneficiary})
+                  },
+                  {text: this.props.language.no_txt},
+              ]
+          );
+      }*/
 
     async onSubmit(language, navigation) {
         if (this.state.cardCode === 0) {
@@ -225,8 +242,7 @@ class OtherBankAccount extends Component {
                 this.setState({errorTransferAmount: language.errTransferAmt})
             } else if (this.state.toAccount === "") {
                 this.setState({errorToAccount: language.et_act_card})
-            }
-            else if (this.state.remarks === "") {
+            } else if (this.state.remarks === "") {
                 this.setState({error_remarks: language.errRemarks})
             } else if (this.state.transferType === 1) {
                 if (this.state.paymentDate === "") {
@@ -249,7 +265,7 @@ class OtherBankAccount extends Component {
         let screenName = "";
         let userDetails = this.props.userDetails;
         let request = {
-            APP_CUSTOMER_ID:this.state.selectFromActVal.APP_CUSTOMER_ID,
+            APP_CUSTOMER_ID: this.state.selectFromActVal.APP_CUSTOMER_ID,
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
@@ -264,14 +280,14 @@ class OtherBankAccount extends Component {
             NICK_NAME: val === 0 ? "" : this.state.cityTransVal === 0 ? "" : this.state.selectNickVal.NICK_NAME,
             REQ_FLAG: "R",
             REQ_TYPE: val === 0 ? "I" : "B",
-            TRN_TYPE: "BEFTN",
+            TRN_TYPE: this.state.selectAccountTypeVal === 1 ? language.npsb_bank_props[this.state.transferModeType].item : language.other_bank_props[this.state.transferModeType].item,
             REF_NO: val === 1 ? this.state.selectNickVal.REF_NO : "",
             TO_MOBILE_NO: val === 0 ? "" : this.state.selectNickVal.TO_CONTACT_NO,
             BEN_TYPE: "O",
             APP_INDICATOR: this.state.selectFromActVal.APP_INDICATOR,
             TO_EMAIL_ID: val === 0 ? "" : this.state.selectNickVal.TO_EMAIL_ID,
             VAT_CHARGE: this.state.vat,
-            TO_IFSCODE: val === 0 ? this.state.selectBranchVal.ROUTING_NO : this.state.selectNickVal.TO_IFSCODE,
+            TO_IFSCODE: val === 1 ? this.state.selectNickVal.TO_IFSCODE : this.state.selectAccountTypeVal === 0 ? this.state.selectBranchVal.ROUTING_NO : this.state.selectBankVal.BANK_CD,
             OTP_TYPE: this.state.otp_type === 0 ? "S" : "E",
             FROM_CURRENCY_CODE: this.state.selectFromActVal.CURRENCY_CODE,
             TO_CURRENCY_CODE: val === 0 ? "" : this.state.selectNickVal.CURRENCY,
@@ -305,7 +321,6 @@ class OtherBankAccount extends Component {
 
         if (val === 0) {
             screenName = "SecurityVerification";
-
         } else if (val === 1) {
             screenName = "Otp";
         }
@@ -389,6 +404,7 @@ class OtherBankAccount extends Component {
     }
 
     async getBalance(account) {
+        this.setState({isProgress: true});
         let accountNo = account.ACCT_UNMASK;
         GETBALANCE(accountNo, account.APP_INDICATOR, account.APP_CUSTOMER_ID, this.props).then(response => {
             console.log("response", response);
@@ -406,28 +422,35 @@ class OtherBankAccount extends Component {
 
     }
 
-    transferModeShow(text) {
-        console.log("show", text)
-        if (text.length !== 0) {
-            this.setState({
-                transferAmount: text,
-                errorTransferAmount: "",
-                transferBEFTMode: true
-            })
-        } else if (text > 100000 || text <= 100000) {
-            console.log("text is this", text)
-            this.setState({
-                transferAmount: text,
-                errorTransferAmount: "",
-                transferMode: true
-            })
-        } else {
-            this.setState({
-                transferAmount: text,
-                errorTransferAmount: "",
-                transferBEFTMode: true
-            })
+
+    setTransferMode(text) {
+        if (this.state.maxAmt !== null) {
+            if (parseFloat(text) > parseFloat(this.state.maxAmt)) {
+                this.setState({error_transferAmount: language.errTransferAmt + " " + this.state.maxAmt});
+            } else if (parseFloat(text) > 100000) {
+
+            } else if (parseFloat(text) <= 100000) {
+
+            }
         }
+        this.setState({
+            error_transferAmount: "",
+            CHARGE_AMT_LABEL: "",
+            VAT_AMT_LABEL: "",
+            servicesCharge: "",
+            vat: "",
+            transferAmount: Utility.input(text, "0123456789.")
+        });
+    }
+
+    setMinMax(value) {
+        const {labelRes} = this.state;
+        if (value === "BEFTN")
+            this.setState({minAmt: labelRes.BEFTN_ACT_MIN, maxAmt: labelRes.BEFTN_ACT_MAX});
+        else if (value === "RTGS")
+            this.setState({minAmt: labelRes.RTGS_ACT_MIN, maxAmt: labelRes.RTGS_ACT_MAX});
+        else if (value === "NPSB")
+            this.setState({minAmt: labelRes.NPSB_ACT_MIN, maxAmt: labelRes.NPSB_ACT_MAX});
     }
 
     otherBankAccountView(language) {
@@ -459,16 +482,16 @@ class OtherBankAccount extends Component {
                 </TouchableOpacity>
             </View>
 
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={CommonStyle.textStyle}>
-                        {language.available_bal}
-                    </Text>
-                    <Text
-                        style={CommonStyle.viewText}>{this.state.availableBalance}</Text>
-                </View>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={CommonStyle.textStyle}>
+                    {language.available_bal}
+                </Text>
+                <Text
+                    style={CommonStyle.viewText}>{this.state.availableBalance}</Text>
+            </View>
 
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -490,6 +513,7 @@ class OtherBankAccount extends Component {
                         marginStart: 10,
                         marginEnd: 10,
                         marginTop: 6,
+                        marginBottom: 4
                     }]}>
                         {language.nick_name}
                         <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
@@ -558,6 +582,8 @@ class OtherBankAccount extends Component {
                         servicesCharge: "",
                         vat: "",
                         transferAmount: Utility.input(text, "0123456789.")
+                    }, () => {
+                        this.setTransferMode(text);
                     })}
                     value={this.state.transferAmount}
                     multiline={false}
@@ -581,7 +607,7 @@ class OtherBankAccount extends Component {
                 <Text style={CommonStyle.errorStyle}>{this.state.errorTransferAmount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-            <View>
+            {this.state.cardCode === 0 ? <View>
                 <Text style={[CommonStyle.labelStyle, {
                     color: themeStyle.THEME_COLOR,
                     marginStart: 10,
@@ -604,7 +630,7 @@ class OtherBankAccount extends Component {
                                source={require("../../resources/images/ic_arrow_down.png")}/>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View> : null}
 
 
             <View style={{flexDirection: "row", marginStart: 10, marginEnd: 10}}>
@@ -612,8 +638,11 @@ class OtherBankAccount extends Component {
                     {language.transfer_mode}
                     <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                 </Text>
+
                 <RadioForm
-                    radio_props={this.state.selectAccountTypeVal === 1 ? language.npsb_bank_props : language.other_bank_props}
+                    key={this.state.transferModeType}
+                    radio_props={this.state.selectAccountTypeVal === 1 ? language.npsb_bank_props :
+                        this.state.transferAmount === 1 ? language.bn_bank_props : language.br_bank_props}
                     initial={this.state.transferModeType}
                     buttonSize={9}
                     selectedButtonColor={themeStyle.THEME_COLOR}
@@ -628,6 +657,9 @@ class OtherBankAccount extends Component {
                     animation={true}
                     onPress={(value) => {
                         this.setState({transferModeType: value});
+                        let val = this.state.selectAccountTypeVal === 1 ? language.npsb_bank_props[value] :
+                            this.state.transferAmount === 1 ? language.bn_bank_props[value] : language.br_bank_props[value];
+                        this.setMinMax(val);
                     }}
                 />
             </View>
@@ -637,7 +669,7 @@ class OtherBankAccount extends Component {
                 marginEnd: 10,
             }}>
                 <Text style={[CommonStyle.textStyle, {flex: 1}]}>
-                    {language.to_account_card_number}
+                    {this.state.selectAccountTypeVal === -1 ? language.account_card_number : this.state.selectAccountTypeVal === 0 ? language.to_account : language.to_card}
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
@@ -659,14 +691,65 @@ class OtherBankAccount extends Component {
                     keyboardType={"number-pad"}
                     placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                     autoCorrect={false}
+                    editable={this.state.cardCode === 0}
                     maxLength={35}/>
             </View>
             {this.state.errorToAccount !== "" ?
                 <Text style={CommonStyle.errorStyle}>{this.state.errorToAccount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-            {this.state.cardCode === 1 ? null
+            {this.state.cardCode === 1 ?
+                <View>
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={CommonStyle.textStyle}>
+                            {language.account_type}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.account_type}</Text>
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={CommonStyle.textStyle}>
+                            {language.type_bank}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.type_bank}</Text>
+                    </View>
+
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={CommonStyle.textStyle}>
+                            {language.district_type}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.district_type}</Text>
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={CommonStyle.textStyle}>
+                            {language.branch_name}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.branch_name}</Text>
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+                </View>
                 :
-                <>
+                <View>
                     <View style={{flex: 1}}>
                         {<Text style={[CommonStyle.labelStyle, {
                             color: themeStyle.THEME_COLOR,
@@ -693,57 +776,58 @@ class OtherBankAccount extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={{flex: 1}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.type_district}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity disabled={this.state.selectBankVal === -1}
-                                          onPress={() => this.openModal("district_type", language.select_district_type, this.state.districtTypeArr, language)}>
-                            <View style={CommonStyle.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectDistrictType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flex: 1}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                            marginBottom: 4
-                        }]}>
-                            {language.type_Branch}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity disabled={this.state.selectDistrictVal === -1}
-                                          onPress={() => this.openModal("branch_type", language.select_branch_name, this.state.branchTypeArr, language)}>
-                            <View style={CommonStyle.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectBranchType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </>
+                    {this.state.selectAccountTypeVal === 0 ? <View>
+                        <View style={{flex: 1}}>
+                            <Text style={[CommonStyle.labelStyle, {
+                                color: themeStyle.THEME_COLOR,
+                                marginStart: 10,
+                                marginEnd: 10,
+                                marginTop: 6,
+                                marginBottom: 4
+                            }]}>
+                                {language.type_district}
+                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                            </Text>
+                            <TouchableOpacity disabled={this.state.selectBankVal === -1}
+                                              onPress={() => this.openModal("district_type", language.select_district_type, this.state.districtTypeArr, language)}>
+                                <View style={CommonStyle.selectionBg}>
+                                    <Text style={[CommonStyle.midTextStyle, {
+                                        color: this.state.selectDistrictType === language.select_district_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                        flex: 1
+                                    }]}>
+                                        {this.state.selectDistrictType}
+                                    </Text>
+                                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                                           source={require("../../resources/images/ic_arrow_down.png")}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flex: 1}}>
+                            <Text style={[CommonStyle.labelStyle, {
+                                color: themeStyle.THEME_COLOR,
+                                marginStart: 10,
+                                marginEnd: 10,
+                                marginTop: 6,
+                                marginBottom: 4
+                            }]}>
+                                {language.type_Branch}
+                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                            </Text>
+                            <TouchableOpacity disabled={this.state.selectDistrictVal === -1}
+                                              onPress={() => this.openModal("branch_type", language.select_branch_name, this.state.branchTypeArr, language)}>
+                                <View style={CommonStyle.selectionBg}>
+                                    <Text style={[CommonStyle.midTextStyle, {
+                                        color: this.state.selectBranchType === language.select_branch_type ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                        flex: 1
+                                    }]}>
+                                        {this.state.selectBranchType}
+                                    </Text>
+                                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                                           source={require("../../resources/images/ic_arrow_down.png")}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View></View> : null}
+                </View>
 
             }
             <View style={{
@@ -1087,9 +1171,14 @@ class OtherBankAccount extends Component {
 
 
     render() {
-        let language = this.props.language;
+        let
+            language = this.props.language;
         return (
-            <View style={{flex: 1, backgroundColor: themeStyle.BG_COLOR}}>
+            <View style={{
+                flex: 1,
+                backgroundColor: themeStyle.BG_COLOR
+            }
+            }>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -1107,8 +1196,7 @@ class OtherBankAccount extends Component {
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                    >
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -1219,38 +1307,38 @@ class OtherBankAccount extends Component {
                             </View>
 
                             {this.state.modalData.length > 0 ?
-                                <FlatList style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
-                                          data={this.state.modalData}
-                                          keyExtractor={(item, index) => index + ""}
-                                          renderItem={({item}) =>
-                                              <TouchableOpacity onPress={() => this.onSelectItem(item)}>
-                                                  <View
-                                                      style={{height: Utility.setHeight(35), justifyContent: "center"}}>
-                                                      <Text
-                                                          style={[CommonStyle.textStyle, {
-                                                              color: themeStyle.THEME_COLOR,
-                                                              marginStart: 10
-                                                          }]}>{item.label}</Text>
-                                                  </View>
-                                              </TouchableOpacity>
-                                          }
-                                          ItemSeparatorComponent={this.renderSeparator}/> : null}
+                                <FlatList
+                                    style={{backgroundColor: themeStyle.WHITE, width: "100%"}}
+                                    data={this.state.modalData}
+                                    keyExtractor={(item, index) => index + ""}
+                                    renderItem={({item}) =>
+                                        <TouchableOpacity onPress={() => this.onSelectItem(item)}>
+                                            <View
+                                                style={{height: Utility.setHeight(35), justifyContent: "center"}}>
+                                                <Text
+                                                    style={[CommonStyle.textStyle, {
+                                                        color: themeStyle.THEME_COLOR,
+                                                        marginStart: 10
+                                                    }]}>{item.label}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    }
+                                    ItemSeparatorComponent={this.renderSeparator}/> : null}
                         </View>
                     </View>
                 </Modal>
-                {this.state.show && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={new Date()}
-                        mode={this.state.mode}
-                        minimumDate={new Date()}
-                        is24Hour={false}
-                        display="default"
-                        onChange={this.onChange}
-                    />
-                )}
                 {
-                    this.state.selected ? this.alertToNavigate() : null
+                    this.state.show && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={new Date()}
+                            mode={this.state.mode}
+                            minimumDate={new Date()}
+                            is24Hour={false}
+                            display="default"
+                            onChange={this.onChange}
+                        />
+                    )
                 }
                 <BusyIndicator visible={this.state.isProgress}/>
             </View>
@@ -1261,7 +1349,10 @@ class OtherBankAccount extends Component {
         this.setState({isProgress: true});
 
         await GETAMTLABEL(this.props.userDetails, transType, this.props).then((response) => {
-                this.setState({isProgress: false, actLabelList: response});
+                this.setState({
+                    isProgress: false, actLabelList: response.AMOUNTLIST,
+                    labelRes: response
+                });
             },
             (error) => {
                 this.setState({isProgress: false});
@@ -1318,7 +1409,11 @@ class OtherBankAccount extends Component {
         this.setState({
             isProgress: true
         });
-        await GETBANKDETAILS(this.props.userDetails, this.props, "BANK", this.state.selectAccountTypeVal === 1).then(response => {
+        await GETBANKDETAILS(this.props.userDetails, this.props, "BANK",
+            this.state.selectAccountTypeVal === 1,
+            this.state.selectAccountTypeVal === 1 ?
+                this.props.language.npsb_bank_props[this.state.transferModeType].item :
+                this.props.language.other_bank_props[this.state.transferModeType].item).then(response => {
             console.log("response is this==========>", response);
             this.setState({
                 isProgress: false,
@@ -1337,7 +1432,9 @@ class OtherBankAccount extends Component {
         });
         let userDetails = this.props.userDetails;
         userDetails = {...userDetails, BANK_CD: this.state.selectBankVal.BANK_CD};
-        await GETBANKDETAILS(userDetails, this.props, "DIST", false).then(response => {
+        await GETBANKDETAILS(userDetails, this.props, "DIST", false,
+            this.state.selectAccountTypeVal === 1 ?
+                this.props.language.npsb_bank_props[this.state.transferModeType].item : this.props.language.other_bank_props[this.state.transferModeType].item).then(response => {
             console.log("response district is this=======>", response);
             this.setState({
                 isProgress: false,
@@ -1359,7 +1456,10 @@ class OtherBankAccount extends Component {
             BANK_CD: this.state.selectBankVal.BANK_CD,
             DIST_CD: this.state.selectDistrictVal.DIST_CD
         };
-        await GETBANKDETAILS(userDetails, this.props, "BRANCH", false).then(response => {
+        await GETBANKDETAILS(userDetails, this.props, "BRANCH", false,
+            this.state.selectAccountTypeVal === 1 ?
+                this.props.language.npsb_bank_props[this.state.transferModeType].item :
+                this.props.language.other_bank_props[this.state.transferModeType].item).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
@@ -1384,31 +1484,34 @@ class OtherBankAccount extends Component {
 
 }
 
-const styles = {
-    textView: {
-        marginStart: 10, color: themeStyle.THEME_COLOR
-    },
-    textStyle: {
-        fontFamily: fontStyle.RobotoRegular,
-        fontSize: FontSize.getSize(13),
-        color: themeStyle.BLACK
-    },
-    headerLabel: {
-        flexDirection: "row",
-        height: Utility.setHeight(40),
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: themeStyle.WHITE,
-        overflow: "hidden"
-    },
-}
+const styles =
+    {
+        textView: {
+            marginStart: 10,
+            color: themeStyle.THEME_COLOR
+        },
+        textStyle: {
+            fontFamily: fontStyle.RobotoRegular,
+            fontSize: FontSize.getSize(13),
+            color: themeStyle.BLACK
+        },
+        headerLabel: {
+            flexDirection: "row",
+            height: Utility.setHeight(40),
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: themeStyle.WHITE,
+            overflow: "hidden"
+        }
+    }
 
 const mapStateToProps = (state) => {
-    return {
-        userDetails: state.accountReducer.userDetails,
-        langId: state.accountReducer.langId,
-        language: state.accountReducer.language,
-    };
-};
+        return {
+            userDetails: state.accountReducer.userDetails,
+            langId: state.accountReducer.langId,
+            language: state.accountReducer.language,
+        };
+    }
+;
 
 export default connect(mapStateToProps)(OtherBankAccount);

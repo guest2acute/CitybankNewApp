@@ -71,17 +71,16 @@ class CashByCode extends Component {
     }
 
     async onSubmit(language, navigation) {
-
         if (this.state.selectDebitType === language.cash_select_acct) {
             Utility.alert(language.error_debit_card, language.ok);
         } else if (this.state.transferAmount === "") {
-            this.setState({error_amount: language.error_amount})
+            this.setState({error_amount: language.error_amount});
         } else if (this.state.mobileNumber === "") {
-            this.setState({errorMobile: language.error_mobile})
+            this.setState({errorMobile: language.error_mobile});
         } else if (!Utility.ValidateMobileNumber(this.state.mobileNumber)) {
-            this.setState({errorMobile: language.error_mobile_number})
+            this.setState({errorMobile: language.error_mobile_number});
         } else if (this.state.remarks === "") {
-            this.setState({error_remarks: language.errRemarks})
+            this.setState({error_remarks: language.errRemarks});
         } else {
             this.processRequest(language);
         }

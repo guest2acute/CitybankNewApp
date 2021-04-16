@@ -103,7 +103,7 @@ class LoginScreen extends Component {
         } else {
             this.props.navigation.dispatch(
                 StackActions.replace("LoginConfigureProfile", {
-                    userID: response.USER_ID,activityCD: response.USER_ID
+                    userID: response.USER_ID, activityCD: response.USER_ID
                 })
             )
         }
@@ -175,18 +175,27 @@ class LoginScreen extends Component {
         }
 
         if (userDetails.USER_ID === null || userDetails.USER_ID === "") {
-            Utility.alert(this.props.language.qr_merchant_without_login_alert,this.props.language.ok);
+            Utility.alert(this.props.language.qr_merchant_without_login_alert, this.props.language.ok);
             return;
         }
 
-        QRSCANCODE(userDetails, "", "", "", "N", this.props).then(response => {
+        QRSCANCODE(userDetails, "WithoutLogin", "", "SCAN", "N", this.props).then(response => {
             console.log("response", response);
             this.setState({
                 isProgress: false,
             });
-            this.props.navigation.navigate("CityPay", {
-                isLoggedIn: "N"
-            });
+            if (response.CARD_LIST.length === 0) {
+                Utility.alert(this.props.language.qr_debit_card_error, this.props.language.ok);
+                return;
+            }
+            let cardList = response.CARD_LIST.filter((e) => e.ACTIVE === "Y");
+            if (cardList.length > 0) {
+                this.props.navigation.navigate("CityPay", {
+                    isLoggedIn: "N"
+                });
+            } else {
+                Utility.alert(this.props.language.empty_card_list_with_out_msg, this.props.language.ok);
+            }
 
         }).catch(error => {
             this.setState({isProgress: false});

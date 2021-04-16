@@ -176,7 +176,7 @@ export const GETAMTLABEL = async (userDetails,TRN_TYPE,  props) => {
             console.log("responseVal", result)
             if (result.STATUS === "0" || result.STATUS === "999") {
                 console.log("successResponse", JSON.stringify(result));
-                return resolve(result.RESPONSE[0].AMOUNTLIST);
+                return resolve(result.RESPONSE[0]);
             }
             else {
                 Utility.errorManage(result.STATUS, result.MESSAGE, props);

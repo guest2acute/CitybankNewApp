@@ -272,7 +272,7 @@ export default {
     errAccountMatch: "Account Number does not match with given CityTouch User ID",
     errCardMatch: "Card Number does not match with given CityTouch User ID",
     /*confirmation message*/
-    logout_confirm: "Are you sure want to Logout?",
+    logout_confirm: "Do you really want to log out?",
     exitConfirm: "Are you sure want to exit from App?",
     select_date: "Select Date",
     wrongMobile: "Please enter correct mobile number",
@@ -419,7 +419,7 @@ export default {
 
     new_pwd_txt: "New Password",
     act_card_no: "Account Number/Card Number",
-    sel_act_card_no: "Select Account Number/Card Number",
+    sel_act_card_no: "Select Account/Card",
     confirm_pwd_txt: "Confirm Password",
     select_request: "Select Request",
     prepaid_card: "Using Prepaid Card",
@@ -649,8 +649,8 @@ export default {
 
     /*error message*/
     errAmt: "Require transfer amount",
-    errTransferAmt: "Minimum transfer limit is",
-    errMaxTransferAmt: "Maximum transfer limit is",
+    errTransferAmt: "Minimum transfer limit is ",
+    errMaxTransferAmt: "Maximum transfer limit is ",
     errRemarks: "Remarks is Required",
     errPrepaidStaff: "Transfer from prepaid card to staff account is not allowed",
     /*Cash By Code message*/
@@ -681,9 +681,9 @@ export default {
     ],
     select_from_account: "Select From Account",
     to_account: "To Account",
+    to_card: "To Card",
     vat: "VAT",
     select_to_acct: "Select To Account",
-    to_acct: "To Account",
     balanceTypeArr: [
         {key: "0", label: "2000", value: 0},
         {key: "1", label: "5000", value: 1},
@@ -698,10 +698,10 @@ export default {
     Frequency: "Frequency",
     select_payment: "Select Payment Frequency",
     number_of_payment: "Number Of Payment",
-    payment_array: [{key: "0", label: "Monthly", value: 1234567890123456},
-        {key: "1", label: "Quarterly", value: 4567890123456123},
-        {key: "1", label: "HalfYearly", value: 4567890123456123},
-        {key: "1", label: "Yearly", value: 4567890123456123}
+    payment_array: [{key: "0", label: "Monthly", value: 0},
+        {key: "1", label: "Quarterly", value: 1},
+        {key: "2", label: "HalfYearly", value: 2},
+        {key: "3", label: "Yearly", value: 3}
     ],
 
     error_payment_ammt: "Payment Amount is Required",
@@ -718,13 +718,18 @@ export default {
     account_type: "Account Type",
     district_type: "District Name",
     branch_name: "Branch Name",
-    other_bank_props: [
-        {label: "BEFTN(Regular Transfer)", value: 0},
-        {label: "RTGS(Instant Transfer)", value: 1},
-        {label: "NPSB(Instant Transfer)", value: 2},
+    bn_bank_props: [
+        {label: "BEFTN(Regular Transfer)", value: 0, item: "BEFTN"},
+        {label: "NPSB(Instant Transfer)", value: 1, item: "NPSB"},
     ],
+
+    br_bank_props: [
+        {label: "BEFTN(Regular Transfer)", value: 0, item: "BEFTN"},
+        {label: "RTGS(Instant Transfer)", value: 1, item: "RTGS"}
+    ],
+
     npsb_bank_props: [
-        {label: "NPSB(Instant Transfer)", value: 2},
+        {label: "NPSB(Instant Transfer)", value: 0, item: "NPSB"},
     ],
     transfer_mode: "Transfer Mode",
 
@@ -1237,10 +1242,10 @@ export default {
     receipt: "Receipt",
     thank_you: "Thank You!",
     transaction_success: "Transaction Successfully",
-    approval_id: "Approval ID 108417268210",
+    approval_id: "Confirmation ",
     customer_name: "Customer Name",
     source_account: "Source Account",
-    receipt_amount: "Amount (BDT)",
+    receipt_amount: "Amount",
     type: "Type",
     transaction_date: "Transaction Date & Time",
     another_qr_payment: "Another Qr Payment",
@@ -1253,6 +1258,7 @@ export default {
     transLimit: "Set up to 99 transaction limits without login",
     qr_notes: "If option 2 is selected, upon each successfully transaction the total limit will reduce by one",
     errorTransactionLimit: "Setup to 99 transaction limit without login",
+    errorTransactionLimit0: "Limit should be more than 0",
     status: "Status",
     waiting: "Waiting",
     reference_number: "Reference Number",
@@ -1279,7 +1285,7 @@ export default {
     trans_success_message: "Your fund has been transferred successfully, please check below details for reference.",
     addToFavorite: "Add To Favourite",
 
-
+    qr_debit_card_error: "Active debit/credit card is required for this transaction. You currently have no card with Citytouch. Call 16234 for details.",
     empty_card_list_msg: "You don’t have any card selected. Please select card (s) from QR Merchant Payment tab",
     empty_card_list_with_out_msg: "You don’t have any card selected. Login to select card (s) from QR Merchant Payment tab",
     enable_following_card_s_allows_you_to_perform_pay_qr_merchant: "Select the card(s) to perform QR Merchant Payment",
@@ -1308,7 +1314,7 @@ export default {
     errorSelectChangeStatus: "Please select Change Status",
     accountStatement: "Account Statement",
 
-    statement_account_number:"Statement for Account Number",
+    statement_account_number: "Statement for Account Number",
 
     statementTypeArr: [
         {key: "0", label: "2251615410001/GENERAL SAVINGS-STAFF A/C", value: 0},
@@ -1322,12 +1328,12 @@ export default {
 
 
     debit_card_empty_message: "Please Active your debit card for using this feature.",
-    qr_merchant_without_login_alert:"Please Login First",
+    qr_merchant_without_login_alert: "Please Login First",
     to_account_card_number: "To Account/Card",
-    et_act_card:"Enter account or card number",
+    et_act_card: "Enter account or card number",
 
     submitRequest: "Submit Request",
-    monthly_statement:"Monthly Statement(UP to last 6 Months)",
+    monthly_statement: "Monthly Statement(UP to last 6 Months)",
     statement_format: "Statement Format",
     monthTypeArr: [
         {key: "0", label: "Feb", value: 0},
@@ -1346,14 +1352,14 @@ export default {
     error_select_statement_from_type: "Please Select Statement for Account Number",
     error_from_date: "Select From Date",
     error_end_date: "Select End Date",
-    movie_tickets : "Movie Tickets",
-    utility_bill_payment: "Utility Bill Payment",
+    movie_tickets: "Movie Tickets",
+    utility_bank_payment: "Utility Bank Payment",
     internet_bill_payment: "Internet Bill Payment",
     club_bill_payment: "Club Bill Payment",
     insurance_payment: "Insurance Payment",
     tuition_fee: "Tuition Fee Payment",
     indian_visa_payment: "Indian Visa Processing Fee Payment",
-    payee_category:"PAYEE CATEGORY",
+    payee_category: "PAYEE CATEGORY",
     payee_list: "PAYEE LIST",
     value_added_service_title: "Value Added Services",
 
@@ -1361,7 +1367,7 @@ export default {
     company_name: "Company Name",
     wasa_account_number: "WASA Account No",
     desco_account_number: "DESCO Account No",
-    customer_mobile_no:"Customer Mobile No",
+    customer_mobile_no: "Customer Mobile No",
     bill_number: "Bill Number",
     payable_amount: "Payable Amount",
     payment_status: "Payment Status",
@@ -1370,11 +1376,16 @@ export default {
         {label: "WASA", value: 0},
         {label: "DESCO", value: 1}
     ],
-    select_company_name:"Select Company Name",
+    select_company_name: "Select Company Name",
 
     /*error message*/
     error_select_company_name: "Please Select Company Name",
     error_bill: "Bill Number is Required",
+    error_amount_more_balance: "Transfer amount should be less than account balance.",
+    error_grandTotal_more_balance: "Grand total should be less than account balance.",
+    from_txt: "From",
+    to_txt: "To",
+
 
     /*club bill payments*/
     club_name: "Club Name",
@@ -1492,5 +1503,6 @@ export default {
 
     select_appointment_date:"Select Appointment Date",
     appointment_date:"Appointment Date"
+
 
 }
