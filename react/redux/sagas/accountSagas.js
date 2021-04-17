@@ -20,6 +20,9 @@ export function* addBeneficiary(action) {
 }export function* resetBeneficiary(action) {
     return action.payload;
 }
+export function* cancelEmailTransRequest(action) {
+    return action.payload;
+}
 
 
 

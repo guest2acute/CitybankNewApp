@@ -11,7 +11,8 @@ const initialState = {
     signupDetails: "",
     update_beneficiary: false,
     isReset: false,
-    beneType: ""
+    beneType: "",
+    isERequestCancel:false
 };
 
 export function accountReducer(state = initialState, action) {
@@ -64,6 +65,14 @@ export function accountReducer(state = initialState, action) {
                     ...state,
                     isReset: action.payload.isReset,
                     beneType: action.payload.beneType,
+                },
+            );
+        case actions.account.CANCEL_EMAIL_TRANSFER_REQUEST:
+            return Object.assign(
+                {},
+                {
+                    ...state,
+                    isERequestCancel: action.payload.isERequestCancel,
                 },
             );
         default:

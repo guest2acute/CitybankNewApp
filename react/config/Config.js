@@ -8,6 +8,9 @@ export default class Config {
      * API Base url
      * @type {string}
      */
+    //static base_url = "https://api-ibmb.thecitybank.com/EasyNetProAPIV5-1.0/easynetpro-serv/request";
+    //static base_url = "http://192.168.96.174:8085/EasyNetProAPIV5-1.0/easynetpro-serv/request";
+
     static base_url = "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0_dev/easynetpro-serv/request";
     //for qr code check
    // static base_url =  "https://uat01.aiplservices.com/EasyNetProAPIV5Wrapper-1.0_mtz/easynetpro-serv/request";

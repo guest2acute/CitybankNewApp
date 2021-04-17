@@ -29,24 +29,26 @@ class VisaInstantPayment extends Component {
             SelectFromAccount: props.language.select_from_account,
             selectPaymentType: props.language.select_payment,
             receiptVisaCardNumber:"",
-            error_receiptVisaCardNo:"",
             receiptName:"",
-            errorReceiptName:"",
             emailTxt:"",
-            errorEmail:"",
             receiptMobileNumber:"",
+            availableBalance:"",
+            currency:"",
+            transferAmount:"",
+            servicesCharge:"",
+            vat:"",
+            grandTotal:"",
+            remarks:"",
+            error_receiptVisaCardNo:"",
+            errorReceiptName:"",
+            errorEmail:"",
             errorMobileNo:"",
             modelSelection: "",
             modalVisible: false,
             modalTitle: "",
             modalData: [],
-            availableBalance:"",
-            amount:"",
             error_amount:"",
-            transferAmount:"",
-            remarks:"",
             error_remarks:"",
-            currency:"",
             error_currency:"",
             paymentDate:"",
             errorPaymentDate:"",
@@ -56,6 +58,9 @@ class VisaInstantPayment extends Component {
             mode: "date",
             dateVal: new Date(),
             selected: false,
+            otp_type:0,
+            transferType:0,
+
         }
     }
 
@@ -72,7 +77,6 @@ class VisaInstantPayment extends Component {
     }
 
     onSelectItem(item) {
-        let language = this.props.language;
         const {modelSelection} = this.state;
         if (modelSelection === "accountType") {
             this.setState({SelectFromAccount: item.label, selectFromAccountTypeVal: item.value, modalVisible: false})
@@ -98,6 +102,97 @@ class VisaInstantPayment extends Component {
             this.setState({show: false});
         }
     };
+
+    resetVal() {
+        this.setState({
+            receiptVisaCardNumber:"",
+            receiptName:"",
+            receiptMobileNumber:"",
+            emailTxt:"",
+            SelectFromAccount: this.props.language.select_from_account,
+            availableBalance:"",
+            currency:"",
+            transferAmount:"",
+            servicesCharge:"",
+            vat:"",
+            grandTotal:"",
+            remarks:"",
+            paymentDate:"",
+            selectPaymentType: this.props.language.select_payment,
+            numberPayment:"",
+            otp_type:0,
+            transferType:0,
+        })
+        }
+    async onSubmit(language, navigation) {
+        console.log("name", this.state.name)
+        if(this.state.receiptVisaCardNumber===""){
+            this.setState({error_receiptVisaCardNo: language.require_visa_card_number})
+        }else if(this.state.receiptName===""){
+            this.setState({errorReceiptName: language.require_receipt_name})
+        }else if(this.state.receiptMobileNumber===""){
+            this.setState({errorMobileNo: language.require_mobile})
+        }else if(this.state.emailTxt===""){
+            this.setState({errorEmail: language.require_email})
+        }else if(this.state.SelectFromAccount === language.select_from_account) {
+            Utility.alert(language.error_select_from_type, language.ok);
+        }else if(this.state.transferAmount === "") {
+            this.setState({error_amount: language.error_amount})
+        }else if (this.state.remarks === "") {
+            this.setState({error_remarks: language.errRemarks})
+        }else if (this.state.transferType === 1) {
+            if (this.state.paymentDate === "") {
+                this.setState({errorPaymentDate: language.error_payment_date});
+            } else if (this.state.selectPaymentType === language.select_payment) {
+                Utility.alert(language.select_payment, language.ok);
+            } else if (this.state.numberPayment === "") {
+                this.setState({error_numberPayment: language.error_numberPayment})
+            } else {
+                this.processRequest(language,1)
+            }
+        }else{
+            this.processRequest(language,0)
+        }
+    }
+
+    processRequest(language,val) {
+        let tempArr = [];
+        tempArr.push(
+            {key: language.recipient_visa_card_number, value: this.state.receiptVisaCardNumber},
+            {key: language.recipient_name, value: this.state.receiptName},
+            {key: language.recipient_mobile_number, value: this.state.receiptMobileNumber},
+            {key: language.recipient_email_id, value: this.state.emailTxt},
+            {key: language.fromAccount, value: this.state.SelectFromAccount},
+            {key: language.available_bal, value: this.state.availableBalance},
+            {key: language.currency, value: this.state.currency},
+            {key: language.transfer_amount, value: this.state.transferAmount},
+            {key: language.services_charge, value: this.state.servicesCharge},
+            {key: language.vat, value: this.state.vat},
+            {key: language.grand_total, value: this.state.grandTotal},
+            {key: language.remarks, value: this.state.remarks},
+            {key: language.otpType, value: language.otp_props[this.state.otp_type].label},
+            {key: language.TransferType, value: language.transfer_pay_props[this.state.transferType].label},
+        )
+
+        if(val===1) {
+            tempArr.push(
+                {key: language.payment_date, value: this.state.paymentDate},
+                {key: language.Frequency, value: this.state.selectPaymentType},
+                {key: language.number_of_payment, value: this.state.numberPayment}
+            )
+        }
+
+        console.log("tempArray is  this",tempArr)
+        this.props.navigation.navigate("TransferConfirm", {
+            routeVal: [{name: 'Payments'},{name: 'VisaInstantPayment'}],
+            routeIndex: 1,
+            title: language.visa_instant_payment,
+            transferArray:tempArr,
+            screenName:"Otp",
+            transType:"payments"
+        });
+    }
+
 
     visaPayment(language) {
         return (
@@ -131,7 +226,7 @@ class VisaInstantPayment extends Component {
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
                         returnKeyType={"next"}
-                        onSubmitEditing={(event) => {
+                        onSubmitEditing={() => {
                             this.receiptVisaCardRef.focus();
                         }}
                         maxLength={30}/>
@@ -162,7 +257,8 @@ class VisaInstantPayment extends Component {
                                 marginLeft: 10
                             }]}
                             placeholder={language.et_receipt_name}
-                            onChangeText={text => this.setState({errorReceiptName:"",
+                            onChangeText={text => this.setState({
+                                errorReceiptName:"",
                                 receiptName:  Utility.userInput(text)})}
                             value={this.state.receiptName}
                             multiline={false}
@@ -330,7 +426,7 @@ class VisaInstantPayment extends Component {
                         placeholder={language.enter_amount}
                         onChangeText={text => this.setState({
                             error_amount: "",
-                            transferAmount: Utility.userInput(text)
+                            transferAmount: Utility.input(text, "0123456789")
                         })}
                         value={this.state.transferAmount}
                         multiline={false}
@@ -455,6 +551,7 @@ class VisaInstantPayment extends Component {
                         <Text style={{color: themeStyle.THEME_COLOR}}>*</Text>
                     </Text>
                     <RadioForm
+                        key={this.state.transferType}
                         radio_props={language.transfer_pay_props}
                         initial={0}
                         buttonSize={9}
@@ -636,7 +733,7 @@ class VisaInstantPayment extends Component {
                         marginTop: Utility.setHeight(10),
                         marginBottom: Utility.setHeight(20)
                     }}>
-                        <TouchableOpacity style={{flex: 1}}  onPress={() => this.resetVal(language)}>
+                        <TouchableOpacity style={{flex: 1}}  onPress={() => this.resetVal()}>
                             <View style={{
                                 flex: 1,
                                 alignItems: "center",

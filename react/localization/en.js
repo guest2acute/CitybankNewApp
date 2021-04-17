@@ -1520,4 +1520,6 @@ export default {
     recipient_email_id: "Recipient Email Id(Optional)",
     et_receipt_name:"Enter Receipt Name",
 
+    require_visa_card_number:"Visa Card Number is required",
+    require_receipt_name:"Receipt Name is required"
 }

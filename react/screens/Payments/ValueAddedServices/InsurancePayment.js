@@ -729,6 +729,7 @@ class InsurancePayment extends Component {
                     <DateTimePicker
                         testID="dateTimePicker"
                         value={new Date()}
+                        minimumDate={new Date()}
                         mode={this.state.mode}
                         is24Hour={false}
                         display="default"
