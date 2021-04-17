@@ -26,7 +26,7 @@ class FavTransferBkash extends Component {
             nickname: "",
             bkash_name: "",
             accountNo: "",
-            error_accountNo:"",
+            error_accountNo: "",
             focusUid: false,
             isProgress: false,
             selectNicknameType: props.language.select_nickname,
@@ -37,15 +37,15 @@ class FavTransferBkash extends Component {
             modalTitle: "",
             modalData: [],
             otp_type: 0,
-            availableBalance:"",
-            error_Balance:"",
-            transferAmount:"",
-            errorTransferAmount:"",
-            servicesCharge:"",
-            error_servicesCharge:"",
-            grandTotal:"",
-            remarks:"",
-            error_remarks:""
+            availableBalance: "",
+            error_Balance: "",
+            transferAmount: "",
+            errorTransferAmount: "",
+            servicesCharge: "",
+            error_servicesCharge: "",
+            grandTotal: "",
+            remarks: "",
+            error_remarks: ""
         }
     }
 
@@ -57,7 +57,7 @@ class FavTransferBkash extends Component {
                 modalData: data, modalVisible: true
             });
         } else {
-            Utility.alert(language.noRecord,language.ok);
+            Utility.alert(language.noRecord, language.ok);
         }
     }
 
@@ -65,26 +65,23 @@ class FavTransferBkash extends Component {
         const {modelSelection} = this.state;
         if (modelSelection === "type") {
             this.setState({selectNicknameType: item.label, selectTypeVal: item.value, modalVisible: false})
-        }
-          else if (modelSelection === "bankType") {
+        } else if (modelSelection === "bankType") {
             this.setState({selectAcctType: item.label, selectTypeVal: item.value, modalVisible: false})
-          }
+        }
     }
 
     async onSubmit(language, navigation) {
         if (this.state.selectNicknameType === language.selectNickType) {
-            Utility.alert(language.error_select_nickname,language.ok);
+            Utility.alert(language.error_select_nickname, language.ok);
             return;
-        }
-        else if(this.state.selectAcctType===language.select_acct){
-            Utility.alert(language.error_select_from_type,language.ok);
+        } else if (this.state.selectAcctType === language.select_acct) {
+            Utility.alert(language.error_select_from_type, language.ok);
             return;
-        }
-        else if(this.state.transferAmount===""){
-            this.setState({errorTransferAmount:language.errTransferAmt})
+        } else if (this.state.transferAmount === "") {
+            this.setState({errorTransferAmount: language.errTransferAmt})
             return;
-        }else if(this.state.remarks === "") {
-            this.setState({error_remarks:language.errRemarks})
+        } else if (this.state.remarks === "") {
+            this.setState({error_remarks: language.errRemarks})
             return;
         }
         Utility.alertWithBack(language.ok_txt, language.success_saved, navigation)
@@ -126,7 +123,12 @@ class FavTransferBkash extends Component {
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={""}
                     onChangeText={text => this.setState({
                         error_accountNo: "",
@@ -148,43 +150,43 @@ class FavTransferBkash extends Component {
                     }}
                     maxLength={13}/>
             </View>
-            {this.state.error_accountNo !==  "" ?
+            {this.state.error_accountNo !== "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
                 }}>{this.state.error_accountNo}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                <View style={{
-                    flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                    marginEnd: 10,
-                }}>
-                    <Text style={[CommonStyle.textStyle]}>
-                        {language.bkash_name}
-                    </Text>
-                    <TextInput
-                        ref={(ref) => this.cardnameRef = ref}
-                        selectionColor={themeStyle.THEME_COLOR}
-                        style={[CommonStyle.textStyle, {
-                            alignItems: "flex-end",
-                            textAlign: 'right',
-                            flex: 1,
-                            marginLeft: 10
-                        }]}
-                        placeholder={""}
-                        onChangeText={text => this.setState({
-                            bkash_name: Utility.userInput(text)
-                        })}
-                        value={this.state.bkash_name}
-                        multiline={false}
-                        onFocus={() => this.setState({focusUid: true})}
-                        onBlur={() => this.setState({focusUid: false})}
-                        numberOfLines={1}
-                        contextMenuHidden={true}
-                        placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                        editable={false}
-                        autoCorrect={false}
-                    />
-                </View>
+            <View style={{
+                flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                marginEnd: 10,
+            }}>
+                <Text style={[CommonStyle.textStyle]}>
+                    {language.bkash_name}
+                </Text>
+                <TextInput
+                    ref={(ref) => this.cardnameRef = ref}
+                    selectionColor={themeStyle.THEME_COLOR}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
+                    placeholder={""}
+                    onChangeText={text => this.setState({
+                        bkash_name: Utility.userInput(text)
+                    })}
+                    value={this.state.bkash_name}
+                    multiline={false}
+                    onFocus={() => this.setState({focusUid: true})}
+                    onBlur={() => this.setState({focusUid: false})}
+                    numberOfLines={1}
+                    contextMenuHidden={true}
+                    placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                    editable={false}
+                    autoCorrect={false}
+                />
+            </View>
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{flex: 1}}>
                 {<Text style={[CommonStyle.labelStyle, {
@@ -223,7 +225,12 @@ class FavTransferBkash extends Component {
                 </Text>
                 <TextInput
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
                         error_Balance: "",
@@ -243,9 +250,9 @@ class FavTransferBkash extends Component {
                         this.transferAmountRef.focus();
                     }}
                     maxLength={13}/>
-                <Text style={{paddingLeft:5}}>BDT</Text>
+                <Text style={{paddingLeft: 5}}>BDT</Text>
             </View>
-            {this.state.error_Balance !==  "" ?
+            {this.state.error_Balance !== "" ?
                 <Text style={{
                     marginLeft: 5, color: themeStyle.THEME_COLOR, fontSize: FontSize.getSize(11),
                     fontFamily: fontStyle.RobotoRegular,
@@ -262,7 +269,12 @@ class FavTransferBkash extends Component {
                 <TextInput
                     ref={(ref) => this.transferAmountRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
                         errorTransferAmount: "",
@@ -282,9 +294,9 @@ class FavTransferBkash extends Component {
                         this.serviceschargeRef.focus();
                     }}
                     maxLength={13}/>
-                <Text style={{paddingLeft:5}}>BDT</Text>
+                <Text style={{paddingLeft: 5}}>BDT</Text>
             </View>
-            {this.state.errorTransferAmount !==  "" ?
+            {this.state.errorTransferAmount !== "" ?
                 <Text style={CommonStyle.errorStyle}>{this.state.errorTransferAmount}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
@@ -297,7 +309,12 @@ class FavTransferBkash extends Component {
                 <TextInput
                     ref={(ref) => this.serviceschargeRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
                         error_servicesCharge: "",
@@ -317,9 +334,9 @@ class FavTransferBkash extends Component {
                         this.grandtotalRef.focus();
                     }}
                     maxLength={13}/>
-                <Text style={{paddingLeft:5}}>BDT</Text>
+                <Text style={{paddingLeft: 5}}>BDT</Text>
             </View>
-            {this.state.error_servicesCharge !==  "" ?
+            {this.state.error_servicesCharge !== "" ?
                 <Text style={CommonStyle.errorStyle}>{this.state.error_servicesCharge}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
@@ -333,7 +350,12 @@ class FavTransferBkash extends Component {
                 <TextInput
                     ref={(ref) => this.grandtotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={"00.00"}
                     onChangeText={text => this.setState({
                         error_grandtotal: "",
@@ -353,9 +375,9 @@ class FavTransferBkash extends Component {
                         this.grandTotalRef.focus();
                     }}
                     maxLength={13}/>
-                <Text style={{paddingLeft:5}}>BDT</Text>
+                <Text style={{paddingLeft: 5}}>BDT</Text>
             </View>
-            {this.state.error_grandtotal !==  "" ?
+            {this.state.error_grandtotal !== "" ?
                 <Text style={CommonStyle.errorStyle}>{this.state.error_grandtotal}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
@@ -369,7 +391,12 @@ class FavTransferBkash extends Component {
                 <TextInput
                     ref={(ref) => this.grandTotalRef = ref}
                     selectionColor={themeStyle.THEME_COLOR}
-                    style={[CommonStyle.textStyle, {alignItems: "flex-end", textAlign: 'right',flex: 1,marginLeft:10}]}
+                    style={[CommonStyle.textStyle, {
+                        alignItems: "flex-end",
+                        textAlign: 'right',
+                        flex: 1,
+                        marginLeft: 10
+                    }]}
                     placeholder={language.et_placeholder}
                     onChangeText={text => this.setState({
                         error_remarks: "",
@@ -385,7 +412,7 @@ class FavTransferBkash extends Component {
                     autoCorrect={false}
                     maxLength={13}/>
             </View>
-            {this.state.error_remarks !==  "" ?
+            {this.state.error_remarks !== "" ?
                 <Text style={CommonStyle.errorStyle}>{this.state.error_remarks}</Text> : null}
             <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
             <View style={{
@@ -415,7 +442,7 @@ class FavTransferBkash extends Component {
                 />
             </View>
             <Text style={CommonStyle.mark_mandatory}>*{language.mark_field_mandatory}</Text>
-            <View style={{marginStart:10,marginEnd:10}}>
+            <View style={{marginStart: 10, marginEnd: 10}}>
                 <Text style={CommonStyle.themeMidTextStyle}>{language.notes}</Text>
                 <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note1}</Text>
                 <Text style={CommonStyle.themeTextStyle}>{language.transferTo_bkash_note2}</Text>
@@ -563,7 +590,7 @@ class FavTransferBkash extends Component {
 }
 
 const styles = {
-    textView:{
+    textView: {
         marginStart: 10, color: themeStyle.THEME_COLOR
     }
 }

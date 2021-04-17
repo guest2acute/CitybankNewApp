@@ -95,6 +95,8 @@ class TransferToBkash extends Component {
     };
 
     openModal(option, title, data, language) {
+        if (option === "FromAccount")
+            data = data.filter((e) => e.value.FROM_ALLOW === "Y");
         if (data.length > 0) {
             this.setState({
                 modelSelection: option,

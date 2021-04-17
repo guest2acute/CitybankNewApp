@@ -135,6 +135,8 @@ class OtherBankAccount extends Component {
 
     openModal(option, title, data, language) {
         console.log("data", data);
+        if (option === "fromAccountType")
+            data = data.filter((e) => e.value.FROM_ALLOW === "Y");
         if (data.length > 0) {
             this.setState({
                 modelSelection: option,
