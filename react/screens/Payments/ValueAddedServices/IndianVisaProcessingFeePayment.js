@@ -133,6 +133,7 @@ class IndianVisaProcessingPayment extends Component {
             {key: language.available_bal, value: this.state.availableBalance},
             {key: language.ivas_center_name, value: this.state.SelectIvasCenterAccount},
             {key: language.appointment_type, value: this.state.SelectAppointmentType},
+            {key: language.appointment_date, value: this.state.appointmentDate},
              {key: language.email, value: this.state.emailTxt},
              {key: language.mobileNo, value: this.state.MobileNumber},
              {key: language.passport_no, value: this.state.PassportNumber},
@@ -666,6 +667,7 @@ class IndianVisaProcessingPayment extends Component {
                     <DateTimePicker
                         testID="dateTimePicker"
                         value={new Date()}
+                        minimumDate={new Date()}
                         mode={this.state.mode}
                         is24Hour={false}
                         display="default"

@@ -600,7 +600,7 @@ export const VERIFYCARDPINDETAIL = async (cardNo, cardPin, props) => {
 export const ValueAddedServicesDetails = (language) => {
     return [
         {
-            id: "mobileRecharge",
+            id: "mobileRecharUtilityBillPaymentge",
             title: language.mobileRecharge,
             redirectScreen: "MobileRecharge",
         },

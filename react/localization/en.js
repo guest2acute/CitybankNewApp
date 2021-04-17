@@ -948,6 +948,14 @@ export default {
     call: "call: 16234(local)/+880-2-8331040",
 
 
+    visa_payment1:"1. Daily and Single Transaction Limit:BDT 187500",
+    visa_payment2:"2. Weekly Transaction Limit:BDT 375000",
+    visa_payment3:"3. Monthly Transaction Limit:BDT 750000",
+    visa_payment4:"4. Payment to Fast enabled Bank account linked to receipt Visa Debit card happens within few minutes.",
+    visa_payment5:"5. payment to Non Fast Fund enable Bank Account linked to receipt visa Debit and any Visa Credit card takes 2-3 working days",
+    visa_payment6:"6. Payment can only be made to eligible Visa cards issue in Bangladesh(except City Bank).",
+
+
     /*Credit Card Payment*/
     own_creditCardPayment: "OWN CREDIT CARD PAYMENT",
     other_creditCardPayment: "OTHER CREDIT CARD PAYMENT",
@@ -1353,7 +1361,7 @@ export default {
     error_from_date: "Select From Date",
     error_end_date: "Select End Date",
     movie_tickets: "Movie Tickets",
-    utility_bank_payment: "Utility Bank Payment",
+    utility_bill_payment: "Utility Bill Payment",
     internet_bill_payment: "Internet Bill Payment",
     club_bill_payment: "Club Bill Payment",
     insurance_payment: "Insurance Payment",
@@ -1502,7 +1510,16 @@ export default {
     require_web_file: "Web File is Required",
 
     select_appointment_date:"Select Appointment Date",
-    appointment_date:"Appointment Date"
+    appointment_date:"Appointment Date",
 
+    /*Visa Instant payment */
+    visa_instant_payment: "Visa Instant Payment",
+    recipient_visa_card_number: "Recipient Visa Card Number",
+    recipient_name: "Recipient Name",
+    recipient_mobile_number: "Recipient Mobile Number(Optional)",
+    recipient_email_id: "Recipient Email Id(Optional)",
+    et_receipt_name:"Enter Receipt Name",
 
+    require_visa_card_number:"Visa Card Number is required",
+    require_receipt_name:"Receipt Name is required"
 }

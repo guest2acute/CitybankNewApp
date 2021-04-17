@@ -976,6 +976,12 @@ export default {
     tagCreditBottom: "আমরা কি সাহায্য করতে পারি?",
     call: "কল: 16234 (স্থানীয়) / + 880-2-8331040",
 
+    visa_payment1:"1. দৈনিক এবং একক লেনদেন সীমা: 187500 টাকা",
+    visa_payment2:"2. সাপ্তাহিক লেনদেনের সীমা: 375000 টাকা",
+    visa_payment3:"3. মাসিক লেনদেনের সীমা: 750000 টাকা",
+    visa_payment4:"৪. রশিদ ভিসা ডেবিট কার্ডের সাথে লিঙ্কযুক্ত দ্রুত সক্ষম ব্যাংক অ্যাকাউন্টে অর্থ প্রদান কয়েক মিনিটের মধ্যেই ঘটে।",
+    visa_payment5:"৫. নন ফাস্ট ফান্ডে অর্থ প্রদানের জন্য রশিদ ভিসা ডেবিট এবং যে কোনও ভিসা ক্রেডিট কার্ডের সাথে সংযুক্ত ব্যাংক অ্যাকাউন্ট সক্ষম হয় 2-3 কার্যদিবসের সময় লাগে",
+    visa_payment6:"Pay. বাংলাদেশে কেবলমাত্র ভিসা কার্ড ইস্যুতে (সিটি ব্যাংক ব্যতীত) অর্থ প্রদান করা যেতে পারে।",
 
     /*Credit Card Payment*/
     own_creditCardPayment: "নিজস্ব ক্রেডিট কার্ড অর্থ প্রদান",
@@ -1520,7 +1526,28 @@ export default {
         {label: "নিয়োগ", value: 1}
     ],
     et_email_placeholder:"ইমেইল প্রদান করুন",
-    et_passport_placeholder:"পাসপোর্ট নম্বর প্রবেশ করান"
+    et_passport_placeholder:"পাসপোর্ট নম্বর প্রবেশ করান",
 
+    et_web_file:"ওয়েব ফাইল প্রবেশ করান",
+
+    /*error message*/
+    error_ivas_center_name: "দয়া করে AVAS কেন্দ্রের নাম নির্বাচন করুন",
+    error_appointment_type: "অ্যাপয়েন্টমেন্ট টাইপ নির্বাচন করুন",
+    require_passport: "পাসপোর্ট নম্বর আবশ্যক",
+    require_web_file: "ওয়েব ফাইল প্রয়োজনীয়",
+
+    select_appointment_date:"অ্যাপয়েন্টমেন্টের তারিখ নির্বাচন করুন",
+    appointment_date:"সাক্ষাৎকারের তারিখ",
+
+    /*Visa Instant payment */
+    visa_instant_payment: "ভিসা তাত্ক্ষণিক অর্থ প্রদান",
+    recipient_visa_card_number: "প্রাপক ভিসা কার্ড নম্বর",
+    recipient_name: "প্রাপকের নাম",
+    recipient_mobile_number: "প্রাপক মোবাইল নম্বর (ptionচ্ছিক)",
+    recipient_email_id: "প্রাপক ইমেল আইডি (ptionচ্ছিক)",
+    et_receipt_name:"প্রাপ্তির নাম লিখুন",
+
+    require_visa_card_number:"ভিসা কার্ড নম্বর প্রয়োজন",
+    require_receipt_name:"রসিদ নাম আবশ্যক"
 }
 
