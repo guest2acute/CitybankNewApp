@@ -956,6 +956,11 @@ export default {
     visa_payment6:"6. Payment can only be made to eligible Visa cards issue in Bangladesh(except City Bank).",
 
 
+    individual_payment1:"1. Please do not share this QR Code & ID with anyone expect the beneficiary.",
+    individual_payment2:"2. Validity of this QR Code is 5 minutes",
+
+    scan_note1: "1. Scan a valid Qr Code or input ID to receive money from sender",
+
     /*Credit Card Payment*/
     own_creditCardPayment: "OWN CREDIT CARD PAYMENT",
     other_creditCardPayment: "OTHER CREDIT CARD PAYMENT",
@@ -1521,5 +1526,19 @@ export default {
     et_receipt_name:"Enter Receipt Name",
 
     require_visa_card_number:"Visa Card Number is required",
-    require_receipt_name:"Receipt Name is required"
+    require_receipt_name:"Receipt Name is required",
+
+    /*Other QR Feature*/
+    other_qr_props: [
+        {id: "IndividualPaymentReceive", title: "Individual Payment/Receive", icon: require("../resources/images/ic_city_bank_account.png")},
+        {id: "GroupPaymentRequest", title: "Group Payment Request", icon: require("../resources/images/contact_icon.png")},
+        {id: "CityPayTransactionHistory", title: "CityPay Transaction History", icon: require("../resources/images/contact_icon.png")},
+        {}
+        ],
+    generate_qr_code_button:"Generate Qr Code",
+    individual_payment_title:"Individual Payment/Receive",
+    group_payment_title:"Group Payment Request",
+    generate_qr_code:"GENERATE QR CODE",
+    receive_money:"RECEIVE MONEY",
+    payment_txt:"PAYMENT",
 }

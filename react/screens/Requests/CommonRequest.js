@@ -401,11 +401,11 @@ export const GETBALANCE = async (accountNo, SOURCE, APPCUSTOMER_ID, props) => {
             ],
         },
         {
-            id: "otherQrFeature",
+            id: "OtherQrFeature",
             title: language.other_qr_feature,
             icon: require("../../resources/images/ic_other_qr.png"),
             subCategory: [],
-            redirectScreen: ""
+            redirectScreen: "OtherQRFeature"
         },
         {
             id: "ChangeContactDetails",
