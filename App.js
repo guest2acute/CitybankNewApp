@@ -44,9 +44,9 @@ import OtherBankAccount from "./react/screens/Trasfer/OtherBankAccount";
 import Favorite from "./react/screens/Trasfer/Favorite";
 import FavTransferBkash from "./react/screens/Trasfer/FavTransferBkash";
 
-import EmailTransfer from "./react/screens/Trasfer/Beneficiary/EmailTransfer";
+import EmailTransfer from "./react/screens/Trasfer/EmailTransfer";
 import EmailTransferScreen from "./react/screens/Trasfer/Beneficiary/EmailTransferScreen";
-import EmailTransferDetails from "./react/screens/Trasfer/Beneficiary/EmailTransferDetails";
+import EmailTransferDetails from "./react/screens/Trasfer/EmailTransferDetails";
 
 import SelectBeneficiary from "./react/screens/Trasfer/SelectBeneficiary";
 import MobileRecharge from "./react/screens/Payments/MobileRecharge";
@@ -179,6 +179,7 @@ function TransferTab() {
                           options={{headerShown: false}}/>
             <Stack.Screen name="Otp" component={Otp} options={{headerShown: false}}/>
             <Stack.Screen name="TransferCompleted" component={TransferCompleted} options={{headerShown: false}}/>
+            <Stack.Screen name="TransferConfirm" component={TransferConfirm} options={{headerShown: false}}/>
             <Stack.Screen name="Receipt" component={Receipt} options={{headerShown: false}}/>
         </Stack.Navigator>);
 }

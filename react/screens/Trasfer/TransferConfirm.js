@@ -21,7 +21,7 @@ import StorageClass from "../../utilize/StorageClass";
 import * as DeviceInfo from "react-native-device-info";
 import CommonStyle from "../../resources/CommonStyle";
 import FontSize from "../../resources/ManageFontSize";
-import {FUNDTRF} from "../Requests/FundsTransferRequest";
+import {EMAILFUNDTRF, FUNDTRF} from "../Requests/FundsTransferRequest";
 import {BusyIndicator} from "../../resources/busy-indicator";
 
 
@@ -77,18 +77,15 @@ class TransferConfirm extends Component {
         return true;
     }
 
-    async transferFundOwnAccounts() {
-        console.log("transType",this.props.route.params.transType)
-        this.props.navigation.navigate(this.state.screenName,
-            {
-                REQUEST_CD: "",
-                transType: this.props.route.params.transType,
-                routeVal: this.props.route.params.routeVal,
-                routIndex: this.props.route.params.routeIndex,
-                transferArray: this.props.route.params.transferArray
-            });
+    async transferAmount(){
+        if(this.props.route.params.routeVal.length > 1 && this.props.route.params.routeVal[1].name==="EmailTransfer")
+            await this.transferEmailFunds();
+        else
+            await this.transferFundAccounts();
+    }
+    async transferEmailFunds() {
         this.setState({isProgress: true});
-/*        await FUNDTRF(this.props.route.params.transRequest, this.props).then((response) => {
+        await EMAILFUNDTRF(this.props.route.params.transRequest, this.props).then((response) => {
             console.log("response", response);
             this.setState({isProgress: false},
                 () => {
@@ -104,7 +101,29 @@ class TransferConfirm extends Component {
         }, (error) => {
             this.setState({isProgress: false});
             console.log("error", error);
-        });*/
+        });
+    }
+
+    async transferFundAccounts() {
+        console.log("transType",this.props.route.params.transType)
+        this.setState({isProgress: true});
+        await FUNDTRF(this.props.route.params.transRequest, this.props).then((response) => {
+            console.log("response", response);
+            this.setState({isProgress: false},
+                () => {
+                    this.props.navigation.navigate(this.state.screenName,
+                        {
+                            REQUEST_CD: response.RESPONSE[0].REQUEST_CD,
+                            transType: this.props.route.params.transType,
+                            routeVal: this.props.route.params.routeVal,
+                            routIndex: this.props.route.params.routeIndex,
+                            transferArray: this.props.route.params.transferArray
+                        });
+                })
+        }, (error) => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
     }
 
 
@@ -184,7 +203,7 @@ class TransferConfirm extends Component {
                             </TouchableOpacity>
                             <View style={{width: Utility.setWidth(20)}}/>
                             <TouchableOpacity style={{flex: 1}}
-                                              onPress={() => this.transferFundOwnAccounts()}>
+                                              onPress={() => this.transferAmount()}>
                                 <View style={{
                                     alignItems: "center",
                                     justifyContent: "center",

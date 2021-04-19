@@ -129,12 +129,12 @@ export const FUNDTRFOTP = async (userDetails, REQUEST_CD, authFlag, actNo, cPin,
     });
 }
 
-export const FUNDTRFVERIFY = async (userDetails, REQUEST_CD, OTP_NO, props) => {
+export const FUNDTRFVERIFY = async (userDetails, REQUEST_CD, OTP_NO,ACTION, props) => {
     let request = {
         USER_ID: userDetails.USER_ID,
         ACTIVITY_CD: userDetails.ACTIVITY_CD,
         CUSTOMER_ID: userDetails.CUSTOMER_ID,
-        ACTION: "FUNDTRFVERIFY",
+        ACTION: ACTION,
         REQUEST_CD: REQUEST_CD,
         OTP_NO: OTP_NO,
         ...Config.commonReq

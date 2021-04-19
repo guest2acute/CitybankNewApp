@@ -102,8 +102,15 @@ class Otp extends Component {
 
     async verifyOTP() {
         this.setState({isProgress: true});
+        let actions;
+        if (this.props.route.params.routeVal.length > 1 && this.props.route.params.routeVal[1].name === "EmailTransfer") {
+            actions = "EMAILFUNDOTPVERIFY";
+        } else {
+            actions = "FUNDTRFVERIFY";
+        }
         await FUNDTRFVERIFY(
-            this.props.userDetails, this.props.route.params.REQUEST_CD, this.state.otpVal, this.props)
+            this.props.userDetails, this.props.route.params.REQUEST_CD, this.state.otpVal,
+            actions, this.props)
             .then((response) => {
                 console.log(response);
                 this.setState({isProgress: false});

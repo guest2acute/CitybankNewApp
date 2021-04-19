@@ -18,54 +18,77 @@ import FontSize from "../../resources/ManageFontSize";
 import fontStyle from "../../resources/FontStyle";
 import RadioForm from "react-native-simple-radio-button";
 import {BusyIndicator} from "../../resources/busy-indicator";
-import {GETBALANCE} from "../Requests/CommonRequest";
+import {GETBALANCE, unicodeToChar} from "../Requests/CommonRequest";
 import {GETBENF} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
-import {EMAILWAITTRFREQ, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
+import {CHARGEVATAMT, EMAILWAITTRFREQ, GETAMTLABEL, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
 import {actions} from "../../redux/actions";
+
+let init = {
+    requestList: null,
+    transVal: 0,
+    stateVal: 0,
+    nickname: "",
+    mobile_number: "",
+    errorMobile: "",
+    isProgress: false,
+    selectTypeVal: -1,
+    selectNickTypeVal: -1,
+    selectFromAccountVal: -1,
+    modelSelection: "",
+    modalVisible: false,
+    modalTitle: "",
+    modalData: [],
+    otp_type: 0,
+    availableBalance: "",
+    transferAmount: "",
+    errorTransferAmount: "",
+    servicesCharge: "",
+    error_servicescharge: "",
+    grandTotal: "",
+    error_grandTotal: "",
+    remarks: "",
+    error_remarks: "",
+    errorEmail: "",
+    securityQuestions: "",
+    error_security: "",
+    errorAnswer: "",
+    answer: "",
+    emailTxt: "",
+    selectNickArr: [],
+    accountArr: [],
+    fromHolderName: "",
+    focusAmount: false,
+    actLabelList: []
+
+}
 
 class EmailTransfer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            requestList: null,
-            transVal: 0,
-            stateVal: 0,
-            nickname: "",
-            mobile_number: "",
-            isProgress: false,
             selectBeneficiaryType: props.language.select_beneficiary_type,
             selectNicknameType: props.language.select_nickname,
             selectAcctType: props.language.sel_act_card_no,
-            selectTypeVal: -1,
-            selectNickTypeVal: -1,
-            selectFromAccountVal: -1,
-            modelSelection: "",
-            modalVisible: false,
-            modalTitle: "",
-            modalData: [],
-            otp_type: 0,
-            availableBalance: "",
-            transferAmount: "",
-            error_sel_act_card_no: "",
-            servicesCharge: "",
-            error_servicescharge: "",
-            grandTotal: "",
-            error_grandTotal: "",
-            remarks: "",
-            error_remarks: "",
-            errorEmail: "",
-            securityQuestions: "",
-            error_security: "",
-            errorAnswer: "",
-            answer: "",
-            emailTxt: "",
-            selectNickArr: [],
-            accountArr: [],
-            fromHolderName: ""
+            ...init
         }
     }
 
+    async getAmtLabel(transType) {
+        this.setState({isProgress: true});
+
+        await GETAMTLABEL(this.props.userDetails, transType, this.props).then((response) => {
+                this.setState({
+                    isProgress: false, actLabelList: response.AMOUNTLIST,
+                    labelRes: response
+                });
+            },
+            (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            }
+        );
+    }
 
     async changeCard(cardCode) {
         this.setState({
@@ -111,30 +134,31 @@ class EmailTransfer extends Component {
                 currency: response.CURRENCYCODE,
                 fromHolderName: response.ACCOUNTNAME,
                 availableBalance: response.hasOwnProperty("AVAILBALANCE") ? response.AVAILBALANCE : response.BALANCE
-            })
+            });
 
         }).catch(error => {
             this.setState({isProgress: false});
             console.log("error", error);
         });
-
     }
 
-
     async onSubmit(language, navigation) {
-        console.log("name", this.state.name)
-        if (this.state.selectNicknameType === language.select_nickname) {
+        if (this.state.transVal === 1 && this.state.selectNicknameType === language.select_nickname) {
             Utility.alert(language.error_select_nickname, language.ok);
+        } else if (!Utility.validateEmail(this.state.emailTxt)) {
+            this.setState({errorEmail: language.invalidEmail});
+        } else if (this.state.mobile_number !== "" && !Utility.ValidateMobileNumber(this.state.mobile_number)) {
+            this.setState({errorMobileNo: language.invalidMobile});
         } else if (this.state.selectAcctType === language.sel_act_card_no) {
             Utility.alert(language.error_select_from_type, language.ok);
-        } else if (this.state.sel_act_card_no === "") {
-            this.setState({error_sel_act_card_no: language.err_payment_amount});
+        } else if (this.state.transferAmount === "") {
+            this.setState({errorTransferAmount: language.errAmt});
         } else if (this.state.securityQuestions === "") {
             this.setState({error_security: language.err_security})
         } else if (this.state.answer === "") {
-            this.setState({errorAnswer: language.error_answer})
+            this.setState({errorAnswer: language.error_answer});
         } else if (this.state.remarks === "") {
-            this.setState({error_remarks: language.errRemarks})
+            this.setState({error_remarks: language.errRemarks});
         } else {
             this.processRequest(language);
         }
@@ -174,7 +198,7 @@ class EmailTransfer extends Component {
     }
 
     processRequest(language) {
-        const {selectFromAccountVal, transferAmount,transVal} = this.state;
+        const {selectFromAccountVal, selectNickTypeVal, transferAmount, transVal, securityQuestions} = this.state;
         let tempArr = [];
         let userDetails = this.props.userDetails;
         let request = {
@@ -183,19 +207,28 @@ class EmailTransfer extends Component {
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
             CUSTOMER_ID: userDetails.CUSTOMER_ID,
             ACTION: "EMAILFUNDOTP",
+            NICK_NAME: this.state.transVal === 0 ? "" : selectNickTypeVal.NICK_NAME,
             AUTH_FLAG: userDetails.AUTH_FLAG,
             FROM_ACCT_NO: selectFromAccountVal.ACCT_UNMASK,
             TRN_AMOUNT: transferAmount,
-            FROM_CBNUMBER: selectFromAccountVal,
-            FROM_MOBILE_NO: selectFromAccountVal,
+            FROM_CBNUMBER: selectFromAccountVal.APP_CUSTOMER_ID,
+            FROM_MOBILE_NO: selectFromAccountVal.MOBILE_NO,
             TO_MOBILE_NO: this.state.mobile_number,
-            TO_EMAIL_ID: this.state.mobile_number,
+            TO_EMAIL_ID: this.state.emailTxt,
+            REF_NO: transVal === 1 ? selectNickTypeVal.REF_NO : "",
+            TO_IFSCODE: transVal === 1 ? selectNickTypeVal.TO_IFSCODE : "",
             REMARKS: this.state.remarks,
-            SEC_QUESTION: this.state.securityQuestions,
+            SEC_QUESTION: securityQuestions,
             SEC_ANSWER: this.state.answer,
             TO_ACCT_NM: "",
+            VAT_CHARGE: this.state.vat,
+            SERVICE_CHARGE: this.state.servicesCharge,
+            OTP_TYPE: this.state.otp_type === 0 ? "S" : "E",
             FROM_ACCT_NM: this.state.fromHolderName,
             REQ_TYPE: transVal === 0 ? "I" : "B",
+            FROM_CURRENCY_CODE: selectFromAccountVal.CURRENCY_CODE,
+            TO_CURRENCY_CODE: this.state.transVal === 0 ? "" : selectNickTypeVal.CURRENCY,
+            TO_ACCT_CARD_FLAG: this.state.transVal === 0 ? "" : selectNickTypeVal.ACCT_TYPE === "ACCOUNT" ? "A" : "C",
             ...Config.commonReq
         }
         console.log("request-", request);
@@ -203,7 +236,7 @@ class EmailTransfer extends Component {
         tempArr.push(
             {
                 key: language.fromAccount,
-                value: this.state.selectFromActVal.ACCT_UNMASK + "-" + this.state.selectFromActVal.ACCT_TYPE_NAME
+                value: this.state.selectFromAccountVal.ACCT_UNMASK + "-" + this.state.selectFromAccountVal.ACCT_TYPE_NAME
             },
             {
                 key: language.beneficiary_Email_Address,
@@ -275,6 +308,13 @@ class EmailTransfer extends Component {
             //selectToAcctType: props.language.select_to_acct,
             //selectPaymentType: props.language.select_payment,
             //...initialVar
+        });
+    }
+
+
+    getListViewItem = (item) => {
+        this.setState({errorTransferAmount: "", transferAmount: item.AMOUNT_LABEL}, async () => {
+            await this.calculateVat();
         });
     }
 
@@ -395,7 +435,10 @@ class EmailTransfer extends Component {
                                     marginLeft: 10
                                 }]}
                                 placeholder={this.state.transVal === 0 ? language.please_enter : ""}
-                                onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
+                                onChangeText={text => this.setState({
+                                    errorMobile: "",
+                                    mobile_number: Utility.input(text, "0123456789")
+                                })}
                                 value={this.state.mobile_number}
                                 multiline={false}
                                 numberOfLines={1}
@@ -407,6 +450,8 @@ class EmailTransfer extends Component {
                                 maxLength={11}/>
                         </View>
                     </View>
+                    {this.state.errorMobile !== "" ?
+                        <Text style={CommonStyle.errorStyle}>{this.state.errorMobile}</Text> : null}
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                     <View style={{flex: 1}}>
                         {<Text style={[CommonStyle.labelStyle, {
@@ -446,6 +491,33 @@ class EmailTransfer extends Component {
                         <Text style={CommonStyle.viewText}>{this.state.availableBalance}</Text>
                     </View>
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
+
+                    <FlatList horizontal={true}
+                              keyExtractor={(item, index) => index + ""}
+                              data={this.state.actLabelList}
+                              renderItem={({item}) =>
+                                  <View>
+                                      <TouchableOpacity onPress={this.getListViewItem.bind(this, item)} style={{
+                                          marginRight: 10,
+                                          marginLeft: 10,
+                                          marginTop: 10,
+                                          marginBottom: 10,
+                                          borderRadius: 3,
+                                          padding: 7,
+                                          flexDirection: 'row',
+                                          justifyContent: "space-around",
+                                          backgroundColor: themeStyle.THEME_COLOR
+                                      }}>
+                                          <Text
+                                              style={[CommonStyle.textStyle, {color: themeStyle.WHITE}]}>{item.AMOUNT_LABEL}</Text>
+                                      </TouchableOpacity>
+                                  </View>
+                              }
+                    />
+
+
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                     <View style={{
                         flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                         marginEnd: 10,
@@ -474,10 +546,10 @@ class EmailTransfer extends Component {
                             }]}
                             placeholder={"00.00"}
                             onChangeText={text => this.setState({
-                                error_sel_act_card_no: "",
-                                sel_act_card_no: Utility.input(text, "0123456789.")
+                                errorTransferAmount: "",
+                                transferAmount: Utility.input(text, "0123456789.")
                             })}
-                            value={this.state.sel_act_card_no}
+                            value={this.state.transferAmount}
                             multiline={false}
                             numberOfLines={1}
                             contextMenuHidden={true}
@@ -488,11 +560,19 @@ class EmailTransfer extends Component {
                             onSubmitEditing={() => {
                                 this.sel_act_card_noRef.focus();
                             }}
+                            onFocus={() => this.setState({focusAmount: true})}
+                            onBlur={() => {
+                                if (this.state.focusAmount) {
+                                    this.setState({focusAmount: false}, async () => {
+                                        await this.calculateVat();
+                                    });
+                                }
+                            }}
                             maxLength={13}/>
                     </View>
-                    {this.state.error_sel_act_card_no !== "" ?
+                    {this.state.errorTransferAmount !== "" ?
                         <Text style={CommonStyle.errorStyle
-                        }>{this.state.error_sel_act_card_no}</Text> : null}
+                        }>{this.state.errorTransferAmount}</Text> : null}
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
 
@@ -516,7 +596,7 @@ class EmailTransfer extends Component {
                             placeholder={language.security_pl_holder}
                             onChangeText={text => this.setState({
                                 error_security: "",
-                                securityQuestions: Utility.userInput(text)
+                                securityQuestions: text
                             })}
                             value={this.state.securityQuestions}
                             multiline={false}
@@ -527,8 +607,7 @@ class EmailTransfer extends Component {
                             returnKeyType={"next"}
                             onSubmitEditing={() => {
                                 this.answerRef.focus();
-                            }}
-                            maxLength={30}/>
+                            }}/>
                     </View>
                     {this.state.error_security !== "" ?
                         <Text style={CommonStyle.errorStyle
@@ -555,7 +634,7 @@ class EmailTransfer extends Component {
                             placeholder={language.answer_pl}
                             onChangeText={text => this.setState({
                                 errorAnswer: "",
-                                answer: Utility.userInput(text)
+                                answer: text
                             })}
                             value={this.state.answer}
                             multiline={false}
@@ -566,8 +645,7 @@ class EmailTransfer extends Component {
                             returnKeyType={"next"}
                             onSubmitEditing={() => {
                                 this.remarksRef.focus();
-                            }}
-                            maxLength={13}/>
+                            }}/>
                     </View>
                     {this.state.errorAnswer !== "" ?
                         <Text style={CommonStyle.errorStyle
@@ -594,7 +672,7 @@ class EmailTransfer extends Component {
                             placeholder={language.et_remarks}
                             onChangeText={text => this.setState({
                                 error_remarks: "",
-                                remarks: Utility.userInput(text)
+                                remarks: text
                             })}
                             value={this.state.remarks}
                             multiline={false}
@@ -602,7 +680,7 @@ class EmailTransfer extends Component {
                             contextMenuHidden={true}
                             placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                             autoCorrect={false}
-                            maxLength={13}/>
+                            maxLength={30}/>
                     </View>
                     {this.state.error_remarks !== "" ?
                         <Text style={CommonStyle.errorStyle
@@ -721,6 +799,37 @@ class EmailTransfer extends Component {
                 </View>
             </ScrollView>
         )
+    }
+
+    async calculateVat() {
+        const {selectFromAccountVal, transferAmount} = this.state;
+
+        if (selectFromAccountVal === -1) {
+            this.setState({transferAmount: ""})
+            Utility.alert(this.props.language.error_select_from_type, this.props.language.ok);
+            return;
+        } else if (this.state.transferAmount === "") {
+            this.setState({error_transferAmount: this.props.language.errAmt});
+            return;
+        }
+
+        this.setState({isProgress: true});
+        await CHARGEVATAMT(this.props.userDetails, "EMAIL", selectFromAccountVal.APP_INDICATOR,
+            selectFromAccountVal.ACCT_UNMASK, transferAmount, this.props)
+            .then((response) => {
+                console.log("response", response);
+                this.setState({
+                    isProgress: false,
+                    vat: response.VAT_AMT.toString(),
+                    servicesCharge: response.CHARGE_AMT.toString(),
+                    grandTotal: response.TOTAL_AMT.toString(),
+                    CHARGE_AMT_LABEL: unicodeToChar(response.CHARGE_AMT_LABEL),
+                    VAT_AMT_LABEL: unicodeToChar(response.VAT_AMT_LABEL)
+                })
+            }, (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            });
     }
 
     waitingOption(language) {
@@ -893,6 +1002,7 @@ class EmailTransfer extends Component {
         });
 
         await this.getOwnAccounts("EMAILTRF");
+        await this.getAmtLabel("EMAIL");
         await this.getNickList();
     }
 
