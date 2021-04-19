@@ -983,6 +983,11 @@ export default {
     visa_payment5:"৫. নন ফাস্ট ফান্ডে অর্থ প্রদানের জন্য রশিদ ভিসা ডেবিট এবং যে কোনও ভিসা ক্রেডিট কার্ডের সাথে সংযুক্ত ব্যাংক অ্যাকাউন্ট সক্ষম হয় 2-3 কার্যদিবসের সময় লাগে",
     visa_payment6:"Pay. বাংলাদেশে কেবলমাত্র ভিসা কার্ড ইস্যুতে (সিটি ব্যাংক ব্যতীত) অর্থ প্রদান করা যেতে পারে।",
 
+    individual_payment1:"1. এই কিউআর কোড এবং আইডিটি কারও উপকারকারীর সাথে প্রত্যাশা করে শেয়ার করবেন না।",
+    individual_payment2:"2. এই কিউআর কোডটির মেয়াদ 5 মিনিট",
+
+    scan_note1: "1. প্রেরকের কাছ থেকে অর্থ গ্রহণের জন্য একটি বৈধ QR কোড বা ইনপুট আইডি স্ক্যান করুন",
+
     /*Credit Card Payment*/
     own_creditCardPayment: "নিজস্ব ক্রেডিট কার্ড অর্থ প্রদান",
     other_creditCardPayment: "অন্যান্য ক্রেডিট কার্ড অর্থ প্রদান",
@@ -1548,6 +1553,22 @@ export default {
     et_receipt_name:"প্রাপ্তির নাম লিখুন",
 
     require_visa_card_number:"ভিসা কার্ড নম্বর প্রয়োজন",
-    require_receipt_name:"রসিদ নাম আবশ্যক"
+    require_receipt_name:"রসিদ নাম আবশ্যক",
+
+
+    /*Other QR Feature*/
+    other_qr_props: [
+        {id: "স্বতন্ত্র পেমেন্ট রিসিভ", title: "স্বতন্ত্র অর্থ প্রদান / গ্রহণ", icon: require("../resources/images/ic_city_bank_account.png")},
+        {id: "গোষ্ঠী অর্থ প্রদানের অনুরোধ", title: "গ্রুপ পেমেন্ট অনুরোধ", icon: require("../resources/images/contact_icon.png")},
+        {id: "সিটিপে ট্রান্সঅ্যাকশন হিস্টোরি", title: "সিটিপে লেনদেনের ইতিহাস", icon: require("../resources/images/contact_icon.png")},
+        {}
+    ],
+    generate_qr_code_button:"Generate Qr Code",
+    individual_payment_title:"স্বতন্ত্র অর্থ প্রদান / গ্রহণ",
+    group_payment_title:"গ্রুপ পেমেন্ট অনুরোধ",
+    generate_qr_code:"জেনারেট কিউআর কোড",
+    receive_money:"টাকা গ্রহণ",
+    payment_txt:"অর্থ প্রদান",
+
 }
 

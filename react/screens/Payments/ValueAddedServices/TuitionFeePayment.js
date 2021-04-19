@@ -401,7 +401,7 @@ class TuitionFeePayment extends Component {
                         keyboardType={"number-pad"}
                         placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
                         autoCorrect={false}
-                        maxLength={13}/>
+                        maxLength={30}/>
                     <Text style={{paddingLeft: 5}}>BDT</Text>
                 </View>
                 {this.state.error_amount !== "" ?

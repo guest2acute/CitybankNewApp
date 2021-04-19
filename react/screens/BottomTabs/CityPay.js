@@ -126,7 +126,8 @@ class CityPay extends Component {
     }
 
     bottomView(language) {
-        return (<View key={"bottomView"} style={styles.bottomView}>
+        return (
+            <View key={"bottomView"} style={styles.bottomView}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{
                     marginLeft: Utility.setWidth(10),
@@ -232,7 +233,7 @@ class CityPay extends Component {
     }
 }
 
-let styles = {
+    let styles = {
     centerText: {
         flex: 1,
         fontSize: 18,

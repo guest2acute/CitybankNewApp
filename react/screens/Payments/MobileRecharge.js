@@ -387,7 +387,7 @@ class MobileRecharge extends Component {
                                           position: "absolute",
                                           right: Utility.setWidth(10),
                                       }}
-                                      onPress={() => Utility.logout(this.props.navigation, language)}>
+                                      >
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
