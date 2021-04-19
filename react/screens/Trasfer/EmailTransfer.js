@@ -21,14 +21,14 @@ import {BusyIndicator} from "../../resources/busy-indicator";
 import {GETBALANCE} from "../Requests/CommonRequest";
 import {GETBENF} from "../Requests/RequestBeneficiary";
 import Config from "../../config/Config";
-import {EMAILWAITTRFREQ} from "../Requests/FundsTransferRequest";
+import {EMAILWAITTRFREQ, OPERATIVETRNACCT} from "../Requests/FundsTransferRequest";
 import {actions} from "../../redux/actions";
 
 class EmailTransfer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            requestList: [],
+            requestList: null,
             transVal: 0,
             stateVal: 0,
             nickname: "",
@@ -36,7 +36,7 @@ class EmailTransfer extends Component {
             isProgress: false,
             selectBeneficiaryType: props.language.select_beneficiary_type,
             selectNicknameType: props.language.select_nickname,
-            selectAcctType: props.language.select_from_account,
+            selectAcctType: props.language.sel_act_card_no,
             selectTypeVal: -1,
             selectNickTypeVal: -1,
             selectFromAccountVal: -1,
@@ -46,24 +46,23 @@ class EmailTransfer extends Component {
             modalData: [],
             otp_type: 0,
             availableBalance: "",
-            paymentAmount: "",
-            error_paymentAmount: "",
+            transferAmount: "",
+            error_sel_act_card_no: "",
             servicesCharge: "",
             error_servicescharge: "",
             grandTotal: "",
             error_grandTotal: "",
             remarks: "",
             error_remarks: "",
-            mobile_number: "",
             errorEmail: "",
             securityQuestions: "",
             error_security: "",
             errorAnswer: "",
             answer: "",
-            title: "",
-            email: "",
             emailTxt: "",
-            selectNickArr: []
+            selectNickArr: [],
+            accountArr: [],
+            fromHolderName: ""
         }
     }
 
@@ -75,6 +74,9 @@ class EmailTransfer extends Component {
     }
 
     openModal(option, title, data, language) {
+        if (option === "fromAccountType")
+            data = data.filter((e) => e.value.FROM_ALLOW === "Y");
+
         if (data.length > 0) {
             this.setState({
                 modelSelection: option,
@@ -86,27 +88,47 @@ class EmailTransfer extends Component {
         }
     }
 
-    onSelectItem(item) {
+    async onSelectItem(item) {
         const {modelSelection} = this.state;
         if (modelSelection === "nickType") {
-            this.setState({selectNicknameType: item.label, selectNickTypeVal: item.value, modalVisible: false})
+            this.setState({
+                selectNicknameType: item.label, selectNickTypeVal: item.value,
+                emailTxt: item.value.TO_EMAIL_ID, mobile_number: item.value.TO_CONTACT_NO, modalVisible: false
+            })
         } else if (modelSelection === "fromAccountType") {
             this.setState({selectAcctType: item.label, selectFromAccountVal: item.value, modalVisible: false})
+            await this.getBalance(item.value);
         }
     }
 
-    setTitle = (item) => {
-        this.setState({title: item.name, email: item.email})
+    async getBalance(account) {
+        this.setState({isProgress: true});
+        let accountNo = account.ACCT_UNMASK;
+        GETBALANCE(accountNo, account.APP_INDICATOR, account.APP_CUSTOMER_ID, this.props).then(response => {
+            console.log("response", response);
+            this.setState({
+                isProgress: false,
+                currency: response.CURRENCYCODE,
+                fromHolderName: response.ACCOUNTNAME,
+                availableBalance: response.hasOwnProperty("AVAILBALANCE") ? response.AVAILBALANCE : response.BALANCE
+            })
+
+        }).catch(error => {
+            this.setState({isProgress: false});
+            console.log("error", error);
+        });
+
     }
+
 
     async onSubmit(language, navigation) {
         console.log("name", this.state.name)
         if (this.state.selectNicknameType === language.select_nickname) {
             Utility.alert(language.error_select_nickname, language.ok);
-        } else if (this.state.selectAcctType === language.select_from_account) {
+        } else if (this.state.selectAcctType === language.sel_act_card_no) {
             Utility.alert(language.error_select_from_type, language.ok);
-        } else if (this.state.paymentAmount === "") {
-            this.setState({error_paymentAmount: language.err_payment_amount});
+        } else if (this.state.sel_act_card_no === "") {
+            this.setState({error_sel_act_card_no: language.err_payment_amount});
         } else if (this.state.securityQuestions === "") {
             this.setState({error_security: language.err_security})
         } else if (this.state.answer === "") {
@@ -152,36 +174,28 @@ class EmailTransfer extends Component {
     }
 
     processRequest(language) {
+        const {selectFromAccountVal, transferAmount,transVal} = this.state;
         let tempArr = [];
         let userDetails = this.props.userDetails;
         let request = {
-            APP_CUSTOMER_ID: this.state.selectFromActVal.APP_CUSTOMER_ID,
-            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            APP_CUSTOMER_ID: selectFromAccountVal.APP_CUSTOMER_ID,
             USER_ID: userDetails.USER_ID,
             ACTIVITY_CD: userDetails.ACTIVITY_CD,
-            TO_ACCT_NO: this.state.toAccount,
-            SERVICE_CHARGE: this.state.servicesCharge,
-            ACTION: "FUNDTRF",
-            TRN_AMT: this.state.transferAmount,
+            CUSTOMER_ID: userDetails.CUSTOMER_ID,
+            ACTION: "EMAILFUNDOTP",
+            AUTH_FLAG: userDetails.AUTH_FLAG,
+            FROM_ACCT_NO: selectFromAccountVal.ACCT_UNMASK,
+            TRN_AMOUNT: transferAmount,
+            FROM_CBNUMBER: selectFromAccountVal,
+            FROM_MOBILE_NO: selectFromAccountVal,
+            TO_MOBILE_NO: this.state.mobile_number,
+            TO_EMAIL_ID: this.state.mobile_number,
             REMARKS: this.state.remarks,
-            ACCT_NO: this.state.selectFromActVal.ACCT_UNMASK,
+            SEC_QUESTION: this.state.securityQuestions,
+            SEC_ANSWER: this.state.answer,
             TO_ACCT_NM: "",
             FROM_ACCT_NM: this.state.fromHolderName,
-            NICK_NAME: this.state.selectNickVal.NICK_NAME,
-            REQ_FLAG: "R",
-            REQ_TYPE: "B",
-            TRN_TYPE: "BKASH",
-            REF_NO: this.state.selectNickVal.REF_NO,
-            TO_MOBILE_NO: this.state.selectNickVal.TO_CONTACT_NO,
-            BEN_TYPE: "W",
-            APP_INDICATOR: this.state.selectFromActVal.APP_INDICATOR,
-            TO_EMAIL_ID: this.state.selectNickVal.TO_EMAIL_ID,
-            VAT_CHARGE: this.state.vat,
-            TO_IFSCODE: this.state.selectNickVal.TO_IFSCODE,
-            OTP_TYPE: this.state.otp_type === 0 ? "S" : "E",
-            FROM_CURRENCY_CODE: this.state.selectFromActVal.CURRENCY_CODE,
-            TO_CURRENCY_CODE: this.state.selectNickVal.CURRENCY,
-            TO_ACCT_CARD_FLAG: this.state.selectNickVal.ACCT_TYPE === "ACCOUNT" ? "A" : "C",
+            REQ_TYPE: transVal === 0 ? "I" : "B",
             ...Config.commonReq
         }
         console.log("request-", request);
@@ -192,16 +206,13 @@ class EmailTransfer extends Component {
                 value: this.state.selectFromActVal.ACCT_UNMASK + "-" + this.state.selectFromActVal.ACCT_TYPE_NAME
             },
             {
-                key: language.to_account,
-                value: this.state.toAccount
+                key: language.beneficiary_Email_Address,
+                value: this.state.emailTxt
+            },
+            {
+                key: language.beneficiary_mobile_number,
+                value: this.state.mobile_number
             });
-
-        if (this.state.transfer_type === 1) {
-            tempArr.push(
-                {key: language.payment_date, value: this.state.paymentDate},
-                {key: language.Frequency, value: this.state.selectPaymentType},
-                {key: language.number_of_payment, value: this.state.numberPayment});
-        }
 
         tempArr.push(
             {key: language.transfer_amount, value: this.state.transferAmount},
@@ -260,7 +271,7 @@ class EmailTransfer extends Component {
     resetData(props) {
         this.setState({
             //selectNicknameType: props.language.select_nickname,
-            //selectAcctType: props.language.select_from_account,
+            //selectAcctType: props.language.sel_act_card_no,
             //selectToAcctType: props.language.select_to_acct,
             //selectPaymentType: props.language.select_payment,
             //...initialVar
@@ -281,7 +292,7 @@ class EmailTransfer extends Component {
                     }}>
                         <RadioForm
                             radio_props={language.transferCity_props}
-                            initial={this.state.cityTransVal}
+                            initial={this.state.transVal}
                             buttonSize={9}
                             selectedButtonColor={themeStyle.THEME_COLOR}
                             formHorizontal={false}
@@ -293,7 +304,7 @@ class EmailTransfer extends Component {
                             style={{marginStart: 5, marginTop: 10, marginLeft: Utility.setWidth(20)}}
                             animation={true}
                             onPress={(value) => {
-                                if (this.state.cityTransVal !== value) {
+                                if (this.state.transVal !== value) {
                                     this.resetData(this.props);
                                 }
                                 this.setState({transVal: value});
@@ -301,55 +312,68 @@ class EmailTransfer extends Component {
                         />
                     </View>
 
-                    <View style={{flex: 1}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                        }]}>
-                            {language.nick_name}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.openModal("nickType", language.selectNickType, this.state.selectNickArr, language)}>
-                            <View style={CommonStyle.selectionBg}>
-                                <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectNicknameType === language.select_nickname ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
-                                    flex: 1
-                                }]}>
-                                    {this.state.selectNicknameType}
-                                </Text>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
-                    <View style={{}}>
-                        <Text style={[CommonStyle.labelStyle, {
-                            color: themeStyle.THEME_COLOR,
-                            marginStart: 10,
-                            marginEnd: 10,
-                            marginTop: 6,
-                        }]}>
-                            {language.beneficiary_type}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate("SelectBeneficiary", {setTitle: this.setTitle.bind(this)})}>
-                            <View style={[CommonStyle.selectionBg, {}]}>
-                                <View style={{flex: 1, flexDirection: "column"}}>
-                                    <Text
-                                        style={[CommonStyle.midTextStyle, {}]}>{this.state.title ? this.state.title : this.state.selectBeneficiaryType}</Text>
-                                    {this.state.email ?
-                                        <Text style={[CommonStyle.midTextStyle, {}]}>{this.state.email}</Text> : null}
+
+                    {this.state.transVal === 1 ?
+                        <View style={{flex: 1}}>
+                            <Text style={[CommonStyle.labelStyle, {
+                                color: themeStyle.THEME_COLOR,
+                                marginStart: 10,
+                                marginEnd: 10,
+                                marginTop: 6,
+                            }]}>
+                                {language.nick_name}
+                                <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => this.openModal("nickType", language.selectNickType, this.state.selectNickArr, language)}>
+                                <View style={CommonStyle.selectionBg}>
+                                    <Text style={[CommonStyle.midTextStyle, {
+                                        color: this.state.selectNicknameType === language.select_nickname ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                        flex: 1
+                                    }]}>
+                                        {this.state.selectNicknameType}
+                                    </Text>
+                                    <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
+                                           source={require("../../resources/images/ic_arrow_down.png")}/>
                                 </View>
-                                <Image resizeMode={"contain"} style={CommonStyle.arrowStyle}
-                                       source={require("../../resources/images/ic_arrow_down.png")}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                            </TouchableOpacity>
+                        </View> : null}
+
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={[CommonStyle.textStyle]}>
+                            {language.beneficiary_Email_Address}
+                            {this.state.transVal === 0 ? <Text
+                                style={{color: themeStyle.THEME_COLOR}}>*</Text> : null}
+                        </Text>
+                        <TextInput
+                            selectionColor={themeStyle.THEME_COLOR}
+                            style={[CommonStyle.textStyle, {
+                                alignItems: "flex-end",
+                                textAlign: 'right',
+                                flex: 1,
+                                marginLeft: 10
+                            }]}
+                            placeholder={this.state.transVal === 0 ? language.please_enter : ""}
+                            onChangeText={text => this.setState({
+                                errorEmail: "",
+                                emailTxt: Utility.userInput(text)
+                            })}
+                            value={this.state.emailTxt}
+                            multiline={false}
+                            numberOfLines={1}
+                            editable={this.state.transVal === 0}
+                            contextMenuHidden={true}
+                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
+                            autoCorrect={false}
+                        /></View>
+                    {this.state.errorEmail !== "" ?
+                        <Text style={CommonStyle.errorStyle}>{this.state.errorEmail}</Text> : null}
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
 
                     <View>
                         <View style={{
@@ -370,7 +394,7 @@ class EmailTransfer extends Component {
                                     flex: 1,
                                     marginLeft: 10
                                 }]}
-                                placeholder={""}
+                                placeholder={this.state.transVal === 0 ? language.please_enter : ""}
                                 onChangeText={text => this.setState({mobile_number: Utility.input(text, "0123456789")})}
                                 value={this.state.mobile_number}
                                 multiline={false}
@@ -392,15 +416,15 @@ class EmailTransfer extends Component {
                             marginTop: 6,
                             marginBottom: 4
                         }]}>
-                            {language.fromAccount}
+                            {language.from_account_card}
                             <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                         </Text>
                         }
                         <TouchableOpacity
-                            onPress={() => this.openModal("fromAccountType", language.select_from_account, language.cardNumber, language)}>
+                            onPress={() => this.openModal("fromAccountType", language.sel_act_card_no, this.state.accountArr, language)}>
                             <View style={CommonStyle.selectionBg}>
                                 <Text style={[CommonStyle.midTextStyle, {
-                                    color: this.state.selectAcctType === language.select_from_account ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
+                                    color: this.state.selectAcctType === language.sel_act_card_no ? themeStyle.SELECT_LABEL : themeStyle.BLACK,
                                     flex: 1
                                 }]}>
                                     {this.state.selectAcctType}
@@ -411,39 +435,7 @@ class EmailTransfer extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-                    <View style={{
-                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
-                        marginEnd: 10,
-                    }}>
-                        <Text style={[CommonStyle.textStyle]}>
-                            {language.beneficiary_Email_Address}
-                            <Text
-                                style={{color: themeStyle.THEME_COLOR}}>{this.state.isMainScreen ? "*" : ""}</Text>
-                        </Text>
-                        <TextInput
-                            // ref={(ref) => this.emailRef = ref}
-                            selectionColor={themeStyle.THEME_COLOR}
-                            style={[CommonStyle.textStyle, {
-                                alignItems: "flex-end",
-                                textAlign: 'right',
-                                flex: 1,
-                                marginLeft: 10
-                            }]}
-                            placeholder={this.state.isMainScreen ? language.please_enter : ""}
-                            onChangeText={text => this.setState({
-                                errorEmail: "",
-                                emailTxt: Utility.userInput(text)
-                            })}
-                            value={this.state.emailTxt}
-                            multiline={false}
-                            numberOfLines={1}
-                            contextMenuHidden={true}
-                            placeholderTextColor={themeStyle.PLACEHOLDER_COLOR}
-                            autoCorrect={false}
-                        /></View>
-                    {this.state.errorEmail !== "" ?
-                        <Text style={CommonStyle.errorStyle}>{this.state.errorEmail}</Text> : null}
-                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
                     <View style={{
                         flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                         marginEnd: 10,
@@ -452,19 +444,27 @@ class EmailTransfer extends Component {
                             {language.available_bal}
                         </Text>
                         <Text style={CommonStyle.viewText}>{this.state.availableBalance}</Text>
-                        <Text style={{paddingLeft: 5}}>BDT</Text>
                     </View>
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
+                    <View style={{
+                        flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
+                        marginEnd: 10,
+                    }}>
+                        <Text style={CommonStyle.textStyle}>
+                            {language.currency}
+                        </Text>
+                        <Text
+                            style={CommonStyle.viewText}>{this.state.currency}</Text>
+                    </View>
+                    <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
                     <View style={{
                         flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
                         marginEnd: 10,
                     }}>
                         <Text style={[CommonStyle.textStyle]}>
-                            {language.payment_amount}
+                            {language.transfer_amount}
                         </Text>
                         <TextInput
-
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
                                 alignItems: "flex-end",
@@ -472,12 +472,12 @@ class EmailTransfer extends Component {
                                 flex: 1,
                                 marginLeft: 10
                             }]}
-                            placeholder={language.payment_amount_pl}
+                            placeholder={"00.00"}
                             onChangeText={text => this.setState({
-                                error_paymentAmount: "",
-                                paymentAmount: Utility.userInput(text)
+                                error_sel_act_card_no: "",
+                                sel_act_card_no: Utility.input(text, "0123456789.")
                             })}
-                            value={this.state.paymentAmount}
+                            value={this.state.sel_act_card_no}
                             multiline={false}
                             numberOfLines={1}
                             contextMenuHidden={true}
@@ -486,15 +486,15 @@ class EmailTransfer extends Component {
                             autoCorrect={false}
                             returnKeyType={"next"}
                             onSubmitEditing={() => {
-                                this.paymentAmountRef.focus();
+                                this.sel_act_card_noRef.focus();
                             }}
                             maxLength={13}/>
-                        <Text style={{paddingLeft: 5}}>BDT</Text>
                     </View>
-                    {this.state.error_paymentAmount !== "" ?
+                    {this.state.error_sel_act_card_no !== "" ?
                         <Text style={CommonStyle.errorStyle
-                        }>{this.state.error_paymentAmount}</Text> : null}
+                        }>{this.state.error_sel_act_card_no}</Text> : null}
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
+
 
                     <View style={{
                         flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -505,7 +505,7 @@ class EmailTransfer extends Component {
                             <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                         </Text>
                         <TextInput
-                            ref={(ref) => this.paymentAmountRef = ref}
+                            ref={(ref) => this.sel_act_card_noRef = ref}
                             selectionColor={themeStyle.THEME_COLOR}
                             style={[CommonStyle.textStyle, {
                                 alignItems: "flex-end",
@@ -581,7 +581,6 @@ class EmailTransfer extends Component {
                     }}>
                         <Text style={[CommonStyle.textStyle]}>
                             {language.remarks}
-                            <Text style={{color: themeStyle.THEME_COLOR}}> *</Text>
                         </Text>
                         <TextInput
                             ref={(ref) => this.remarksRef = ref}
@@ -609,7 +608,6 @@ class EmailTransfer extends Component {
                         <Text style={CommonStyle.errorStyle
                         }>{this.state.error_remarks}</Text> : null}
                     <View style={{height: 1, backgroundColor: themeStyle.SEPARATOR}}/>
-
 
                     <View style={{
                         flexDirection: "row", height: Utility.setHeight(50), marginStart: 10, alignItems: "center",
@@ -727,7 +725,7 @@ class EmailTransfer extends Component {
 
     waitingOption(language) {
         return (
-            <View style={{}}>
+            <View key={"waitingOption"}>
                 <View style={[CommonStyle.selectionBg, {
                     flexDirection: "row",
                     justifyContent: "space-between",
@@ -749,7 +747,8 @@ class EmailTransfer extends Component {
                     <FlatList data={this.state.requestList}
                               renderItem={this._renderItem}
                               keyExtractor={(item, index) => index + ""}
-                    /> : <View style={{marginTop:Utility.setHeight(50),justifyContent:"center",alignItems:"center"}}>
+                    /> :
+                    <View style={{marginTop: Utility.setHeight(50), justifyContent: "center", alignItems: "center"}}>
                         <Text style={CommonStyle.textStyle}>{language.noRecord}</Text>
                     </View>}
 
@@ -760,12 +759,10 @@ class EmailTransfer extends Component {
     render() {
         let language = this.props.language;
         return (
-
             <View style={{
                 flex: 1,
                 backgroundColor: themeStyle.BG_COLOR
-            }
-            }>
+            }}>
                 <SafeAreaView/>
                 <View style={CommonStyle.toolbar}>
                     <TouchableOpacity
@@ -782,8 +779,7 @@ class EmailTransfer extends Component {
                                           height: Utility.setHeight(35),
                                           position: "absolute",
                                           right: Utility.setWidth(10),
-                                      }}
-                    >
+                                      }}>
                         <Image resizeMode={"contain"} style={{
                             width: Utility.setWidth(30),
                             height: Utility.setHeight(30),
@@ -896,7 +892,34 @@ class EmailTransfer extends Component {
             tabBarLabel: this.props.language.transfer
         });
 
+        await this.getOwnAccounts("EMAILTRF");
         await this.getNickList();
+    }
+
+    async getOwnAccounts(serviceType) {
+        this.setState({isProgress: true});
+
+        await OPERATIVETRNACCT(this.props.userDetails, serviceType, this.props).then((response) => {
+                let resArr = [];
+                if (response.length === 0) {
+                    Utility.alertWithBack(this.props.language.ok, this.props.language.debit_card_empty_message,
+                        this.props.navigation);
+                    return;
+                }
+                response.map((account) => {
+                    resArr.push({
+                        label: account.ACCT_CD + "-" + account.ACCT_TYPE_NAME,
+                        value: account
+                    });
+                });
+                console.log("resArr", resArr);
+                this.setState({isProgress: false, accountArr: resArr});
+            },
+            (error) => {
+                this.setState({isProgress: false});
+                console.log("error", error);
+            }
+        );
     }
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
